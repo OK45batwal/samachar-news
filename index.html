@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMACHAR | The Daily News</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            --primary-color: #ffffff;
+            --secondary-color: #f4f4f4;
+            --text-dark: #1a1a1a;
+            --text-light: #555555;
+            --accent-red: #cc0000;
+            --accent-blue: #0066cc;
+            --border-light: #e0e0e0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --nav-height: 70px;
+        }
+
+        body.dark-mode {
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d2d2d;
+            --text-dark: #f0f0f0;
+            --text-light: #b0b0b0;
+            --border-light: #333333;
+        }
+
+        /* --- GLOBAL RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        ul { list-style: none; }
+        img { width: 100%; height: auto; object-fit: cover; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background-color: var(--primary-color);
+            border-bottom: 1px solid var(--border-light);
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--nav-height);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-dark);
+        }
+        .logo span { color: var(--accent-red); font-size: 2.5rem; line-height: 0; }
+        .logo img { height: 35px; width: auto; }
+
+        .nav-links { display: flex; gap: 25px; }
+        .nav-link { 
+            font-size: 0.95rem; 
+            font-weight: 500; 
+            text-transform: uppercase; 
+            color: var(--text-dark);
+            cursor: pointer;
+            position: relative;
+        }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--accent-red); transition: 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link.active { color: var(--accent-red); }
+
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--secondary-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        .search-bar input {
+            background: transparent; border: none; outline: none;
+            color: var(--text-dark); width: 150px; font-size: 0.9rem;
+        }
+
+        .btn {
+            padding: 8px 20px; border-radius: 4px; border: none;
+            font-weight: 600; cursor: pointer; font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .btn-primary { background: var(--text-dark); color: var(--primary-color); }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-outline { border: 1px solid var(--text-dark); background: transparent; color: var(--text-dark); }
+        .btn-icon { background: none; border: none; font-size: 1.2rem; color: var(--text-dark); cursor: pointer; }
+
+        .mobile-menu-btn { display: none; font-size: 1.5rem; background: none; border: none; color: var(--text-dark); cursor: pointer; }
+
+        /* --- HERO SECTION --- */
+        main { margin-top: 90px; padding-bottom: 60px; }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+            height: 400px;
+        }
+
+        .hero-main {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .hero-main img { height: 100%; width: 100%; transition: transform 0.5s; }
+        .hero-main:hover img { transform: scale(1.05); }
+        .hero-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 30px;
+            color: white;
+        }
+        .badge {
+            background: var(--accent-red); color: white;
+            padding: 4px 8px; text-transform: uppercase;
+            font-size: 0.7rem; font-weight: bold; border-radius: 2px;
+            margin-bottom: 10px; display: inline-block;
+        }
+        .hero-title { font-size: 2.2rem; margin-bottom: 10px; line-height: 1.2; }
+        .hero-meta { font-size: 0.8rem; opacity: 0.8; }
+
+        .hero-side {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: space-between;
+        }
+        .sub-hero {
+            flex: 1;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .sub-hero img { height: 100%; }
+        .sub-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 15px; color: white;
+        }
+        .sub-title { font-size: 1.1rem; }
+
+        /* --- NEWS GRID --- */
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 25px; border-bottom: 1px solid var(--border-light);
+            padding-bottom: 10px;
+        }
+        .section-title { font-size: 1.8rem; position: relative; }
+        .section-title::after {
+            content: ''; position: absolute; bottom: -11px; left: 0;
+            width: 60px; height: 3px; background: var(--accent-red);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .news-card {
+            background: var(--primary-color);
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 20px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .news-card:hover { transform: translateY(-5px); }
+        .card-img {
+            height: 180px; border-radius: 6px; overflow: hidden; margin-bottom: 15px;
+            position: relative;
+        }
+        .card-img img { height: 100%; transition: 0.3s; }
+        .news-card:hover .card-img img { transform: scale(1.05); }
+        
+        .bookmark-icon {
+            position: absolute; top: 10px; right: 10px;
+            background: white; color: var(--text-dark);
+            width: 30px; height: 30px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 2; transition: 0.2s;
+        }
+        .bookmark-icon:hover { background: var(--accent-red); color: white; }
+
+        .card-content h3 { font-size: 1.2rem; margin-bottom: 10px; line-height: 1.4; color: var(--text-dark); }
+        .card-meta { font-size: 0.8rem; color: var(--text-light); margin-bottom: 10px; text-transform: uppercase; font-weight: 500; }
+        .card-desc { font-size: 0.9rem; color: var(--text-light); line-height: 1.6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+
+        /* --- AUTH MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .auth-container {
+            background: var(--primary-color);
+            width: 90%; max-width: 400px;
+            padding: 40px; border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+            transform: translateY(20px); transition: 0.3s;
+        }
+        .modal-overlay.active .auth-container { transform: translateY(0); }
+
+        .close-modal { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
+        
+        .auth-header { text-align: center; margin-bottom: 30px; }
+        .auth-header h2 { font-size: 1.8rem; margin-bottom: 5px; }
+        .auth-header p { color: var(--text-light); font-size: 0.9rem; }
+
+        .form-group { margin-bottom: 20px; position: relative; }
+        .form-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
+        .form-input {
+            width: 100%; padding: 12px 12px 12px 40px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: var(--secondary-color);
+            color: var(--text-dark);
+            outline: none; transition: 0.3s;
+        }
+        .form-input:focus { border-color: var(--text-dark); background: var(--primary-color); }
+
+        .submit-btn {
+            width: 100%; padding: 12px;
+            background: var(--text-dark); color: white;
+            border: none; border-radius: 6px;
+            font-size: 1rem; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+        }
+        .submit-btn:hover { opacity: 0.9; }
+
+        .toggle-auth { text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--text-light); }
+        .toggle-auth a { color: var(--accent-blue); font-weight: bold; cursor: pointer; }
+
+        .error-msg { 
+            background: #ffebee; color: #c62828; 
+            padding: 10px; border-radius: 4px; 
+            font-size: 0.85rem; margin-bottom: 15px; 
+            display: none; text-align: center;
+        }
+
+        /* --- TOAST --- */
+        .toast {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #333; color: white;
+            padding: 12px 25px; border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex; align-items: center; gap: 10px;
+            transform: translateY(100px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3000;
+        }
+        .toast.active { transform: translateY(0); }
+
+        /* --- UTILS --- */
+        .hidden { display: none !important; }
+        .loader-container { 
+            display: flex; justify-content: center; padding: 50px; 
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid var(--secondary-color);
+            border-top: 4px solid var(--accent-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+ /* --- RESPONSIVE --- */
+@media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; height: auto; }
+    .hero-main { height: 350px; }
+    .hero-side { display: none; } /* Hide side articles on tablet/mobile */
+}
+
+@media (max-width: 768px) {
+    /* Fix Navigation */
+    .nav-links {
+        position: fixed; 
+        top: var(--nav-height); 
+        left: 0; 
+        width: 100%;
+        background: var(--primary-color);
+        flex-direction: column; 
+        padding: 20px;
+        border-bottom: 1px solid var(--border-light);
+        gap: 15px;
+        display: none; /* Hidden by default */
+        box-shadow: var(--shadow-md);
+    }
+    .nav-links.active { display: flex; } /* JavaScript toggles this */
+    
+    .mobile-menu-btn { display: block; }
+    
+    /* Fix Logo Size */
+    .logo { font-size: 1.5rem; }
+    .logo span { font-size: 2rem; }
+    
+    /* Fix Search Bar */
+    .search-bar { display: none; } /* Hide search on mobile to save space */
+    
+    /* Fix Grid Layout */
+    .news-grid {
+        grid-template-columns: 1fr; /* Force single column */
+        gap: 20px;
+    }
+    
+    /* Fix Hero Section */
+    .hero-main { height: 250px; }
+    .hero-title { font-size: 1.4rem; }
+    
+    /* Fix Auth Modal */
+    .auth-container { width: 95%; padding: 20px; margin: 0 10px; }
+}
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="container nav-container">
+            <button class="mobile-menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+            
+            <a href="#" class="logo" onclick="window.location.reload()">
+                <img src="logo3.png" alt="" onerror="this.style.display='none'">
+                SAMACHAR<span>.</span>
+            </a>
+
+            <ul class="nav-links" id="nav-links">
+                <li class="nav-link active" onclick="loadCategory('general')">Home</li>
+                <li class="nav-link" onclick="loadCategory('business')">Business</li>
+                <li class="nav-link" onclick="loadCategory('technology')">Tech</li>
+                <li class="nav-link" onclick="loadCategory('sports')">Sports</li>
+                <li class="nav-link" onclick="loadCategory('entertainment')">Entertainment</li>
+                <li class="nav-link hidden" id="nav-bookmarks" onclick="loadBookmarks()">Saved</li>
+            </ul>
+
+            <div class="nav-actions">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search news...">
+                    <i class="fas fa-search" style="cursor: pointer; color: var(--text-light);" onclick="handleSearch()"></i>
+                </div>
+                <button class="btn-icon" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+                
+                <div id="auth-buttons">
+                    <button class="btn btn-primary" onclick="openModal('login')">Sign In</button>
+                </div>
+                <div id="user-profile" class="hidden" style="display: flex; align-items: center; gap: 10px;">
+                    <div style="text-align: right; line-height: 1.2;">
+                        <span style="display: block; font-weight: bold; font-size: 0.9rem;" id="user-name-display">User</span>
+                        <small style="font-size: 0.7rem; color: var(--accent-red); cursor: pointer;" onclick="handleLogout()">LOGOUT</small>
+                    </div>
+                    <div style="width: 35px; height: 35px; background: var(--secondary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- AUTH MODAL -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="auth-container">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            
+            <!-- Login Form -->
+            <div id="login-form">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to access your personalized news feed.</p>
+                </div>
+                <div class="error-msg" id="login-error"></div>
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="login-email" class="form-input" placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="login-password" class="form-input" placeholder="Password">
+                </div>
+                <button class="submit-btn" onclick="loginUser()">Log In</button>
+                <div class="toggle-auth">
+                    New to Samachar? <a onclick="switchAuthMode('register')">Create Account</a>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="hidden">
+                <div class="auth-header">
+                    <h2>Create Account</h2>
+                    <p>Join us to save articles and customize your feed.</p>
+                </div>
+                <div class="error-msg" id="reg-error"></div>
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="reg-name" class="form-input" placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="reg-email" class="form-input" placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="reg-pass" class="form-input" placeholder="Password (6+ chars)">
+                </div>
+                <button class="submit-btn" onclick="registerUser()">Sign Up</button>
+                <div class="toggle-auth">
+                    Already have an account? <a onclick="switchAuthMode('login')">Log In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <!-- Hero Section -->
+        <div id="hero-section" class="hero hidden">
+            <!-- Populated by JS -->
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title" id="grid-title">Latest Headlines</h2>
+        </div>
+
+        <!-- Loader -->
+        <div id="loader" class="loader-container">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- News Grid -->
+        <div id="news-grid" class="news-grid">
+            <!-- Cards populated by JS -->
+        </div>
+    </main>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+        <span id="toast-msg">Operation Successful</span>
+    </div>
+
+    <!-- JAVASCRIPT & FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // =========================================================
+        // CONFIGURATION - SET THIS TO 'FALSE' TO USE REAL FIREBASE
+        // =========================================================
+        const ENABLE_DEMO_MODE = true; 
+        
+        // =========================================================
+        // REAL FIREBASE KEYS (ONLY NEEDED IF ENABLE_DEMO_MODE = false)
+        // =========================================================
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        // =========================================================
+
+        let isMockMode = false;
+        
+        try {
+            // Priority 1: Check Manual Demo Toggle
+            if (ENABLE_DEMO_MODE) {
+                console.log("Manual Demo Mode Enabled");
+                throw new Error("DEMO_MODE_ACTIVE");
+            }
+
+            // Priority 2: Use Environment Config (Canvas Preview)
+            let activeConfig;
+            if (typeof __firebase_config !== 'undefined') {
+                activeConfig = JSON.parse(__firebase_config);
+            } else {
+                activeConfig = firebaseConfig;
+            }
+
+            // Check if user forgot to replace placeholders
+            if (activeConfig.apiKey === "YOUR_API_KEY_HERE") {
+                throw new Error("CONFIG_MISSING");
+            }
+
+            // Initialize Firebase
+            const app = initializeApp(activeConfig);
+            window.auth = getAuth(app);
+            window.db = getFirestore(app);
+            window.appId = typeof __app_id !== 'undefined' ? __app_id : 'my-news-app';
+
+        } catch (e) {
+            console.warn("Running in DEMO MODE (Simulation). Reason:", e.message);
+            isMockMode = true;
+            window.auth = null;
+            window.db = null;
+        }
+
+        // --- STATE ---
+        let currentUser = null;
+        let currentArticles = [];
+        const API_KEY = "eeba6172f09e49a696f28cd7f9fb3ea6"; 
+        
+        // --- MOCK DATA ---
+        const MOCK_DB = [
+            {
+                title: "India's Chandrayaan-3 Historic Landing on South Pole",
+                image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?w=800&q=80",
+                source: "ISRO News", date: "2023-08-23", category: "technology",
+                desc: "India creates history as Chandrayaan-3 successfully lands on the lunar south pole, making it the first nation to achieve this feat.",
+                url: "https://www.isro.gov.in"
+            },
+            {
+                title: "Global Markets Rally as Inflation Data Shows Cooling",
+                image: "https://images.unsplash.com/photo-1611974765270-ca1258634369?w=800&q=80",
+                source: "Financial Times", date: "2023-11-15", category: "business",
+                desc: "Stock markets across Asia and Europe hit record highs today as new data suggests global inflation is finally under control.",
+                url: "#"
+            },
+            {
+                title: "Virat Kohli Breaks Tendulkar's ODI Century Record",
+                image: "https://images.unsplash.com/photo-1624526267942-ab0ff8a3e972?w=800&q=80",
+                source: "ESPN Cricinfo", date: "2023-11-15", category: "sports",
+                desc: "In a stunning display of skill, Kohli surpasses the legendary record during the World Cup semi-final match against New Zealand.",
+                url: "#"
+            },
+            {
+                title: "AI Regulation: Tech Giants Agree on New Safety Standards",
+                image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
+                source: "TechCrunch", date: "2023-12-01", category: "technology",
+                desc: "Major AI labs have signed a voluntary agreement to safety test their models before releasing them to the public.",
+                url: "#"
+            },
+            {
+                title: "New Electric Vehicle Policy to Boost Manufacturing",
+                image: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=800&q=80",
+                source: "AutoCar India", date: "2023-12-10", category: "business",
+                desc: "The government has announced substantial subsidies for EV manufacturers to turn the country into a global export hub.",
+                url: "#"
+            },
+            {
+                title: "Blockbuster Movie Breaks Box Office Records",
+                image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&q=80",
+                source: "Variety", date: "2023-12-05", category: "entertainment",
+                desc: "The latest superhero installment has shattered opening weekend records, proving cinema is alive and kicking.",
+                url: "#"
+            },
+             {
+                title: "Sustainable Architecture: The Green Buildings of Tomorrow",
+                image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=800&q=80",
+                source: "ArchDaily", date: "2023-12-12", category: "general",
+                desc: "Architects are increasingly turning to sustainable materials and energy-efficient designs to combat climate change.",
+                url: "#"
+            }
+        ];
+
+        // --- AUTH & DATABASE LOGIC ---
+        if (!isMockMode && window.auth) {
+            onAuthStateChanged(window.auth, async (user) => {
+                currentUser = user;
+                updateUI(user);
+                if(user) {
+                    try {
+                        const userRef = doc(window.db, 'artifacts', window.appId, 'users', user.uid, 'profile', 'main');
+                        await setDoc(userRef, { lastLogin: serverTimestamp() }, { merge: true });
+                    } catch(e) { console.error("DB Update Error", e); }
+                }
+            });
+        } else {
+             // Mock Mode Notification
+             setTimeout(() => {
+                 showToast("Running in Demo Mode", false);
+             }, 1000);
+        }
+
+        function updateUI(user) {
+            const authBtns = document.getElementById("auth-buttons");
+            const userProfile = document.getElementById("user-profile");
+            const navBookmarks = document.getElementById("nav-bookmarks");
+            const nameDisplay = document.getElementById("user-name-display");
+
+            if(user) {
+                authBtns.classList.add("hidden");
+                userProfile.classList.remove("hidden");
+                navBookmarks.classList.remove("hidden");
+                nameDisplay.textContent = user.displayName || "Reader";
+                showToast(`Welcome back, ${user.displayName || 'Reader'}!`);
+            } else {
+                authBtns.classList.remove("hidden");
+                userProfile.classList.add("hidden");
+                navBookmarks.classList.add("hidden");
+            }
+        }
+
+        // --- GLOBAL WINDOW FUNCTIONS ---
+        window.toggleMenu = () => {
+            document.getElementById("nav-links").classList.toggle("active");
+        }
+
+        window.openModal = (mode) => {
+            // Allows opening modal even in mock mode now
+            document.getElementById("auth-modal").classList.add("active");
+            window.switchAuthMode(mode);
+        }
+
+        window.closeModal = () => {
+            document.getElementById("auth-modal").classList.remove("active");
+        }
+
+        window.switchAuthMode = (mode) => {
+            document.getElementById("login-form").classList.toggle("hidden", mode !== 'login');
+            document.getElementById("register-form").classList.toggle("hidden", mode !== 'register');
+            document.querySelectorAll(".error-msg").forEach(e => e.style.display = 'none');
+        }
+
+        window.toggleTheme = () => {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        // --- AUTH ACTIONS ---
+        window.loginUser = async () => {
+            const email = document.getElementById("login-email").value;
+            const pass = document.getElementById("login-password").value;
+            const errorEl = document.getElementById("login-error");
+            
+            if(!email || !pass) {
+                showError(errorEl, "Please fill in all fields.");
+                return;
+            }
+
+            if(isMockMode) {
+                // Mock Login Success
+                currentUser = { 
+                    uid: "mock-user-001", 
+                    email: email, 
+                    displayName: email.split('@')[0] 
+                };
+                closeModal();
+                updateUI(currentUser);
+                return;
+            }
+
+            try {
+                await signInWithEmailAndPassword(window.auth, email, pass);
+                closeModal();
+            } catch (err) {
+                showError(errorEl, parseError(err));
+            }
+        }
+
+        window.registerUser = async () => {
+            const name = document.getElementById("reg-name").value;
+            const email = document.getElementById("reg-email").value;
+            const pass = document.getElementById("reg-pass").value;
+            const errorEl = document.getElementById("reg-error");
+
+            if(!name || !email || !pass) {
+                showError(errorEl, "All fields are required.");
+                return;
+            }
+
+            if(isMockMode) {
+                // Mock Register Success
+                currentUser = { 
+                    uid: "mock-user-001", 
+                    email: email, 
+                    displayName: name 
+                };
+                closeModal();
+                updateUI(currentUser);
+                return;
+            }
+
+            try {
+                const cred = await createUserWithEmailAndPassword(window.auth, email, pass);
+                await updateProfile(cred.user, { displayName: name });
+                
+                // Create Database Entry
+                const userRef = doc(window.db, 'artifacts', window.appId, 'users', cred.user.uid, 'profile', 'main');
+                await setDoc(userRef, {
+                    name: name,
+                    email: email,
+                    joinedAt: serverTimestamp(),
+                    bookmarks: []
+                });
+
+                closeModal();
+                updateUI(cred.user);
+            } catch (err) {
+                showError(errorEl, parseError(err));
+            }
+        }
+
+        window.handleLogout = async () => {
+            if(isMockMode) {
+                currentUser = null;
+                window.location.reload();
+                return;
+            }
+            await signOut(window.auth);
+            window.location.reload();
+        }
+
+        // --- NEWS LOGIC ---
+        window.loadCategory = (category) => {
+            // Update active nav
+            document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
+            const activeLink = Array.from(document.querySelectorAll(".nav-link")).find(l => l.innerText.toLowerCase() === category || (category === 'general' && l.innerText === 'HOME'));
+            if(activeLink) activeLink.classList.add("active");
+            
+            // Close mobile menu if open
+            document.getElementById("nav-links").classList.remove("active");
+
+            fetchNews(category);
+        }
+
+        window.handleSearch = () => {
+            const query = document.getElementById("search-input").value;
+            if(query) fetchNews(query);
+        }
+
+        async function fetchNews(query) {
+            const loader = document.getElementById("loader");
+            const grid = document.getElementById("news-grid");
+            const hero = document.getElementById("hero-section");
+            const title = document.getElementById("grid-title");
+
+            loader.classList.remove("hidden");
+            grid.innerHTML = "";
+            hero.classList.add("hidden");
+            title.textContent = query === 'general' ? "Latest Headlines" : `${query.charAt(0).toUpperCase() + query.slice(1)} News`;
+
+            try {
+                // Attempt Real API Fetch
+                const url = `https://newsapi.org/v2/everything?q=${query}&sortBy=publishedAt&apiKey=${API_KEY}`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error("API_FAIL");
+                const data = await res.json();
+                
+                let articles = data.articles.filter(a => a.urlToImage);
+                if(articles.length === 0) throw new Error("NO_DATA");
+                
+                renderNews(articles);
+
+            } catch (err) {
+                console.log("Using Mock Data due to:", err.message);
+                // Filter Mock Data
+                let mock = MOCK_DB;
+                if(query !== 'general') {
+                    mock = MOCK_DB.filter(a => 
+                        a.category === query.toLowerCase() || 
+                        a.title.toLowerCase().includes(query.toLowerCase())
+                    );
+                }
+                renderNews(mock.map(m => ({
+                    title: m.title,
+                    urlToImage: m.image,
+                    source: { name: m.source },
+                    publishedAt: m.date,
+                    description: m.desc,
+                    url: m.url
+                })));
+            } finally {
+                loader.classList.add("hidden");
+            }
+        }
+
+        function renderNews(articles) {
+            const grid = document.getElementById("news-grid");
+            const hero = document.getElementById("hero-section");
+
+            // Hero (First Item)
+            const main = articles[0];
+            if(main) {
+                hero.innerHTML = `
+                    <div class="hero-main" onclick="window.open('${main.url}', '_blank')">
+                        <img src="${main.urlToImage}" alt="Hero">
+                        <div class="hero-overlay">
+                            <span class="badge">Top Story</span>
+                            <h1 class="hero-title">${main.title}</h1>
+                            <p class="hero-meta">${main.source.name} • ${new Date(main.publishedAt).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                    <div class="hero-side">
+                        ${articles.slice(1, 3).map(sub => `
+                            <div class="sub-hero" onclick="window.open('${sub.url}', '_blank')">
+                                <img src="${sub.urlToImage}" alt="Sub">
+                                <div class="sub-overlay">
+                                    <h3 class="sub-title">${sub.title}</h3>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                hero.classList.remove("hidden");
+            }
+
+            // Grid (Remaining Items)
+            articles.slice(3).forEach((article, index) => {
+                const card = document.createElement("div");
+                card.className = "news-card";
+                card.innerHTML = `
+                    <div class="card-img">
+                        <img src="${article.urlToImage}" alt="News">
+                        <div class="bookmark-icon" onclick="event.stopPropagation(); saveBookmark(${index})">
+                            <i class="far fa-bookmark"></i>
+                        </div>
+                    </div>
+                    <div class="card-content" style="padding: 0 15px;">
+                        <p class="card-meta">${article.source.name} • ${new Date(article.publishedAt).toLocaleDateString()}</p>
+                        <h3>${article.title}</h3>
+                        <p class="card-desc">${article.description || ''}</p>
+                    </div>
+                `;
+                card.onclick = () => window.open(article.url, "_blank");
+                // Attach article data to element for bookmarking
+                card.dataset.article = JSON.stringify(article);
+                grid.appendChild(card);
+            });
+        }
+
+        // --- BOOKMARKS ---
+        // Mock Storage for demo
+        let mockBookmarks = [];
+
+        window.saveBookmark = async (index) => {
+            if(!currentUser) {
+                openModal('login');
+                showToast("Please login to save", true);
+                return;
+            }
+
+            const cards = document.querySelectorAll(".news-card");
+            const article = JSON.parse(cards[index].dataset.article);
+
+            if(isMockMode) {
+                mockBookmarks.push(article);
+                showToast("Article Saved (Local Demo Mode)");
+                return;
+            }
+
+            try {
+                const userRef = doc(window.db, 'artifacts', window.appId, 'users', currentUser.uid, 'profile', 'main');
+                await setDoc(userRef, {
+                    bookmarks: arrayUnion(article)
+                }, { merge: true });
+                showToast("Article Saved to Bookmarks!");
+            } catch (err) {
+                console.error(err);
+                showToast("Error saving article", true);
+            }
+        }
+
+        window.loadBookmarks = async () => {
+            if (!currentUser) return;
+            
+            const loader = document.getElementById("loader");
+            const grid = document.getElementById("news-grid");
+            const hero = document.getElementById("hero-section");
+            const title = document.getElementById("grid-title");
+
+            hero.classList.add("hidden");
+            loader.classList.remove("hidden");
+            grid.innerHTML = "";
+            title.textContent = "My Saved Articles";
+            document.getElementById("nav-links").classList.remove("active"); // close mobile menu
+
+            if(isMockMode) {
+                renderBookmarkItems(mockBookmarks);
+                loader.classList.add("hidden");
+                return;
+            }
+
+            try {
+                const userRef = doc(window.db, 'artifacts', window.appId, 'users', currentUser.uid, 'profile', 'main');
+                const docSnap = await getDoc(userRef);
+                
+                if (docSnap.exists() && docSnap.data().bookmarks) {
+                    renderBookmarkItems(docSnap.data().bookmarks);
+                } else {
+                    grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-light);'>No bookmarks found.</p>";
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                loader.classList.add("hidden");
+            }
+        }
+
+        function renderBookmarkItems(bookmarks) {
+            const grid = document.getElementById("news-grid");
+            if(bookmarks.length > 0) {
+                bookmarks.forEach(article => {
+                    const card = document.createElement("div");
+                    card.className = "news-card";
+                    card.innerHTML = `
+                        <div class="card-img">
+                            <img src="${article.urlToImage}" alt="News">
+                        </div>
+                        <div class="card-content" style="padding: 0 15px;">
+                            <p class="card-meta">${article.source.name}</p>
+                            <h3>${article.title}</h3>
+                        </div>
+                    `;
+                    card.onclick = () => window.open(article.url, "_blank");
+                    grid.appendChild(card);
+                });
+            } else {
+                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-light);'>No bookmarks found.</p>";
+            }
+        }
+
+        // --- HELPERS ---
+        function showError(el, msg) {
+            el.textContent = msg;
+            el.style.display = "block";
+        }
+
+        function parseError(err) {
+            const msg = err.message;
+            if(msg.includes("email-already-in-use")) return "Email is already registered.";
+            if(msg.includes("wrong-password")) return "Incorrect password.";
+            if(msg.includes("user-not-found")) return "No account found with this email.";
+            return msg.replace("Firebase: ", "");
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById("toast");
+            const toastMsg = document.getElementById("toast-msg");
+            toastMsg.textContent = msg;
+            toast.style.background = isError ? "#d32f2f" : "#333";
+            toast.querySelector("i").className = isError ? "fas fa-exclamation-circle" : "fas fa-check-circle";
+            
+            toast.classList.add("active");
+            setTimeout(() => toast.classList.remove("active"), 3000);
+        }
+
+        // Initial Load
+        loadCategory('general');
+
+    </script>
+</body>
+</html>
