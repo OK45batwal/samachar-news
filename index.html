@@ -484,20 +484,16 @@
         <span id="toast-msg">Operation Successful</span>
     </div>
 
-    <!-- JAVASCRIPT & FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // =========================================================
-        // CONFIGURATION - SET THIS TO 'FALSE' TO USE REAL FIREBASE
+        // CONFIGURATION
         // =========================================================
         const ENABLE_DEMO_MODE = true; 
         
-        // =========================================================
-        // REAL FIREBASE KEYS (ONLY NEEDED IF ENABLE_DEMO_MODE = false)
-        // =========================================================
         const firebaseConfig = {
             apiKey: "eeba6172f09e49a696f28cd7f9fb3ea6",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -506,31 +502,26 @@
             messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
             appId: "YOUR_APP_ID"
         };
-        // =========================================================
 
         let isMockMode = false;
         
         try {
-            // Priority 1: Check Manual Demo Toggle
+            // Check for Demo Mode or Missing Config
             if (ENABLE_DEMO_MODE) {
                 console.log("Manual Demo Mode Enabled");
                 throw new Error("DEMO_MODE_ACTIVE");
             }
 
-            // Priority 2: Use Environment Config (Canvas Preview)
-            let activeConfig;
             if (typeof __firebase_config !== 'undefined') {
                 activeConfig = JSON.parse(__firebase_config);
             } else {
                 activeConfig = firebaseConfig;
             }
 
-            // Check if user forgot to replace placeholders
             if (activeConfig.apiKey === "YOUR_API_KEY_HERE") {
                 throw new Error("CONFIG_MISSING");
             }
 
-            // Initialize Firebase
             const app = initializeApp(activeConfig);
             window.auth = getAuth(app);
             window.db = getFirestore(app);
@@ -614,7 +605,6 @@
                 }
             });
         } else {
-             // Mock Mode Notification
              setTimeout(() => {
                  showToast("Running in Demo Mode", false);
              }, 1000);
@@ -645,7 +635,6 @@
         }
 
         window.openModal = (mode) => {
-            // Allows opening modal even in mock mode now
             document.getElementById("auth-modal").classList.add("active");
             window.switchAuthMode(mode);
         }
@@ -676,12 +665,7 @@
             }
 
             if(isMockMode) {
-                // Mock Login Success
-                currentUser = { 
-                    uid: "mock-user-001", 
-                    email: email, 
-                    displayName: email.split('@')[0] 
-                };
+                currentUser = { uid: "mock-user-001", email: email, displayName: email.split('@')[0] };
                 closeModal();
                 updateUI(currentUser);
                 return;
@@ -707,12 +691,7 @@
             }
 
             if(isMockMode) {
-                // Mock Register Success
-                currentUser = { 
-                    uid: "mock-user-001", 
-                    email: email, 
-                    displayName: name 
-                };
+                currentUser = { uid: "mock-user-001", email: email, displayName: name };
                 closeModal();
                 updateUI(currentUser);
                 return;
@@ -721,8 +700,6 @@
             try {
                 const cred = await createUserWithEmailAndPassword(window.auth, email, pass);
                 await updateProfile(cred.user, { displayName: name });
-                
-                // Create Database Entry
                 const userRef = doc(window.db, 'artifacts', window.appId, 'users', cred.user.uid, 'profile', 'main');
                 await setDoc(userRef, {
                     name: name,
@@ -730,7 +707,6 @@
                     joinedAt: serverTimestamp(),
                     bookmarks: []
                 });
-
                 closeModal();
                 updateUI(cred.user);
             } catch (err) {
@@ -750,14 +726,10 @@
 
         // --- NEWS LOGIC ---
         window.loadCategory = (category) => {
-            // Update active nav
             document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
             const activeLink = Array.from(document.querySelectorAll(".nav-link")).find(l => l.innerText.toLowerCase() === category || (category === 'general' && l.innerText === 'HOME'));
             if(activeLink) activeLink.classList.add("active");
-            
-            // Close mobile menu if open
             document.getElementById("nav-links").classList.remove("active");
-
             fetchNews(category);
         }
 
@@ -766,6 +738,7 @@
             if(query) fetchNews(query);
         }
 
+        // --- UPDATED FETCH NEWS (Fixes Github Pages Issue) ---
         async function fetchNews(query) {
             const loader = document.getElementById("loader");
             const grid = document.getElementById("news-grid");
@@ -777,10 +750,26 @@
             hero.classList.add("hidden");
             title.textContent = query === 'general' ? "Latest Headlines" : `${query.charAt(0).toUpperCase() + query.slice(1)} News`;
 
+            // 1. Force Mock Mode on GitHub Pages to prevent errors
+            const isGitHubPages = window.location.hostname.includes("github.io");
+
+            if (isGitHubPages) {
+                console.log("GitHub Pages detected: Using Demo Data.");
+                useMockData(query);
+                loader.classList.add("hidden");
+                return; 
+            }
+
             try {
-                // Attempt Real API Fetch
+                // 2. Attempt Real API (Only works on Localhost)
                 const url = `https://newsapi.org/v2/everything?q=${query}&sortBy=publishedAt&apiKey=${API_KEY}`;
                 const res = await fetch(url);
+                
+                // Check for API limits (426/403)
+                if (res.status === 426 || res.status === 403) {
+                    throw new Error("API_LIMIT_REACHED");
+                }
+                
                 if (!res.ok) throw new Error("API_FAIL");
                 const data = await res.json();
                 
@@ -790,33 +779,35 @@
                 renderNews(articles);
 
             } catch (err) {
-                console.log("Using Mock Data due to:", err.message);
-                // Filter Mock Data
-                let mock = MOCK_DB;
-                if(query !== 'general') {
-                    mock = MOCK_DB.filter(a => 
-                        a.category === query.toLowerCase() || 
-                        a.title.toLowerCase().includes(query.toLowerCase())
-                    );
-                }
-                renderNews(mock.map(m => ({
-                    title: m.title,
-                    urlToImage: m.image,
-                    source: { name: m.source },
-                    publishedAt: m.date,
-                    description: m.desc,
-                    url: m.url
-                })));
+                console.log("Switching to Demo Data due to:", err.message);
+                useMockData(query);
             } finally {
                 loader.classList.add("hidden");
             }
+        }
+
+        function useMockData(query) {
+            let mock = MOCK_DB;
+            if(query !== 'general') {
+                mock = MOCK_DB.filter(a => 
+                    a.category === query.toLowerCase() || 
+                    a.title.toLowerCase().includes(query.toLowerCase())
+                );
+            }
+            renderNews(mock.map(m => ({
+                title: m.title,
+                urlToImage: m.image,
+                source: { name: m.source },
+                publishedAt: m.date,
+                description: m.desc,
+                url: m.url
+            })));
         }
 
         function renderNews(articles) {
             const grid = document.getElementById("news-grid");
             const hero = document.getElementById("hero-section");
 
-            // Hero (First Item)
             const main = articles[0];
             if(main) {
                 hero.innerHTML = `
@@ -842,7 +833,6 @@
                 hero.classList.remove("hidden");
             }
 
-            // Grid (Remaining Items)
             articles.slice(3).forEach((article, index) => {
                 const card = document.createElement("div");
                 card.className = "news-card";
@@ -860,14 +850,12 @@
                     </div>
                 `;
                 card.onclick = () => window.open(article.url, "_blank");
-                // Attach article data to element for bookmarking
                 card.dataset.article = JSON.stringify(article);
                 grid.appendChild(card);
             });
         }
 
         // --- BOOKMARKS ---
-        // Mock Storage for demo
         let mockBookmarks = [];
 
         window.saveBookmark = async (index) => {
@@ -888,9 +876,7 @@
 
             try {
                 const userRef = doc(window.db, 'artifacts', window.appId, 'users', currentUser.uid, 'profile', 'main');
-                await setDoc(userRef, {
-                    bookmarks: arrayUnion(article)
-                }, { merge: true });
+                await setDoc(userRef, { bookmarks: arrayUnion(article) }, { merge: true });
                 showToast("Article Saved to Bookmarks!");
             } catch (err) {
                 console.error(err);
@@ -910,7 +896,7 @@
             loader.classList.remove("hidden");
             grid.innerHTML = "";
             title.textContent = "My Saved Articles";
-            document.getElementById("nav-links").classList.remove("active"); // close mobile menu
+            document.getElementById("nav-links").classList.remove("active"); 
 
             if(isMockMode) {
                 renderBookmarkItems(mockBookmarks);
@@ -984,8 +970,6 @@
 
         // Initial Load
         loadCategory('general');
-
     </script>
 </body>
-
 </html>
