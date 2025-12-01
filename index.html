@@ -311,30 +311,52 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- RESPONSIVE --- */
-        @media (max-width: 900px) {
-            .hero { grid-template-columns: 1fr; height: auto; }
-            .hero-main { height: 300px; }
-            .hero-side { display: none; } /* Simplify for tablet */
-        }
+       /* --- RESPONSIVE --- */
+@media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; height: auto; }
+    .hero-main { height: 350px; }
+    .hero-side { display: none; } /* Hide side articles on tablet/mobile */
+}
 
-        @media (max-width: 768px) {
-            .nav-links {
-                position: fixed; top: var(--nav-height); left: 0; width: 100%;
-                background: var(--primary-color);
-                flex-direction: column; padding: 20px;
-                border-bottom: 1px solid var(--border-light);
-                gap: 15px;
-                display: none; /* JS will toggle this */
-            }
-            .nav-links.active { display: flex; }
-            .mobile-menu-btn { display: block; }
-            .search-bar input { width: 100px; }
-            .logo span { font-size: 2rem; }
-            .hero-title { font-size: 1.5rem; }
-            
-            .auth-container { width: 95%; padding: 25px; }
-        }
+@media (max-width: 768px) {
+    /* Fix Navigation */
+    .nav-links {
+        position: fixed; 
+        top: var(--nav-height); 
+        left: 0; 
+        width: 100%;
+        background: var(--primary-color);
+        flex-direction: column; 
+        padding: 20px;
+        border-bottom: 1px solid var(--border-light);
+        gap: 15px;
+        display: none; /* Hidden by default */
+        box-shadow: var(--shadow-md);
+    }
+    .nav-links.active { display: flex; } /* JavaScript toggles this */
+    
+    .mobile-menu-btn { display: block; }
+    
+    /* Fix Logo Size */
+    .logo { font-size: 1.5rem; }
+    .logo span { font-size: 2rem; }
+    
+    /* Fix Search Bar */
+    .search-bar { display: none; } /* Hide search on mobile to save space */
+    
+    /* Fix Grid Layout */
+    .news-grid {
+        grid-template-columns: 1fr; /* Force single column */
+        gap: 20px;
+    }
+    
+    /* Fix Hero Section */
+    .hero-main { height: 250px; }
+    .hero-title { font-size: 1.4rem; }
+    
+    /* Fix Auth Modal */
+    .auth-container { width: 95%; padding: 20px; margin: 0 10px; }
+}
     </style>
 </head>
 <body>
@@ -965,4 +987,5 @@
 
     </script>
 </body>
+
 </html>
