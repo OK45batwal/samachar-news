@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Sign In — Samachar</title><link rel="stylesheet" href="assets/css/variables.css"><link rel="stylesheet" href="assets/css/style.css"><link rel="stylesheet" href="assets/css/layout.css"><link rel="icon" href="assets/icons/favicon.svg">
+<style>
+.auth-container { min-height:100vh; display:flex; background:var(--bg-primary); }
+.auth-form-side { flex:1; display:flex; flex-direction:column; justify-content:center; padding:48px; max-width:480px; margin:0 auto; }
+.auth-hero { flex:1; background: linear-gradient(135deg, var(--accent-dim) 0%, transparent 100%); display:flex; flex-direction:column; justify-content:center; padding:64px; position:relative; overflow:hidden; }
+.auth-hero::before { content:''; position:absolute; top:-50%; right:-30%; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, var(--accent-dim) 0%, transparent 70%); }
+@media (max-width:768px) { .auth-hero { display:none; } .auth-form-side { padding:24px; } }
+.input-group { margin-bottom:20px; }
+.input-group label { display:block; font-size:13px; font-weight:600; color:var(--text-primary); margin-bottom:6px; }
+.input-group .input { width:100%; }
+.input-hint { font-size:11px; color:var(--text-tertiary); margin-top:4px; }
+.form-footer { text-align:center; margin-top:24px; font-size:13px; color:var(--text-tertiary); }
+.auth-divider { display:flex; align-items:center; gap:16px; margin:24px 0; color:var(--text-tertiary); font-size:12px; }
+.auth-divider::before, .auth-divider::after { content:''; flex:1; height:1px; background:var(--border); }
+.social-btns { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.social-btn { display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border); background:transparent; color:var(--text-secondary); font-size:13px; cursor:pointer; transition:all 0.2s; }
+.social-btn:hover { border-color:var(--accent); color:var(--text-primary); }
+</style></head><body>
+<div class="auth-container">
+  <div class="auth-form-side">
+    <div style="margin-bottom:32px"><a href="index.html" class="logo" style="font-size:18px"><img src="assets/images/logo.png" alt="Samachar" width="24" height="24" /><span>Samachar</span></a></div>
+    <h1 style="font-size:28px;font-weight:700;margin-bottom:4px">Welcome back</h1>
+    <p class="text-muted text-sm" style="margin-bottom:32px">Sign in to your account to continue</p>
+
+    <form id="loginForm">
+      <div class="input-group"><label>Username or Email</label><input id="loginUsername" type="text" class="input" placeholder="username" required></div>
+      <div class="input-group"><label>Password</label><input id="loginPassword" type="password" class="input" placeholder="••••••••" required><div class="input-hint flex justify-between"><span></span><a href="#" style="font-size:12px;color:var(--accent)">Forgot password?</a></div></div>
+      <div id="loginError" style="color:var(--danger);font-size:13px;margin-bottom:12px;display:none"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;padding:14px;font-size:15px">Sign In</button>
+    </form>
+
+    <div class="auth-divider">or continue with</div>
+    <div class="social-btns">
+      <button class="social-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#EA4335" d="M24 12.276c0-.815-.066-1.635-.2-2.438H12.24v4.62h6.615a5.53 5.53 0 0 1-2.4 3.628v3.013h3.886C22.454 18.768 24 15.744 24 12.276"/><path fill="#34A853" d="M12.24 24c3.24 0 5.954-1.062 7.94-2.9l-3.887-3.013c-1.076.732-2.456 1.159-4.053 1.159-3.116 0-5.754-2.102-6.697-4.932H1.524v3.108C3.5 21.342 7.58 24 12.24 24"/><path fill="#FBBC05" d="M5.543 14.314A7.17 7.17 0 0 1 5.144 12c0-.802.14-1.585.399-2.314V6.578H1.524A11.99 11.99 0 0 0 0 12c0 1.972.478 3.84 1.524 5.422l4.019-3.108"/><path fill="#4285F4" d="M12.24 4.755c1.72 0 3.26.596 4.476 1.747l3.345-3.345C18.189 1.188 15.475 0 12.24 0 7.58 0 3.5 2.658 1.524 6.578l4.019 3.108c.943-2.83 3.58-4.932 6.697-4.932"/></svg>Google</button>
+      <button class="social-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.998 12c0-6.628-5.372-12-11.999-12C5.372 0 0 5.372 0 12c0 5.99 4.388 10.955 10.124 11.854v-8.385H7.078v-3.47h3.046V9.356c0-3.008 1.792-4.669 4.533-4.669 1.312 0 2.686.234 2.686.234v2.953H15.83c-1.49 0-1.955.925-1.955 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 22.955 24 17.99 24 12"/></svg>GitHub</button>
+    </div>
+
+    <div class="form-footer">Don't have an account? <a href="register.html">Create one</a></div>
+  </div>
+  <div class="auth-hero">
+    <div style="position:relative;z-index:1;max-width:360px">
+      <h2 style="font-size:24px;font-weight:700;margin-bottom:12px">Stay informed with Samachar</h2>
+      <p style="color:var(--text-secondary);line-height:1.6">Get real-time news, AI-powered insights, and in-depth analysis from trusted sources worldwide.</p>
+    </div>
+  </div>
+</div>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/api.js"></script>
+<script>
+document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.textContent = 'Signing in...';
+  btn.disabled = true;
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
+  try {
+    await login(document.getElementById('loginUsername').value, document.getElementById('loginPassword').value);
+    window.location.href = 'index.html';
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.style.display = 'block';
+  } finally {
+    btn.textContent = 'Sign In';
+    btn.disabled = false;
+  }
+});
+</script>
+</body></html>

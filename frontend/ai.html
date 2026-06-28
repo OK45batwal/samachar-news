@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI Insights — Samachar</title><link rel="stylesheet" href="assets/css/variables.css"><link rel="stylesheet" href="assets/css/style.css"><link rel="stylesheet" href="assets/css/layout.css"><link rel="icon" href="assets/icons/favicon.svg">
+<style>
+.insight-card { padding:24px; }
+.insight-value { font-size:36px; font-family:var(--font-mono); font-weight:700; }
+.insight-bar { height:6px; border-radius:3px; background:var(--bg-elevated); overflow:hidden; }
+.insight-bar-fill { height:100%; border-radius:3px; transition:width 1s ease; }
+.insight-tag { display:inline-flex; align-items:center; gap:4px; padding:4px 12px; border-radius:100px; font-size:12px; font-weight:500; }
+</style></head><body>
+<header class="header"><div class="header-inner container">
+  <div class="header-left">
+    <button id="sidebarToggle" class="btn btn-icon btn-ghost hide-desktop"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <a href="index.html" class="logo"><img src="assets/images/logo.png" alt="Samachar" width="24" height="24" /><span>Samachar</span></a>
+    <nav class="nav-links hide-mobile"><a href="index.html">Home</a><a href="latest.html">Latest</a><a href="map.html">World Map</a><a href="live.html">Live TV</a><a href="ai.html" class="active">AI Insights</a></nav>
+  </div>
+  <div class="header-right"><a href="login.html" class="btn btn-ghost btn-sm hide-mobile">Sign In</a><a href="register.html" class="btn btn-primary btn-sm">Get Started</a></div>
+</div></header>
+
+<section class="page-wrapper section">
+  <div class="container">
+    <div class="section-header"><div><h1 class="heading-lg">AI-Powered Insights</h1><p class="text-muted text-sm mt-1">Intelligent analysis of global news and trends</p></div></div>
+
+    <div class="grid grid-4" style="margin-bottom:32px;gap:12px" id="aiStats">
+      <div class="card insight-card"><div class="text-xs text-muted mb-1">Articles Analyzed</div><div class="insight-value text-accent">Loading...</div><span class="text-xs text-accent">Real-time</span></div>
+      <div class="card insight-card"><div class="text-xs text-muted mb-1">Sentiment Score</div><div class="insight-value" style="color:var(--accent)">...</div><span class="text-xs text-muted">Loading</span></div>
+      <div class="card insight-card"><div class="text-xs text-muted mb-1">Risk Index</div><div class="insight-value" style="color:var(--warning)">...</div><span class="text-xs text-muted">Loading</span></div>
+      <div class="card insight-card"><div class="text-xs text-muted mb-1">Confidence</div><div class="insight-value text-accent">...</div><span class="text-xs text-muted">Loading</span></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+      <div class="card p-6">
+        <h3 class="font-semibold text-sm mb-4">Trending Topics</h3>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="insight-tag" style="background:var(--accent-dim);color:var(--accent)">AI Regulation</span>
+          <span class="insight-tag" style="background:var(--warning-dim);color:var(--warning)">Climate Summit</span>
+          <span class="insight-tag" style="background:var(--secondary-dim);color:var(--secondary)">Markets</span>
+          <span class="insight-tag" style="background:var(--danger-dim);color:var(--danger)">Cyber Security</span>
+          <span class="insight-tag" style="background:var(--accent-dim);color:var(--accent)">Space</span>
+          <span class="insight-tag" style="background:var(--warning-dim);color:var(--warning)">Elections</span>
+        </div>
+        <div class="insight-bar"><div class="insight-bar-fill" style="width:92%;background:var(--accent)"></div></div>
+        <div class="flex justify-between text-xs text-muted mt-2"><span>AI Regulation</span><span>92%</span></div>
+        <div class="insight-bar mt-2"><div class="insight-bar-fill" style="width:78%;background:var(--warning)"></div></div>
+        <div class="flex justify-between text-xs text-muted mt-2"><span>Climate Summit</span><span>78%</span></div>
+        <div class="insight-bar mt-2"><div class="insight-bar-fill" style="width:65%;background:var(--secondary)"></div></div>
+        <div class="flex justify-between text-xs text-muted mt-2"><span>Global Markets</span><span>65%</span></div>
+      </div>
+      <div class="card p-6">
+        <h3 class="font-semibold text-sm mb-4">Sentiment Overview</h3>
+        <div style="display:flex;gap:16px;margin-bottom:16px">
+          <div style="flex:1;text-align:center;padding:16px;background:var(--bg-elevated);border-radius:var(--radius-sm)"><div class="text-xs text-muted mb-1">Positive</div><div class="text-lg font-bold" style="color:var(--accent)">42%</div></div>
+          <div style="flex:1;text-align:center;padding:16px;background:var(--bg-elevated);border-radius:var(--radius-sm)"><div class="text-xs text-muted mb-1">Neutral</div><div class="text-lg font-bold" style="color:var(--secondary)">35%</div></div>
+          <div style="flex:1;text-align:center;padding:16px;background:var(--bg-elevated);border-radius:var(--radius-sm)"><div class="text-xs text-muted mb-1">Negative</div><div class="text-lg font-bold" style="color:var(--danger)">23%</div></div>
+        </div>
+        <p class="text-sm text-muted">Overall market sentiment is cautiously optimistic with technology and healthcare sectors leading positive coverage.</p>
+      </div>
+    </div>
+
+    <div class="card p-6" style="border-color:var(--warning-dim)">
+      <h3 class="font-semibold text-sm mb-4" style="color:var(--warning)">⚠️ Risk Indicators</h3>
+      <div class="grid grid-3" style="gap:16px">
+        <div><div class="flex justify-between text-xs mb-1"><span>Geopolitical</span><span class="font-semibold" style="color:var(--warning)">High</span></div><div class="insight-bar"><div class="insight-bar-fill" style="width:72%;background:var(--warning)"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span>Economic</span><span class="font-semibold" style="color:var(--warning)">Medium</span></div><div class="insight-bar"><div class="insight-bar-fill" style="width:48%;background:var(--secondary)"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span>Cyber</span><span class="font-semibold" style="color:var(--danger)">Critical</span></div><div class="insight-bar"><div class="insight-bar-fill" style="width:88%;background:var(--danger)"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+</body></html>

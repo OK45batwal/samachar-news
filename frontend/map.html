@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>World Map — Samachar</title><link rel="stylesheet" href="assets/css/variables.css"><link rel="stylesheet" href="assets/css/style.css"><link rel="stylesheet" href="assets/css/layout.css"><link rel="icon" href="assets/icons/favicon.svg">
+<style>
+.map-container { width:100%; height: calc(100vh - var(--nav-height) - 48px); border-radius: var(--radius-md); overflow:hidden; position:relative; }
+.map-controls { position:absolute; top:16px; right:16px; z-index:10; display:flex; flex-direction:column; gap:4px; }
+.map-controls button { width:36px; height:36px; }
+.map-legend { position:absolute; bottom:16px; left:16px; z-index:10; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px; }
+.map-legend-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); padding:2px 0; }
+.map-legend-dot { width:8px; height:8px; border-radius:50%; }
+.map-sidebar { display:flex; flex-direction:column; gap:8px; }
+.map-sidebar .card { padding:12px 16px; cursor:pointer; }
+.map-sidebar .card:hover { border-color: var(--accent); }
+.country-header { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+.country-header .flag { font-size:28px; }
+</style>
+</head><body>
+<header class="header"><div class="header-inner container">
+  <div class="header-left">
+    <button id="sidebarToggle" class="btn btn-icon btn-ghost hide-desktop"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <a href="index.html" class="logo"><img src="assets/images/logo.png" alt="Samachar" width="24" height="24" /><span>Samachar</span></a>
+    <nav class="nav-links hide-mobile"><a href="index.html">Home</a><a href="latest.html">Latest</a><a href="map.html" class="active">World Map</a><a href="live.html">Live TV</a><a href="ai.html">AI Insights</a></nav>
+  </div>
+  <div class="header-right">
+    <button id="searchToggle" class="btn btn-icon btn-ghost"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+    <a href="login.html" class="btn btn-ghost btn-sm hide-mobile">Sign In</a><a href="register.html" class="btn btn-primary btn-sm">Get Started</a>
+  </div>
+</div></header>
+
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<aside id="sidebar" class="sidebar"><!-- sidebar nav same --></aside>
+
+<section class="page-wrapper section" style="padding-top:calc(var(--nav-height) + 16px)">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h1 class="heading-lg">Global Events Map</h1>
+        <p class="text-muted text-sm mt-1">Interactive world map with real-time events and country data</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary btn-sm" onclick="alert('Timeline filter (demo)')">24h</button>
+        <button class="btn btn-primary btn-sm">7d</button>
+        <button class="btn btn-secondary btn-sm" onclick="alert('Timeline filter (demo)')">30d</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:16px">
+      <div class="map-container card" style="padding:0">
+        <div id="mapContainer" class="flex items-center justify-center" style="height:100%;background:var(--bg-elevated)">
+          <div class="text-center p-8">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" style="margin:0 auto 16px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <p class="text-muted">MapLibre GL map would render here</p>
+            <p class="text-xs text-muted mt-2">Fallback: 10 interactive markers below ↓</p>
+          </div>
+        </div>
+        <div class="map-controls">
+          <button class="btn btn-icon btn-secondary" title="Zoom in"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+          <button class="btn btn-icon btn-secondary" title="Layer toggle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></button>
+        </div>
+        <div class="map-legend">
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:#EF4444"></span> Conflict Zones</div>
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:#F59E0B"></span> Major Events</div>
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:var(--accent)"></span> Positive News</div>
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:var(--secondary)"></span> General</div>
+        </div>
+      </div>
+      <div class="map-sidebar">
+        <div class="card" onclick="alert('Country detail: United States')">
+          <div class="flex items-center gap-3"><span style="font-size:20px">🇺🇸</span>
+            <div><div class="font-semibold text-sm">United States</div><div class="text-xs text-muted">12 active events</div></div>
+          </div>
+        </div>
+        <div class="card" onclick="alert('Country detail: China')">
+          <div class="flex items-center gap-3"><span style="font-size:20px">🇨🇳</span>
+            <div><div class="font-semibold text-sm">China</div><div class="text-xs text-muted">8 active events</div></div>
+          </div>
+        </div>
+        <div class="card" onclick="alert('Country detail: Russia')">
+          <div class="flex items-center gap-3"><span style="font-size:20px">🇷🇺</span>
+            <div><div class="font-semibold text-sm">Russia</div><div class="text-xs text-muted">15 active events</div></div>
+          </div>
+        </div>
+        <div class="card" onclick="alert('Country detail: India')">
+          <div class="flex items-center gap-3"><span style="font-size:20px">🇮🇳</span>
+            <div><div class="font-semibold text-sm">India</div><div class="text-xs text-muted">6 active events</div></div>
+          </div>
+        </div>
+        <div class="card mt-2" style="border-color:var(--accent)">
+          <h4 class="font-semibold text-sm mb-2">Markers Demo</h4>
+          <div id="markersList" class="flex flex-col gap-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/js/layout.js"></script>
+<script>
+const MARKERS = [
+  { lat: 48.8566, lng: 2.3522, title: 'Climate Summit', type: 'Event', sev: 'high' },
+  { lat: 37.7749, lng: -122.4194, title: 'AI Conference', type: 'Tech', sev: 'medium' },
+  { lat: 35.6762, lng: 139.6503, title: 'Tech Expo', type: 'Business', sev: 'low' },
+  { lat: 51.5074, lng: -0.1278, title: 'Peace Talks', type: 'Diplomacy', sev: 'high' },
+  { lat: 55.7558, lng: 37.6173, title: 'Diplomatic Meeting', type: 'Politics', sev: 'medium' },
+  { lat: 39.9042, lng: 116.4074, title: 'Trade Negotiations', type: 'Business', sev: 'high' },
+  { lat: 30.0444, lng: 31.2357, title: 'Regional Tensions', type: 'Conflict', sev: 'critical' },
+  { lat: -23.5505, lng: -46.6333, title: 'Economic Forum', type: 'Finance', sev: 'medium' },
+  { lat: 19.076, lng: 72.8777, title: 'Trade Summit', type: 'Business', sev: 'medium' },
+  { lat: -1.2864, lng: 36.8172, title: 'Climate Conference', type: 'Environment', sev: 'low' },
+];
+const sevColors = { critical:'#EF4444', high:'#F59E0B', medium:getComputedStyle(document.documentElement).getPropertyValue('--secondary').trim() || '#0091EA', low:getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#00C853' };
+const markersList = document.getElementById('markersList');
+if (markersList) {
+  markersList.innerHTML = MARKERS.map(m =>
+    `<div class="flex items-center gap-2 text-xs"><span class="map-legend-dot" style="background:${sevColors[m.sev]}"></span><span class="flex-1">${m.title}</span><span class="text-muted">${m.type}</span></div>`
+  ).join('');
+}
+</script>
+</body></html>

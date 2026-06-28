@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bookmarks — Samachar</title><link rel="stylesheet" href="assets/css/variables.css"><link rel="stylesheet" href="assets/css/style.css"><link rel="stylesheet" href="assets/css/layout.css"><link rel="icon" href="assets/icons/favicon.svg">
+<style>
+.bookmark-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; }
+.folder-card { padding:16px; cursor:pointer; }
+.folder-card:hover { border-color:var(--accent); }
+.folder-icon { width:40px; height:40px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; background:var(--accent-dim); }
+.folder-count { font-size:24px; font-weight:700; font-family:var(--font-mono); }
+.empty-state { text-align:center; padding:64px 24px; }
+.empty-state svg { margin:0 auto 16px; opacity:0.3; }
+</style></head><body>
+<header class="header"><div class="header-inner container">
+  <div class="header-left">
+    <button id="sidebarToggle" class="btn btn-icon btn-ghost hide-desktop"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <a href="index.html" class="logo"><img src="assets/images/logo.png" alt="Samachar" width="24" height="24" /><span>Samachar</span></a>
+    <nav class="nav-links hide-mobile"><a href="index.html">Home</a><a href="latest.html">Latest</a><a href="map.html">World Map</a><a href="live.html">Live TV</a><a href="ai.html">AI Insights</a></nav>
+  </div>
+  <div class="header-right"><a href="login.html" class="btn btn-ghost btn-sm hide-mobile">Sign In</a><a href="register.html" class="btn btn-primary btn-sm">Get Started</a></div>
+</div></header>
+
+<section class="page-wrapper section">
+  <div class="container">
+    <div class="section-header">
+      <div><h1 class="heading-lg">Bookmarks</h1><p class="text-muted text-sm mt-1">Articles you've saved for later</p></div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary btn-sm">Sort by Date</button>
+        <button class="btn btn-secondary btn-sm">Folder View</button>
+      </div>
+    </div>
+
+    <div class="grid grid-4" style="gap:12px;margin-bottom:32px">
+      <div class="card folder-card" onclick="alert('Filter: All Bookmarks')">
+        <div class="flex items-center gap-3">
+          <div class="folder-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+          <div><div class="font-semibold text-sm">All Articles</div><div class="text-xs text-muted">43 saved</div></div>
+        </div>
+      </div>
+      <div class="card folder-card" onclick="alert('Filter: Technology')">
+        <div class="flex items-center gap-3">
+          <div class="folder-icon" style="background:var(--warning-dim)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+          <div><div class="font-semibold text-sm">Technology</div><div class="text-xs text-muted">15 saved</div></div>
+        </div>
+      </div>
+      <div class="card folder-card" onclick="alert('Filter: Business')">
+        <div class="flex items-center gap-3">
+          <div class="folder-icon" style="background:var(--secondary-dim)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+          <div><div class="font-semibold text-sm">Business</div><div class="text-xs text-muted">11 saved</div></div>
+        </div>
+      </div>
+      <div class="card folder-card" onclick="alert('Filter: Science')">
+        <div class="flex items-center gap-3">
+          <div class="folder-icon" style="background:var(--danger-dim)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+          <div><div class="font-semibold text-sm">Science</div><div class="text-xs text-muted">8 saved</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bookmark-grid" id="bookmarksContainer">
+      <div class="card p-4"><div class="skeleton" style="width:100%;height:12px;margin-bottom:8px"></div><div class="skeleton" style="width:60%;height:12px;margin-bottom:16px"></div><div class="skeleton" style="width:100%;height:80px;border-radius:var(--radius-sm)"></div></div>
+      <div class="card p-4"><div class="skeleton" style="width:100%;height:12px;margin-bottom:8px"></div><div class="skeleton" style="width:60%;height:12px;margin-bottom:16px"></div><div class="skeleton" style="width:100%;height:80px;border-radius:var(--radius-sm)"></div></div>
+      <div class="card p-4"><div class="skeleton" style="width:100%;height:12px;margin-bottom:8px"></div><div class="skeleton" style="width:60%;height:12px;margin-bottom:16px"></div><div class="skeleton" style="width:100%;height:80px;border-radius:var(--radius-sm)"></div></div>
+    </div>
+  </div>
+</section>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+</body></html>

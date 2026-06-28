@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Live TV — Samachar</title><link rel="stylesheet" href="assets/css/variables.css"><link rel="stylesheet" href="assets/css/style.css"><link rel="stylesheet" href="assets/css/layout.css"><link rel="icon" href="assets/icons/favicon.svg">
+<style>
+.channel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+.channel-card { aspect-ratio:16/9; position:relative; overflow:hidden; cursor:pointer; }
+.channel-card img { width:100%; height:100%; object-fit:cover; transition:transform 0.3s; }
+.channel-card:hover img { transform:scale(1.03); }
+.channel-info { position:absolute; bottom:0; left:0; right:0; padding:16px; background:linear-gradient(transparent,rgba(0,0,0,0.8)); }
+.channel-badge { position:absolute; top:12px; left:12px; }
+</style></head><body>
+<header class="header"><div class="header-inner container">
+  <div class="header-left">
+    <button id="sidebarToggle" class="btn btn-icon btn-ghost hide-desktop"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <a href="index.html" class="logo"><img src="assets/images/logo.png" alt="Samachar" width="24" height="24" /><span>Samachar</span></a>
+    <nav class="nav-links hide-mobile"><a href="index.html">Home</a><a href="latest.html">Latest</a><a href="map.html">World Map</a><a href="live.html" class="active">Live TV</a><a href="ai.html">AI Insights</a></nav>
+  </div>
+  <div class="header-right"><a href="login.html" class="btn btn-ghost btn-sm hide-mobile">Sign In</a><a href="register.html" class="btn btn-primary btn-sm">Get Started</a></div>
+</div></header>
+
+<section class="page-wrapper section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h1 class="heading-lg">Live News Channels</h1>
+        <p class="text-muted text-sm mt-1">Watch live broadcasts from major news networks</p>
+      </div>
+      <div class="flex gap-2">
+        <select class="input" style="width:auto;padding:8px 12px;font-size:12px">
+          <option>All Regions</option><option>North America</option><option>Europe</option><option>Asia</option><option>Middle East</option>
+        </select>
+      </div>
+    </div>
+    <div class="channel-grid">
+      <div class="channel-card card"><div class="skeleton" style="width:100%;height:100%"></div><div class="channel-badge"><span class="badge badge-danger"><span class="status-dot-live" style="margin-right:4px"></span>LIVE</span></div><div class="channel-info"><h3 class="font-semibold text-sm">CNN International</h3><p class="text-xs text-muted">United States · 24/7 News</p></div></div>
+      <div class="channel-card card"><div class="skeleton" style="width:100%;height:100%"></div><div class="channel-badge"><span class="badge badge-danger"><span class="status-dot-live" style="margin-right:4px"></span>LIVE</span></div><div class="channel-info"><h3 class="font-semibold text-sm">BBC World News</h3><p class="text-xs text-muted">United Kingdom · 24/7 News</p></div></div>
+      <div class="channel-card card"><div class="skeleton" style="width:100%;height:100%"></div><div class="channel-badge"><span class="badge badge-danger"><span class="status-dot-live" style="margin-right:4px"></span>LIVE</span></div><div class="channel-info"><h3 class="font-semibold text-sm">Al Jazeera English</h3><p class="text-xs text-muted">Qatar · 24/7 News</p></div></div>
+      <div class="channel-card card"><div class="skeleton" style="width:100%;height:100%"></div><div class="channel-badge"><span class="badge badge-danger"><span class="status-dot-live" style="margin-right:4px"></span>LIVE</span></div><div class="channel-info"><h3 class="font-semibold text-sm">Sky News</h3><p class="text-xs text-muted">United Kingdom · 24/7 News</p></div></div>
+      <div class="channel-card card"><div class="skeleton" style="width:100%;height:100%"></div><div class="channel-badge"><span class="badge badge-secondary">On Air</span></div><div class="channel-info"><h3 class="font-semibold text-sm">France 24</h3><p class="text-xs text-muted">France · International</p></div></div>
+      <div class="channel-card card"><div class="skeleton" style="width:100%;height:100%"></div><div class="channel-badge"><span class="badge badge-secondary">On Air</span></div><div class="channel-info"><h3 class="font-semibold text-sm">DW News</h3><p class="text-xs text-muted">Germany · International</p></div></div>
+      <div class="channel-card card"><div class="skeleton" style="width:100%;height:100%"></div><div class="channel-badge"><span class="badge badge-danger"><span class="status-dot-live" style="margin-right:4px"></span>LIVE</span></div><div class="channel-info"><h3 class="font-semibold text-sm">NDTV 24x7</h3><p class="text-xs text-muted">India · English News</p></div></div>
+      <div class="channel-card card"><div class="skeleton" style="width:100%;height:100%"></div><div class="channel-badge"><span class="badge badge-secondary">On Air</span></div><div class="channel-info"><h3 class="font-semibold text-sm">CGTN</h3><p class="text-xs text-muted">China · Global</p></div></div>
+    </div>
+  </div>
+</section>
+<script src="assets/js/layout.js"></script>
+</body></html>

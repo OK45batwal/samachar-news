@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin — Samachar</title><link rel="stylesheet" href="assets/css/variables.css"><link rel="stylesheet" href="assets/css/style.css"><link rel="stylesheet" href="assets/css/layout.css"><link rel="icon" href="assets/icons/favicon.svg">
+<style>
+.admin-layout { display:grid; grid-template-columns:220px 1fr; min-height: calc(100vh - var(--nav-height)); gap:0; }
+.admin-sidebar { background:var(--bg-elevated); border-right:1px solid var(--border); padding:16px; }
+.admin-sidebar a { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-sm); font-size:13px; color:var(--text-secondary); transition:all 0.2s; text-decoration:none; }
+.admin-sidebar a:hover, .admin-sidebar a.active { background:var(--accent-dim); color:var(--accent); }
+.admin-content { padding:24px 32px; }
+.stat-table { width:100%; border-collapse:collapse; font-size:13px; }
+.stat-table th { text-align:left; padding:10px 12px; color:var(--text-tertiary); font-weight:500; border-bottom:1px solid var(--border); }
+.stat-table td { padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary); }
+.stat-table tr:hover td { background:var(--bg-elevated); }
+.admin-tag { display:inline-block; padding:2px 8px; border-radius:100px; font-size:11px; font-weight:500; }
+.admin-actions { display:flex; gap:6px; }
+.admin-actions button { padding:4px 8px; font-size:11px; }
+@media (max-width:768px) { .admin-layout { grid-template-columns:1fr; } }
+</style></head><body>
+<header class="header"><div class="header-inner container">
+  <div class="header-left"><a href="index.html" class="logo"><img src="assets/images/logo.png" alt="Samachar" width="24" height="24" /><span>Samachar</span><span class="badge badge-accent" style="margin-left:8px">Admin</span></a></div>
+  <div class="header-right">
+    <div class="flex items-center gap-2 text-sm"><div style="width:28px;height:28px;border-radius:50%;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--accent)">A</div><span class="hide-mobile" id="adminUser">Admin</span></div>
+  </div>
+</div></header>
+
+<div class="admin-layout">
+  <aside class="admin-sidebar hide-mobile">
+    <a href="#" class="active" data-section="dashboard">Dashboard</a>
+    <a href="#" data-section="articles">Articles</a>
+    <a href="#" data-section="users">Users</a>
+  </aside>
+
+  <main class="admin-content" id="adminContent">
+    <h1 class="heading-lg mb-1">Dashboard</h1>
+    <p class="text-muted text-sm mb-6" id="dashboardSub">Loading platform data...</p>
+
+    <div class="grid grid-4" style="gap:12px;margin-bottom:24px" id="dashCards">
+      <div class="card p-4"><div class="text-xs text-muted mb-1">Total Users</div><div class="text-2xl font-bold font-mono">—</div></div>
+      <div class="card p-4"><div class="text-xs text-muted mb-1">Articles Published</div><div class="text-2xl font-bold font-mono">—</div></div>
+      <div class="card p-4"><div class="text-xs text-muted mb-1">Total Articles</div><div class="text-2xl font-bold font-mono">—</div></div>
+      <div class="card p-4"><div class="text-xs text-muted mb-1">Total Bookmarks</div><div class="text-2xl font-bold font-mono">—</div></div>
+    </div>
+
+    <div id="dashSection"><div class="card"><table class="stat-table"><thead><tr><th>Article</th><th>Category</th><th>Views</th><th>Status</th><th>Created</th></tr></thead><tbody id="articlesBody"></tbody></table></div></div>
+  </main>
+</div>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/api.js"></script>
+<script>
+let currentUser = getUser();
+if (!currentUser) { window.location.href = 'login.html'; }
+
+const apiBase = '';
+
+async function loadDashboard() {
+  document.getElementById('dashboardSub').textContent = 'Loading platform data...';
+  try {
+    const dash = await fetch(`${apiBase}/api/admin/dashboard`, { headers: { 'Authorization': `Bearer ${getToken()}` } }).then(r => r.json());
+    document.getElementById('dashCards').innerHTML = `
+      <div class="card p-4"><div class="text-xs text-muted mb-1">Total Users</div><div class="text-2xl font-bold font-mono">${(dash.total_users||0).toLocaleString()}</div></div>
+      <div class="card p-4"><div class="text-xs text-muted mb-1">Articles Published</div><div class="text-2xl font-bold font-mono">${(dash.published_articles||0).toLocaleString()}</div></div>
+      <div class="card p-4"><div class="text-xs text-muted mb-1">Total Articles</div><div class="text-2xl font-bold font-mono">${(dash.total_articles||0).toLocaleString()}</div></div>
+      <div class="card p-4"><div class="text-xs text-muted mb-1">Total Bookmarks</div><div class="text-2xl font-bold font-mono">${(dash.total_bookmarks||0).toLocaleString()}</div></div>
+    `;
+    document.getElementById('dashboardSub').textContent = 'Platform overview and analytics';
+  } catch { document.getElementById('dashboardSub').textContent = 'Failed to load. Is the backend running?'; }
+
+  try {
+    const arts = await fetch(`${apiBase}/api/admin/articles?limit=10`, { headers: { 'Authorization': `Bearer ${getToken()}` } }).then(r => r.json());
+    const tbody = document.getElementById('articlesBody');
+    if (arts.articles?.length) {
+      tbody.innerHTML = arts.articles.map(a => {
+        const st = a.status === 'published' ? '<span class="admin-tag" style="background:var(--accent-dim);color:var(--accent)">Published</span>'
+          : a.status === 'draft' ? '<span class="admin-tag" style="background:var(--warning-dim);color:var(--warning)">Draft</span>'
+          : '<span class="admin-tag" style="background:var(--danger-dim);color:var(--danger)">Archived</span>';
+        const cat = a.category?.name || '—';
+        const date = a.created_at ? new Date(a.created_at).toLocaleDateString() : '—';
+        return `<tr><td class="font-semibold">${a.title.slice(0, 60)}</td><td>${cat}</td><td>${(a.view_count||0).toLocaleString()}</td><td>${st}</td><td>${date}</td></tr>`;
+      }).join('');
+    } else {
+      tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted" style="padding:24px">No articles yet</td></tr>';
+    }
+  } catch {}
+}
+
+async function loadUsers() {
+  const dash = document.getElementById('dashSection');
+  dash.innerHTML = '<div class="card"><table class="stat-table"><thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Active</th><th>Joined</th></tr></thead><tbody id="usersBody"></tbody></table></div>';
+  try {
+    const res = await fetch(`${apiBase}/api/admin/users`, { headers: { 'Authorization': `Bearer ${getToken()}` } }).then(r => r.json());
+    const tbody = document.getElementById('usersBody');
+    if (res.users?.length) {
+      tbody.innerHTML = res.users.map(u => `<tr><td class="font-semibold">${u.username}</td><td>${u.email}</td><td><span class="admin-tag" style="background:${u.role==='admin'?'var(--accent-dim)':'var(--secondary-dim)'};color:${u.role==='admin'?'var(--accent)':'var(--secondary)'}">${u.role}</span></td><td>${u.is_active ? '✅' : '❌'}</td><td>${u.created_at ? new Date(u.created_at).toLocaleDateString() : '—'}</td></tr>`).join('');
+    }
+  } catch {}
+}
+
+document.querySelectorAll('.admin-sidebar a').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelector('.admin-sidebar .active')?.classList.remove('active');
+    a.classList.add('active');
+    const section = a.dataset.section;
+    document.getElementById('dashboardSub').textContent = section.charAt(0).toUpperCase() + section.slice(1);
+    if (section === 'dashboard') loadDashboard();
+    else if (section === 'users') loadUsers();
+    else if (section === 'articles') loadDashboard();
+  });
+});
+
+loadDashboard();
+</script>
+</body></html>

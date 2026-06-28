@@ -1,0 +1,65 @@
+:root {
+  --bg-primary: #0F1115;
+  --bg-card: #181B22;
+  --bg-elevated: #1E2128;
+  --bg-hover: #23262E;
+  --accent: #00C853;
+  --accent-hover: #00E060;
+  --accent-dim: rgba(0, 200, 83, 0.1);
+  --secondary: #0091EA;
+  --secondary-dim: rgba(0, 145, 234, 0.1);
+  --warning: #FF9800;
+  --warning-dim: rgba(255, 152, 0, 0.1);
+  --danger: #FF5252;
+  --danger-dim: rgba(255, 82, 82, 0.1);
+  --text-primary: #FFFFFF;
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #6B7280;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(24, 27, 34, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(0, 200, 83, 0.1);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --font-heading: 'Poppins', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --nav-height: 64px;
+  --sidebar-width: 280px;
+  --sidebar-collapsed: 64px;
+  --max-width: 1280px;
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+  --bg-primary: #F5F7FA;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #EEF0F4;
+  --bg-hover: #E4E7EC;
+  --accent: #00A34A;
+  --accent-hover: #008F3F;
+  --accent-dim: rgba(0, 163, 74, 0.1);
+  --secondary: #0077C8;
+  --secondary-dim: rgba(0, 119, 200, 0.1);
+  --warning: #E67E00;
+  --warning-dim: rgba(230, 126, 0, 0.1);
+  --danger: #D32F2F;
+  --danger-dim: rgba(211, 47, 47, 0.1);
+  --text-primary: #1A1D23;
+  --text-secondary: #5F6775;
+  --text-tertiary: #9CA3AF;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 20px rgba(0, 163, 74, 0.12);
+}
