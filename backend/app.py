@@ -108,6 +108,18 @@ app.include_router(admin_router)
 async def simple_health():
     return {"status": "ok"}
 
+@app.get("/dbg")
+async def debug():
+    import os
+    import sys
+    return {
+        "python": sys.version,
+        "cwd": os.getcwd(),
+        "user": os.environ.get("USER", "?"),
+        "port": os.environ.get("PORT", "not_set"),
+        "db_url_present": bool(os.environ.get("DATABASE_URL")),
+    }
+
 @app.get("/api/health")
 async def health(db: AsyncSession = Depends(get_db)):
     db_ok = False
