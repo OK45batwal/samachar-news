@@ -104,6 +104,10 @@ app.include_router(news_router)
 app.include_router(bookmarks_router)
 app.include_router(admin_router)
 
+@app.get("/health")
+async def simple_health():
+    return {"status": "ok"}
+
 @app.get("/api/health")
 async def health(db: AsyncSession = Depends(get_db)):
     db_ok = False
