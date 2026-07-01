@@ -20,7 +20,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ backend/
-COPY --from=frontend /build/dist frontend/dist
+COPY --from=frontend /build/frontend/dist frontend/dist
 COPY alembic/ alembic/
 COPY alembic.ini .
 COPY .env.example .
