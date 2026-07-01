@@ -1,8 +1,10 @@
-from typing import List, Dict
-from textblob import TextBlob
+from typing import Dict, List
+
+import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
+from textblob import TextBlob
+
 
 def analyze_sentiment(texts: List[str]) -> Dict:
     scores = [TextBlob(t).sentiment.polarity for t in texts]

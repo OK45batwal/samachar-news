@@ -1,5 +1,5 @@
 """Test auth utilities — password hashing + JWT."""
-from backend.auth.auth import hash_password, verify_password, create_access_token, decode_token
+from backend.auth.auth import create_access_token, decode_token, hash_password, verify_password
 
 
 def test_password_hashing():

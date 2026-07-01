@@ -1,5 +1,5 @@
 import re
-from typing import Optional
+
 
 def slugify(text: str) -> str:
     text = text.lower().strip()

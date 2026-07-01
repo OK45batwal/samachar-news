@@ -154,7 +154,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); line-height: 1.2; fon
 .gap-8 { gap: 32px; }
 .flex-1 { flex: 1; }
 .shrink-0 { flex-shrink: 0; }
-.grid { display: grid; }
+.grid { display: grid; gap: 20px; }
 .grid-2 { grid-template-columns: repeat(2, 1fr); }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }

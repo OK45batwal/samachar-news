@@ -1,12 +1,14 @@
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, desc, delete
-from pydantic import BaseModel
 
-from ..database import get_db
-from ..models.models import Article, Category, Source, User, Bookmark, ArticleStatus, UserRole
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
+from sqlalchemy import desc, func, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
+
 from ..auth.auth import get_current_user
+from ..database import get_db
+from ..models.models import Article, ArticleStatus, Bookmark, Category, Source, User, UserRole
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 
@@ -41,17 +43,24 @@ async def admin_dashboard(db: AsyncSession = Depends(get_db), admin=Depends(requ
     articles_q = select(func.count()).select_from(Article)
     published_q = select(func.count()).where(Article.status == ArticleStatus.PUBLISHED)
     bookmarks_q = select(func.count()).select_from(Bookmark)
+    sources_q = select(func.count()).select_from(Source)
 
     users = (await db.execute(users_q)).scalar() or 0
     articles = (await db.execute(articles_q)).scalar() or 0
     published = (await db.execute(published_q)).scalar() or 0
     bookmarks = (await db.execute(bookmarks_q)).scalar() or 0
+    sources = (await db.execute(sources_q)).scalar() or 0
+
+    from ..services.news_service import FEED_CONFIG
+    feeds_configured = len(FEED_CONFIG)
 
     return {
         "total_users": users,
         "total_articles": articles,
         "published_articles": published,
         "total_bookmarks": bookmarks,
+        "total_sources": sources,
+        "feeds_configured": feeds_configured,
     }
 
 @router.get("/articles")
@@ -61,7 +70,12 @@ async def admin_articles(
     db: AsyncSession = Depends(get_db),
     admin=Depends(require_admin),
 ):
-    q = select(Article).order_by(desc(Article.created_at)).offset((page - 1) * limit).limit(limit)
+    q = (
+        select(Article)
+        .options(selectinload(Article.category), selectinload(Article.source))
+        .order_by(desc(Article.created_at))
+        .offset((page - 1) * limit).limit(limit)
+    )
     result = await db.execute(q)
     articles = result.scalars().all()
 
@@ -179,3 +193,30 @@ async def admin_categories(
 ):
     result = await db.execute(select(Category))
     return {"categories": result.scalars().all()}
+
+@router.post("/ingest")
+async def admin_ingest(admin=Depends(require_admin)):
+    from ..services.task_manager import start_ingestion
+    run_id = await start_ingestion()
+    return {"status": "ok", "run_id": run_id, "message": "Feed ingestion started"}
+
+@router.get("/ingest/status/{run_id}")
+async def admin_ingest_status(run_id: str, admin=Depends(require_admin)):
+    from ..services.task_manager import get_ingestion_status
+    status = await get_ingestion_status(run_id)
+    if not status:
+        raise HTTPException(status_code=404, detail="Ingestion run not found")
+    return status
+
+@router.get("/ingest/last")
+async def admin_ingest_last(admin=Depends(require_admin)):
+    from ..services.task_manager import get_last_ingestion
+    return await get_last_ingestion() or {"status": "never_run"}
+
+@router.get("/sources")
+async def admin_sources(
+    db: AsyncSession = Depends(get_db),
+    admin=Depends(require_admin),
+):
+    result = await db.execute(select(Source).order_by(Source.name))
+    return {"sources": result.scalars().all()}

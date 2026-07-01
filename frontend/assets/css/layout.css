@@ -214,6 +214,9 @@
   .featured-grid { grid-template-columns: 1fr; }
 }
 
+/* ── News Grid ── */
+.news-grid { gap: 20px; }
+
 /* ── News Card ── */
 .news-card {
   background: var(--bg-card);

@@ -1,21 +1,21 @@
 const API_BASE = '';
 
-function getToken() {
+export function getToken() {
   return localStorage.getItem('samachar_token');
 }
 
-function setToken(token, refreshToken) {
+export function setToken(token, refreshToken) {
   localStorage.setItem('samachar_token', token);
   if (refreshToken) localStorage.setItem('samachar_refresh', refreshToken);
 }
 
-function clearTokens() {
+export function clearTokens() {
   localStorage.removeItem('samachar_token');
   localStorage.removeItem('samachar_refresh');
   localStorage.removeItem('samachar_user');
 }
 
-async function refreshAccessToken() {
+export async function refreshAccessToken() {
   const refresh = localStorage.getItem('samachar_refresh');
   if (!refresh) return null;
   try {
@@ -34,7 +34,7 @@ async function refreshAccessToken() {
   }
 }
 
-async function api(path, options = {}) {
+export async function api(path, options = {}) {
   const { body, method = 'GET', auth = true, ...rest } = options;
   const headers = { 'Content-Type': 'application/json', ...rest.headers };
 
@@ -68,64 +68,83 @@ async function api(path, options = {}) {
 }
 
 // ─── Auth ──────────────────────────────────────
-async function login(username, password) {
+export async function login(username, password) {
   const data = await api('/api/auth/login', { method: 'POST', body: { username, password }, auth: false });
   setToken(data.access_token, data.refresh_token);
   localStorage.setItem('samachar_user', JSON.stringify(data.user));
   return data;
 }
 
-async function register(email, username, password, fullName) {
+export async function register(email, username, password, fullName) {
   const data = await api('/api/auth/register', { method: 'POST', body: { email, username, password, full_name: fullName }, auth: false });
   setToken(data.access_token, data.refresh_token);
   localStorage.setItem('samachar_user', JSON.stringify(data.user));
   return data;
 }
 
-async function getMe() {
+export async function getMe() {
   return api('/api/auth/me');
 }
 
-function logout() {
+export function logout() {
   clearTokens();
   window.location.href = 'login.html';
 }
 
-function getUser() {
+export function getUser() {
   const raw = localStorage.getItem('samachar_user');
   return raw ? JSON.parse(raw) : null;
 }
 
 // ─── News ──────────────────────────────────────
-async function getArticles(params = {}) {
+export async function getArticles(params = {}) {
   const qs = new URLSearchParams(params).toString();
   return api(`/api/news/?${qs}`, { auth: false });
 }
 
-async function getArticle(id) {
+export async function getArticle(id) {
   return api(`/api/news/${id}`, { auth: false });
 }
 
 // ─── Bookmarks ─────────────────────────────────
-async function getBookmarks() {
+export async function getBookmarks() {
   return api('/api/bookmarks/');
 }
 
-async function addBookmark(articleId, folder = 'default') {
+export async function addBookmark(articleId, folder = 'default') {
   return api('/api/bookmarks/', { method: 'POST', body: { article_id: articleId, folder } });
 }
 
-async function removeBookmark(articleId) {
+export async function removeBookmark(articleId) {
   return api(`/api/bookmarks/${articleId}`, { method: 'DELETE' });
 }
 
 // ─── Stats ─────────────────────────────────────
-async function getStats() {
+export async function getStats() {
   return api('/api/stats', { auth: false });
 }
 
 // ─── Search ────────────────────────────────────
-window.searchNews = async function(query) {
+export async function searchNews(query) {
   const results = await getArticles({ q: query, limit: 10 });
   return results.articles || [];
 }
+
+// Make all exports available globally (for inline scripts in HTML pages)
+window.getToken = getToken;
+window.setToken = setToken;
+window.clearTokens = clearTokens;
+window.refreshAccessToken = refreshAccessToken;
+window.api = api;
+window.login = login;
+window.register = register;
+window.getMe = getMe;
+window.logout = logout;
+window.getUser = getUser;
+window.getArticles = getArticles;
+window.getArticle = getArticle;
+window.getBookmarks = getBookmarks;
+window.addBookmark = addBookmark;
+window.removeBookmark = removeBookmark;
+window.getStats = getStats;
+window.searchNews = searchNews;

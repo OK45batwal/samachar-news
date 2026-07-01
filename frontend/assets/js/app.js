@@ -1,4 +1,7 @@
-const CATEGORY_MAP = {
+import { getToken, getUser, getArticles, getArticle, getBookmarks, addBookmark, removeBookmark, getStats, getMe, logout } from '/assets/js/api.js'
+import { showSkeleton } from '/assets/js/layout.js'
+
+export const CATEGORY_MAP = {
   general: { name: 'General', badge: 'badge-accent' },
   world: { name: 'World', badge: 'badge-accent' },
   technology: { name: 'Technology', badge: 'badge-secondary' },
@@ -10,11 +13,11 @@ const CATEGORY_MAP = {
   politics: { name: 'Politics', badge: 'badge-warning' },
 };
 
-function getCategoryStyle(slug) {
+export function getCategoryStyle(slug) {
   return CATEGORY_MAP[slug?.toLowerCase()] || { name: slug || 'General', badge: 'badge-accent' };
 }
 
-function timeAgo(dateStr) {
+export function timeAgo(dateStr) {
   if (!dateStr) return '';
   const d = new Date(dateStr);
   const sec = Math.floor((Date.now() - d) / 1000);
@@ -26,11 +29,12 @@ function timeAgo(dateStr) {
   return `${Math.floor(hr / 24)}d ago`;
 }
 
-function renderNewsCard(article, index = 0) {
+export function renderNewsCard(article, index = 0) {
   const cat = getCategoryStyle(article.category?.slug);
-  const imgHtml = article.image_url
+  const hasImg = article.image_url && article.image_url.startsWith('http');
+  const imgHtml = hasImg
     ? `<img src="${article.image_url}" alt="${article.title}" style="width:100%;height:100%;object-fit:cover" loading="lazy" />`
-    : `<div class="skeleton" style="width:100%;height:100%"></div>`;
+    : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated)"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`;
   return `
     <a href="article.html?id=${article.id}" class="news-card animate-fade-in" style="animation-delay:${index * 0.05}s">
       <div class="news-card-img">
@@ -61,31 +65,46 @@ function renderNewsCard(article, index = 0) {
   `;
 }
 
-function emptyState(msg, cta) {
+export function emptyState(msg, cta) {
   return `<div class="card p-8 text-center" style="grid-column:1/-1"><p class="text-muted">${msg}</p>${cta || ''}</div>`;
 }
 
 // ─── WebSocket ──────────────────────────────
 let ws = null;
+let wsPingInterval = null;
 function connectWS() {
   const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  const url = `${proto}//${window.location.host}/ws/news`;
+  const url = `${proto}//${window.location.host}/api/ws`;
   try {
     ws = new WebSocket(url);
     ws.onmessage = (e) => {
       try {
         const msg = JSON.parse(e.data);
+        if (msg.type === 'auth_ok') {
+          wsPingInterval = setInterval(() => ws?.send(JSON.stringify({type:'ping'})), 30000);
+        }
+        if (msg.type === 'auth_error') {
+          console.warn('WS auth:', msg.message);
+          ws?.close();
+        }
         if (msg.type === 'news_alert') {
           showToast(`📰 ${msg.data.title || 'Breaking news update!'}`);
         }
-        if (msg.type === 'pong') { /* keepalive ok */ }
       } catch {}
     };
-    ws.onclose = () => { setTimeout(connectWS, 3000); };
-    ws.onopen = () => { setInterval(() => ws?.send(JSON.stringify({type:'ping'})), 30000); };
+    ws.onclose = () => {
+      if (wsPingInterval) clearInterval(wsPingInterval);
+      wsPingInterval = null;
+      setTimeout(connectWS, 3000);
+    };
+    ws.onopen = () => {
+      const token = getToken();
+      if (token) ws.send(JSON.stringify({type:'auth', token}));
+      else ws.close();
+    };
   } catch {}
 }
-connectWS();
+if (getUser()) connectWS();
 
 // ─── Live search dropdown ───────────────────
 function setupLiveSearch() {
@@ -209,7 +228,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div><strong class="text-accent">${stats.sentiment_score || 0}%</strong><span class="text-muted text-xs">Sentiment Score</span></div>
         <div><strong class="text-accent">${150}</strong><span class="text-muted text-xs">Countries Covered</span></div>
       `;
-    } catch {}
+    } catch { heroStats.innerHTML = '<div class="text-muted text-sm">Failed to load stats</div>'; }
   }
 
   // AI stats
@@ -223,18 +242,72 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="card insight-card"><div class="text-xs text-muted mb-1">Risk Index</div><div class="insight-value" style="color:var(--warning)">${stats.risk_index || 0}</div></div>
         <div class="card insight-card"><div class="text-xs text-muted mb-1">Confidence</div><div class="insight-value text-accent">${stats.confidence || 0}%</div></div>
       `;
-    } catch {}
+    } catch { aiStats.innerHTML = '<div class="card insight-card p-6 text-center text-muted">Failed to load AI stats</div>'; }
   }
 
-  // News grid (index)
-  const newsGrid = document.getElementById('newsGrid');
-  if (newsGrid) {
+  // Home page — featured grid
+  const featuredGrid = document.getElementById('featuredGrid');
+  if (featuredGrid) {
     try {
-      const data = await getArticles({ limit: 6 });
-      newsGrid.innerHTML = data.articles?.length
-        ? data.articles.map((a, i) => renderNewsCard(a, i)).join('')
-        : emptyState('No articles yet. Run feed ingestion to populate.');
-    } catch { newsGrid.innerHTML = emptyState('Failed to load articles. Is the backend running?'); }
+      const data = await getArticles({ limit: 5 });
+      const articles = data.articles || [];
+      if (articles.length) {
+        const main = articles[0];
+        const side = articles.slice(1, 4);
+        const catMain = getCategoryStyle(main.category?.slug);
+        featuredGrid.innerHTML = `
+          <a href="article.html?id=${main.id}" class="featured-main card card-glow">
+            <div class="featured-img">
+              ${main.image_url?.startsWith('http') ? `<img src="${main.image_url}" alt="${main.title}" style="width:100%;height:100%;object-fit:cover" />` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated)"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>'}
+              <span class="badge ${catMain.badge}" style="position:absolute;top:16px;left:16px;font-size:9px">${catMain.name}</span>
+            </div>
+            <div class="featured-body">
+              <div class="flex items-center gap-2 text-xs text-muted mb-2">
+                <span>${main.source?.name || 'News'}</span>
+                <span>·</span>
+                <span>${timeAgo(main.published_at)}</span>
+              </div>
+              <h3 class="heading-md mb-2 line-clamp-2">${main.title}</h3>
+              <p class="text-muted text-sm line-clamp-2">${main.summary || ''}</p>
+            </div>
+          </a>
+          <div class="featured-side">
+            ${side.map(a => {
+              const cat = getCategoryStyle(a.category?.slug);
+              return `<a href="article.html?id=${a.id}" class="card card-glow p-4">
+                <div class="flex gap-3">
+                  ${a.image_url?.startsWith('http') ? `<img src="${a.image_url}" alt="" style="width:100px;height:70px;object-fit:cover;border-radius:8px;flex-shrink:0" />` : '<div style="width:100px;height:70px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>'}
+                  <div class="flex-1 min-w-0">
+                    <h4 class="font-semibold text-sm line-clamp-2">${a.title}</h4>
+                    <span class="text-xs text-muted mt-1">${cat.name} · ${timeAgo(a.published_at)}</span>
+                  </div>
+                </div>
+              </a>`;
+            }).join('')}
+          </div>`;
+      } else {
+        featuredGrid.innerHTML = '<div style="grid-column:1/-1;padding:48px;text-align:center;color:var(--text-secondary)">No stories yet. Run feed ingestion.</div>';
+      }
+    } catch {
+      featuredGrid.innerHTML = '<div style="grid-column:1/-1;padding:48px;text-align:center;color:var(--text-secondary)">Failed to load stories</div>';
+    }
+  }
+
+  // Ticker — live from recent articles
+  const tickerTrack = document.getElementById('tickerTrack');
+  if (tickerTrack) {
+    try {
+      const data = await getArticles({ limit: 10 });
+      const titles = (data.articles || []).map(a => a.title).filter(Boolean);
+      if (titles.length) {
+        const items = titles.map(t => `<span>${t}</span><span>&middot;</span>`).join(' ');
+        tickerTrack.innerHTML = items + ' ' + items;
+      } else {
+        tickerTrack.innerHTML = '<span>No breaking news at the moment</span>';
+      }
+    } catch {
+      tickerTrack.innerHTML = '<span>Failed to load headlines</span>';
+    }
   }
 
   // News list (latest) with Load More
@@ -244,11 +317,26 @@ document.addEventListener('DOMContentLoaded', async () => {
       btn.addEventListener('click', () => {
         document.querySelector('.category-tabs .active')?.classList.remove('active');
         btn.classList.add('active');
-        const cat = btn.textContent.trim() === 'All' ? '' : btn.textContent.trim().toLowerCase();
+        const cat = btn.dataset.cat || '';
         showSkeleton(newsList, 6);
         loadMoreCtrl?.reset(cat, '');
+        const url = new URL(window.location);
+        if (cat) url.searchParams.set('cat', cat);
+        else url.searchParams.delete('cat');
+        window.history.replaceState({}, '', url);
       });
     });
+
+    const params = new URLSearchParams(window.location.search);
+    const catParam = params.get('cat');
+    if (catParam) {
+      document.querySelectorAll('.category-tabs button').forEach(btn => {
+        if (btn.dataset.cat === catParam) {
+          document.querySelector('.category-tabs .active')?.classList.remove('active');
+          btn.classList.add('active');
+        }
+      });
+    }
 
     setupLoadMore();
   }
@@ -277,6 +365,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (heroImg && article.image_url) {
         heroImg.outerHTML = `<img src="${article.image_url}" alt="${article.title}" style="width:100%;height:100%;object-fit:cover" />`;
       }
+      const bookmarkBtn = document.getElementById('bookmarkBtn');
+      if (bookmarkBtn) bookmarkBtn.onclick = () => toggleBookmark(article.id);
       const related = document.getElementById('relatedArticles');
       if (related) {
         try {
@@ -287,7 +377,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               `<a href="article.html?id=${a.id}" class="card p-4 flex gap-3"><div class="min-w-0 flex-1"><h4 class="text-sm font-semibold line-clamp-2">${a.title}</h4><span class="text-xs text-muted">${timeAgo(a.published_at)}</span></div></a>`
             ).join('');
           }
-        } catch {}
+        } catch { related.innerHTML = '<p class="text-xs text-muted">Failed to load related articles</p>'; }
       }
     } catch (err) {
       articleTitle.textContent = 'Failed to load article';
@@ -313,15 +403,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // ── Utilities ──────────────────────────────
-function emptyBookmarksHTML() {
+export function emptyBookmarksHTML() {
   return '<div class="card empty-state p-8" style="grid-column:1/-1">' +
-    '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>' +
+    '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>' +
     '<h3 class="font-semibold mb-2">No bookmarks yet</h3>' +
     '<p class="text-sm text-muted">Save articles while reading to see them here</p>' +
     '<a href="latest.html" class="btn btn-primary btn-sm mt-4">Browse News</a></div>';
 }
 
-async function toggleBookmark(id) {
+export async function toggleBookmark(id) {
   try {
     const user = getUser();
     if (!user) { showToast('Sign in to bookmark articles'); return; }
@@ -332,12 +422,12 @@ async function toggleBookmark(id) {
   } catch (err) { showToast(err.message); }
 }
 
-function shareArticle(title) {
+export function shareArticle(title) {
   if (navigator.share) navigator.share({ title }).catch(() => {});
   else { navigator.clipboard?.writeText(window.location.href); showToast('Link copied to clipboard'); }
 }
 
-function showToast(msg) {
+export function showToast(msg) {
   let container = document.getElementById('toastContainer');
   if (!container) {
     container = document.createElement('div');
@@ -351,3 +441,12 @@ function showToast(msg) {
   container.appendChild(toast);
   setTimeout(() => toast.remove(), 2500);
 }
+
+window.getCategoryStyle = getCategoryStyle;
+window.timeAgo = timeAgo;
+window.renderNewsCard = renderNewsCard;
+window.emptyState = emptyState;
+window.emptyBookmarksHTML = emptyBookmarksHTML;
+window.toggleBookmark = toggleBookmark;
+window.shareArticle = shareArticle;
+window.showToast = showToast;

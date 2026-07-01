@@ -3,8 +3,14 @@ __pycache__/
 *.pyc
 *.db
 .env
+.secret_key
 .DS_Store
+data/
+.Dockerfile.bak
 .pytest_cache/
 .egg-info/
 dist/
 build/
+node_modules/
+frontend/dist/
+test-results/

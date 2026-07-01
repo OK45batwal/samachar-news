@@ -1,37 +1,50 @@
 """Seed the database with initial categories and sources."""
 import asyncio
+
+from sqlalchemy import select
+
 from .database import async_session, init_db
 from .models.models import Category, Source
+from .services.news_service import FEED_CONFIG
 
 
 async def seed():
     await init_db()
     async with async_session() as db:
-        categories = [
-            Category(name="General", slug="general", description="General news", icon="general"),
-            Category(name="World", slug="world", description="World news", icon="world"),
-            Category(name="Technology", slug="technology", description="Technology news", icon="tech"),
-            Category(name="Business", slug="business", description="Business and finance", icon="business"),
-            Category(name="Sports", slug="sports", description="Sports news", icon="sports"),
-            Category(name="Science", slug="science", description="Science and nature", icon="science"),
-            Category(name="Health", slug="health", description="Health and medical", icon="health"),
-            Category(name="Politics", slug="politics", description="Political news", icon="politics"),
-            Category(name="Entertainment", slug="entertainment", description="Entertainment", icon="entertainment"),
+        category_defs = [
+            ("General", "general", "General news", "general"),
+            ("World", "world", "World news", "world"),
+            ("Technology", "technology", "Technology news", "tech"),
+            ("Business", "business", "Business and finance", "business"),
+            ("Sports", "sports", "Sports news", "sports"),
+            ("Science", "science", "Science and nature", "science"),
+            ("Health", "health", "Health and medical", "health"),
+            ("Politics", "politics", "Political news", "politics"),
+            ("Entertainment", "entertainment", "Entertainment", "entertainment"),
         ]
-        for cat in categories:
-            db.add(cat)
+        for name, slug, desc, icon in category_defs:
+            existing = await db.execute(select(Category).where(Category.slug == slug))
+            if not existing.scalar_one_or_none():
+                db.add(Category(name=name, slug=slug, description=desc, icon=icon))
 
-        sources = [
-            Source(name="bbc", url="https://www.bbc.com/news", feed_url="http://feeds.bbci.co.uk/news/rss.xml", country="UK", language="en"),
-            Source(name="cnn", url="https://www.cnn.com", feed_url="http://rss.cnn.com/rss/edition.rss", country="US", language="en"),
-            Source(name="reuters", url="https://www.reuters.com", feed_url="https://www.reutersagency.com/feed/", country="UK", language="en"),
-            Source(name="aljazeera", url="https://www.aljazeera.com", feed_url="https://www.aljazeera.com/xml/rss/all.xml", country="Qatar", language="en"),
-        ]
-        for src in sources:
-            db.add(src)
+        for key, cfg in FEED_CONFIG.items():
+            existing = await db.execute(select(Source).where(Source.name == cfg["name"]))
+            if existing.scalar_one_or_none():
+                continue
+            db.add(Source(
+                name=cfg["name"],
+                feed_url=cfg["url"],
+                country=cfg.get("country", ""),
+                language=cfg.get("language", "en"),
+                is_active=True,
+            ))
 
         await db.commit()
-        print("Database seeded: 9 categories + 4 sources")
+
+        cats = (await db.execute(select(Category))).scalars().all()
+        srcs = (await db.execute(select(Source))).scalars().all()
+        print(f"Database seeded: {len(cats)} categories + {len(srcs)} sources")
+
 
 if __name__ == "__main__":
     asyncio.run(seed())

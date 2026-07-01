@@ -1,3 +1,31 @@
+export function openSidebar() {
+  sidebar?.classList.add('open');
+  sidebarOverlay?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+export function closeSidebar() {
+  sidebar?.classList.remove('open');
+  sidebarOverlay?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+export function setThemeIcon(dark) {
+  if (themeToggle) themeToggle.innerHTML = dark ? sunSVG : moonSVG;
+}
+export function updateTime() {
+  const el = document.getElementById('liveTime');
+  if (el) el.textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
+}
+export function showSkeleton(container, count = 6) {
+  const html = Array.from({ length: count }, () =>
+    `<div class="skeleton-card">
+      <div class="skeleton" style="aspect-ratio:16/9;margin-bottom:12px"></div>
+      <div class="skeleton" style="height:14px;width:60%;margin-bottom:8px"></div>
+      <div class="skeleton" style="height:12px;width:40%"></div>
+    </div>`
+  ).join('');
+  if (container) container.innerHTML = html;
+}
+
 const header = document.querySelector('.header');
 window.addEventListener('scroll', () => {
   const y = window.scrollY;
@@ -8,16 +36,6 @@ const sidebarToggle = document.getElementById('sidebarToggle');
 const sidebar = document.getElementById('sidebar');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-function openSidebar() {
-  sidebar?.classList.add('open');
-  sidebarOverlay?.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeSidebar() {
-  sidebar?.classList.remove('open');
-  sidebarOverlay?.classList.remove('open');
-  document.body.style.overflow = '';
-}
 sidebarToggle?.addEventListener('click', openSidebar);
 sidebarOverlay?.addEventListener('click', closeSidebar);
 
@@ -50,9 +68,7 @@ const sunSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" v
 const moonSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
 
 const themeToggle = document.getElementById('themeToggle');
-function setThemeIcon(dark) {
-  if (themeToggle) themeToggle.innerHTML = dark ? sunSVG : moonSVG;
-}
+
 setThemeIcon(isDark);
 
 themeToggle?.addEventListener('click', () => {
@@ -63,20 +79,9 @@ themeToggle?.addEventListener('click', () => {
   setThemeIcon(isDark);
 });
 
-function updateTime() {
-  const el = document.getElementById('liveTime');
-  if (el) el.textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
-}
 updateTime();
 setInterval(updateTime, 1000);
 
-function showSkeleton(container, count = 6) {
-  const html = Array.from({ length: count }, () =>
-    `<div class="skeleton-card">
-      <div class="skeleton" style="aspect-ratio:16/9;margin-bottom:12px"></div>
-      <div class="skeleton" style="height:14px;width:60%;margin-bottom:8px"></div>
-      <div class="skeleton" style="height:12px;width:40%"></div>
-    </div>`
-  ).join('');
-  if (container) container.innerHTML = html;
-}
+window.openSidebar = openSidebar;
+window.closeSidebar = closeSidebar;
+window.showSkeleton = showSkeleton;

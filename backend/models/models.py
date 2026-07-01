@@ -1,8 +1,11 @@
+import enum
 import uuid
 from datetime import datetime, timezone
-from sqlalchemy import Column, String, Text, Boolean, Integer, DateTime, ForeignKey, JSON, Enum as SAEnum
+
+from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Enum as SAEnum
 from sqlalchemy.orm import relationship
-import enum
+
 from ..database import Base
 
 
@@ -24,7 +27,7 @@ class User(Base):
     username = Column(String(100), unique=True, nullable=False, index=True)
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(255))
-    role = Column(SAEnum(UserRole), default=UserRole.USER, nullable=False)
+    role = Column(SAEnum(UserRole, values_callable=lambda x: [e.value for e in x]), default=UserRole.USER, nullable=False)
     is_active = Column(Boolean, default=True)
     preferences = Column(JSON, default=dict)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
@@ -69,7 +72,7 @@ class Article(Base):
     image_url = Column(String(1000))
     source_url = Column(String(1000), unique=True)
     author = Column(String(255))
-    status = Column(SAEnum(ArticleStatus), default=ArticleStatus.DRAFT, nullable=False)
+    status = Column(SAEnum(ArticleStatus, values_callable=lambda x: [e.value for e in x]), default=ArticleStatus.DRAFT, nullable=False)
     view_count = Column(Integer, default=0)
     sentiment_score = Column(Integer, default=0)
     category_id = Column(Integer, ForeignKey("categories.id"))
@@ -81,6 +84,26 @@ class Article(Base):
     category = relationship("Category", back_populates="articles")
     source = relationship("Source", back_populates="articles")
     bookmarks = relationship("Bookmark", back_populates="article", cascade="all, delete-orphan")
+
+class RateLimitEntry(Base):
+    __tablename__ = "rate_limits"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    key = Column(String(255), nullable=False, index=True)
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc), index=True)
+
+class IngestionRun(Base):
+    __tablename__ = "ingestion_runs"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    status = Column(String(20), default="running", nullable=False)  # running, completed, failed
+    total_feeds = Column(Integer, default=0)
+    feeds_succeeded = Column(Integer, default=0)
+    feeds_failed = Column(Integer, default=0)
+    articles_added = Column(Integer, default=0)
+    errors = Column(JSON, default=list)
+    started_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    completed_at = Column(DateTime, nullable=True)
 
 class Bookmark(Base):
     __tablename__ = "bookmarks"

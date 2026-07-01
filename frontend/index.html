@@ -5,15 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Samachar News — Real-Time News. Smarter Insights.</title>
   <meta name="description" content="Premium news intelligence platform with real-time updates, AI insights, and interactive world map." />
-  <link rel="stylesheet" href="assets/css/variables.css" />
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/layout.css" />
-  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/ScrollTrigger.min.js" defer></script>
+  <link rel="stylesheet" href="assets/css/variables.css?v=2" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  <link rel="stylesheet" href="assets/css/layout.css?v=2" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg?v=2" />
 </head>
 <body>
-  <!-- Header -->
   <header class="header">
     <div class="header-inner container">
       <div class="header-left">
@@ -21,14 +18,13 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
         </button>
         <a href="/" class="logo">
-          <img src="assets/images/logo.png" alt="Samachar" width="28" height="28" />
+          <img src="assets/images/logo.png?v=2" alt="Samachar" width="28" height="28" />
           <span>Samachar</span>
         </a>
         <nav class="nav-links hide-mobile">
           <a href="/" class="active">Home</a>
           <a href="latest.html">Latest</a>
           <a href="map.html">World Map</a>
-          <a href="live.html">Live TV</a>
           <a href="ai.html">AI Insights</a>
         </nav>
       </div>
@@ -36,50 +32,42 @@
         <button id="searchToggle" class="btn btn-icon btn-ghost" aria-label="Search">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         </button>
-        <button id="themeToggle" class="btn btn-icon btn-ghost hide-mobile" aria-label="Toggle theme">
+        <button id="themeToggle" class="btn btn-icon btn-ghost" aria-label="Toggle theme">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <a href="login.html" class="btn btn-ghost btn-sm hide-mobile">Sign In</a>
-        <a href="register.html" class="btn btn-primary btn-sm">Get Started</a>
+        <a href="login.html" class="btn btn-ghost btn-sm hide-mobile" id="headerSignIn">Sign In</a>
+        <a href="register.html" class="btn btn-primary btn-sm" id="headerGetStarted">Get Started</a>
       </div>
     </div>
   </header>
 
-  <!-- Sidebar -->
   <div id="sidebarOverlay" class="sidebar-overlay"></div>
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-header">
-      <a href="/" class="logo">
-        <img src="assets/images/logo.png" alt="Samachar" width="24" height="24" />
-        <span>Samachar</span>
-      </a>
-      <button class="btn btn-icon btn-ghost" onclick="closeSidebar()" aria-label="Close">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
+      <a href="/" class="logo"><img src="assets/images/logo.png?v=2" alt="Samachar" width="24" height="24" /><span>Samachar</span></a>
+      <button class="btn btn-icon btn-ghost" onclick="closeSidebar()" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     </div>
     <nav class="sidebar-nav">
-      <a href="/"><span>🏠</span> Home</a>
-      <a href="latest.html"><span>📰</span> Latest</a>
-      <a href="latest.html?tab=breaking"><span>⚡</span> Breaking</a>
+      <a href="/"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
+      <a href="latest.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9h2"/><path d="M10 6h6"/><path d="M10 10h6"/><path d="M10 14h4"/></svg> Latest</a>
+      <a href="latest.html?tab=breaking"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Breaking</a>
       <div class="sidebar-label">Categories</div>
-      <a href="latest.html?cat=politics"><span>🏛️</span> Politics</a>
-      <a href="latest.html?cat=business"><span>💼</span> Business</a>
-      <a href="latest.html?cat=technology"><span>💻</span> Technology</a>
-      <a href="latest.html?cat=sports"><span>⚽</span> Sports</a>
-      <a href="latest.html?cat=science"><span>🔬</span> Science</a>
-      <a href="latest.html?cat=health"><span>🏥</span> Health</a>
-      <a href="latest.html?cat=entertainment"><span>🎬</span> Entertainment</a>
+      <a href="latest.html?cat=politics"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 12h.01"/><path d="M9 15h.01"/><path d="M9 18h.01"/></svg> Politics</a>
+      <a href="latest.html?cat=business"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg> Business</a>
+      <a href="latest.html?cat=technology"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Technology</a>
+      <a href="latest.html?cat=sports"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93c4.08 4.08 4.08 10.06 0 14.14"/><path d="M19.07 4.93c-4.08 4.08-4.08 10.06 0 14.14"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/></svg> Sports</a>
+      <a href="latest.html?cat=science"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v4L4 21h16L14 7V3"/><path d="M6 17h12"/></svg> Science</a>
+      <a href="latest.html?cat=health"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 2.5-3.5 2.5-5.5A5.5 5.5 0 0 0 12 5.5 5.5 5.5 0 0 0 2.5 8.5c0 2 1 4 2.5 5.5L12 22l6.5-6.5z"/></svg> Health</a>
+      <a href="latest.html?cat=entertainment"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg> Entertainment</a>
       <div class="sidebar-label">More</div>
-      <a href="map.html"><span>🌍</span> World Map</a>
-      <a href="live.html"><span>📺</span> Live TV</a>
-      <a href="ai.html"><span>🤖</span> AI Insights</a>
-      <a href="bookmarks.html"><span>🔖</span> Bookmarks</a>
-      <a href="profile.html"><span>👤</span> Profile</a>
-      <a href="admin.html"><span>⚙️</span> Admin</a>
+      <a href="map.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> World Map</a>
+      <a href="ai.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5" fill="currentColor"/><circle cx="15" cy="10" r="1.5" fill="currentColor"/><path d="M12 17v4"/><path d="M8 21h8"/></svg> AI Insights</a>
+      <a href="bookmarks.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg> Bookmarks</a>
+      <a href="profile.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Profile</a>
+      <a href="admin.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg> Admin</a>
     </nav>
   </aside>
 
-  <!-- Search Overlay -->
   <div id="searchOverlay" class="search-overlay">
     <div class="search-modal">
       <div class="search-bar">
@@ -90,18 +78,17 @@
       <div class="search-hints">
         <span>Trending: </span>
         <a href="latest.html?q=technology">Technology</a>
-        <a href="latest.html?q=elections">Elections</a>
+        <a href="latest.html?q=politics">Politics</a>
         <a href="latest.html?q=climate">Climate</a>
         <a href="latest.html?q=markets">Markets</a>
       </div>
     </div>
   </div>
 
-  <!-- Hero Section -->
   <section class="hero section">
     <div class="container">
       <div class="hero-content">
-        <div class="badge badge-accent animate-fade-in">⚡ Breaking Now</div>
+        <div class="badge badge-accent animate-fade-in"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Live Intelligence</div>
         <h1 class="heading-xl hero-title animate-fade-in" style="animation-delay:0.1s">
           Real-Time News.<br />
           <span class="text-accent">Smarter Insights.</span>
@@ -122,235 +109,34 @@
     </div>
   </section>
 
-  <!-- Breaking News Ticker -->
-  <div class="ticker">
-    <div class="ticker-label">BREAKING</div>
-    <div class="ticker-track" id="tickerTrack">
-      <span>Global markets rally on trade deal progress</span>
-      <span>·</span>
-      <span>Major tech summit announces new AI regulations</span>
-      <span>·</span>
-      <span>Earthquake reported in Pacific region</span>
-      <span>·</span>
-      <span>Historic peace agreement signed</span>
-      <span>·</span>
-      <span>Space agency reveals new lunar mission details</span>
-    </div>
+  <div class="ticker" id="tickerBar">
+    <div class="ticker-label">LIVE</div>
+    <div class="ticker-track" id="tickerTrack"></div>
   </div>
 
-  <!-- Top Stories -->
   <section class="section">
     <div class="container">
       <div class="section-header">
         <h2 class="heading-lg">Top Stories</h2>
         <div class="section-actions">
-          <a href="latest.html" class="btn btn-ghost btn-sm">View All →</a>
+          <a href="latest.html" class="btn btn-ghost btn-sm">View All &rarr;</a>
         </div>
       </div>
-      <div class="featured-grid">
-        <a href="article.html?id=1" class="featured-main card card-glow">
-          <div class="featured-img">
-            <div class="skeleton" style="width:100%;height:100%"></div>
-            <span class="badge badge-accent" style="position:absolute;top:16px;left:16px">Exclusive</span>
-          </div>
-          <div class="featured-body">
-            <div class="flex items-center gap-2 text-xs text-muted mb-2">
-              <span>World News</span>
-              <span>·</span>
-              <span>15 min ago</span>
-            </div>
-            <h3 class="heading-md mb-2">Global Leaders Convene for Emergency Climate Summit</h3>
-            <p class="text-muted text-sm line-clamp-2">World leaders gather to discuss urgent climate action as new data shows accelerating environmental changes across the globe.</p>
-          </div>
-        </a>
-        <div class="featured-side">
-          <a href="article.html?id=2" class="card card-glow p-4">
-            <div class="flex gap-3">
-              <div class="skeleton" style="width:100px;height:70px;border-radius:8px;flex-shrink:0"></div>
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-1 text-xs text-muted mb-1">
-                  <span class="badge badge-warning" style="font-size:9px">Breaking</span>
-                </div>
-                <h4 class="font-semibold text-sm line-clamp-2">Tech Giants Announce Joint AI Safety Framework</h4>
-                <span class="text-xs text-muted mt-1">Technology · 32 min ago</span>
-              </div>
-            </div>
-          </a>
-          <a href="article.html?id=3" class="card card-glow p-4">
-            <div class="flex gap-3">
-              <div class="skeleton" style="width:100px;height:70px;border-radius:8px;flex-shrink:0"></div>
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-1 text-xs text-muted mb-1">
-                  <span class="badge badge-danger" style="font-size:9px">Live</span>
-                </div>
-                <h4 class="font-semibold text-sm line-clamp-2">Markets React to Central Bank Policy Decision</h4>
-                <span class="text-xs text-muted mt-1">Business · 1h ago</span>
-              </div>
-            </div>
-          </a>
-          <a href="article.html?id=4" class="card card-glow p-4">
-            <div class="flex gap-3">
-              <div class="skeleton" style="width:100px;height:70px;border-radius:8px;flex-shrink:0"></div>
-              <div class="flex-1 min-w-0">
-                <h4 class="font-semibold text-sm line-clamp-2">Breakthrough in Quantum Computing Announced</h4>
-                <span class="text-xs text-muted mt-1">Science · 2h ago</span>
-              </div>
-            </div>
-          </a>
+      <div id="featuredGrid" class="featured-grid">
+        <div class="featured-main card">
+          <div class="featured-img"><div class="skeleton" style="width:100%;height:100%"></div></div>
+          <div class="featured-body"><div class="skeleton" style="height:20px;width:80%;margin-bottom:12px"></div><div class="skeleton" style="height:14px;width:60%"></div></div>
+        </div>
+        <div class="featured-side" id="featuredSide">
+          <div class="card p-4"><div class="skeleton" style="height:14px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:60%"></div></div>
+          <div class="card p-4"><div class="skeleton" style="height:14px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:60%"></div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Latest News Grid -->
-  <section class="section" style="padding-top:0">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="heading-lg">Latest News</h2>
-        <div class="section-actions">
-          <nav class="category-tabs hide-mobile">
-            <button class="active">All</button>
-            <button>World</button>
-            <button>Technology</button>
-            <button>Business</button>
-            <button>Sports</button>
-            <button>Science</button>
-            <button>Health</button>
-          </nav>
-          <a href="latest.html" class="btn btn-ghost btn-sm">View All →</a>
-        </div>
-      </div>
-      <div class="category-tabs mobile-only" style="margin-bottom:16px">
-        <button class="active">All</button>
-        <button>World</button>
-        <button>Tech</button>
-        <button>Business</button>
-        <button>Sports</button>
-      </div>
-      <div class="news-grid grid grid-3" id="newsGrid">
-        <!-- News cards injected by JS -->
-      </div>
-      <div class="text-center mt-8">
-        <a href="latest.html" class="btn btn-secondary">Load More Articles</a>
-      </div>
-    </div>
-  </section>
 
-  <!-- Map Preview -->
-  <section class="section bg-elevated">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 class="heading-lg">Global Events Map</h2>
-          <p class="text-muted text-sm mt-1">Real-time events visualized across the world</p>
-        </div>
-        <a href="map.html" class="btn btn-secondary btn-sm">Explore Map →</a>
-      </div>
-      <a href="map.html" class="map-preview card" style="display:block;overflow:hidden;height:400px;position:relative">
-        <div id="mapPreview" style="width:100%;height:100%">
-          <div class="flex items-center justify-center" style="height:100%;background:var(--bg-elevated)">
-            <div class="text-center">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" style="margin:0 auto 12px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-              <p class="text-muted text-sm">Interactive map loading...</p>
-              <p class="text-xs text-muted mt-1">Click to explore live events</p>
-            </div>
-          </div>
-        </div>
-        <div class="map-preview-overlay">
-          <span class="btn btn-primary btn-sm">Open Interactive Map</span>
-        </div>
-      </a>
-    </div>
-  </section>
 
-  <!-- AI Insights Preview -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 class="heading-lg">AI-Powered Insights</h2>
-          <p class="text-muted text-sm mt-1">Smart analysis and trends powered by artificial intelligence</p>
-        </div>
-        <a href="ai.html" class="btn btn-secondary btn-sm">View Insights →</a>
-      </div>
-      <div class="insights-grid grid grid-3">
-        <div class="card p-6 card-glow">
-          <div class="flex items-center gap-2 mb-4">
-            <span class="badge badge-accent">Trending</span>
-          </div>
-          <h4 class="font-semibold mb-2">Sentiment Analysis</h4>
-          <p class="text-sm text-muted mb-4">Market sentiment shows positive momentum across Asian markets this week.</p>
-          <div class="flex items-center gap-2 text-xs text-muted">
-            <span class="text-accent font-semibold">+12.4%</span>
-            <span>positive shift</span>
-          </div>
-        </div>
-        <div class="card p-6 card-glow">
-          <div class="flex items-center gap-2 mb-4">
-            <span class="badge badge-warning">Risk Alert</span>
-          </div>
-          <h4 class="font-semibold mb-2">Risk Indicators</h4>
-          <p class="text-sm text-muted mb-4">Geopolitical risk elevated in Eastern Europe. Supply chain disruptions possible.</p>
-          <div class="flex items-center gap-2 text-xs text-muted">
-            <span class="text-warning font-semibold">High</span>
-            <span>risk level</span>
-          </div>
-        </div>
-        <div class="card p-6 card-glow">
-          <div class="flex items-center gap-2 mb-4">
-            <span class="badge badge-secondary">Analysis</span>
-          </div>
-          <h4 class="font-semibold mb-2">Key Topics</h4>
-          <p class="text-sm text-muted mb-4">AI regulation, climate policy, and trade negotiations dominate global headlines.</p>
-          <div class="flex items-center gap-2 text-xs text-muted">
-            <span class="text-secondary font-semibold">3 topics</span>
-            <span>trending now</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Live TV Preview -->
-  <section class="section bg-elevated">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 class="heading-lg">Live News Channels</h2>
-          <p class="text-muted text-sm mt-1">Watch live broadcasts from around the world</p>
-        </div>
-        <a href="live.html" class="btn btn-secondary btn-sm">All Channels →</a>
-      </div>
-      <div class="live-grid grid grid-4" id="liveGrid">
-        <a href="live.html" class="card" style="aspect-ratio:16/9;position:relative;overflow:hidden">
-          <div class="skeleton" style="width:100%;height:100%"></div>
-          <div style="position:absolute;bottom:12px;left:12px;right:12px">
-            <span class="flex items-center gap-1 text-xs font-semibold"><span class="status-dot-live"></span> CNN Live</span>
-          </div>
-        </a>
-        <a href="live.html" class="card" style="aspect-ratio:16/9;position:relative;overflow:hidden">
-          <div class="skeleton" style="width:100%;height:100%"></div>
-          <div style="position:absolute;bottom:12px;left:12px;right:12px">
-            <span class="flex items-center gap-1 text-xs font-semibold"><span class="status-dot-live"></span> BBC World</span>
-          </div>
-        </a>
-        <a href="live.html" class="card" style="aspect-ratio:16/9;position:relative;overflow:hidden">
-          <div class="skeleton" style="width:100%;height:100%"></div>
-          <div style="position:absolute;bottom:12px;left:12px;right:12px">
-            <span class="flex items-center gap-1 text-xs font-semibold"><span class="status-dot-live"></span> Al Jazeera</span>
-          </div>
-        </a>
-        <a href="live.html" class="card" style="aspect-ratio:16/9;position:relative;overflow:hidden">
-          <div class="skeleton" style="width:100%;height:100%"></div>
-          <div style="position:absolute;bottom:12px;left:12px;right:12px">
-            <span class="flex items-center gap-1 text-xs font-semibold"><span class="status-dot-live"></span> Sky News</span>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Newsletter -->
   <section class="section">
     <div class="container">
       <div class="newsletter card p-8" style="text-align:center;max-width:600px;margin:0 auto">
@@ -365,50 +151,19 @@
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="/" class="logo mb-4" style="display:inline-flex">
-            <img src="assets/images/logo.png" alt="Samachar" width="24" height="24" />
-            <span>Samachar</span>
-          </a>
+          <a href="/" class="logo mb-4" style="display:inline-flex"><img src="assets/images/logo.png?v=2" alt="Samachar" width="24" height="24" /><span>Samachar</span></a>
           <p class="text-sm text-muted">Your premier source for real-time news intelligence and AI-powered insights.</p>
         </div>
-        <div>
-          <h5 class="font-semibold mb-4">News</h5>
-          <div class="footer-links">
-            <a href="latest.html">Latest</a>
-            <a href="latest.html?tab=breaking">Breaking</a>
-            <a href="latest.html?cat=world">World</a>
-            <a href="latest.html?cat=technology">Technology</a>
-            <a href="latest.html?cat=business">Business</a>
-          </div>
-        </div>
-        <div>
-          <h5 class="font-semibold mb-4">Features</h5>
-          <div class="footer-links">
-            <a href="map.html">World Map</a>
-            <a href="live.html">Live TV</a>
-            <a href="ai.html">AI Insights</a>
-            <a href="bookmarks.html">Bookmarks</a>
-            <a href="search.html">Search</a>
-          </div>
-        </div>
-        <div>
-          <h5 class="font-semibold mb-4">Company</h5>
-          <div class="footer-links">
-            <a href="#">About</a>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Contact</a>
-            <a href="#">Careers</a>
-          </div>
-        </div>
+        <div><h5 class="font-semibold mb-4">News</h5><div class="footer-links"><a href="latest.html">Latest</a><a href="latest.html?tab=breaking">Breaking</a><a href="latest.html?cat=world">World</a><a href="latest.html?cat=technology">Technology</a><a href="latest.html?cat=business">Business</a></div></div>
+        <div><h5 class="font-semibold mb-4">Features</h5><div class="footer-links"><a href="map.html">World Map</a><a href="ai.html">AI Insights</a><a href="bookmarks.html">Bookmarks</a><a href="profile.html">Profile</a></div></div>
+        <div><h5 class="font-semibold mb-4">Company</h5><div class="footer-links"><a href="#">About</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div></div>
       </div>
       <div class="footer-bottom">
-        <span class="text-xs text-muted">© 2026 Samachar News. All rights reserved.</span>
+        <span class="text-xs text-muted">&copy; 2026 Samachar News. All rights reserved.</span>
         <div class="footer-social">
           <a href="#" aria-label="Twitter"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
           <a href="#" aria-label="GitHub"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
@@ -418,8 +173,8 @@
     </div>
   </footer>
 
-  <script src="assets/js/layout.js"></script>
-  <script src="assets/js/api.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/layout.js?v=2"></script>
+  <script src="assets/js/api.js?v=2"></script>
+  <script src="assets/js/app.js?v=2"></script>
 </body>
 </html>

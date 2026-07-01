@@ -1,5 +1,6 @@
 import pytest
-from backend.models.models import User, Category, Source, Article, Bookmark, ArticleStatus, UserRole
+
+from backend.models.models import Article, ArticleStatus, Bookmark, Category, Source, User, UserRole
 
 
 @pytest.mark.asyncio

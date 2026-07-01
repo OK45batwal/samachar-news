@@ -1,8 +1,10 @@
 import re
-from pydantic import BaseModel, field_validator
+from datetime import datetime
 from typing import Optional
 from uuid import UUID
-from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict, field_validator
+
 
 class UserCreate(BaseModel):
     email: str
@@ -35,6 +37,7 @@ class UserLogin(BaseModel):
     password: str
 
 class UserResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: UUID
     email: str
     username: str
@@ -42,9 +45,6 @@ class UserResponse(BaseModel):
     role: str
     is_active: bool
     created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 class TokenResponse(BaseModel):
     access_token: str
