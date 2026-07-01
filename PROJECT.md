@@ -52,8 +52,8 @@ Objective: Hosted on Railway for zero cost.
 - [x] `railway.json` config (Dockerfile builder, auto-sleep)
 - [x] `.env.example` with Railway notes
 - [x] Port binding via `$PORT` env var (shell-form CMD)
-- [ ] Set up Railway project from GitHub
-- [ ] Configure environment variables in dashboard
+- [x] Set up Railway project from GitHub
+- [x] Configure environment variables in dashboard
 - [ ] Run seed + initial ingest on Railway shell
 - [ ] Set up custom domain (optional)
 - [ ] Verify HTTPS, WebSocket, all endpoints work
