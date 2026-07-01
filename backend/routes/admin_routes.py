@@ -213,6 +213,55 @@ async def admin_ingest_last(admin=Depends(require_admin)):
     from ..services.task_manager import get_last_ingestion
     return await get_last_ingestion() or {"status": "never_run"}
 
+@router.post("/seed")
+async def admin_seed(
+    db: AsyncSession = Depends(get_db),
+    admin=Depends(require_admin),
+):
+    from sqlalchemy import select
+    from ..models.models import Category, Source
+    from ..services.news_service import FEED_CONFIG
+
+    category_defs = [
+        ("General", "general", "General news", "general"),
+        ("World", "world", "World news", "world"),
+        ("Technology", "technology", "Technology news", "tech"),
+        ("Business", "business", "Business and finance", "business"),
+        ("Sports", "sports", "Sports news", "sports"),
+        ("Science", "science", "Science and nature", "science"),
+        ("Health", "health", "Health and medical", "health"),
+        ("Politics", "politics", "Political news", "politics"),
+        ("Entertainment", "entertainment", "Entertainment", "entertainment"),
+    ]
+    cats_created = 0
+    for name, slug, desc, icon in category_defs:
+        existing = await db.execute(select(Category).where(Category.slug == slug))
+        if not existing.scalar_one_or_none():
+            db.add(Category(name=name, slug=slug, description=desc, icon=icon))
+            cats_created += 1
+
+    srcs_created = 0
+    for key, cfg in FEED_CONFIG.items():
+        existing = await db.execute(select(Source).where(Source.name == cfg["name"]))
+        if existing.scalar_one_or_none():
+            continue
+        db.add(Source(
+            name=cfg["name"],
+            feed_url=cfg["url"],
+            country=cfg.get("country", ""),
+            language=cfg.get("language", "en"),
+            is_active=True,
+        ))
+        srcs_created += 1
+
+    await db.commit()
+
+    return {
+        "status": "ok",
+        "categories_created": cats_created,
+        "sources_created": srcs_created,
+    }
+
 @router.get("/sources")
 async def admin_sources(
     db: AsyncSession = Depends(get_db),
