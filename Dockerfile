@@ -30,4 +30,4 @@ USER appuser
 
 EXPOSE 8000
 
-CMD gunicorn backend.app:app -w 2 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:${PORT:-8000}
+CMD uvicorn backend.app:app --host 0.0.0.0 --port ${PORT:-8000}
