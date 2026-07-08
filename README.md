@@ -72,10 +72,4 @@ python -m pytest tests/ -v                    # unit + integration
 npx playwright test tests/e2e/                # e2e (server must be running)
 ```
 
----
 
-## One-Click Deploy
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/OK45batwal/samachar-news)
-
-Requires: `SUPERTOKENS_CONNECTION_URI`, `SAMACHAR_SECRET_KEY`, `CORS_ORIGINS`
