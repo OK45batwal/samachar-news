@@ -104,10 +104,13 @@ Objective: Automated quality gates.
 Objective: User-facing improvements.
 
 - [ ] Email verification on registration
-- [ ] Password reset flow
+- [x] Password reset flow (forgot-password.html)
 - [ ] User preferences (theme, language, categories)
-- [ ] "Mark as read" tracking
-- [ ] Reading history page
+- [ ] Mark-as-read tracking
+- [x] Reading history page (history.html)
+- [x] World Map with Leaflet (map.html)
+- [x] Landing page (index.html) + home.html split
+- [x] Password show/hide toggle (login + register)
 - [ ] Push notifications for breaking news
 - [ ] Mobile app wrapper (PWA or Capacitor)
 
