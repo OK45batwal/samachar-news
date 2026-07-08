@@ -1,4 +1,4 @@
-"""Integration tests for auth endpoints — register, login, refresh, profile."""
+"""Integration tests for auth endpoints — profile creation and user info."""
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
@@ -6,9 +6,15 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from sqlalchemy.pool import StaticPool
 
 from backend.app import app
+from backend.config import settings
 from backend.database import Base, get_db
 
 TEST_DB_URL = "sqlite+aiosqlite://"
+
+needs_st = pytest.mark.skipif(
+    not settings.SUPERTOKENS_CONNECTION_URI,
+    reason="SuperTokens core not running",
+)
 
 
 @pytest_asyncio.fixture
@@ -37,116 +43,18 @@ async def client():
     await engine.dispose()
 
 
-@pytest.mark.asyncio
-async def test_register(client):
-    resp = await client.post("/api/auth/register", json={
-        "username": "newuser",
-        "email": "new@test.com",
-        "password": "ValidPass1",
-    })
-    assert resp.status_code == 201
-    data = resp.json()
-    assert data["user"]["username"] == "newuser"
-    assert data["user"]["email"] == "new@test.com"
-    assert "id" in data["user"]
-
-
-@pytest.mark.asyncio
-async def test_register_duplicate_user(client):
-    await client.post("/api/auth/register", json={
-        "username": "dupuser",
-        "email": "dup@test.com",
-        "password": "ValidPass1",
-    })
-    resp = await client.post("/api/auth/register", json={
-        "username": "dupuser",
-        "email": "other@test.com",
-        "password": "ValidPass1",
-    })
-    assert resp.status_code == 409
-
-
-@pytest.mark.asyncio
-async def test_register_weak_password(client):
-    resp = await client.post("/api/auth/register", json={
-        "username": "weakuser",
-        "email": "weak@test.com",
-        "password": "short",
-    })
-    assert resp.status_code == 422
-
-
-@pytest.mark.asyncio
-async def test_login_success(client):
-    await client.post("/api/auth/register", json={
-        "username": "loginuser",
-        "email": "login@test.com",
-        "password": "MyPass123",
-    })
-    resp = await client.post("/api/auth/login", json={
-        "username": "loginuser",
-        "password": "MyPass123",
-    })
-    assert resp.status_code == 200
-    data = resp.json()
-    assert "access_token" in data
-    assert "refresh_token" in data
-    assert data["token_type"] == "bearer"
-
-
-@pytest.mark.asyncio
-async def test_login_wrong_password(client):
-    await client.post("/api/auth/register", json={
-        "username": "wrongpw",
-        "email": "wrong@test.com",
-        "password": "MyPass123",
-    })
-    resp = await client.post("/api/auth/login", json={
-        "username": "wrongpw",
-        "password": "WrongPass1",
-    })
-    assert resp.status_code == 401
-
-
-@pytest.mark.asyncio
-async def test_refresh_token(client):
-    await client.post("/api/auth/register", json={
-        "username": "refreshuser",
-        "email": "refresh@test.com",
-        "password": "MyPass123",
-    })
-    login = (await client.post("/api/auth/login", json={
-        "username": "refreshuser",
-        "password": "MyPass123",
-    })).json()
-    resp = await client.post("/api/auth/refresh", json={
-        "refresh_token": login["refresh_token"],
-    })
-    assert resp.status_code == 200
-    assert "access_token" in resp.json()
-
-
-@pytest.mark.asyncio
-async def test_get_profile(client):
-    await client.post("/api/auth/register", json={
-        "username": "profileuser",
-        "email": "profile@test.com",
-        "password": "MyPass123",
-    })
-    login = (await client.post("/api/auth/login", json={
-        "username": "profileuser",
-        "password": "MyPass123",
-    })).json()
-    resp = await client.get("/api/auth/me", headers={
-        "Authorization": f"Bearer {login['access_token']}",
-    })
-    assert resp.status_code == 200
-    data = resp.json()
-    assert data["username"] == "profileuser"
-    assert data["email"] == "profile@test.com"
-
-
+@needs_st
 @pytest.mark.asyncio
 async def test_get_profile_unauthorized(client):
     resp = await client.get("/api/auth/me")
+    assert resp.status_code == 401
+
+
+@needs_st
+@pytest.mark.asyncio
+async def test_create_profile_unauthorized(client):
+    resp = await client.post("/api/auth/profile", json={
+        "email": "test@test.com",
+        "username": "testuser",
+    })
     assert resp.status_code == 401

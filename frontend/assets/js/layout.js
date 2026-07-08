@@ -1,21 +1,21 @@
-export function openSidebar() {
+function openSidebar() {
   sidebar?.classList.add('open');
   sidebarOverlay?.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-export function closeSidebar() {
+function closeSidebar() {
   sidebar?.classList.remove('open');
   sidebarOverlay?.classList.remove('open');
   document.body.style.overflow = '';
 }
-export function setThemeIcon(dark) {
+function setThemeIcon(dark) {
   if (themeToggle) themeToggle.innerHTML = dark ? sunSVG : moonSVG;
 }
-export function updateTime() {
+function updateTime() {
   const el = document.getElementById('liveTime');
   if (el) el.textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
 }
-export function showSkeleton(container, count = 6) {
+function showSkeleton(container, count = 6) {
   const html = Array.from({ length: count }, () =>
     `<div class="skeleton-card">
       <div class="skeleton" style="aspect-ratio:16/9;margin-bottom:12px"></div>

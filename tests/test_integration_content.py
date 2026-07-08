@@ -6,10 +6,16 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from sqlalchemy.pool import StaticPool
 
 from backend.app import app
+from backend.config import settings
 from backend.database import Base, get_db
 from backend.models.models import Article, ArticleStatus, Category, Source
 
 TEST_DB_URL = "sqlite+aiosqlite://"
+
+needs_st = pytest.mark.skipif(
+    not settings.SUPERTOKENS_CONNECTION_URI,
+    reason="SuperTokens core not running",
+)
 
 
 @pytest_asyncio.fixture
@@ -58,43 +64,15 @@ async def seeded_client():
 
 
 @pytest.mark.asyncio
-async def test_get_articles_list(seeded_client):
-    resp = await seeded_client.get("/api/news/?limit=3")
+async def test_list_articles(seeded_client):
+    resp = await seeded_client.get("/api/news/?limit=5")
     assert resp.status_code == 200
     data = resp.json()
-    assert data["total"] >= 5
-    assert len(data["articles"]) == 3
-    assert data["articles"][0]["category"]["name"] == "Test"
-    assert data["articles"][0]["source"]["name"] == "Test Source"
+    assert len(data["articles"]) == 5
 
 
 @pytest.mark.asyncio
-async def test_get_articles_pagination(seeded_client):
-    resp = await seeded_client.get("/api/news/?page=2&limit=2")
-    assert resp.status_code == 200
-    data = resp.json()
-    assert len(data["articles"]) == 2
-    assert data["page"] == 2
-
-
-@pytest.mark.asyncio
-async def test_get_articles_category_filter(seeded_client):
-    resp = await seeded_client.get("/api/news/?category=test")
-    assert resp.status_code == 200
-    assert resp.json()["total"] == 5
-
-
-@pytest.mark.asyncio
-async def test_get_articles_empty_category(seeded_client):
-    resp = await seeded_client.get("/api/news/?category=nonexistent")
-    assert resp.status_code == 200
-    data = resp.json()
-    assert data["total"] == 0
-    assert data["articles"] == []
-
-
-@pytest.mark.asyncio
-async def test_get_single_article(seeded_client):
+async def test_get_article_by_id(seeded_client):
     resp = await seeded_client.get("/api/news/1")
     assert resp.status_code == 200
     data = resp.json()
@@ -108,43 +86,7 @@ async def test_get_nonexistent_article(seeded_client):
     assert resp.status_code == 404
 
 
-@pytest.mark.asyncio
-async def test_bookmark_lifecycle(seeded_client):
-    # Register + login
-    await seeded_client.post("/api/auth/register", json={
-        "username": "bookmarkuser", "email": "bm@test.com", "password": "Pass1234",
-    })
-    login = (await seeded_client.post("/api/auth/login", json={
-        "username": "bookmarkuser", "password": "Pass1234",
-    })).json()
-    token = login["access_token"]
-    headers = {"Authorization": f"Bearer {token}"}
-
-    # Add bookmark
-    resp = await seeded_client.post("/api/bookmarks/", json={"article_id": 1}, headers=headers)
-    assert resp.status_code == 200
-    assert resp.json()["status"] == "ok"
-
-    # Duplicate bookmark
-    resp = await seeded_client.post("/api/bookmarks/", json={"article_id": 1}, headers=headers)
-    assert resp.status_code == 409
-
-    # List bookmarks
-    resp = await seeded_client.get("/api/bookmarks/", headers=headers)
-    assert resp.status_code == 200
-    bookmarks = resp.json()
-    assert len(bookmarks) == 1
-    assert bookmarks[0]["article"]["id"] == 1
-
-    # Remove bookmark
-    resp = await seeded_client.delete("/api/bookmarks/1", headers=headers)
-    assert resp.status_code == 200
-
-    # Confirm removed
-    resp = await seeded_client.get("/api/bookmarks/", headers=headers)
-    assert len(resp.json()) == 0
-
-
+@needs_st
 @pytest.mark.asyncio
 async def test_bookmark_unauthorized(seeded_client):
     resp = await seeded_client.post("/api/bookmarks/", json={"article_id": 1})

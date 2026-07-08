@@ -22,6 +22,13 @@ from .routes.auth_routes import router as auth_router
 from .routes.bookmarks import router as bookmarks_router
 from .routes.news import router as news_router
 
+# ── SuperTokens ─────────────────────────────────────────────────────────
+from .auth.supertokens import init_supertokens
+init_supertokens()
+
+from supertokens_python import get_all_cors_headers
+from supertokens_python.framework.fastapi import get_middleware
+
 # ── Sentry ──────────────────────────────────────────────────────────────
 if settings.SENTRY_DSN:
     import sentry_sdk
@@ -57,12 +64,36 @@ from .websocket.ws import manager, news_ws
 
 app.add_api_websocket_route("/api/ws", news_ws)
 
+if settings.SUPERTOKENS_CONNECTION_URI:
+    app.add_middleware(get_middleware())
+
+if settings.SUPERTOKENS_CONNECTION_URI:
+    @app.middleware("http")
+    async def st_cookie_bridge(request: Request, call_next):
+        response = await call_next(request)
+        for header_name, cookie_name in [
+            ("st-access-token", "sAccessToken"),
+            ("st-refresh-token", "sRefreshToken"),
+            ("front-token", "sFrontToken"),
+        ]:
+            val = response.headers.get(header_name)
+            if val:
+                response.set_cookie(
+                    key=cookie_name,
+                    value=val,
+                    httponly=(cookie_name != "sFrontToken"),
+                    secure=request.url.scheme == "https",
+                    samesite="lax",
+                    path="/",
+                )
+        return response
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"] + (get_all_cors_headers() if settings.SUPERTOKENS_CONNECTION_URI else []),
 )
 
 @app.middleware("http")
@@ -99,7 +130,8 @@ if settings.PROMETHEUS_ENABLED:
     async def metrics():
         return PlainTextResponse(generate_latest(REGISTRY), media_type="text/plain; charset=utf-8")
 
-app.include_router(auth_router)
+if settings.SUPERTOKENS_CONNECTION_URI:
+    app.include_router(auth_router)
 app.include_router(news_router)
 app.include_router(bookmarks_router)
 app.include_router(admin_router)

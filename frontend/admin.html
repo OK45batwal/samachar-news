@@ -55,12 +55,10 @@
 let currentUser = getUser();
 if (!currentUser) { window.location.href = 'login.html'; }
 
-const apiBase = '';
-
 async function loadDashboard() {
   document.getElementById('dashboardSub').textContent = 'Loading platform data...';
   try {
-    const dash = await fetch(`${apiBase}/api/admin/dashboard`, { headers: { 'Authorization': `Bearer ${getToken()}` } }).then(r => r.json());
+    const dash = await api('/api/admin/dashboard');
     document.getElementById('dashCards').innerHTML = `
       <div class="card p-4"><div class="text-xs text-muted mb-1">Total Users</div><div class="text-2xl font-bold font-mono">${(dash.total_users||0).toLocaleString()}</div></div>
       <div class="card p-4"><div class="text-xs text-muted mb-1">Articles Published</div><div class="text-2xl font-bold font-mono">${(dash.published_articles||0).toLocaleString()}</div></div>
@@ -73,7 +71,7 @@ async function loadDashboard() {
   } catch { document.getElementById('dashboardSub').textContent = 'Failed to load. Is the backend running?'; }
 
   try {
-    const arts = await fetch(`${apiBase}/api/admin/articles?limit=10`, { headers: { 'Authorization': `Bearer ${getToken()}` } }).then(r => r.json());
+    const arts = await api('/api/admin/articles?limit=10');
     const tbody = document.getElementById('articlesBody');
     if (arts.articles?.length) {
       tbody.innerHTML = arts.articles.map(a => {
@@ -94,7 +92,7 @@ async function loadUsers() {
   const dash = document.getElementById('dashSection');
   dash.innerHTML = '<div class="card"><table class="stat-table"><thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Active</th><th>Joined</th></tr></thead><tbody id="usersBody"></tbody></table></div>';
   try {
-    const res = await fetch(`${apiBase}/api/admin/users`, { headers: { 'Authorization': `Bearer ${getToken()}` } }).then(r => r.json());
+    const res = await api('/api/admin/users');
     const tbody = document.getElementById('usersBody');
     if (res.users?.length) {
       tbody.innerHTML = res.users.map(u => `<tr><td class="font-semibold">${u.username}</td><td>${u.email}</td><td><span class="admin-tag" style="background:${u.role==='admin'?'var(--accent-dim)':'var(--secondary-dim)'};color:${u.role==='admin'?'var(--accent)':'var(--secondary)'}">${u.role}</span></td><td>${u.is_active ? '✅' : '❌'}</td><td>${u.created_at ? new Date(u.created_at).toLocaleDateString() : '—'}</td></tr>`).join('');
@@ -122,8 +120,7 @@ async function ingestFeeds() {
   btn.disabled = true; btn.textContent = '⏳ Starting...';
   status.textContent = 'Starting feed ingestion...';
   try {
-    const res = await fetch(`${apiBase}/api/admin/ingest`, { method: 'POST', headers: { 'Authorization': `Bearer ${getToken()}` } });
-    const data = await res.json();
+    const data = await api('/api/admin/ingest', { method: 'POST' });
     if (data.run_id) {
       pollIngestion(data.run_id);
     } else {
@@ -147,8 +144,7 @@ function pollIngestion(runId) {
   const check = async () => {
     attempts++;
     try {
-      const res = await fetch(`${apiBase}/api/admin/ingest/status/${runId}`, { headers: { 'Authorization': `Bearer ${getToken()}` } });
-      const data = await res.json();
+      const data = await api(`/api/admin/ingest/status/${runId}`);
       if (data.status === 'completed' || data.status === 'failed') {
         const added = data.articles_added || 0;
         const ok = data.feeds_succeeded || 0;

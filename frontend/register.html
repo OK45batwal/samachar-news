@@ -62,9 +62,7 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
   try {
     await register(
       document.getElementById('regEmail').value,
-      document.getElementById('regEmail').value.split('@')[0],
-      password,
-      document.getElementById('regName').value || undefined
+      password
     );
     window.location.href = 'index.html';
   } catch (err) {

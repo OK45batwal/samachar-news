@@ -6,7 +6,7 @@ from sqlalchemy import desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from ..auth.auth import get_current_user
+from ..auth.supertokens import get_current_user
 from ..database import get_db
 from ..models.models import Article, ArticleStatus, Bookmark, Category, Source, User, UserRole
 

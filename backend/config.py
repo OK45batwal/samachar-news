@@ -2,9 +2,11 @@ import os
 import secrets
 from pathlib import Path
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 SECRET_FILE = ".secret_key"
+
 
 def _resolve_secret_key() -> str:
     env_key = os.environ.get("SAMACHAR_SECRET_KEY", "")
@@ -16,6 +18,7 @@ def _resolve_secret_key() -> str:
     key = secrets.token_urlsafe(32)
     secret_path.write_text(key)
     return key
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
@@ -31,9 +34,21 @@ class Settings(BaseSettings):
     PROMETHEUS_ENABLED: bool = True
     NEWS_API_KEY: str = ""
     RATE_LIMIT_PER_MINUTE: int = 20
+    SUPERTOKENS_CONNECTION_URI: str = ""
+    API_DOMAIN: str = "http://localhost:8000"
+    WEBSITE_DOMAIN: str = "http://localhost:8000"
+
+    @model_validator(mode="after")
+    def detect_render(self):
+        render_url = os.environ.get("RENDER_EXTERNAL_URL")
+        if render_url:
+            self.API_DOMAIN = render_url
+            self.WEBSITE_DOMAIN = render_url
+        return self
 
     @property
     def cors_origins_list(self) -> list[str]:
         return [o.strip() for o in self.CORS_ORIGINS.split(",")]
+
 
 settings = Settings()

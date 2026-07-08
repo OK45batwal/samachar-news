@@ -1,7 +1,4 @@
-import { getToken, getUser, getArticles, getArticle, getBookmarks, addBookmark, removeBookmark, getStats, getMe, logout } from '/assets/js/api.js'
-import { showSkeleton } from '/assets/js/layout.js'
-
-export const CATEGORY_MAP = {
+const CATEGORY_MAP = {
   general: { name: 'General', badge: 'badge-accent' },
   world: { name: 'World', badge: 'badge-accent' },
   technology: { name: 'Technology', badge: 'badge-secondary' },
@@ -13,11 +10,11 @@ export const CATEGORY_MAP = {
   politics: { name: 'Politics', badge: 'badge-warning' },
 };
 
-export function getCategoryStyle(slug) {
+function getCategoryStyle(slug) {
   return CATEGORY_MAP[slug?.toLowerCase()] || { name: slug || 'General', badge: 'badge-accent' };
 }
 
-export function timeAgo(dateStr) {
+function timeAgo(dateStr) {
   if (!dateStr) return '';
   const d = new Date(dateStr);
   const sec = Math.floor((Date.now() - d) / 1000);
@@ -29,7 +26,7 @@ export function timeAgo(dateStr) {
   return `${Math.floor(hr / 24)}d ago`;
 }
 
-export function renderNewsCard(article, index = 0) {
+function renderNewsCard(article, index = 0) {
   const cat = getCategoryStyle(article.category?.slug);
   const hasImg = article.image_url && article.image_url.startsWith('http');
   const imgHtml = hasImg
@@ -65,7 +62,7 @@ export function renderNewsCard(article, index = 0) {
   `;
 }
 
-export function emptyState(msg, cta) {
+function emptyState(msg, cta) {
   return `<div class="card p-8 text-center" style="grid-column:1/-1"><p class="text-muted">${msg}</p>${cta || ''}</div>`;
 }
 
@@ -97,10 +94,13 @@ function connectWS() {
       wsPingInterval = null;
       setTimeout(connectWS, 3000);
     };
-    ws.onopen = () => {
-      const token = getToken();
-      if (token) ws.send(JSON.stringify({type:'auth', token}));
-      else ws.close();
+    ws.onopen = async () => {
+      try {
+        const { token } = await getWsToken();
+        ws.send(JSON.stringify({type:'auth', token}));
+      } catch {
+        ws.close();
+      }
     };
   } catch {}
 }
@@ -403,7 +403,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // ── Utilities ──────────────────────────────
-export function emptyBookmarksHTML() {
+function emptyBookmarksHTML() {
   return '<div class="card empty-state p-8" style="grid-column:1/-1">' +
     '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>' +
     '<h3 class="font-semibold mb-2">No bookmarks yet</h3>' +
@@ -411,7 +411,7 @@ export function emptyBookmarksHTML() {
     '<a href="latest.html" class="btn btn-primary btn-sm mt-4">Browse News</a></div>';
 }
 
-export async function toggleBookmark(id) {
+async function toggleBookmark(id) {
   try {
     const user = getUser();
     if (!user) { showToast('Sign in to bookmark articles'); return; }
@@ -422,12 +422,12 @@ export async function toggleBookmark(id) {
   } catch (err) { showToast(err.message); }
 }
 
-export function shareArticle(title) {
+function shareArticle(title) {
   if (navigator.share) navigator.share({ title }).catch(() => {});
   else { navigator.clipboard?.writeText(window.location.href); showToast('Link copied to clipboard'); }
 }
 
-export function showToast(msg) {
+function showToast(msg) {
   let container = document.getElementById('toastContainer');
   if (!container) {
     container = document.createElement('div');
@@ -442,6 +442,7 @@ export function showToast(msg) {
   setTimeout(() => toast.remove(), 2500);
 }
 
+window.CATEGORY_MAP = CATEGORY_MAP;
 window.getCategoryStyle = getCategoryStyle;
 window.timeAgo = timeAgo;
 window.renderNewsCard = renderNewsCard;
