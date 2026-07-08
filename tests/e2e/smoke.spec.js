@@ -39,7 +39,6 @@ test.describe('Critical user path', () => {
     const email = `e2e_${ts}@test.com`;
     // Register
     await page.goto(`${BASE}/register.html`);
-    await page.fill('#regName', 'E2E User');
     await page.fill('#regEmail', email);
     await page.fill('#regPassword', 'TestPass123');
     await page.fill('#regConfirm', 'TestPass123');
@@ -49,12 +48,12 @@ test.describe('Critical user path', () => {
 
     // Login
     await page.goto(`${BASE}/login.html`);
-    // Register used email as username (part before @)
-    await page.fill('#loginUsername', `e2e_${ts}`);
+    await page.fill('#loginEmail', email);
     await page.fill('#loginPassword', 'TestPass123');
     await page.click('button[type="submit"]');
-    // Should see username in header
-    await expect(page.locator('.header-right')).toContainText(`e2e_${ts}`);
+    // Should see username in header (derived from email prefix)
+    const username = email.split('@')[0];
+    await expect(page.locator('.header-right')).toContainText(username);
   });
 
 });
