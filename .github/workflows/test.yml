@@ -40,8 +40,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - run: npm ci
-      - run: npm run build
+      - run: npm ci --ignore-scripts
       - name: Start server
         run: |
           SUPERTOKENS_CONNECTION_URI=https://try.supertokens.com \
