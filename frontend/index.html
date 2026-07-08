@@ -3,186 +3,124 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Samachar News — Real-Time News. Smarter Insights.</title>
-  <meta name="description" content="Premium news intelligence platform with real-time updates, AI insights, and interactive world map." />
+  <title>Samachar — Real-Time News. Smarter Insights.</title>
+  <meta name="description" content="AI-powered news intelligence platform delivering breaking stories, deep analysis, and global perspectives." />
   <link rel="stylesheet" href="assets/css/variables.css?v=2" />
   <link rel="stylesheet" href="assets/css/style.css?v=2" />
   <link rel="stylesheet" href="assets/css/layout.css?v=2" />
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg?v=2" />
+  <style>
+    .landing-header { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1200px; margin:0 auto; }
+    .landing-hero { min-height:85vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:48px 24px; position:relative; overflow:hidden; }
+    .landing-hero::before { content:''; position:absolute; top:-40%; right:-20%; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle, var(--accent-dim) 0%, transparent 70%); pointer-events:none; }
+    .landing-hero::after { content:''; position:absolute; bottom:-30%; left:-15%; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle, var(--secondary-dim) 0%, transparent 70%); pointer-events:none; }
+    .landing-hero h1 { font-size:clamp(2.5rem, 6vw, 4.5rem); font-weight:900; line-height:1.1; margin-bottom:20px; position:relative; z-index:1; }
+    .landing-hero p { font-size:clamp(1rem, 2vw, 1.25rem); max-width:600px; margin:0 auto 36px; color:var(--text-secondary); position:relative; z-index:1; }
+    .landing-hero .btn-group { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
+    .landing-stats { display:flex; gap:40px; justify-content:center; margin-top:48px; position:relative; z-index:1; }
+    .landing-stats div { text-align:center; }
+    .features-section { padding:80px 24px; max-width:1100px; margin:0 auto; }
+    .features-section h2 { text-align:center; font-size:2rem; font-weight:800; margin-bottom:8px; }
+    .features-section .sub { text-align:center; color:var(--text-secondary); margin-bottom:48px; }
+    .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; }
+    .feature-card { padding:32px; border-radius:var(--radius-md); background:var(--bg-elevated); border:1px solid var(--border); transition:all 0.3s; }
+    .feature-card:hover { border-color:var(--accent-dim); transform:translateY(-2px); }
+    .feature-card svg { color:var(--accent); margin-bottom:16px; }
+    .feature-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:8px; }
+    .feature-card p { font-size:0.9rem; color:var(--text-secondary); line-height:1.6; }
+    .landing-cta { text-align:center; padding:80px 24px; background:var(--bg-elevated); }
+    .landing-cta h2 { font-size:2rem; font-weight:800; margin-bottom:12px; }
+    .landing-cta p { color:var(--text-secondary); margin-bottom:32px; }
+    .landing-footer { text-align:center; padding:24px; color:var(--text-tertiary); font-size:0.85rem; border-top:1px solid var(--border); }
+    @media (max-width:640px) { .landing-stats { gap:20px; flex-wrap:wrap; } }
+  </style>
 </head>
 <body>
-  <header class="header">
-    <div class="header-inner container">
-      <div class="header-left">
-        <button id="sidebarToggle" class="btn btn-icon btn-ghost hide-desktop" aria-label="Open menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-        </button>
-        <a href="/" class="logo">
-          <img src="assets/images/logo.png?v=2" alt="Samachar" width="28" height="28" />
-          <span>Samachar</span>
-        </a>
-                <nav class="nav-links hide-mobile">
-          <a href="index.html" class="active">Home</a>
-          <a href="latest.html" >Latest</a><a href="map.html" >World Map</a>
-          </nav>
-      </div>
-      <div class="header-right">
-        <button id="searchToggle" class="btn btn-icon btn-ghost" aria-label="Search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        </button>
-        <button id="themeToggle" class="btn btn-icon btn-ghost" aria-label="Toggle theme">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-        <a href="login.html" class="btn btn-ghost btn-sm hide-mobile" id="headerSignIn">Sign In</a>
-        <a href="register.html" class="btn btn-primary btn-sm" id="headerGetStarted">Get Started</a>
-      </div>
+  <header class="landing-header">
+    <a href="/" class="logo"><img src="assets/images/logo.png?v=2" alt="Samachar" width="28" height="28" /><span>Samachar</span></a>
+    <div class="flex items-center gap-3">
+      <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Get Started</a>
     </div>
   </header>
 
-  <div id="sidebarOverlay" class="sidebar-overlay"></div>
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-header">
-      <a href="/" class="logo"><img src="assets/images/logo.png?v=2" alt="Samachar" width="24" height="24" /><span>Samachar</span></a>
-      <button class="btn btn-icon btn-ghost" onclick="closeSidebar()" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
-    </div>
-    <nav class="sidebar-nav">
-      <a href="index.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
-      <a href="latest.html?tab=breaking"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Breaking News</a>
-      <a href="latest.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9h2"/><path d="M10 6h6"/><path d="M10 10h6"/><path d="M10 14h4"/></svg> Latest News</a>
-      <a href="trending.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg> Trending</a>
-      <div class="sidebar-label">Categories</div>
-      <a href="latest.html?cat=india"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 12h.01"/><path d="M9 15h.01"/><path d="M9 18h.01"/></svg> India</a>
-      <a href="latest.html?cat=world"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> World</a>
-      <a href="latest.html?cat=technology"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Technology</a>
-      <a href="latest.html?cat=business"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg> Business</a>
-      <a href="latest.html?cat=sports"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93c4.08 4.08 4.08 10.06 0 14.14"/><path d="M19.07 4.93c-4.08 4.08-4.08 10.06 0 14.14"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/></svg> Sports</a>
-      <a href="latest.html?cat=entertainment"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg> Entertainment</a>
-      <a href="latest.html?cat=health"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 2.5-3.5 2.5-5.5A5.5 5.5 0 0 0 12 5.5 5.5 5.5 0 0 0 2.5 8.5c0 2 1 4 2.5 5.5L12 22l6.5-6.5z"/></svg> Health</a>
-      <a href="latest.html?cat=science"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v4L4 21h16L14 7V3"/><path d="M6 17h12"/></svg> Science</a>
-      <div class="sidebar-label">More</div>
-      <a href="live.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Live Updates</a>
-      <a href="videos.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Videos</a>
-      <a href="bookmarks.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg> Bookmarks</a>
-      <a href="history.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Reading History</a>
-      <a href="profile.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Profile</a>
-      <div class="sidebar-label">Authentication</div>
-      <a href="login.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Login</a>
-      <a href="register.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg> Register</a>
-      <a href="forgot-password.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Forgot Password</a>
-      <div class="sidebar-label">More</div>
-      <a href="map.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> World Map</a>
-      <a href="ai.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5" fill="currentColor"/><circle cx="15" cy="10" r="1.5" fill="currentColor"/><path d="M12 17v4"/><path d="M8 21h8"/></svg> AI Insights</a>
-      <a href="admin.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg> Admin</a>
-    </nav></nav>
-  </aside>
-
-  <div id="searchOverlay" class="search-overlay">
-    <div class="search-modal">
-      <div class="search-bar">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input id="globalSearch" type="text" placeholder="Search news, topics, or locations..." autocomplete="off" />
-        <kbd>ESC</kbd>
+  <section class="landing-hero">
+    <div style="max-width:800px">
+      <div class="badge badge-accent" style="margin-bottom:20px;display:inline-flex;align-items:center;gap:4px">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        AI-Powered Intelligence
       </div>
-      <div class="search-hints">
-        <span>Trending: </span>
-        <a href="latest.html?q=technology">Technology</a>
-        <a href="latest.html?q=politics">Politics</a>
-        <a href="latest.html?q=climate">Climate</a>
-        <a href="latest.html?q=markets">Markets</a>
+      <h1>Real-Time News.<br /><span class="text-accent">Smarter Insights.</span></h1>
+      <p>Your premier source for breaking news, deep analysis, and global perspectives — curated by AI and delivered in real time.</p>
+      <div class="btn-group">
+        <a href="home.html" class="btn btn-primary btn-lg">Explore News</a>
+        <a href="register.html" class="btn btn-secondary btn-lg">Get Started Free</a>
       </div>
-    </div>
-  </div>
-
-  <section class="hero section">
-    <div class="container">
-      <div class="hero-content">
-        <div class="badge badge-accent animate-fade-in"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Live Intelligence</div>
-        <h1 class="heading-xl hero-title animate-fade-in" style="animation-delay:0.1s">
-          Real-Time News.<br />
-          <span class="text-accent">Smarter Insights.</span>
-        </h1>
-        <p class="hero-desc animate-fade-in" style="animation-delay:0.2s">
-          AI-powered news intelligence platform delivering breaking stories, deep analysis, and global perspectives — all in one place.
-        </p>
-        <div class="hero-actions animate-fade-in" style="animation-delay:0.3s">
-          <a href="latest.html" class="btn btn-primary btn-lg">Explore News</a>
-          <a href="ai.html" class="btn btn-secondary btn-lg">AI Insights</a>
-        </div>
-        <div class="hero-stats animate-fade-in" style="animation-delay:0.4s">
-          <div><strong class="text-accent">50K+</strong><span class="text-muted text-xs">Articles Curated</span></div>
-          <div><strong class="text-accent">12K+</strong><span class="text-muted text-xs">Active Readers</span></div>
-          <div><strong class="text-accent">150+</strong><span class="text-muted text-xs">Countries Covered</span></div>
-        </div>
+      <div class="landing-stats">
+        <div><div class="text-accent" style="font-size:1.75rem;font-weight:800">50K+</div><div class="text-xs text-muted" style="margin-top:2px">Articles Curated</div></div>
+        <div><div class="text-accent" style="font-size:1.75rem;font-weight:800">150+</div><div class="text-xs text-muted" style="margin-top:2px">Countries Covered</div></div>
+        <div><div class="text-accent" style="font-size:1.75rem;font-weight:800">62</div><div class="text-xs text-muted" style="margin-top:2px">News Sources</div></div>
       </div>
     </div>
   </section>
 
-  <div class="ticker" id="tickerBar">
-    <div class="ticker-label">LIVE</div>
-    <div class="ticker-track" id="tickerTrack"></div>
-  </div>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="heading-lg">Top Stories</h2>
-        <div class="section-actions">
-          <a href="latest.html" class="btn btn-ghost btn-sm">View All &rarr;</a>
-        </div>
+  <section class="features-section">
+    <h2>Everything You Need</h2>
+    <p class="sub">Stay informed with a complete news intelligence platform</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9h2"/><path d="M10 6h6"/><path d="M10 10h6"/><path d="M10 14h4"/></svg>
+        <h3>Live News Feed</h3>
+        <p>Real-time updates from 62 trusted sources across 8 categories — politics, business, technology, sports, and more.</p>
       </div>
-      <div id="featuredGrid" class="featured-grid">
-        <div class="featured-main card">
-          <div class="featured-img"><div class="skeleton" style="width:100%;height:100%"></div></div>
-          <div class="featured-body"><div class="skeleton" style="height:20px;width:80%;margin-bottom:12px"></div><div class="skeleton" style="height:14px;width:60%"></div></div>
-        </div>
-        <div class="featured-side" id="featuredSide">
-          <div class="card p-4"><div class="skeleton" style="height:14px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:60%"></div></div>
-          <div class="card p-4"><div class="skeleton" style="height:14px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:60%"></div></div>
-        </div>
+      <div class="feature-card">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <h3>Interactive World Map</h3>
+        <p>Explore stories from around the globe with our interactive map. See where news is happening in real time.</p>
       </div>
-    </div>
-  </section>
-
-
-
-  <section class="section">
-    <div class="container">
-      <div class="newsletter card p-8" style="text-align:center;max-width:600px;margin:0 auto">
-        <h2 class="heading-md mb-2">Stay Informed</h2>
-        <p class="text-muted text-sm mb-6">Get the latest news delivered to your inbox every morning.</p>
-        <form class="newsletter-form" onsubmit="event.preventDefault();alert('Subscribed! (Demo)')">
-          <input type="email" placeholder="Enter your email" class="input" required />
-          <button type="submit" class="btn btn-primary">Subscribe</button>
-        </form>
-        <p class="text-xs text-muted mt-3">No spam. Unsubscribe anytime.</p>
+      <div class="feature-card">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5" fill="currentColor"/><circle cx="15" cy="10" r="1.5" fill="currentColor"/><path d="M12 17v4"/><path d="M8 21h8"/></svg>
+        <h3>AI-Powered Insights</h3>
+        <p>Get sentiment analysis, key topics, and smart summaries for every story — powered by advanced AI.</p>
+      </div>
+      <div class="feature-card">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <h3>Live Updates</h3>
+        <p>WebSocket-powered real-time alerts for breaking news. Never miss a story that matters.</p>
+      </div>
+      <div class="feature-card">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+        <h3>Smart Bookmarks</h3>
+        <p>Save articles to read later. Organize your reading list and never lose track of important stories.</p>
+      </div>
+      <div class="feature-card">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <h3>Reading History</h3>
+        <p>Track what you have read. Your personal reading history is automatically saved for easy reference.</p>
       </div>
     </div>
   </section>
 
-    <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="index.html" class="logo mb-4" style="display:inline-flex"><img src="assets/images/logo.png?v=2" alt="Samachar" width="24" height="24" /><span>Samachar</span></a>
-          <p class="text-sm text-muted">Your premier source for real-time news intelligence and AI-powered insights.</p>
-        </div>
-        <div><h5 class="font-semibold mb-4">News</h5><div class="footer-links"><a href="latest.html">Latest</a><a href="map.html" >World Map</a><a href="latest.html?tab=breaking">Breaking</a><a href="latest.html?cat=world">World</a><a href="latest.html?cat=technology">Technology</a><a href="trending.html">Trending</a></div></div>
-        
-        <div><h5 class="font-semibold mb-4">Company</h5><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy Policy</a><a href="admin.html">Admin</a></div></div>
-      </div>
-      <div class="footer-bottom">
-        <span class="text-xs text-muted">&copy; 2026 Samachar News. All rights reserved.</span>
-        <div class="footer-social">
-          <a href="#" aria-label="Twitter"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-          <a href="#" aria-label="GitHub"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
-          <a href="#" aria-label="RSS"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"/><path d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"/><circle cx="6" cy="18" r="2"/></svg></a>
-        </div>
-      </div>
+  <section class="landing-cta">
+    <h2>Ready to Stay Informed?</h2>
+    <p>Join thousands of readers who trust Samachar for their daily news.</p>
+    <a href="register.html" class="btn btn-primary btn-lg">Create Free Account</a>
+  </section>
+
+  <footer class="landing-footer">
+    <div class="flex items-center justify-center gap-4 mb-3" style="flex-wrap:wrap">
+      <a href="about.html" class="text-xs text-muted" style="text-decoration:none">About</a>
+      <a href="contact.html" class="text-xs text-muted" style="text-decoration:none">Contact</a>
+      <a href="privacy.html" class="text-xs text-muted" style="text-decoration:none">Privacy Policy</a>
+      <a href="admin.html" class="text-xs text-muted" style="text-decoration:none">Admin</a>
     </div>
+    <div>&copy; 2026 Samachar News. All rights reserved.</div>
   </footer>
 
-  <script src="assets/js/layout.js?v=2"></script>
-  <script src="assets/js/api.js?v=2"></script>
-  <script src="assets/js/app.js?v=2"></script>
+  <script>
+    // Theme from localStorage
+    const saved = localStorage.getItem('samachar_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
 </body>
 </html>
