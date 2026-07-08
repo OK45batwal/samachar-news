@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: samachar-news
+    runtime: python
+    repo: https://github.com/OK45batwal/samachar-news
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.app:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips '*'
+    envVars:
+      - key: SUPERTOKENS_CONNECTION_URI
+        value: https://try.supertokens.com
+      - key: SAMACHAR_SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        fromService:
+          type: web
+          name: samachar-news
+          property: host
+      - key: PROMETHEUS_ENABLED
+        value: "false"
+      - key: DATABASE_URL
+        fromService:
+          type: postgres
+          name: samachar-news-db
+          property: connectionString
+    postDeploy:
+      - command: python -m backend.seed
+      - command: python scripts/seed_e2e.py
+
+databases:
+  - type: postgres
+    name: samachar-news-db
+    plan: free
+    ipAllowList: []
