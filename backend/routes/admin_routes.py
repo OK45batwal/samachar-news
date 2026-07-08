@@ -218,7 +218,6 @@ async def admin_seed(
     db: AsyncSession = Depends(get_db),
     admin=Depends(require_admin),
 ):
-    from sqlalchemy import select
     from ..models.models import Category, Source
     from ..services.news_service import FEED_CONFIG
 
@@ -234,10 +233,10 @@ async def admin_seed(
         ("Entertainment", "entertainment", "Entertainment", "entertainment"),
     ]
     cats_created = 0
-    for name, slug, desc, icon in category_defs:
+    for name, slug, description, icon in category_defs:
         existing = await db.execute(select(Category).where(Category.slug == slug))
         if not existing.scalar_one_or_none():
-            db.add(Category(name=name, slug=slug, description=desc, icon=icon))
+            db.add(Category(name=name, slug=slug, description=description, icon=icon))
             cats_created += 1
 
     srcs_created = 0
