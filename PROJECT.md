@@ -118,40 +118,55 @@ Objective: User-facing improvements.
 ```
 Samachar News
 │
-├── Home (/)
-│   ├── Featured Stories (hero grid)
-│   ├── News Ticker (latest headlines)
-│   └── Breaking News Alert (WebSocket push)
+├── Home (/) — featured stories, ticker, hero
 │
-├── Latest (latest.html)
-│   ├── All (with load-more pagination)
+├── Breaking News (latest.html?tab=breaking)
+│
+├── Latest News (latest.html)
+│   ├── All (load-more pagination)
 │   ├── Breaking (tab)
-│   └── By Category (sidebar: Politics, Business, Technology, Sports, Science, Health, Entertainment)
+│   └── By Category: India, World, Technology, Business, Sports,
+│       Entertainment, Health, Science, Politics
 │
-├── World Map (map.html)
-├── AI Insights (ai.html)
-├── Search (modal — Ctrl+K / search icon)
+├── Trending (trending.html)
+│
+├── Live Updates (live.html)
+│
+├── Videos (videos.html)
+│
 ├── Article (article.html?id=N)
-│   ├── Full content + AI summary
+│   ├── Content + AI summary
 │   ├── Related articles
 │   └── Bookmark toggle
 │
+├── Search (modal — Ctrl+K / search icon)
+│
 ├── Bookmarks (bookmarks.html — auth required)
+│
+├── Reading History (history.html — localStorage)
+│
 ├── Profile (profile.html — auth required)
 │
 ├── Authentication
 │   ├── Login (login.html)
-│   └── Register (register.html)
+│   ├── Register (register.html)
+│   └── Forgot Password (forgot-password.html)
 │
-├── Live Updates (WebSocket /api/ws — real-time alerts)
+├── World Map (map.html)
+├── AI Insights (ai.html)
+│
+├── Company
+│   ├── About (about.html)
+│   ├── Contact (contact.html)
+│   └── Privacy Policy (privacy.html)
 │
 └── Admin Panel (admin.html — auth + admin role required)
-    ├── Dashboard (stats overview)
-    ├── Articles (list, create, edit, delete)
-    ├── Categories (list)
-    ├── Users (list)
-    ├── Sources (list)
-    └── Ingestion (trigger + status polling)
+    ├── Dashboard
+    ├── Articles
+    ├── Users
+    ├── Categories
+    ├── Sources
+    └── Ingestion
 ```
 
 ---
