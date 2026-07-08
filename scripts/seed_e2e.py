@@ -1,10 +1,14 @@
 """Seed test data for e2e tests. Usage: python scripts/seed_e2e.py"""
-import asyncio, sys
+
+import asyncio
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from sqlalchemy import select
+
 from backend.database import async_session, init_db
 from backend.models.models import Article, ArticleStatus, Category, Source
 
