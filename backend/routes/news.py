@@ -1,7 +1,7 @@
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import desc, func, or_, select
+from sqlalchemy import desc, func, or_, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -10,6 +10,43 @@ from ..models.models import Article, ArticleStatus, Category, Source
 from ..schemas import ArticleListOut, ArticleOut
 
 router = APIRouter(prefix="/api/news", tags=["news"])
+
+COUNTRY_COORDS = {
+    "US": (37.0902, -95.7129), "UK": (55.3781, -3.4360), "India": (20.5937, 78.9629),
+    "Germany": (51.1657, 10.4515), "France": (46.6034, 1.8883), "China": (35.8617, 104.1954),
+    "Russia": (61.5240, 105.3188), "Japan": (36.2048, 138.2529), "Brazil": (-14.2350, -51.9253),
+    "Canada": (56.1304, -106.3468), "Australia": (-25.2744, 133.7751), "Spain": (40.4637, -3.7492),
+    "Italy": (41.8719, 12.5674), "Switzerland": (46.8182, 8.2275), "Netherlands": (52.1326, 5.2913),
+    "Singapore": (1.3521, 103.8198), "EU": (50.8503, 4.3517), "South Africa": (-30.5595, 22.9375),
+}
+
+
+@router.get("/geo")
+async def get_geo_events(db: AsyncSession = Depends(get_db)):
+    """Return events grouped by country with approximate coordinates."""
+    rows = await db.execute(
+        text("""
+            SELECT s.country, COUNT(*) as cnt
+            FROM articles a
+            JOIN sources s ON a.source_id = s.id
+            WHERE a.status = 'published' AND s.country IS NOT NULL AND s.country != ''
+            GROUP BY s.country
+            ORDER BY cnt DESC
+        """)
+    )
+    countries = []
+    for row in rows:
+        cnt = row.cnt
+        lat, lng = COUNTRY_COORDS.get(row.country)
+        if lat is not None:
+            countries.append({
+                "country": row.country,
+                "count": cnt,
+                "lat": lat,
+                "lng": lng,
+                "severity": "high" if cnt > 50 else "medium" if cnt > 20 else "low",
+            })
+    return {"countries": countries, "total": sum(c["count"] for c in countries)}
 
 @router.get("/", response_model=ArticleListOut)
 async def get_articles(

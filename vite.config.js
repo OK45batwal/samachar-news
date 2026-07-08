@@ -45,7 +45,7 @@ export default defineConfig({
       transformIndexHtml: {
         order: 'pre',
         handler(html, ctx) {
-          if (ctx.filename?.endsWith('auth-callback.html')) return html;
+          if (ctx.filename?.endsWith('auth-callback.html') || ctx.filename?.endsWith('map.html')) return html;
           return html
             .replace(
               /<script[^>]*src=["']assets\/js\/layout\.js(?:\?[^"']*)?["'][^>]*><\/script>\s*/g,
