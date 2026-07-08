@@ -13,7 +13,10 @@ from fastapi.responses import PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from supertokens_python import get_all_cors_headers
+from supertokens_python.framework.fastapi import get_middleware
 
+from .auth.supertokens import init_supertokens
 from .config import settings
 from .database import get_db, init_db
 from .models.models import Article, ArticleStatus
@@ -22,12 +25,7 @@ from .routes.auth_routes import router as auth_router
 from .routes.bookmarks import router as bookmarks_router
 from .routes.news import router as news_router
 
-# ── SuperTokens ─────────────────────────────────────────────────────────
-from .auth.supertokens import init_supertokens
 init_supertokens()
-
-from supertokens_python import get_all_cors_headers
-from supertokens_python.framework.fastapi import get_middleware
 
 # ── Sentry ──────────────────────────────────────────────────────────────
 if settings.SENTRY_DSN:
