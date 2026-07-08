@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const ROOT = 'frontend'
-const PAGES = ['index', 'home', 'latest', 'article', 'login', 'register', 'bookmarks', 'profile', 'ai', 'map', 'admin', '404', 'trending', 'live', 'history', 'forgot-password', 'contact', 'about', 'privacy']
+const PAGES = ['index', 'home', 'latest', 'article', 'login', 'register', 'bookmarks', 'profile', 'ai', 'map', 'admin', '404', 'trending', 'live', 'history', 'forgot-password', 'contact', 'about', 'privacy', 'auth-callback']
 
 function buildInput() {
   const entries = {}
@@ -44,7 +44,8 @@ export default defineConfig({
       name: 'samachar-html-transform',
       transformIndexHtml: {
         order: 'pre',
-        handler(html) {
+        handler(html, ctx) {
+          if (ctx.filename?.endsWith('auth-callback.html')) return html;
           return html
             .replace(
               /<script[^>]*src=["']assets\/js\/layout\.js(?:\?[^"']*)?["'][^>]*><\/script>\s*/g,

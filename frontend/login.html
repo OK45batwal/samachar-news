@@ -8,13 +8,12 @@
 .input-group { margin-bottom:20px; }
 .input-group label { display:block; font-size:13px; font-weight:600; color:var(--text-primary); margin-bottom:6px; }
 .input-group .input { width:100%; }
+.input-wrap { position:relative; }
+.input-wrap .input { padding-right:40px; width:100%; }
+.input-reveal { position:absolute; right:8px; top:50%; transform:translateY(-50%); padding:6px; color:var(--text-tertiary); display:flex; align-items:center; background:none; border:none; cursor:pointer; border-radius:4px; transition:color 0.2s; }
+.input-reveal:hover { color:var(--text-primary); }
 .input-hint { font-size:11px; color:var(--text-tertiary); margin-top:4px; }
 .form-footer { text-align:center; margin-top:24px; font-size:13px; color:var(--text-tertiary); }
-.auth-divider { display:flex; align-items:center; gap:16px; margin:24px 0; color:var(--text-tertiary); font-size:12px; }
-.auth-divider::before, .auth-divider::after { content:''; flex:1; height:1px; background:var(--border); }
-.social-btns { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.social-btn { display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border); background:transparent; color:var(--text-secondary); font-size:13px; cursor:pointer; transition:all 0.2s; }
-.social-btn:hover { border-color:var(--accent); color:var(--text-primary); }
 </style></head><body>
 <div class="auth-container">
   <div class="auth-form-side">
@@ -24,16 +23,10 @@
 
     <form id="loginForm">
       <div class="input-group"><label>Email</label><input id="loginEmail" type="email" class="input" placeholder="you@example.com" required></div>
-      <div class="input-group"><label>Password</label><input id="loginPassword" type="password" class="input" placeholder="••••••••" required><div class="input-hint flex justify-between"><span></span><a href="#" style="font-size:12px;color:var(--accent)">Forgot password?</a></div></div>
+      <div class="input-group"><label>Password</label><div class="input-wrap"><input id="loginPassword" type="password" class="input" placeholder="••••••••" required><button type="button" class="input-reveal" onclick="togglePassword(this)" aria-label="Show password"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="input-hint flex justify-between"><span></span><a href="forgot-password.html" style="font-size:12px;color:var(--accent)">Forgot password?</a></div></div>
       <div id="loginError" style="color:var(--danger);font-size:13px;margin-bottom:12px;display:none"></div>
       <button type="submit" class="btn btn-primary" style="width:100%;padding:14px;font-size:15px">Sign In</button>
     </form>
-
-    <div class="auth-divider">or continue with</div>
-    <div class="social-btns">
-      <button class="social-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#EA4335" d="M24 12.276c0-.815-.066-1.635-.2-2.438H12.24v4.62h6.615a5.53 5.53 0 0 1-2.4 3.628v3.013h3.886C22.454 18.768 24 15.744 24 12.276"/><path fill="#34A853" d="M12.24 24c3.24 0 5.954-1.062 7.94-2.9l-3.887-3.013c-1.076.732-2.456 1.159-4.053 1.159-3.116 0-5.754-2.102-6.697-4.932H1.524v3.108C3.5 21.342 7.58 24 12.24 24"/><path fill="#FBBC05" d="M5.543 14.314A7.17 7.17 0 0 1 5.144 12c0-.802.14-1.585.399-2.314V6.578H1.524A11.99 11.99 0 0 0 0 12c0 1.972.478 3.84 1.524 5.422l4.019-3.108"/><path fill="#4285F4" d="M12.24 4.755c1.72 0 3.26.596 4.476 1.747l3.345-3.345C18.189 1.188 15.475 0 12.24 0 7.58 0 3.5 2.658 1.524 6.578l4.019 3.108c.943-2.83 3.58-4.932 6.697-4.932"/></svg>Google</button>
-      <button class="social-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.998 12c0-6.628-5.372-12-11.999-12C5.372 0 0 5.372 0 12c0 5.99 4.388 10.955 10.124 11.854v-8.385H7.078v-3.47h3.046V9.356c0-3.008 1.792-4.669 4.533-4.669 1.312 0 2.686.234 2.686.234v2.953H15.83c-1.49 0-1.955.925-1.955 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 22.955 24 17.99 24 12"/></svg>GitHub</button>
-    </div>
 
     <div class="form-footer">Don't have an account? <a href="register.html">Create one</a></div>
   </div>
@@ -47,6 +40,14 @@
 <script src="assets/js/layout.js?v=1"></script>
 <script src="assets/js/api.js?v=1"></script>
 <script>
+function togglePassword(btn) {
+  const input = btn.parentElement.querySelector('input');
+  const hidden = input.type === 'password';
+  input.type = hidden ? 'text' : 'password';
+  btn.innerHTML = hidden
+    ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+    : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+}
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = e.target.querySelector('button[type="submit"]');
@@ -56,7 +57,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   errEl.style.display = 'none';
   try {
     await login(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);
-    window.location.href = 'index.html';
+    window.location.href = 'home.html';
   } catch (err) {
     errEl.textContent = err.message;
     errEl.style.display = 'block';

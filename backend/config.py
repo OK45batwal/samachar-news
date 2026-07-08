@@ -35,6 +35,12 @@ class Settings(BaseSettings):
     NEWS_API_KEY: str = ""
     RATE_LIMIT_PER_MINUTE: int = 20
     SUPERTOKENS_CONNECTION_URI: str = ""
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+    GITHUB_CLIENT_ID: str = ""
+    GITHUB_CLIENT_SECRET: str = ""
+    FACEBOOK_CLIENT_ID: str = ""
+    FACEBOOK_CLIENT_SECRET: str = ""
     API_DOMAIN: str = "http://localhost:8000"
     WEBSITE_DOMAIN: str = "http://localhost:8000"
 

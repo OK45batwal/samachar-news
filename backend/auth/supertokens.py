@@ -2,18 +2,82 @@ from fastapi import Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from supertokens_python import InputAppInfo, SupertokensConfig, init
-from supertokens_python.recipe import emailpassword, session
+from supertokens_python.recipe import emailpassword, session, thirdparty
 from supertokens_python.recipe.session import SessionContainer
 from supertokens_python.recipe.session.framework.fastapi import verify_session
+from supertokens_python.recipe.thirdparty import (
+    ProviderClientConfig,
+    ProviderConfig,
+    ProviderInput,
+)
 
 from ..config import settings
 from ..database import get_db
 from ..models.models import User
 
 
+def _thirdparty_providers():
+    """Build provider list from env vars. Providers without client_id are skipped."""
+    providers = []
+    if settings.GOOGLE_CLIENT_ID:
+        providers.append(
+            ProviderInput(
+                config=ProviderConfig(
+                    third_party_id="google",
+                    clients=[
+                        ProviderClientConfig(
+                            client_id=settings.GOOGLE_CLIENT_ID,
+                            client_secret=settings.GOOGLE_CLIENT_SECRET or "",
+                        )
+                    ],
+                ),
+            ),
+        )
+    if settings.GITHUB_CLIENT_ID:
+        providers.append(
+            ProviderInput(
+                config=ProviderConfig(
+                    third_party_id="github",
+                    clients=[
+                        ProviderClientConfig(
+                            client_id=settings.GITHUB_CLIENT_ID,
+                            client_secret=settings.GITHUB_CLIENT_SECRET or "",
+                        )
+                    ],
+                ),
+            ),
+        )
+    if settings.FACEBOOK_CLIENT_ID:
+        providers.append(
+            ProviderInput(
+                config=ProviderConfig(
+                    third_party_id="facebook",
+                    clients=[
+                        ProviderClientConfig(
+                            client_id=settings.FACEBOOK_CLIENT_ID,
+                            client_secret=settings.FACEBOOK_CLIENT_SECRET or "",
+                        )
+                    ],
+                ),
+            ),
+        )
+    return providers
+
+
 def init_supertokens():
     if not settings.SUPERTOKENS_CONNECTION_URI:
         return
+
+    providers = _thirdparty_providers()
+    recipe_list = [
+        emailpassword.init(),
+        session.init(
+            anti_csrf="NONE",
+            cookie_secure=settings.API_DOMAIN.startswith("https://"),
+        ),
+    ]
+    if providers:
+        recipe_list.insert(0, thirdparty.init(sign_in_and_up_feature=thirdparty.SignInAndUpFeature(providers=providers)))
 
     init(
         app_info=InputAppInfo(
@@ -27,13 +91,7 @@ def init_supertokens():
             connection_uri=settings.SUPERTOKENS_CONNECTION_URI,
         ),
         framework="fastapi",
-        recipe_list=[
-            emailpassword.init(),
-            session.init(
-                anti_csrf="NONE",
-                cookie_secure=settings.API_DOMAIN.startswith("https://"),
-            ),
-        ],
+        recipe_list=recipe_list,
         mode="asgi",
     )
 
