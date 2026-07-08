@@ -45,16 +45,17 @@ Objective: Move feed ingestion out of the request-response cycle.
 - [x] Per-feed isolated DB sessions — one failure doesn't kill others
 
 ## Phase 4: Deployment (Free Tier)
-Objective: Hosted on Railway for zero cost.
+Objective: Hosted on Render for zero cost.
 
-- [x] Create Procfile + runtime.txt
-- [x] Dockerfile with multi-stage build (Node → Python, Vite frontend bundled)
-- [x] `railway.json` config (Dockerfile builder, auto-sleep)
-- [x] `.env.example` with Railway notes
-- [x] Port binding via `$PORT` env var (shell-form CMD)
-- [x] Set up Railway project from GitHub
-- [x] Configure environment variables in dashboard
-- [ ] Run seed + initial ingest on Railway shell
+- [x] Create Procfile (uvicorn with --proxy-headers)
+- [x] `.env.example` with Render notes
+- [x] Port binding via `$PORT` env var
+- [x] Auto-detect Render via `RENDER_EXTERNAL_URL` env var
+- [x] Dynamic `cookie_secure` (False for http://, True for https://)
+- [x] Render PostgreSQL via `DATABASE_URL` env var
+- [ ] Set up Render project from GitHub
+- [ ] Configure environment variables in dashboard
+- [ ] Run seed + initial ingest on Render shell
 - [ ] Set up custom domain (optional)
 - [ ] Verify HTTPS, WebSocket, all endpoints work
 
@@ -96,7 +97,8 @@ Objective: Automated quality gates.
 - [x] Add integration tests for auth flow (8 tests: register, login, refresh, profile, validation)
 - [x] Add integration tests for article CRUD + bookmarks (8 tests: list, pagination, filter, single, 404, bookmark lifecycle, unauthorized)
 - [x] Add E2E test for critical user path (5 Playwright tests: home, latest, category filter, article page, register+login)
-- [ ] Auto-deploy to Railway on main branch push (Railway auto-deploys — needs Railway project setup)
+- [x] Seed script for e2e test data (`scripts/seed_e2e.py`)
+- [ ] Auto-deploy to Render on main branch push (Render auto-deploys — needs Render project setup)
 
 ## Phase 9: Features & Growth
 Objective: User-facing improvements.
@@ -113,23 +115,34 @@ Objective: User-facing improvements.
 
 ## Deployment Quick Reference
 
+### Local Dev
 ```bash
-# Local dev
 source .venv/bin/activate
 uvicorn backend.app:app --reload --port 8000
-
-# Seed DB
-python -m backend.seed
-
-# Ingest feeds
-python -c "import asyncio; from backend.services.news_service import ingest_feeds; asyncio.run(ingest_feeds())"
-
-# Tests
-python -m pytest tests/ -v
-
-# Production (Docker)
-docker compose up --build
 ```
+
+### Seed DB
+```bash
+python -m backend.seed
+python scripts/seed_e2e.py          # seed test data for e2e
+```
+
+### Ingest Feeds
+```bash
+python -c "import asyncio; from backend.services.news_service import ingest_feeds; asyncio.run(ingest_feeds())"
+```
+
+### Tests
+```bash
+python -m pytest tests/ -v          # unit + integration
+npx playwright test tests/e2e/      # e2e (needs server running)
+```
+
+### Production (Render)
+1. Push to GitHub
+2. Render auto-deploys from `main` via `Procfile`
+3. Set env vars in Render dashboard
+4. See [step-by-step guide](https://github.com/OK45batwal/samachar-news#deploy-to-render)
 
 ## Key Files
 
@@ -139,13 +152,17 @@ docker compose up --build
 | `backend/config.py` | All settings with env overrides |
 | `backend/database/__init__.py` | Async engine, session factory |
 | `backend/models/models.py` | SQLAlchemy models |
-| `backend/auth/auth.py` | JWT + password hashing |
-| `backend/routes/auth_routes.py` | Register, login, refresh |
+| `backend/auth/auth.py` | Legacy JWT + password hashing (WS tokens only) |
+| `backend/auth/supertokens.py` | SuperTokens init + session dependencies |
+| `backend/routes/auth_routes.py` | Profile, /me, ws-token (ST session-based) |
 | `backend/routes/news.py` | GET articles, search, pagination |
 | `backend/services/news_service.py` | 62 RSS feeds, parallel ingestion |
 | `backend/services/rate_limit.py` | DB-backed rate limiting |
 | `backend/seed.py` | Seed categories + sources |
-| `frontend/assets/js/api.js` | API client with JWT auto-refresh |
+| `Procfile` | Render start command (uvicorn + proxy-headers) |
+| `.github/workflows/test.yml` | CI: lint → test → e2e |
+| `scripts/seed_e2e.py` | Seed test articles for e2e |
+| `frontend/assets/js/api.js` | API client with credentials: include (ST cookies) |
 | `frontend/assets/js/app.js` | All page logic |
 | `frontend/assets/js/layout.js` | Header, sidebar, theme toggle |
 | `frontend/assets/css/variables.css` | All CSS vars + light/dark theme |
