@@ -29,12 +29,15 @@ async function login(email, password) {
   if (data.status !== 'OK') {
     throw new Error(data.status === 'WRONG_CREDENTIALS_ERROR' ? 'Invalid email or password' : 'Login failed');
   }
-  // Fetch local user profile
+  // Fetch local user profile — create it if missing
   try {
     const user = await api('/api/auth/me');
     localStorage.setItem('samachar_user', JSON.stringify(user));
   } catch {
-    // User profile doesn't exist yet (shouldn't happen after login)
+    const username = email.split('@')[0];
+    await api('/api/auth/profile', { method: 'POST', body: { email, username } });
+    const user = await api('/api/auth/me');
+    localStorage.setItem('samachar_user', JSON.stringify(user));
   }
   return data;
 }
