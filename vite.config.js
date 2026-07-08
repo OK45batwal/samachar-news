@@ -45,8 +45,7 @@ export default defineConfig({
       transformIndexHtml: {
         order: 'pre',
         handler(html, ctx) {
-          if (ctx.filename?.endsWith('auth-callback.html') || ctx.filename?.endsWith('map.html')) return html;
-          return html
+          html = html
             .replace(
               /<script[^>]*src=["']assets\/js\/layout\.js(?:\?[^"']*)?["'][^>]*><\/script>\s*/g,
               '',
@@ -59,10 +58,18 @@ export default defineConfig({
               /<script[^>]*src=["']assets\/js\/app\.js(?:\?[^"']*)?["'][^>]*><\/script>\s*/g,
               '',
             )
-            .replace(
+          if (ctx.filename?.endsWith('map.html')) {
+            html = html.replace(
+              '</body>',
+              '  <script type="module" src="/src/js/map-init.js"></script>\n</body>',
+            )
+          } else {
+            html = html.replace(
               '</body>',
               '  <script type="module" src="/src/js/main.js"></script>\n</body>',
             )
+          }
+          return html
         },
       },
     },
