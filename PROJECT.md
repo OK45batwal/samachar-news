@@ -132,7 +132,7 @@ Samachar News
 │
 ├── Live Updates (live.html)
 │
-├── Videos (videos.html)
+├── World Map (map.html)
 │
 ├── Article (article.html?id=N)
 │   ├── Content + AI summary
@@ -152,7 +152,6 @@ Samachar News
 │   ├── Register (register.html)
 │   └── Forgot Password (forgot-password.html)
 │
-├── World Map (map.html)
 ├── AI Insights (ai.html)
 │
 ├── Company
