@@ -113,6 +113,49 @@ Objective: User-facing improvements.
 
 ---
 
+## Site Map
+
+```
+Samachar News
+│
+├── Home (/)
+│   ├── Featured Stories (hero grid)
+│   ├── News Ticker (latest headlines)
+│   └── Breaking News Alert (WebSocket push)
+│
+├── Latest (latest.html)
+│   ├── All (with load-more pagination)
+│   ├── Breaking (tab)
+│   └── By Category (sidebar: Politics, Business, Technology, Sports, Science, Health, Entertainment)
+│
+├── World Map (map.html)
+├── AI Insights (ai.html)
+├── Search (modal — Ctrl+K / search icon)
+├── Article (article.html?id=N)
+│   ├── Full content + AI summary
+│   ├── Related articles
+│   └── Bookmark toggle
+│
+├── Bookmarks (bookmarks.html — auth required)
+├── Profile (profile.html — auth required)
+│
+├── Authentication
+│   ├── Login (login.html)
+│   └── Register (register.html)
+│
+├── Live Updates (WebSocket /api/ws — real-time alerts)
+│
+└── Admin Panel (admin.html — auth + admin role required)
+    ├── Dashboard (stats overview)
+    ├── Articles (list, create, edit, delete)
+    ├── Categories (list)
+    ├── Users (list)
+    ├── Sources (list)
+    └── Ingestion (trigger + status polling)
+```
+
+---
+
 ## Deployment Quick Reference
 
 ### Local Dev
