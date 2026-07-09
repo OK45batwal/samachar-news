@@ -3,6 +3,10 @@
 > Real-time news intelligence platform — RSS ingestion, AI-powered insights, interactive world map.
 
 <p align="center">
+  <a href="https://samachar-news.onrender.com/"><strong>🌐 Visit Samachar News →</strong></a>
+</p>
+
+<p align="center">
   <img src="docs/screenshots/landing.png" alt="Samachar Landing Page" width="700">
 </p>
 
