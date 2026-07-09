@@ -7,7 +7,7 @@ services:
     buildCommand: pip install -r requirements.txt
     plan: free
     startCommand: uvicorn backend.app:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips '*'
-    initialDeployHook: python -m backend.seed && python scripts/seed_e2e.py
+    initialDeployHook: python -m backend.seed && python scripts/seed_e2e.py && python -c "import asyncio; from backend.services.news_service import ingest_feeds; asyncio.run(ingest_feeds())"
     envVars:
       - key: SUPERTOKENS_CONNECTION_URI
         value: https://try.supertokens.com

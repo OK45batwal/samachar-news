@@ -1,8 +1,7 @@
-"""Seed test data for e2e tests. Usage: python scripts/seed_e2e.py"""
-
+"""Seed demo articles with geography data for e2e tests + map display."""
 import asyncio
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -16,47 +15,83 @@ from backend.models.models import Article, ArticleStatus, Category, Source
 async def main():
     await init_db()
     async with async_session() as db:
-        cats = {}
-        for name, slug in [("General", "general"), ("Technology", "technology"), ("World", "world")]:
-            existing = await db.execute(select(Category).where(Category.slug == slug))
-            cat = existing.scalar_one_or_none()
-            if not cat:
-                cat = Category(name=name, slug=slug)
-                db.add(cat)
-                await db.flush()
-            cats[slug] = cat
+        cats = {c.slug: c for c in (await db.execute(select(Category))).scalars().all()}
+        existing_sources = {s.name: s for s in (await db.execute(select(Source))).scalars().all()}
 
-        existing = await db.execute(select(Source).where(Source.name == "Test Source"))
-        src = existing.scalar_one_or_none()
-        if not src:
-            src = Source(name="Test Source", feed_url="https://example.com/rss")
-            db.add(src)
-            await db.flush()
+        country_sources = {
+            "US": "ABC News",
+            "UK": "BBC World",
+            "India": "NDTV",
+            "Germany": "Tagesschau",
+            "France": "Le Monde",
+            "China": None,
+            "Russia": None,
+            "Japan": None,
+            "Brazil": None,
+            "Canada": None,
+            "Australia": None,
+            "South Africa": None,
+        }
+
+        articles_data = [
+            ("US Markets Hit All-Time High on Tech Rally", "business", "US"),
+            ("Federal Reserve Holds Interest Rates Steady", "business", "US"),
+            ("NASA Announces New Mars Mission for 2028", "science", "US"),
+            ("Major Earthquake Hits California Coast", "world", "US"),
+            ("US Healthcare Bill Sparks Debate in Congress", "health", "US"),
+            ("Hollywood Strikes: Studios Reach Agreement", "entertainment", "US"),
+            ("Super Bowl LXI Sets Viewership Record", "sports", "US"),
+            ("AI Startup Raises $5B in Record Funding Round", "technology", "US"),
+            ("UK Prime Minister Announces New Cabinet", "world", "UK"),
+            ("Premier League Season Preview: Top Contenders", "sports", "UK"),
+            ("BBC Launches New Digital-First Strategy", "technology", "UK"),
+            ("London Stock Exchange Reports Strong Quarter", "business", "UK"),
+            ("NHS Winter Preparedness Plan Released", "health", "UK"),
+            ("India Launches Chandrayaan-4 Moon Mission", "science", "India"),
+            ("Indian Economy Grows 8.2% in Q2", "business", "India"),
+            ("IPL 2026: New Teams and Format Announced", "sports", "India"),
+            ("Digital India: 5G Coverage Reaches Rural Areas", "technology", "India"),
+            ("Germany Approves Major Renewable Energy Package", "world", "Germany"),
+            ("Bundesliga Season Kicks Off with Record Attendance", "sports", "Germany"),
+            ("Volkswagen Unveils New Electric Vehicle Lineup", "business", "Germany"),
+            ("France Hosts Global AI Safety Summit", "technology", "France"),
+            ("French Wine Industry Reports Record Exports", "business", "France"),
+            ("Tour de France 2026: Route Revealed", "sports", "France"),
+        ]
 
         now = datetime.now(timezone.utc)
-        for i, (title, cat_slug) in enumerate([
-            ("Global Markets Rally on Tech Earnings", "general"),
-            ("AI Regulation Framework Approved by EU", "technology"),
-            ("Breakthrough in Quantum Computing", "technology"),
-            ("Climate Summit 2026: Key Highlights", "world"),
-            ("India Wins Cricket World Cup", "general"),
-        ]):
+        added = 0
+        for title, cat_slug, country in articles_data:
             existing = await db.execute(select(Article).where(Article.title == title))
-            if not existing.scalar_one_or_none():
-                a = Article(
-                    title=title,
-                    slug=f"e2e-{i}-{title.lower().replace(' ', '-')[:50]}",
-                    summary=f"Summary of {title}",
-                    content=f"Full content about {title}.",
-                    status=ArticleStatus.PUBLISHED,
-                    category_id=cats[cat_slug].id,
-                    source_id=src.id,
-                    published_at=now,
-                )
-                db.add(a)
+            if existing.scalar_one_or_none():
+                continue
+
+            cat = cats.get(cat_slug)
+            if not cat:
+                continue
+
+            src_name = country_sources.get(country)
+            src = existing_sources.get(src_name)
+            if not src:
+                src = Source(name=src_name or f"{country} News", country=country, feed_url="", is_active=True)
+                db.add(src)
+                await db.flush()
+                existing_sources[src.name] = src
+
+            a = Article(
+                title=title,
+                slug=f"demo-{added}-{title.lower().replace(' ', '-')[:60].rstrip('-')}",
+                summary=f"{title}. This is a demo article for testing and display purposes.",
+                content=f"Full article content about {title.lower()}. This is a demonstration article seeded for initial deployment.",
+                status=ArticleStatus.PUBLISHED,
+                category_id=cat.id,
+                source_id=src.id,
+                published_at=now - timedelta(hours=added),
+            )
+            db.add(a)
+            added += 1
 
         await db.commit()
-        print("Seed data created")
-
+        print(f"Seeded {added} demo articles across {len(set(c for _, _, c in articles_data))} countries")
 
 asyncio.run(main())
