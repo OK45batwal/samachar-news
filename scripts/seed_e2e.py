@@ -94,4 +94,5 @@ async def main():
         await db.commit()
         print(f"Seeded {added} demo articles across {len(set(c for _, _, c in articles_data))} countries")
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

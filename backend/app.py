@@ -46,6 +46,33 @@ if settings.PROMETHEUS_ENABLED:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+
+    from sqlalchemy import func, select
+    from .database import async_session
+    from .models.models import Article
+
+    async with async_session() as db:
+        count = (await db.execute(select(func.count()).select_from(Article))).scalar() or 0
+        if count == 0:
+            logger.info("db_empty_running_seed")
+            from .seed import seed
+            from .services.news_service import ingest_feeds
+            await seed()
+            logger.info("categories_and_sources_seeded")
+            try:
+                from scripts.seed_e2e import main as seed_e2e
+                await seed_e2e()
+                logger.info("demo_articles_seeded")
+            except Exception as e:
+                logger.error("seed_e2e_failed", error=str(e))
+            try:
+                await ingest_feeds()
+                logger.info("feed_ingestion_complete")
+            except Exception as e:
+                logger.error("feed_ingestion_failed", error=str(e))
+        else:
+            logger.info("db_not_empty_skipping_seed", article_count=count)
+
     from .services.scheduler import start_scheduler, stop_scheduler
     await start_scheduler()
     logger.info("app_started", version="1.0.0")
