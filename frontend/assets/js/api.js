@@ -1,10 +1,20 @@
 const API_BASE = '';
 
+function getCookie(name) {
+  var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
 async function api(path, options = {}) {
   const { body, method = 'GET', ...rest } = options;
   const headers = { 'Content-Type': 'application/json', ...rest.headers };
 
-  let res = await fetch(`${API_BASE}${path}`, {
+  if (method !== 'GET') {
+    var csrf = getCookie('csrf_token');
+    if (csrf) headers['X-CSRF-Token'] = csrf;
+  }
+
+  let res = await fetch(API_BASE + path, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,
@@ -13,8 +23,8 @@ async function api(path, options = {}) {
   });
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new Error(err.detail || `Request failed: ${res.status}`);
+    const err = await res.json().catch(function() { return { detail: res.statusText }; });
+    throw new Error(err.detail || 'Request failed: ' + res.status);
   }
 
   return res.json();

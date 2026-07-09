@@ -1,7 +1,9 @@
+import secrets
+import time
 import uuid
 from datetime import datetime, timedelta
 
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from pydantic import BaseModel, ConfigDict, field_validator
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,8 +11,43 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..auth.auth import create_access_token, hash_password, verify_password, get_current_user
 from ..database import get_db
 from ..models.models import User
+from ..services.rate_limit import check_rate_limit
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+CSRF_TOKENS = {}
+CSRF_EXPIRY = 3600  # 1 hour
+
+
+def _generate_csrf() -> str:
+    return secrets.token_urlsafe(32)
+
+
+def _validate_csrf(request: Request):
+    token = request.headers.get("x-csrf-token") or request.headers.get("X-CSRF-Token")
+    if not token:
+        raise HTTPException(status_code=403, detail="Missing CSRF token")
+    entry = CSRF_TOKENS.get(token)
+    if not entry:
+        raise HTTPException(status_code=403, detail="Invalid CSRF token")
+    if entry["exp"] < time.time():
+        del CSRF_TOKENS[token]
+        raise HTTPException(status_code=403, detail="CSRF token expired")
+    del CSRF_TOKENS[token]
+
+
+def _set_csrf_cookie(response: Response):
+    token = _generate_csrf()
+    CSRF_TOKENS[token] = {"exp": time.time() + CSRF_EXPIRY}
+    response.set_cookie(
+        key="csrf_token",
+        value=token,
+        httponly=False,
+        secure=True,
+        samesite="lax",
+        path="/",
+        max_age=CSRF_EXPIRY,
+    )
 
 
 class UserResponse(BaseModel):
@@ -63,7 +100,8 @@ def _set_token_cookie(response: Response, token: str):
 
 
 @router.post("/login")
-async def login(data: LoginRequest, response: Response, db: AsyncSession = Depends(get_db)):
+async def login(data: LoginRequest, request: Request, response: Response, db: AsyncSession = Depends(get_db)):
+    await check_rate_limit(f"{request.client.host}:login", db)
     result = await db.execute(select(User).where(User.email == data.email))
     user = result.scalar_one_or_none()
     if not user or not user.hashed_password or not verify_password(data.password, user.hashed_password):
@@ -73,11 +111,13 @@ async def login(data: LoginRequest, response: Response, db: AsyncSession = Depen
 
     token = create_access_token({"sub": user.id})
     _set_token_cookie(response, token)
+    _set_csrf_cookie(response)
     return UserResponse.model_validate(user)
 
 
 @router.post("/register", status_code=201)
-async def register(data: RegisterRequest, response: Response, db: AsyncSession = Depends(get_db)):
+async def register(data: RegisterRequest, request: Request, response: Response, db: AsyncSession = Depends(get_db)):
+    await check_rate_limit(f"{request.client.host}:register", db)
     existing = await db.execute(
         select(User).where((User.email == data.email) | (User.username == data.email.split("@")[0]))
     )
@@ -98,12 +138,15 @@ async def register(data: RegisterRequest, response: Response, db: AsyncSession =
 
     token = create_access_token({"sub": user.id})
     _set_token_cookie(response, token)
+    _set_csrf_cookie(response)
     return UserResponse.model_validate(user)
 
 
 @router.post("/logout")
-async def logout(response: Response):
+async def logout(request: Request, response: Response):
+    _validate_csrf(request)
     response.delete_cookie(key="access_token", path="/")
+    response.delete_cookie(key="csrf_token", path="/")
     return {"status": "ok"}
 
 

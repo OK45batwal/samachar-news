@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta, timezone
+import time
+from datetime import datetime, timedelta
 from typing import Optional
 
 from fastapi import HTTPException, Request
@@ -40,7 +41,7 @@ async def _check_redis(key: str, limit: int) -> Optional[bool]:
     if r is None:
         return None
     try:
-        now = int(datetime.now(timezone.utc).timestamp())
+        now = int(time.time())
         window_start = now - WINDOW_SECONDS
         pipe = r.pipeline()
         pipe.zremrangebyscore(key, 0, window_start)
@@ -62,7 +63,7 @@ async def check_rate_limit(key: str, db: AsyncSession) -> None:
         return
 
     # Fallback: DB-backed rate limiting
-    now = datetime.now(timezone.utc)
+    now = datetime.utcnow()
     cutoff = now - timedelta(seconds=WINDOW_SECONDS)
 
     await db.execute(
