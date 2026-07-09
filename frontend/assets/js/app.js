@@ -353,43 +353,87 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('articleTime').textContent = timeAgo(article.published_at);
       document.getElementById('articleCategory').textContent = cat.name;
       document.getElementById('articleReadTime').textContent = Math.max(1, Math.ceil((article.content?.length || 0) / 1500)) + ' min read';
-      document.getElementById('articleSummary').textContent = article.summary || '';
-      var contentLines = (article.content || article.summary || 'No content available').split('\n').filter(Boolean);
-      document.getElementById('articleContent').textContent = '';
-      for (var i = 0; i < contentLines.length; i++) {
-        var p = document.createElement('p');
-        p.textContent = contentLines[i];
-        document.getElementById('articleContent').appendChild(p);
+      document.getElementById('articleViewCount').textContent = (article.view_count || 0).toLocaleString() + ' views';
+
+      var initial = (article.source?.name || 'U')[0].toUpperCase();
+      document.getElementById('articleAvatar').textContent = initial;
+
+      // Hero image with fallback gradient
+      var heroEl = document.getElementById('articleHero');
+      var heroSkeleton = heroEl.querySelector('.skeleton');
+      if (article.image_url && article.image_url.startsWith('http')) {
+        heroSkeleton.outerHTML = '<img src="' + article.image_url.replace(/"/g, '') + '" alt="' + sanitize(article.title) + '" class="article-hero-img" onerror="this.style.display=\'none\';this.parentElement.querySelector(\'.article-hero-fallback\').style.display=\'flex\'" />';
+        var fallback = document.createElement('div');
+        fallback.className = 'article-hero-fallback';
+        fallback.style.display = 'none';
+        fallback.innerHTML = '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+        heroEl.insertBefore(fallback, heroEl.querySelector('.article-hero-gradient'));
+      } else {
+        heroSkeleton.outerHTML = '<div class="article-hero-fallback"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>';
       }
-      document.getElementById('articleAiSummary').textContent = article.summary
-        ? `Sentiment: ${(article.sentiment_score || 0) > 0 ? 'positive' : (article.sentiment_score || 0) < 0 ? 'negative' : 'neutral'} (score: ${article.sentiment_score || 0}). Key topics include ${article.title?.toLowerCase()}.`
-        : 'AI analysis not available.';
-      const heroImg = document.querySelector('.article-hero .skeleton');
-      if (heroImg && article.image_url) {
-        heroImg.outerHTML = `<img src="${article.image_url}" alt="${article.title}" style="width:100%;height:100%;object-fit:cover" />`;
+
+      // Content rendering
+      var skeleton = document.getElementById('articleSkeleton');
+      if (skeleton) skeleton.remove();
+      var bodyContainer = document.getElementById('articleBody');
+      var rawContent = article.content || article.summary || 'No content available.';
+
+      // Try parsing as HTML, fallback to plain text
+      bodyContainer.innerHTML = renderArticleContent(rawContent);
+
+      // AI Summary
+      var aiEl = document.getElementById('articleAiSummary');
+      aiEl.textContent = article.summary
+        ? article.summary.length > 200
+          ? article.summary.slice(0, 200) + '...'
+          : article.summary
+        : 'AI analysis not available for this article.';
+
+      // Bookmark
+      var bookmarkBtn = document.getElementById('bookmarkBtn');
+      if (bookmarkBtn) bookmarkBtn.onclick = function() { toggleBookmark(article.id); };
+
+      // Reading progress
+      var progressBar = document.getElementById('progressBar');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var scrollTop = window.scrollY;
+          var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          progressBar.style.width = (docHeight > 0 ? Math.min(scrollTop / docHeight * 100, 100) : 0) + '%';
+        });
       }
-      const bookmarkBtn = document.getElementById('bookmarkBtn');
-      if (bookmarkBtn) bookmarkBtn.onclick = () => toggleBookmark(article.id);
-      const related = document.getElementById('relatedArticles');
+
+      // Related articles with images
+      var related = document.getElementById('relatedArticles');
       if (related) {
         try {
-          const rd = await getArticles({ category: article.category?.slug, limit: 4 });
-          const filtered = (rd.articles || []).filter(a => a.id !== article.id).slice(0, 3);
+          var rd = await getArticles({ category: article.category?.slug, limit: 5 });
+          var filtered = (rd.articles || []).filter(function(a) { return a.id !== article.id; }).slice(0, 3);
+          related.innerHTML = '';
           if (filtered.length) {
-            related.innerHTML = '';
-          filtered.forEach(function(a) {
-            var link = document.createElement('a');
-            link.href = 'article.html?id=' + a.id;
-            link.className = 'card p-4 flex gap-3';
-            link.innerHTML = '<div class="min-w-0 flex-1"><h4 class="text-sm font-semibold line-clamp-2">' + sanitize(a.title) + '</h4><span class="text-xs text-muted">' + timeAgo(a.published_at) + '</span></div>';
-            related.appendChild(link);
-          });
+            filtered.forEach(function(a) {
+              var imgUrl = a.image_url && a.image_url.startsWith('http') ? a.image_url : '';
+              var thumbHtml = imgUrl
+                ? '<img src="' + imgUrl + '" alt="" style="width:80px;height:60px;object-fit:cover;border-radius:6px;flex-shrink:0" loading="lazy" />'
+                : '<div style="width:80px;height:60px;border-radius:6px;background:var(--bg-elevated);flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>';
+              var link = document.createElement('a');
+              link.href = 'article.html?id=' + a.id;
+              link.className = 'card p-3 flex gap-3 items-center';
+              link.innerHTML = thumbHtml + '<div class="min-w-0 flex-1"><h4 class="text-sm font-semibold line-clamp-2" style="color:var(--text-primary)">' + sanitize(a.title) + '</h4><span class="text-xs text-muted">' + timeAgo(a.published_at) + '</span></div>';
+              related.appendChild(link);
+            });
+          } else {
+            related.innerHTML = '<p class="text-xs text-muted">No related articles found</p>';
           }
-        } catch { related.innerHTML = '<p class="text-xs text-muted">Failed to load related articles</p>'; }
+        } catch (_) {
+          related.innerHTML = '<p class="text-xs text-muted">Failed to load related articles</p>';
+        }
       }
     } catch (err) {
       articleTitle.textContent = 'Failed to load article';
-      document.getElementById('articleContent').innerHTML = `<p class="text-muted">${err.message}</p>`;
+      var skeleton = document.getElementById('articleSkeleton');
+      if (skeleton) skeleton.remove();
+      document.getElementById('articleBody').innerHTML = '<div class="card p-6 text-center"><p class="text-muted">' + sanitize(err.message) + '</p></div>';
     }
   }
 
@@ -409,6 +453,72 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch { bookmarksContainer.innerHTML = emptyBookmarksHTML(); }
   }
 });
+
+// ── HTML content renderer (safe, limited tags) ──
+function renderArticleContent(raw) {
+  if (!raw) return '<p class="text-muted">No content available.</p>';
+  var el = document.createElement('div');
+  el.innerHTML = raw;
+  var allowed = { p:1, h1:1, h2:1, h3:1, h4:1, h5:1, h6:1, ul:1, ol:1, li:1, blockquote:1, pre:1, code:1, img:1, a:1, br:1, strong:1, em:1, b:1, i:1, u:1, s:1, sub:1, sup:1, hr:1, div:1, span:1, table:1, thead:1, tbody:1, tr:1, th:1, td:1, figure:1, figcaption:1 };
+
+  function walk(node) {
+    if (node.nodeType === 3) return node; // text nodes pass through
+    if (node.nodeType !== 1) return null; // skip comments etc
+
+    var tag = node.tagName.toLowerCase();
+    if (!allowed[tag]) {
+      // unwrap — keep children, discard wrapper
+      var fragment = document.createDocumentFragment();
+      while (node.firstChild) {
+        var child = walk(node.firstChild);
+        if (child) fragment.appendChild(child);
+      }
+      return fragment;
+    }
+
+    var clone = document.createElement(tag);
+    // Copy safe attributes
+    if (tag === 'a' && node.getAttribute('href')) {
+      var href = node.getAttribute('href');
+      if (href.startsWith('http') || href.startsWith('/')) {
+        clone.setAttribute('href', href);
+        clone.setAttribute('rel', 'noopener noreferrer');
+        clone.setAttribute('target', '_blank');
+      }
+    }
+    if (tag === 'img') {
+      var src = node.getAttribute('src');
+      if (src && src.startsWith('http')) {
+        clone.setAttribute('src', src);
+        clone.setAttribute('alt', node.getAttribute('alt') || '');
+        clone.setAttribute('loading', 'lazy');
+        clone.style.maxWidth = '100%';
+        clone.style.borderRadius = 'var(--radius-md)';
+      } else {
+        return null; // skip invalid images
+      }
+    }
+    if (tag === 'td' || tag === 'th') {
+      var colspan = node.getAttribute('colspan');
+      if (colspan) clone.setAttribute('colspan', colspan);
+    }
+
+    // Copy classes for <pre> styling etc
+    if (tag === 'pre' || tag === 'code') {
+      var cls = node.getAttribute('class');
+      if (cls) clone.setAttribute('class', cls);
+    }
+
+    while (node.firstChild) {
+      var child = walk(node.firstChild);
+      if (child) clone.appendChild(child);
+    }
+    return clone;
+  }
+
+  var result = walk(el);
+  return result ? result.innerHTML : '<p class="text-muted">No content available.</p>';
+}
 
 // ── Utilities ──────────────────────────────
 function emptyBookmarksHTML() {

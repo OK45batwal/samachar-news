@@ -3,10 +3,12 @@ from datetime import datetime
 from typing import Optional
 
 import feedparser
+import httpx
 import structlog
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from ..config import settings
 from ..database import async_session
 from ..models.models import Article, ArticleStatus, Category, Source
 from ..utils.utils import slugify
@@ -217,6 +219,123 @@ async def _ingest_feed(db, key, cfg):
 
     return count
 
+NEWSAPI_CATEGORY_MAP = {
+    "general": "world", "world": "world", "politics": "politics",
+    "technology": "technology", "business": "business",
+    "sports": "sports", "science": "science", "health": "health",
+    "entertainment": "entertainment",
+}
+
+async def fetch_newsapi(db: AsyncSession):
+    """Fetch articles from NewsAPI and store them. Requires NEWS_API_KEY in .env."""
+    api_key = settings.NEWS_API_KEY
+    if not api_key:
+        logger.info("NEWS_API_KEY not set — skipping NewsAPI fetch")
+        return 0
+
+    total = 0
+    categories = ["general", "world", "technology", "business", "sports", "science", "health", "entertainment"]
+
+    async with httpx.AsyncClient(timeout=15) as client:
+        for cat in categories:
+            try:
+                resp = await client.get(
+                    "https://newsapi.org/v2/top-headlines",
+                    params={"category": cat, "pageSize": 12, "apiKey": api_key, "language": "en"},
+                )
+                if resp.status_code != 200:
+                    logger.warning("NewsAPI returned %d for %s", resp.status_code, cat)
+                    continue
+
+                data = resp.json()
+                articles = data.get("articles", [])
+                if not articles:
+                    continue
+
+                local_cat = NEWSAPI_CATEGORY_MAP.get(cat, "world")
+                category = await _get_category(db, local_cat)
+                if not category:
+                    continue
+
+                # Use first article's source as our source entry
+                source_name = f"NewsAPI {cat}"
+                source = await _get_source_from_name(db, source_name, cat)
+
+                for item in articles:
+                    url = item.get("url", "")
+                    title = item.get("title", "")
+                    if not url or not title:
+                        continue
+
+                    existing = await db.execute(select(Article).where(Article.source_url == url))
+                    if existing.scalar_one_or_none():
+                        continue
+
+                    slug_base = slugify(title)[:200]
+                    slug = slug_base
+                    counter = 1
+                    while True:
+                        slug_check = await db.execute(select(Article).where(Article.slug == slug))
+                        if not slug_check.scalar_one_or_none():
+                            break
+                        slug = f"{slug_base[:190]}-{counter}"
+                        counter += 1
+
+                    published = datetime.utcnow()
+                    raw_date = item.get("publishedAt", "")
+                    if raw_date:
+                        try:
+                            published = datetime.fromisoformat(raw_date.replace("Z", "+00:00")).replace(tzinfo=None)
+                        except Exception:
+                            pass
+
+                    img = item.get("urlToImage", "") or ""
+                    if img and not img.startswith("http"):
+                        img = ""
+
+                    article = Article(
+                        title=title,
+                        slug=slug,
+                        summary=(item.get("description") or "")[:500],
+                        content=item.get("content") or item.get("description") or title,
+                        image_url=img,
+                        source_url=url,
+                        author=item.get("author") or "",
+                        status=ArticleStatus.PUBLISHED,
+                        category_id=category.id,
+                        source_id=source.id,
+                        published_at=published,
+                    )
+                    db.add(article)
+                    total += 1
+
+            except Exception as e:
+                logger.warning("NewsAPI fetch failed for %s: %s", cat, e)
+
+    if total:
+        await db.commit()
+        logger.info("NewsAPI: %d new articles stored", total)
+    return total
+
+
+async def _get_source_from_name(db: AsyncSession, name: str, category_slug: str) -> Optional[Source]:
+    """Get or create a source by name (used by NewsAPI)."""
+    result = await db.execute(select(Source).where(Source.name == name))
+    source = result.scalar_one_or_none()
+    if not source:
+        source = Source(
+            name=name,
+            feed_url="",
+            country="US",
+            language="en",
+            is_active=True,
+        )
+        db.add(source)
+        await db.commit()
+        await db.refresh(source)
+    return source
+
+
 async def ingest_feeds():
     async with async_session() as db:
         tasks = [_ingest_feed(db, key, cfg) for key, cfg in FEED_CONFIG.items()]
@@ -234,3 +353,9 @@ async def ingest_feeds():
 
         await db.commit()
         logger.info("Feed ingestion: %d new articles from %d/%d sources", total, succeeded, len(FEED_CONFIG))
+
+        # Also fetch from NewsAPI as supplemental data
+        try:
+            await fetch_newsapi(db)
+        except Exception as e:
+            logger.error("NewsAPI fetch error: %s", e)
