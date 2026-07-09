@@ -98,5 +98,41 @@
 
 <script src="assets/js/layout.js?v=1"></script>
 <script src="assets/js/api.js?v=1"></script>
-<script>document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('trendingList');if(!e)return;const t=document.getElementById('loadMoreBtn');let n=1;const l=()=>{const l=document.querySelector('.category-tabs .active');let o='trending';l&&l.dataset.cat&&(o=`trending/${l.dataset.cat}`);t.textContent='Loading...';t.disabled=true;window.api.get(`/articles/${o}?page=${n}&limit=12`).then(r=>{if(r&&r.articles&&r.articles.length>0){r.articles.forEach(r=>{const t=document.createElement('div');t.className='card';t.innerHTML=`<div class="card-img"><img src="${r.image||'assets/images/placeholder.jpg'}" alt="${r.title}" loading="lazy"/></div><div class="card-body"><h3 class="card-title"><a href="article.html?id=${r._id||r.id}">${r.title}</a></h3><p class="card-text text-sm text-muted">${r.description||''}</p><div class="card-footer"><span class="text-xs text-muted">${r.source||''}</span><span class="badge badge-sm">${r.category||''}</span></div></div>`;e.appendChild(t)});n++;t.textContent='Load More';t.disabled=false}else{t.textContent='No more articles';t.disabled=true}}).catch(()=>{t.textContent='Load More';t.disabled=false})};l();t.addEventListener('click',l);document.querySelectorAll('.category-tabs button').forEach(e=>{e.addEventListener('click',function(){document.querySelectorAll('.category-tabs button').forEach(e=>e.classList.remove('active'));this.classList.add('active');e.innerHTML='';n=1;l()})})});</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var list = document.getElementById('trendingList');
+  if (!list) return;
+  var loadBtn = document.getElementById('loadMoreBtn');
+  var page = 1;
+  function loadTrending() {
+    loadBtn.textContent = 'Loading...';
+    loadBtn.disabled = true;
+    var catTab = document.querySelector('.category-tabs .active');
+    var params = { page: page, limit: 12 };
+    if (catTab && catTab.dataset.cat) params.category = catTab.dataset.cat;
+    getArticles(params).then(function(data) {
+      var articles = data.articles || [];
+      if (articles.length > 0) {
+        articles.forEach(function(a) {
+          var card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = renderNewsCard(a);
+          list.appendChild(card);
+        });
+        page++;
+        loadBtn.textContent = 'Load More';
+        loadBtn.disabled = false;
+      } else {
+        loadBtn.textContent = 'No more articles';
+        loadBtn.disabled = true;
+      }
+    }).catch(function() {
+      loadBtn.textContent = 'Load More';
+      loadBtn.disabled = false;
+    });
+  }
+  loadTrending();
+  loadBtn.addEventListener('click', loadTrending);
+});
+</script>
 </body></html>

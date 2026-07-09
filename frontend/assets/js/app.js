@@ -1,3 +1,10 @@
+function sanitize(str) {
+  if (!str) return '';
+  var el = document.createElement('div');
+  el.textContent = str;
+  return el.innerHTML;
+}
+
 const CATEGORY_MAP = {
   general: { name: 'General', badge: 'badge-accent' },
   world: { name: 'World', badge: 'badge-accent' },
@@ -28,42 +35,33 @@ function timeAgo(dateStr) {
 
 function renderNewsCard(article, index = 0) {
   const cat = getCategoryStyle(article.category?.slug);
-  const hasImg = article.image_url && article.image_url.startsWith('http');
-  const imgHtml = hasImg
-    ? `<img src="${article.image_url}" alt="${article.title}" style="width:100%;height:100%;object-fit:cover" loading="lazy" />`
-    : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated)"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`;
-  return `
-    <a href="article.html?id=${article.id}" class="news-card animate-fade-in" style="animation-delay:${index * 0.05}s">
-      <div class="news-card-img">
-        ${imgHtml}
-        <span class="badge ${cat.badge}" style="position:absolute;top:12px;left:12px;font-size:9px">${cat.name}</span>
-      </div>
-      <div class="news-card-body">
-        <div class="news-card-meta">
-          <span class="text-xs text-muted">${article.source?.name || 'Unknown'}</span>
-          <span class="text-xs text-muted">·</span>
-          <span class="text-xs text-muted">${timeAgo(article.published_at)}</span>
-        </div>
-        <h3 class="line-clamp-2">${article.title}</h3>
-        <p class="line-clamp-2 mt-1">${article.summary || ''}</p>
-      </div>
-      <div class="news-card-footer">
-        <span class="text-xs text-muted">${(article.view_count || 0).toLocaleString()} views</span>
-        <div class="news-card-actions">
-          <button class="btn btn-icon btn-ghost" onclick="event.stopPropagation();toggleBookmark(${article.id})" title="Bookmark">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-          </button>
-          <button class="btn btn-icon btn-ghost" onclick="event.stopPropagation();shareArticle('${article.title}')" title="Share">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-          </button>
-        </div>
-      </div>
-    </a>
-  `;
+  var safeTitle = sanitize(article.title);
+  var safeSummary = sanitize(article.summary);
+  var safeSource = sanitize(article.source?.name || 'Unknown');
+  var safeImgUrl = article.image_url && article.image_url.startsWith('http') ? article.image_url : '';
+  var imgHtml = safeImgUrl
+    ? '<img src="' + safeImgUrl + '" alt="' + safeTitle + '" style="width:100%;height:100%;object-fit:cover" loading="lazy" />'
+    : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated)"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>';
+  var parts = [];
+  parts.push('<a href="article.html?id=' + article.id + '" class="news-card animate-fade-in" style="animation-delay:' + (index * 0.05) + 's">');
+  parts.push('<div class="news-card-img">' + imgHtml);
+  parts.push('<span class="badge ' + cat.badge + '" style="position:absolute;top:12px;left:12px;font-size:9px">' + cat.name + '</span></div>');
+  parts.push('<div class="news-card-body">');
+  parts.push('<div class="news-card-meta"><span class="text-xs text-muted">' + safeSource + '</span><span class="text-xs text-muted">·</span><span class="text-xs text-muted">' + timeAgo(article.published_at) + '</span></div>');
+  parts.push('<h3 class="line-clamp-2">' + safeTitle + '</h3>');
+  parts.push('<p class="line-clamp-2 mt-1">' + safeSummary + '</p></div>');
+  parts.push('<div class="news-card-footer"><span class="text-xs text-muted">' + (article.view_count || 0).toLocaleString() + ' views</span>');
+  parts.push('<div class="news-card-actions">');
+  parts.push('<button class="btn btn-icon btn-ghost" onclick="event.stopPropagation();toggleBookmark(' + article.id + ')" title="Bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></button>');
+  parts.push('<button class="btn btn-icon btn-ghost" onclick="event.stopPropagation();shareArticle(\'' + safeTitle + '\')" title="Share"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>');
+  parts.push('</div></div>');
+  parts.push('</a>');
+  return parts.join('');
 }
 
 function emptyState(msg, cta) {
-  return `<div class="card p-8 text-center" style="grid-column:1/-1"><p class="text-muted">${msg}</p>${cta || ''}</div>`;
+  var safeMsg = sanitize(msg);
+  return '<div class="card p-8 text-center" style="grid-column:1/-1"><p class="text-muted">' + safeMsg + '</p>' + (cta || '') + '</div>';
 }
 
 // ─── WebSocket ──────────────────────────────
@@ -87,7 +85,7 @@ function connectWS() {
         if (msg.type === 'news_alert') {
           showToast(`📰 ${msg.data.title || 'Breaking news update!'}`);
         }
-      } catch {}
+      } catch (e) { console.warn('WS parse error:', e); }
     };
     ws.onclose = () => {
       if (wsPingInterval) clearInterval(wsPingInterval);
@@ -98,11 +96,12 @@ function connectWS() {
       try {
         const { token } = await getWsToken();
         ws.send(JSON.stringify({type:'auth', token}));
-      } catch {
+      } catch (e) {
+        console.warn('WS auth failed:', e);
         ws.close();
       }
     };
-  } catch {}
+  } catch (e) { console.warn('WS connect failed:', e); }
 }
 if (getUser()) connectWS();
 
@@ -353,11 +352,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('articleSource').textContent = article.source?.name || 'Unknown';
       document.getElementById('articleTime').textContent = timeAgo(article.published_at);
       document.getElementById('articleCategory').textContent = cat.name;
-      document.getElementById('articleReadTime').textContent = `${Math.max(1, Math.ceil((article.content?.length || 0) / 1500))} min read`;
+      document.getElementById('articleReadTime').textContent = Math.max(1, Math.ceil((article.content?.length || 0) / 1500)) + ' min read';
       document.getElementById('articleSummary').textContent = article.summary || '';
-      document.getElementById('articleContent').innerHTML =
-        (article.content || article.summary || 'No content available')
-          .split('\n').filter(Boolean).map(p => `<p>${p}</p>`).join('');
+      var contentLines = (article.content || article.summary || 'No content available').split('\n').filter(Boolean);
+      document.getElementById('articleContent').textContent = '';
+      for (var i = 0; i < contentLines.length; i++) {
+        var p = document.createElement('p');
+        p.textContent = contentLines[i];
+        document.getElementById('articleContent').appendChild(p);
+      }
       document.getElementById('articleAiSummary').textContent = article.summary
         ? `Sentiment: ${(article.sentiment_score || 0) > 0 ? 'positive' : (article.sentiment_score || 0) < 0 ? 'negative' : 'neutral'} (score: ${article.sentiment_score || 0}). Key topics include ${article.title?.toLowerCase()}.`
         : 'AI analysis not available.';
@@ -373,9 +376,14 @@ document.addEventListener('DOMContentLoaded', async () => {
           const rd = await getArticles({ category: article.category?.slug, limit: 4 });
           const filtered = (rd.articles || []).filter(a => a.id !== article.id).slice(0, 3);
           if (filtered.length) {
-            related.innerHTML = filtered.map(a =>
-              `<a href="article.html?id=${a.id}" class="card p-4 flex gap-3"><div class="min-w-0 flex-1"><h4 class="text-sm font-semibold line-clamp-2">${a.title}</h4><span class="text-xs text-muted">${timeAgo(a.published_at)}</span></div></a>`
-            ).join('');
+            related.innerHTML = '';
+          filtered.forEach(function(a) {
+            var link = document.createElement('a');
+            link.href = 'article.html?id=' + a.id;
+            link.className = 'card p-4 flex gap-3';
+            link.innerHTML = '<div class="min-w-0 flex-1"><h4 class="text-sm font-semibold line-clamp-2">' + sanitize(a.title) + '</h4><span class="text-xs text-muted">' + timeAgo(a.published_at) + '</span></div>';
+            related.appendChild(link);
+          });
           }
         } catch { related.innerHTML = '<p class="text-xs text-muted">Failed to load related articles</p>'; }
       }

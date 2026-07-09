@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const bms = await getBookmarks();
     document.getElementById('statBookmarks').textContent = bms.length;
-  } catch { document.getElementById('statBookmarks').textContent = '—'; }
+  } catch (e) { console.warn('load bookmarks failed:', e); document.getElementById('statBookmarks').textContent = '—'; }
   document.getElementById('statRead').textContent = '0';
 });
 </script>

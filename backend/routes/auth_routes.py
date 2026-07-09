@@ -107,6 +107,15 @@ async def logout(response: Response):
     return {"status": "ok"}
 
 
+@router.get("/ws-token")
+async def get_ws_token(user: User = Depends(get_current_user)):
+    token = create_access_token(
+        {"sub": user.id, "type": "ws"},
+        expires_delta=timedelta(minutes=5),
+    )
+    return {"token": token}
+
+
 @router.get("/me", response_model=UserResponse)
 async def get_me(user: User = Depends(get_current_user)):
     return UserResponse.model_validate(user)
