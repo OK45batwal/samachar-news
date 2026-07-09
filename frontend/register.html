@@ -74,7 +74,8 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
   try {
     await register(
       document.getElementById('regEmail').value,
-      password
+      password,
+      document.getElementById('regName').value
     );
     window.location.href = 'home.html';
   } catch (err) {

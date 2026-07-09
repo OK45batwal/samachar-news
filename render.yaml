@@ -8,8 +8,6 @@ services:
     plan: free
     startCommand: uvicorn backend.app:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips '*'
     envVars:
-      - key: SUPERTOKENS_CONNECTION_URI
-        value: https://try.supertokens.com
       - key: SAMACHAR_SECRET_KEY
         generateValue: true
       - key: CORS_ORIGINS
