@@ -20,7 +20,6 @@ from .auth.supertokens import init_supertokens
 from .config import settings
 from .database import get_db, init_db
 from .models.models import Article, ArticleStatus
-from .routes.admin_routes import router as admin_router
 from .routes.auth_routes import router as auth_router
 from .routes.bookmarks import router as bookmarks_router
 from .routes.news import router as news_router
@@ -132,7 +131,6 @@ if settings.SUPERTOKENS_CONNECTION_URI:
     app.include_router(auth_router)
 app.include_router(news_router)
 app.include_router(bookmarks_router)
-app.include_router(admin_router)
 
 @app.get("/health")
 async def simple_health():

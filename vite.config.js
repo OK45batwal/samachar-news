@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const ROOT = 'frontend'
-const PAGES = ['index', 'home', 'latest', 'article', 'login', 'register', 'bookmarks', 'profile', 'ai', 'map', 'admin', '404', 'trending', 'live', 'history', 'forgot-password', 'contact', 'about', 'privacy', 'auth-callback']
+const PAGES = ['index', 'home', 'latest', 'article', 'login', 'register', 'bookmarks', 'profile', 'ai', 'map', '404', 'trending', 'live', 'history', 'forgot-password', 'contact', 'about', 'privacy', 'auth-callback']
 
 function buildInput() {
   const entries = {}
