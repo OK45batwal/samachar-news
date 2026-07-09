@@ -1,6 +1,6 @@
 import enum
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 
 from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy import Enum as SAEnum
@@ -30,8 +30,8 @@ class User(Base):
     role = Column(SAEnum(UserRole, values_callable=lambda x: [e.value for e in x]), default=UserRole.USER, nullable=False)
     is_active = Column(Boolean, default=True)
     preferences = Column(JSON, default=dict)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.utcnow())
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow(), onupdate=lambda: datetime.utcnow())
 
     bookmarks = relationship("Bookmark", back_populates="user", cascade="all, delete-orphan")
 
@@ -43,7 +43,7 @@ class Category(Base):
     slug = Column(String(100), unique=True, nullable=False)
     description = Column(Text)
     icon = Column(String(50))
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.utcnow())
 
     articles = relationship("Article", back_populates="category")
 
@@ -57,7 +57,7 @@ class Source(Base):
     country = Column(String(100))
     language = Column(String(10))
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.utcnow())
 
     articles = relationship("Article", back_populates="source")
 
@@ -78,8 +78,8 @@ class Article(Base):
     category_id = Column(Integer, ForeignKey("categories.id"))
     source_id = Column(Integer, ForeignKey("sources.id"))
     published_at = Column(DateTime)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.utcnow())
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow(), onupdate=lambda: datetime.utcnow())
 
     category = relationship("Category", back_populates="articles")
     source = relationship("Source", back_populates="articles")
@@ -90,7 +90,7 @@ class RateLimitEntry(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     key = Column(String(255), nullable=False, index=True)
-    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc), index=True)
+    timestamp = Column(DateTime, default=lambda: datetime.utcnow(), index=True)
 
 class IngestionRun(Base):
     __tablename__ = "ingestion_runs"
@@ -102,7 +102,7 @@ class IngestionRun(Base):
     feeds_failed = Column(Integer, default=0)
     articles_added = Column(Integer, default=0)
     errors = Column(JSON, default=list)
-    started_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    started_at = Column(DateTime, default=lambda: datetime.utcnow())
     completed_at = Column(DateTime, nullable=True)
 
 class Bookmark(Base):
@@ -112,7 +112,7 @@ class Bookmark(Base):
     user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     article_id = Column(Integer, ForeignKey("articles.id", ondelete="CASCADE"), nullable=False)
     folder = Column(String(100), default="default")
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.utcnow())
 
     user = relationship("User", back_populates="bookmarks")
     article = relationship("Article", back_populates="bookmarks")

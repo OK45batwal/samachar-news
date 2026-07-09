@@ -1,5 +1,5 @@
 """Inline demo article seeder — avoids cross-package import issues."""
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 
 from sqlalchemy import select
 
@@ -44,7 +44,7 @@ async def seed_demo_articles():
             ("Tour de France 2026: Route Revealed", "sports", "France"),
         ]
 
-        now = datetime.now(timezone.utc)
+        now = datetime.utcnow()
         added = 0
         for title, cat_slug, country in articles_data:
             existing = await db.execute(select(Article).where(Article.title == title))

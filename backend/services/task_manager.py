@@ -1,5 +1,5 @@
 import asyncio
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Optional
 
 import structlog
@@ -95,7 +95,7 @@ async def _do_ingest(run_id: str):
             run.feeds_failed = failed
             run.articles_added = articles
             run.errors = errors
-            run.completed_at = datetime.now(timezone.utc)
+            run.completed_at = datetime.utcnow()
             await db.commit()
 
         logger.info(
