@@ -171,6 +171,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); line-height: 1.2; fon
 .mb-6 { margin-bottom: 24px; }
 .mb-8 { margin-bottom: 32px; }
 .p-2 { padding: 8px; }
+.p-3 { padding: 12px; }
 .p-4 { padding: 16px; }
 .p-6 { padding: 24px; }
 

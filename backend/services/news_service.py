@@ -135,6 +135,43 @@ async def fetch_article_content(url: str) -> Optional[str]:
         logger.warning("Failed to fetch %s: %s", url, e)
         return None
 
+def _extract_image(entry) -> str:
+    """Extract the best image URL from an RSS entry using multiple strategies."""
+    # 1. media:content (url attribute)
+    for m in (entry.get("media_content") or []):
+        url = m.get("url", "")
+        if url.startswith("http"):
+            return url
+
+    # 2. media:thumbnail (url attribute)
+    for m in (entry.get("media_thumbnail") or []):
+        url = m.get("url", "")
+        if url.startswith("http"):
+            return url
+
+    # 3. enclosures (href attribute)
+    for m in (entry.get("enclosures") or []):
+        url = m.get("href", "")
+        if url.startswith("http"):
+            ct = (m.get("type") or "").lower()
+            if not ct or ct.startswith("image"):
+                return url
+
+    # 4. Extract first <img src> from HTML content
+    content_html = ""
+    if entry.get("content"):
+        content_html = entry["content"][0].get("value", "")
+    if not content_html:
+        content_html = entry.get("summary", "")
+    if content_html:
+        import re
+        m = re.search(r'<img[^>]+src=["\'](https?://[^"\']+)["\']', content_html)
+        if m:
+            return m.group(1)
+
+    return ""
+
+
 def _parse_feed(feed_url: str):
     return feedparser.parse(feed_url)
 
@@ -193,20 +230,14 @@ async def _ingest_feed(db, key, cfg):
             except Exception:
                 published = datetime.utcnow()
 
-        article = Article(
-            title=entry.get("title", ""),
-            slug=slug,
-            summary=(entry.get("summary") or "")[:500],
-            content=(entry.get("content", [{}])[0].get("value", "")
-                     if entry.get("content") else entry.get("summary", "")),
-            image_url=(
-                next(
-                    (m.get("href", "")
-                     for m in (entry.get("media_content") or [])
-                     if m.get("href")),
-                    ""
-                )
-            ),
+            img = _extract_image(entry)
+            article = Article(
+                title=entry.get("title", ""),
+                slug=slug,
+                summary=(entry.get("summary") or "")[:500],
+                content=(entry.get("content", [{}])[0].get("value", "")
+                         if entry.get("content") else entry.get("summary", "")),
+                image_url=img,
             source_url=link,
             author=entry.get("author", ""),
             status=ArticleStatus.PUBLISHED,
