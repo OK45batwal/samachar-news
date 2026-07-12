@@ -1,5 +1,7 @@
 import difflib
 import re
+from collections import Counter
+from datetime import datetime, timedelta
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -10,8 +12,20 @@ from sqlalchemy.orm import selectinload
 from ..database import get_db
 from ..models.models import Article, ArticleStatus, Category, Source
 from ..schemas import ArticleListOut, ArticleOut
+from ..utils.utils import slugify
 
 router = APIRouter(prefix="/api/news", tags=["news"])
+
+STOP_WORDS = {
+    'the','a','an','and','or','but','in','on','at','to','for','of','by','with',
+    'from','as','is','was','are','were','be','been','being','have','has','had',
+    'do','does','did','will','would','could','should','may','might','shall',
+    'can','not','no','nor','its','it','this','that','these','those','all',
+    'each','every','both','few','more','most','some','any','new','after',
+    'over','under','up','down','out','off','about','into','through','during',
+    'before','between','than','also','just','very','too','yet','so','if',
+    'because','while','when','where','how','what','which','who','whom','why',
+}
 
 COUNTRY_COORDS = {
     "US": (37.0902, -95.7129), "UK": (55.3781, -3.4360), "India": (20.5937, 78.9629),
@@ -109,64 +123,135 @@ def extract_countries(text: str) -> list[str]:
 
 
 @router.get("/geo")
-async def get_geo_events(db: AsyncSession = Depends(get_db)):
-    """Return events grouped by country with approximate coordinates.
-    Uses source country and also extracts country mentions from article content."""
-    # Primary: group by source country
-    rows = await db.execute(
-        text("""
-            SELECT s.country, COUNT(*) as cnt
-            FROM articles a
-            JOIN sources s ON a.source_id = s.id
-            WHERE a.status = 'published' AND s.country IS NOT NULL AND s.country != ''
-            GROUP BY s.country
-            ORDER BY cnt DESC
-        """)
+async def get_geo_events(
+    category: Optional[str] = None,
+    days: Optional[int] = None,
+    db: AsyncSession = Depends(get_db),
+):
+    """Return events grouped by country with coordinates, sentiment, and top keywords."""
+    base = (
+        select(Source.country, func.count(Article.id).label("cnt"),
+               func.coalesce(func.avg(Article.sentiment_score), 0).label("avg_sentiment"))
+        .select_from(Article)
+        .join(Source, Article.source_id == Source.id)
+        .where(Article.status == ArticleStatus.PUBLISHED,
+               Source.country.isnot(None), Source.country != "")
     )
-    country_counts = {}
-    for row in rows:
-        cnt = row.cnt
-        lat, lng = COUNTRY_COORDS.get(row.country)
-        if lat is not None:
-            country_counts[row.country] = cnt
+    if category:
+        base = base.join(Category, Article.category_id == Category.id).where(Category.slug == category)
+    if days:
+        cutoff = datetime.utcnow() - timedelta(days=days)
+        base = base.where(Article.published_at >= cutoff)
+    base = base.group_by(Source.country).order_by(desc("cnt"))
 
-    # Secondary: for articles without source country, extract from content
-    rows2 = await db.execute(
-        text("""
-            SELECT a.title, a.summary
-            FROM articles a
-            WHERE a.status = 'published'
-            AND (a.source_id IS NULL OR EXISTS (
-                SELECT 1 FROM sources s WHERE s.id = a.source_id AND (s.country IS NULL OR s.country = '')
-            ))
-            ORDER BY a.published_at DESC
-            LIMIT 200
-        """)
-    )
+    rows = await db.execute(base)
+    country_data = {}
+    keyword_buckets = {}
+    for row in rows:
+        name = row.country
+        lat, lng = COUNTRY_COORDS.get(name)
+        if lat is None:
+            continue
+        country_data[name] = {"cnt": row.cnt, "lat": lat, "lng": lng, "sentiment": round(float(row.avg_sentiment), 2)}
+        keyword_buckets[name] = Counter()
+
+    # Fetch titles for keyword extraction (limit per country)
+    if keyword_buckets:
+        title_rows = await db.execute(
+            select(Source.country, Article.title)
+            .select_from(Article)
+            .join(Source, Article.source_id == Source.id)
+            .where(Article.status == ArticleStatus.PUBLISHED,
+                   Source.country.in_(list(keyword_buckets.keys())))
+            .limit(500)
+        )
+        for tr in title_rows:
+            cname = tr.country
+            if cname in keyword_buckets and tr.title:
+                words = re.findall(r'\b[a-zA-Z]{3,}\b', tr.title.lower())
+                keyword_buckets[cname].update(w for w in words if w not in STOP_WORDS)
+
+    # Secondary: articles without source country
+    sec_query = select(Article.title, Article.summary).where(
+        Article.status == ArticleStatus.PUBLISHED,
+        Article.source_id.is_(None) | (
+            select(Source.id).where(
+                Source.id == Article.source_id,
+                (Source.country.is_(None)) | (Source.country == "")
+            ).exists()
+        )
+    ).order_by(desc(Article.published_at)).limit(200)
+    if category:
+        sec_query = sec_query.join(Category, Article.category_id == Category.id).where(Category.slug == category)
+    if days:
+        cutoff = datetime.utcnow() - timedelta(days=days)
+        sec_query = sec_query.where(Article.published_at >= cutoff)
+
+    rows2 = await db.execute(sec_query)
     for row in rows2:
         combined = f"{row.title or ''} {row.summary or ''}"
         for c in extract_countries(combined):
-            country_counts[c] = country_counts.get(c, 0) + 1
+            if c in country_data:
+                country_data[c]["cnt"] += 1
 
     countries = []
-    for name, cnt in country_counts.items():
-        lat, lng = COUNTRY_COORDS.get(name)
-        if lat is not None:
-            countries.append({
-                "country": name,
-                "count": cnt,
-                "lat": lat,
-                "lng": lng,
-                "severity": "high" if cnt > 50 else "medium" if cnt > 20 else "low",
-            })
+    for name, info in country_data.items():
+        cnt = info["cnt"]
+        countries.append({
+            "country": name,
+            "count": cnt,
+            "lat": info["lat"],
+            "lng": info["lng"],
+            "severity": "high" if cnt > 50 else "medium" if cnt > 20 else "low",
+            "sentiment": info["sentiment"],
+            "top_keywords": [w for w, _ in keyword_buckets.get(name, Counter()).most_common(5)],
+        })
     countries.sort(key=lambda x: x["count"], reverse=True)
     return {"countries": countries, "total": sum(c["count"] for c in countries)}
+
+
+@router.get("/geo/{country}/articles", response_model=ArticleListOut)
+async def get_country_articles(
+    country: str,
+    category: Optional[str] = None,
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1, le=50),
+    db: AsyncSession = Depends(get_db),
+):
+    """Return articles for a specific country."""
+    # Resolve country aliases
+    resolved = country
+    for alias, target in COUNTRY_ALIASES.items():
+        if alias.lower() == country.lower():
+            resolved = target
+            break
+    # Find articles whose source country matches
+    query = (
+        select(Article)
+        .options(selectinload(Article.category), selectinload(Article.source))
+        .join(Source, Article.source_id == Source.id)
+        .where(Article.status == ArticleStatus.PUBLISHED,
+               Source.country == resolved)
+    )
+    if category:
+        query = query.join(Category, Article.category_id == Category.id).where(Category.slug == category)
+
+    total_q = select(func.count()).select_from(query.subquery())
+    total_result = await db.execute(total_q)
+    total = total_result.scalar()
+
+    query = query.order_by(desc(Article.published_at)).offset((page - 1) * limit).limit(limit)
+    result = await db.execute(query)
+    articles = result.scalars().all()
+
+    return ArticleListOut(articles=articles, total=total or 0, page=page, limit=limit)
 
 @router.get("/", response_model=ArticleListOut)
 async def get_articles(
     category: Optional[str] = None,
     source: Optional[str] = None,
     q: Optional[str] = None,
+    country: Optional[str] = None,
     page: int = Query(1, ge=1),
     limit: int = Query(20, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
@@ -181,6 +266,13 @@ async def get_articles(
         query = query.join(Category).where(Category.slug == category)
     if source:
         query = query.join(Source).where(Source.name == source)
+    if country:
+        resolved = country
+        for alias, target in COUNTRY_ALIASES.items():
+            if alias.lower() == country.lower():
+                resolved = target
+                break
+        query = query.join(Source).where(Source.country == resolved)
     if q:
         query = query.where(
             or_(Article.title.ilike(f"%{q}%"), Article.summary.ilike(f"%{q}%"))
