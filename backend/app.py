@@ -145,6 +145,24 @@ async def health(db: AsyncSession = Depends(get_db)):
         "active_connections": len(manager.active),
     }
 
+
+@app.get("/api/health/ingestion")
+async def ingestion_health():
+    from .services.task_manager import get_last_ingestion
+    last = await get_last_ingestion()
+    if not last:
+        return {"status": "unknown", "message": "No ingestion runs yet"}
+    # Consider stale if last run > 2 hours ago and not currently running
+    from datetime import datetime, timedelta
+    started = datetime.fromisoformat(last["started_at"].replace("Z", "+00:00"))
+    stale = datetime.utcnow() - started > timedelta(hours=2)
+    status = last["status"]
+    if status == "running":
+        return {"status": "running", "started_at": last["started_at"]}
+    if status == "failed" or stale:
+        return {"status": "degraded", "last_run": last}
+    return {"status": "ok", "last_run": last}
+
 @app.get("/api/stats")
 async def stats(db: AsyncSession = Depends(get_db)):
     total_q = select(func.count()).select_from(Article)
