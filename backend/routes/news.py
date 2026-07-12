@@ -5,14 +5,13 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import desc, func, or_, select, text
+from sqlalchemy import desc, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from ..database import get_db
 from ..models.models import Article, ArticleStatus, Category, Source
 from ..schemas import ArticleListOut, ArticleOut
-from ..utils.utils import slugify
 
 router = APIRouter(prefix="/api/news", tags=["news"])
 
@@ -68,10 +67,10 @@ COUNTRY_ALIASES = {
 }
 
 
-def _fuzzy_match_country(text: str) -> list[str]:
+def _fuzzy_match_country(content: str) -> list[str]:
     """Fuzzy-match country names when exact match fails."""
     found = set()
-    words = re.findall(r'\b(\w+)\b', text.lower())
+    words = re.findall(r'\b(\w+)\b', content.lower())
     country_names = list(COUNTRY_COORDS.keys())
     for target in country_names:
         if target.lower() in words:
@@ -100,12 +99,12 @@ def _fuzzy_match_country(text: str) -> list[str]:
     return list(found)
 
 
-def extract_countries(text: str) -> list[str]:
+def extract_countries(content: str) -> list[str]:
     """Match country names in text using keyword search and fuzzy fallback."""
-    if not text:
+    if not content:
         return []
     found = set()
-    upper = text.upper()
+    upper = content.upper()
     for name in COUNTRY_COORDS:
         alias = COUNTRY_ALIASES.get(name, name)
         if alias.upper() in upper:
@@ -115,7 +114,7 @@ def extract_countries(text: str) -> list[str]:
             found.add(target)
     # Fuzzy fallback for unclear mentions
     if not found:
-        fuzzy = _fuzzy_match_country(text)
+        fuzzy = _fuzzy_match_country(content)
         found.update(fuzzy)
     # Filter out EU (too broad)
     found.discard("EU")

@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, field_validator
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..auth.auth import create_access_token, hash_password, verify_password, get_current_user
+from ..auth.auth import create_access_token, get_current_user, hash_password, verify_password
 from ..database import get_db
 from ..models.models import User
 from ..services.rate_limit import check_rate_limit
