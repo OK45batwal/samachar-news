@@ -453,6 +453,41 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     } catch { bookmarksContainer.innerHTML = emptyBookmarksHTML(); }
   }
+
+  // Auto-refresh ticker every 60s (home page)
+  var tickerTrackEl = document.getElementById('tickerTrack');
+  if (tickerTrackEl) {
+    setInterval(async function() {
+      try {
+        var data = await getArticles({ limit: 10 });
+        var titles = (data.articles || []).map(function(a) { return a.title; }).filter(Boolean);
+        if (titles.length) {
+          tickerTrackEl.innerHTML = titles.map(function(t) { return '<span>' + t + '</span><span>&middot;</span>'; }).join(' ') + ' ' + titles.map(function(t) { return '<span>' + t + '</span><span>&middot;</span>'; }).join(' ');
+        }
+      } catch(e) { /* silent */ }
+    }, 60000);
+  }
+
+  // Refresh latest/trending list when tab becomes visible again
+  var newsContainer = document.getElementById('newsList');
+  if (newsContainer && loadMoreCtrl) {
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') {
+        var params = new URLSearchParams(window.location.search);
+        loadMoreCtrl.reset(params.get('cat') || '', params.get('q') || '');
+      }
+    });
+  }
+
+  // Refresh trending list on tab visible
+  var trendingList = document.getElementById('trendingList');
+  if (trendingList) {
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') {
+        location.reload();
+      }
+    });
+  }
 });
 
 // ── HTML content renderer (safe, limited tags) ──
