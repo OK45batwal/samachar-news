@@ -1,3 +1,4 @@
+import difflib
 import re
 from typing import Optional
 
@@ -37,15 +38,56 @@ COUNTRY_COORDS = {
 }
 
 COUNTRY_ALIASES = {
-    "USA": "US", "United States": "US", "America": "US", "U.S.": "US",
-    "Britain": "UK", "Great Britain": "UK", "England": "UK", "United Kingdom": "UK",
+    "USA": "US", "United States": "US", "America": "US", "U.S.": "US", "US-based": "US",
+    "Britain": "UK", "Great Britain": "UK", "England": "UK", "United Kingdom": "UK", "UK-based": "UK",
     "South Korea": "South Korea", "North Korea": "North Korea",
     "UAE": "UAE", "United Arab Emirates": "UAE",
+    "Korea": "South Korea", "DPRK": "North Korea",
+    "Holland": "Netherlands", "the Netherlands": "Netherlands",
+    "Czechia": "Czech Republic", "Czech Republic": "Czech Republic",
+    "Burma": "Myanmar", "Myanmar": "Myanmar",
+    "Ivory Coast": "Côte d'Ivoire", "Côte d'Ivoire": "Côte d'Ivoire",
+    "EU": "EU", "European Union": "EU", "Europe": "EU",
+    "UK-established": "UK", "US-established": "US",
+    "Moscow": "Russia", "Beijing": "China", "London": "UK", "Washington": "US",
+    "New Delhi": "India", "Delhi": "India",
 }
 
 
+def _fuzzy_match_country(text: str) -> list[str]:
+    """Fuzzy-match country names when exact match fails."""
+    found = set()
+    words = re.findall(r'\b(\w+)\b', text.lower())
+    country_names = list(COUNTRY_COORDS.keys())
+    for target in country_names:
+        if target.lower() in words:
+            found.add(target)
+    # Levenshtein-like: allow single-char diffs on 3+ char words
+    for target in country_names:
+        if len(target) < 4:
+            continue
+        tl = target.lower()
+        for w in words:
+            if len(w) < 3:
+                continue
+            if difflib.SequenceMatcher(None, tl, w).ratio() > 0.85:
+                found.add(target)
+                break
+    for alias, target in COUNTRY_ALIASES.items():
+        al = alias.lower()
+        if len(al) < 4:
+            continue
+        for w in words:
+            if len(w) < 3:
+                continue
+            if difflib.SequenceMatcher(None, al, w).ratio() > 0.85:
+                found.add(target)
+                break
+    return list(found)
+
+
 def extract_countries(text: str) -> list[str]:
-    """Match country names in text using keyword search."""
+    """Match country names in text using keyword search and fuzzy fallback."""
     if not text:
         return []
     found = set()
@@ -57,6 +99,10 @@ def extract_countries(text: str) -> list[str]:
     for alias, target in COUNTRY_ALIASES.items():
         if alias.upper() in upper:
             found.add(target)
+    # Fuzzy fallback for unclear mentions
+    if not found:
+        fuzzy = _fuzzy_match_country(text)
+        found.update(fuzzy)
     # Filter out EU (too broad)
     found.discard("EU")
     return list(found)

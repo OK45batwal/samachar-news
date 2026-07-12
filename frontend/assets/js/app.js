@@ -362,7 +362,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       var heroEl = document.getElementById('articleHero');
       var heroSkeleton = heroEl.querySelector('.skeleton');
       if (article.image_url && article.image_url.startsWith('http')) {
-        heroSkeleton.outerHTML = '<img src="' + article.image_url.replace(/"/g, '') + '" alt="' + sanitize(article.title) + '" class="article-hero-img" onerror="this.style.display=\'none\';this.parentElement.querySelector(\'.article-hero-fallback\').style.display=\'flex\'" />';
+        var imgUrl = article.image_url.replace(/"/g, '');
+        heroSkeleton.outerHTML = '<img src="' + imgUrl + '" alt="' + sanitize(article.title) + '" class="article-hero-img" loading="lazy" srcset="' + imgUrl + ' 480w, ' + imgUrl + ' 768w, ' + imgUrl + ' 1200w" sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, 1200px" onerror="this.style.display=\'none\';this.parentElement.querySelector(\'.article-hero-fallback\').style.display=\'flex\'" />';
         var fallback = document.createElement('div');
         fallback.className = 'article-hero-fallback';
         fallback.style.display = 'none';

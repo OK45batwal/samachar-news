@@ -1,4 +1,5 @@
 import asyncio
+import time
 from datetime import datetime
 from typing import Optional
 
@@ -12,6 +13,7 @@ from ..config import settings
 from ..database import async_session
 from ..models.models import Article, ArticleStatus, Category, Source
 from ..utils.utils import slugify
+from .feed_parser import extract_image_fallback
 
 logger = structlog.get_logger(__name__)
 
@@ -135,41 +137,7 @@ async def fetch_article_content(url: str) -> Optional[str]:
         logger.warning("Failed to fetch %s: %s", url, e)
         return None
 
-def _extract_image(entry) -> str:
-    """Extract the best image URL from an RSS entry using multiple strategies."""
-    # 1. media:content (url attribute)
-    for m in (entry.get("media_content") or []):
-        url = m.get("url", "")
-        if url.startswith("http"):
-            return url
-
-    # 2. media:thumbnail (url attribute)
-    for m in (entry.get("media_thumbnail") or []):
-        url = m.get("url", "")
-        if url.startswith("http"):
-            return url
-
-    # 3. enclosures (href attribute)
-    for m in (entry.get("enclosures") or []):
-        url = m.get("href", "")
-        if url.startswith("http"):
-            ct = (m.get("type") or "").lower()
-            if not ct or ct.startswith("image"):
-                return url
-
-    # 4. Extract first <img src> from HTML content
-    content_html = ""
-    if entry.get("content"):
-        content_html = entry["content"][0].get("value", "")
-    if not content_html:
-        content_html = entry.get("summary", "")
-    if content_html:
-        import re
-        m = re.search(r'<img[^>]+src=["\'](https?://[^"\']+)["\']', content_html)
-        if m:
-            return m.group(1)
-
-    return ""
+_extract_image = extract_image_fallback
 
 
 def _parse_feed(feed_url: str):
@@ -257,11 +225,21 @@ NEWSAPI_CATEGORY_MAP = {
     "entertainment": "entertainment",
 }
 
+_newsapi_last_fetch = 0.0
+NEWSAPI_CACHE_TTL = 600  # 10 minutes
+
 async def fetch_newsapi(db: AsyncSession):
     """Fetch articles from NewsAPI and store them. Requires NEWS_API_KEY in .env."""
+    global _newsapi_last_fetch
     api_key = settings.NEWS_API_KEY
     if not api_key:
         logger.info("NEWS_API_KEY not set — skipping NewsAPI fetch")
+        return 0
+
+    # 10-min cache guard
+    now = time.time()
+    if now - _newsapi_last_fetch < NEWSAPI_CACHE_TTL:
+        logger.info("NewsAPI fetch skipped (within 10-min cache window)")
         return 0
 
     total = 0
@@ -274,6 +252,9 @@ async def fetch_newsapi(db: AsyncSession):
                     "https://newsapi.org/v2/top-headlines",
                     params={"category": cat, "pageSize": 12, "apiKey": api_key, "language": "en"},
                 )
+                if resp.status_code == 429:
+                    logger.warning("NewsAPI rate limited — stopping")
+                    break
                 if resp.status_code != 200:
                     logger.warning("NewsAPI returned %d for %s", resp.status_code, cat)
                     continue
@@ -343,9 +324,12 @@ async def fetch_newsapi(db: AsyncSession):
             except Exception as e:
                 logger.warning("NewsAPI fetch failed for %s: %s", cat, e)
 
+    # Only update cache timestamp if we weren't rate-limited
     if total:
         await db.commit()
         logger.info("NewsAPI: %d new articles stored", total)
+    global _newsapi_last_fetch
+    _newsapi_last_fetch = now
     return total
 
 
