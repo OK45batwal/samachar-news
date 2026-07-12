@@ -324,11 +324,9 @@ async def fetch_newsapi(db: AsyncSession):
             except Exception as e:
                 logger.warning("NewsAPI fetch failed for %s: %s", cat, e)
 
-    # Only update cache timestamp if we weren't rate-limited
     if total:
         await db.commit()
         logger.info("NewsAPI: %d new articles stored", total)
-    global _newsapi_last_fetch
     _newsapi_last_fetch = now
     return total
 
