@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -7,7 +7,6 @@ from sqlalchemy.orm import selectinload
 from ..auth.auth import get_current_user
 from ..database import get_db
 from ..models.models import Article, Bookmark
-from ..routes.auth_routes import _validate_csrf
 
 router = APIRouter(prefix="/api/bookmarks", tags=["bookmarks"])
 
@@ -28,8 +27,7 @@ async def get_bookmarks(user=Depends(get_current_user), db: AsyncSession = Depen
     return result.scalars().all()
 
 @router.post("/")
-async def add_bookmark(data: AddBookmarkRequest, request: Request, user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
-    _validate_csrf(request)
+async def add_bookmark(data: AddBookmarkRequest, user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     article = await db.execute(select(Article).where(Article.id == data.article_id))
     if not article.scalar_one_or_none():
         raise HTTPException(status_code=404, detail="Article not found")
@@ -46,8 +44,7 @@ async def add_bookmark(data: AddBookmarkRequest, request: Request, user=Depends(
     return {"status": "ok"}
 
 @router.delete("/{article_id}")
-async def remove_bookmark(article_id: int, request: Request, user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
-    _validate_csrf(request)
+async def remove_bookmark(article_id: int, user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     await db.execute(
         delete(Bookmark).where(Bookmark.user_id == user.id, Bookmark.article_id == article_id)
     )

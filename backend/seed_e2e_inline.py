@@ -114,7 +114,9 @@ async def seed_demo_articles():
                 existing_sources[src.name] = src
 
             img = CATEGORY_IMAGES.get(cat_slug) or random.choice(DEMO_IMAGES)
-            content_html = DEMO_CONTENT.get(cat_slug, f"<p>Full article content about {title.lower()}. This is a demonstration article seeded for initial deployment.</p>")  # noqa: E501
+            intro = f"<p>In {country}, <strong>{title.lower()}</strong> is drawing widespread attention from analysts and citizens.</p>"
+            body = DEMO_CONTENT.get(cat_slug) or f"<p>Full article content about {title.lower()}.</p>"
+            content_html = intro + body
 
             a = Article(
                 title=title,
