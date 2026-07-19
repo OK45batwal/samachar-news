@@ -92,10 +92,6 @@ async def news_ws(ws: WebSocket):
 
             if msg_type == "ping":
                 await ws.send_json({"type": "pong"})
-            elif msg_type == "subscribe":
-                await ws.send_json({"type": "subscribed", "channel": msg.get("channel")})
-            elif msg_type == "unsubscribe":
-                await ws.send_json({"type": "unsubscribed", "channel": msg.get("channel")})
             else:
                 await ws.send_json({"type": "error", "message": f"Unknown message type: {msg_type}"})
 

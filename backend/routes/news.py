@@ -1,4 +1,3 @@
-import difflib
 import re
 from collections import Counter
 from datetime import datetime, timedelta
@@ -67,40 +66,7 @@ COUNTRY_ALIASES = {
 }
 
 
-def _fuzzy_match_country(content: str) -> list[str]:
-    """Fuzzy-match country names when exact match fails."""
-    found = set()
-    words = re.findall(r'\b(\w+)\b', content.lower())
-    country_names = list(COUNTRY_COORDS.keys())
-    for target in country_names:
-        if target.lower() in words:
-            found.add(target)
-    # Levenshtein-like: allow single-char diffs on 3+ char words
-    for target in country_names:
-        if len(target) < 4:
-            continue
-        tl = target.lower()
-        for w in words:
-            if len(w) < 3:
-                continue
-            if difflib.SequenceMatcher(None, tl, w).ratio() > 0.85:
-                found.add(target)
-                break
-    for alias, target in COUNTRY_ALIASES.items():
-        al = alias.lower()
-        if len(al) < 4:
-            continue
-        for w in words:
-            if len(w) < 3:
-                continue
-            if difflib.SequenceMatcher(None, al, w).ratio() > 0.85:
-                found.add(target)
-                break
-    return list(found)
-
-
 def extract_countries(content: str) -> list[str]:
-    """Match country names in text using keyword search and fuzzy fallback."""
     if not content:
         return []
     found = set()
@@ -112,11 +78,6 @@ def extract_countries(content: str) -> list[str]:
     for alias, target in COUNTRY_ALIASES.items():
         if alias.upper() in upper:
             found.add(target)
-    # Fuzzy fallback for unclear mentions
-    if not found:
-        fuzzy = _fuzzy_match_country(content)
-        found.update(fuzzy)
-    # Filter out EU (too broad)
     found.discard("EU")
     return list(found)
 

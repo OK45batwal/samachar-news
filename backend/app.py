@@ -43,8 +43,6 @@ if settings.PROMETHEUS_ENABLED:
 async def lifespan(app: FastAPI):
     await init_db()
 
-    from sqlalchemy import func, select
-
     from .database import async_session
     from .models.models import Article
 

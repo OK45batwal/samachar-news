@@ -344,23 +344,20 @@ async def _get_source_from_name(db: AsyncSession, name: str, category_slug: str)
 
 async def ingest_feeds():
     async with async_session() as db:
-        tasks = [_ingest_feed(db, key, cfg) for key, cfg in FEED_CONFIG.items()]
-        results = await asyncio.gather(*tasks, return_exceptions=True)
-
         total = 0
         succeeded = 0
-        for i, result in enumerate(results):
-            key = list(FEED_CONFIG.keys())[i]
-            if isinstance(result, Exception):
-                logger.warning("Feed %s failed: %s", key, result)
-            elif result > 0:
-                total += result
-                succeeded += 1
+        for key, cfg in FEED_CONFIG.items():
+            try:
+                count = await _ingest_feed(db, key, cfg)
+                if count:
+                    total += count
+                    succeeded += 1
+            except Exception as e:
+                logger.warning("Feed %s failed: %s", key, e)
 
         await db.commit()
         logger.info("Feed ingestion: %d new articles from %d/%d sources", total, succeeded, len(FEED_CONFIG))
 
-        # Also fetch from NewsAPI as supplemental data
         try:
             await fetch_newsapi(db)
         except Exception as e:

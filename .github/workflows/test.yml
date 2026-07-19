@@ -41,6 +41,7 @@ jobs:
         with:
           node-version: "22"
       - run: npm ci --ignore-scripts
+      - run: npm run build
       - name: Start server
         run: |
           SUPERTOKENS_CONNECTION_URI=https://try.supertokens.com \
