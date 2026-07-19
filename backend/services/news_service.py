@@ -191,27 +191,27 @@ async def _ingest_feed(db, key, cfg):
             slug = f"{slug_base[:190]}-{counter}"
             counter += 1
 
-        published = None
+        published = datetime.utcnow()
         if entry.get("published_parsed"):
             try:
                 published = datetime(*entry.get("published_parsed")[:6])
             except Exception:
-                published = datetime.utcnow()
+                pass
 
-            img = _extract_image(entry)
-            article = Article(
-                title=entry.get("title", ""),
-                slug=slug,
-                summary=(entry.get("summary") or "")[:500],
-                content=(entry.get("content", [{}])[0].get("value", "")
-                         if entry.get("content") else entry.get("summary", "")),
-                image_url=img,
+        img = _extract_image(entry)
+        article = Article(
+            title=entry.get("title", ""),
+            slug=slug,
+            summary=(entry.get("summary") or "")[:500],
+            content=(entry.get("content", [{}])[0].get("value", "")
+                     if entry.get("content") else entry.get("summary", "")),
+            image_url=img,
             source_url=link,
             author=entry.get("author", ""),
             status=ArticleStatus.PUBLISHED,
             category_id=category.id,
             source_id=source.id,
-            published_at=published or datetime.utcnow(),
+            published_at=published,
         )
         db.add(article)
         count += 1
@@ -326,8 +326,8 @@ async def fetch_newsapi(db: AsyncSession):
 
     if total:
         await db.commit()
+        _newsapi_last_fetch = now
         logger.info("NewsAPI: %d new articles stored", total)
-    _newsapi_last_fetch = now
     return total
 
 
