@@ -33,8 +33,8 @@ Legend: `🔴 critical` `🟡 high` `🟢 medium` `⚪ low` `✅ done`
 
 | ID | Status | Type | What | Where |
 |----|--------|------|------|-------|
-| P-13 | | polish | Emoji-based country flags limited to 18 countries in `map-init.js` while backend has 28. Unmatched countries show 🌐. | `frontend/src/js/map-init.js:13` |
-| P-14 | | delete | `postcss.config.js` — empty `plugins: {}`, no PostCSS plugins used. | `postcss.config.js` |
-| P-15 | | delete | `backend/seed_e2e_inline.py` and `scripts/seed_e2e.py` — nearly identical seed logic. Consolidate into one. | `backend/seed_e2e_inline.py` + `scripts/seed_e2e.py` |
+| P-13 | ✅ | polish | Emoji-based country flags limited to 18 countries in `map-init.js` while backend has 28. Unmatched countries show 🌐. | `frontend/src/js/map-init.js:13` |
+| P-14 | ✅ | delete | `postcss.config.js` — empty `plugins: {}`, no PostCSS plugins used. | `postcss.config.js` |
+| P-15 | ✅ | delete | `backend/seed_e2e_inline.py` and `scripts/seed_e2e.py` — nearly identical seed logic. Consolidate into one. | `backend/seed_e2e_inline.py` + `scripts/seed_e2e.py` |
 | P-16 | | infra | Render `free` plan spins down after inactivity. Consider starter plan or health ping. | `render.yaml` |
-| P-17 | | polish | `CATEGORY_CACHE` in `news_service.py` never invalidated — stale if admin adds categories at runtime. | `backend/services/news_service.py:102` |
+| P-17 | ✅ | polish | `CATEGORY_CACHE` in `news_service.py` never invalidated — stale if admin adds categories at runtime. | `backend/services/news_service.py:102` |

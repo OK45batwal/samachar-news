@@ -99,16 +99,9 @@ FEED_CONFIG = {
     "nos":               {"name": "NOS Nieuws",         "category": "world", "url": "https://feeds.nos.nl/nosnieuwsalgemeen", "country": "Netherlands", "language": "nl"},
 }
 
-CATEGORY_CACHE = {}
-
 async def _get_category(db: AsyncSession, slug: str) -> Optional[Category]:
-    if slug in CATEGORY_CACHE:
-        return CATEGORY_CACHE[slug]
     result = await db.execute(select(Category).where(Category.slug == slug))
-    cat = result.scalar_one_or_none()
-    if cat:
-        CATEGORY_CACHE[slug] = cat
-    return cat
+    return result.scalar_one_or_none()
 
 async def _get_source(db: AsyncSession, key: str, config: dict) -> Optional[Source]:
     result = await db.execute(select(Source).where(Source.name == config["name"]))

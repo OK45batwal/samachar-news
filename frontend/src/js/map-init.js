@@ -31,7 +31,30 @@ function addMarker(lat, lng, label, count) {
 
 function renderSidebar(countries) {
   const sidebar = document.getElementById('countryList')
-  const emoji = { US: '\u{1F1FA}\u{1F1F8}', UK: '\u{1F1EC}\u{1F1E7}', India: '\u{1F1EE}\u{1F1F3}', Germany: '\u{1F1E9}\u{1F1EA}', France: '\u{1F1EB}\u{1F1F7}', China: '\u{1F1E8}\u{1F1F3}', Russia: '\u{1F1F7}\u{1F1FA}', Japan: '\u{1F1EF}\u{1F1F5}', Brazil: '\u{1F1E7}\u{1F1F7}', Canada: '\u{1F1E8}\u{1F1E6}', Australia: '\u{1F1E6}\u{1F1FA}', Spain: '\u{1F1EA}\u{1F1F8}', Italy: '\u{1F1EE}\u{1F1F9}', Switzerland: '\u{1F1E8}\u{1F1ED}', Netherlands: '\u{1F1F3}\u{1F1F1}', Singapore: '\u{1F1F8}\u{1F1EC}', EU: '\u{1F1EA}\u{1F1FA}', 'South Africa': '\u{1F1FF}\u{1F1E6}' }
+  const emoji = {
+    US: '\u{1F1FA}\u{1F1F8}', UK: '\u{1F1EC}\u{1F1E7}', India: '\u{1F1EE}\u{1F1F3}',
+    Germany: '\u{1F1E9}\u{1F1EA}', France: '\u{1F1EB}\u{1F1F7}', China: '\u{1F1E8}\u{1F1F3}',
+    Russia: '\u{1F1F7}\u{1F1FA}', Japan: '\u{1F1EF}\u{1F1F5}', Brazil: '\u{1F1E7}\u{1F1F7}',
+    Canada: '\u{1F1E8}\u{1F1E6}', Australia: '\u{1F1E6}\u{1F1FA}', Spain: '\u{1F1EA}\u{1F1F8}',
+    Italy: '\u{1F1EE}\u{1F1F9}', Switzerland: '\u{1F1E8}\u{1F1ED}',
+    Netherlands: '\u{1F1F3}\u{1F1F1}', Singapore: '\u{1F1F8}\u{1F1EC}',
+    EU: '\u{1F1EA}\u{1F1FA}', 'South Africa': '\u{1F1FF}\u{1F1E6}',
+    'South Korea': '\u{1F1F0}\u{1F1F7}', 'North Korea': '\u{1F1F0}\u{1F1F5}',
+    UAE: '\u{1F1E6}\u{1F1EA}', 'Saudi Arabia': '\u{1F1F8}\u{1F1E6}',
+    Israel: '\u{1F1EE}\u{1F1F1}', Iran: '\u{1F1EE}\u{1F1F7}',
+    Turkey: '\u{1F1F9}\u{1F1F7}', Pakistan: '\u{1F1F5}\u{1F1F0}',
+    Bangladesh: '\u{1F1E7}\u{1F1E9}', Nigeria: '\u{1F1F3}\u{1F1EC}',
+    Kenya: '\u{1F1F0}\u{1F1EA}', Egypt: '\u{1F1EA}\u{1F1EC}',
+    Argentina: '\u{1F1E6}\u{1F1F7}', Mexico: '\u{1F1F2}\u{1F1FD}',
+    Colombia: '\u{1F1E8}\u{1F1F4}', Chile: '\u{1F1E8}\u{1F1F1}',
+    Sweden: '\u{1F1F8}\u{1F1EA}', Norway: '\u{1F1F3}\u{1F1F4}',
+    Denmark: '\u{1F1E9}\u{1F1F0}', Finland: '\u{1F1EB}\u{1F1EE}',
+    Poland: '\u{1F1F5}\u{1F1F1}', Ukraine: '\u{1F1FA}\u{1F1E6}',
+    'New Zealand': '\u{1F1F3}\u{1F1FF}', Indonesia: '\u{1F1EE}\u{1F1E9}',
+    Vietnam: '\u{1F1FB}\u{1F1F3}', Thailand: '\u{1F1F9}\u{1F1ED}',
+    Malaysia: '\u{1F1F2}\u{1F1FE}', Philippines: '\u{1F1F5}\u{1F1ED}',
+    Taiwan: '\u{1F1F9}\u{1F1FC}', 'Hong Kong': '\u{1F1ED}\u{1F1F0}',
+  }
   sidebar.innerHTML = countries.map(function (c) {
     return '<div class="card" data-country="' + c.country + '" onclick="window.focusCountry(\'' + c.country + '\')"><div class="flex items-center gap-3"><span style="font-size:20px">' + (emoji[c.country] || '\u{1F30D}') + '</span><div><div class="font-semibold text-sm">' + c.country + '</div><div class="text-xs text-muted">' + c.count + ' active events</div></div></div></div>'
   }).join('')
