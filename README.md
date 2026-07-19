@@ -107,7 +107,7 @@
 </tr>
 <tr>
   <td><strong>Infrastructure</strong></td>
-  <td>PostgreSQL · Redis · Docker · Render · GitHub Actions</td>
+  <td>PostgreSQL · Redis · Render · GitHub Actions</td>
 </tr>
 <tr>
   <td><strong>AI/ML</strong></td>

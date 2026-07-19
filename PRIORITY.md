@@ -27,7 +27,7 @@ Legend: `🔴 critical` `🟡 high` `🟢 medium` `⚪ low` `✅ done`
 | P-09 | | feature | Profile page shows only username. No edit profile, avatar upload, or preferences UI. | `frontend/profile.html` |
 | P-10 | ✅ | feature | WebSocket `subscribe`/`unsubscribe` handled in loop but never acted on. Removed dead handlers. | `backend/websocket/ws.py:96-98` |
 | P-11 | ✅ | infra | CI skips Vite build — e2e serves raw HTML. Added `npm run build` step before e2e. | `.github/workflows/test.yml` |
-| P-12 | | infra | Docker mentioned in README but no `Dockerfile` or `compose.yml` exists. | root |
+| P-12 | ✅ | infra | Docker mentioned in README but no `Dockerfile` or `compose.yml` exists. Removed from tech stack table. | root |
 
 ## ⚪ Low
 
