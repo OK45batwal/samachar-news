@@ -161,6 +161,10 @@ samachar-news/
 └── scripts/                # Utility scripts
 ```
 
+## 🤝 Contributing
+
+Contributions are welcome! Please check out [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on setup, code style, testing, and submitting pull requests.
+
 ---
 
 <div align="center">
