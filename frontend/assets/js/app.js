@@ -39,6 +39,8 @@ function renderNewsCard(article, index = 0) {
   var safeSummary = sanitize(article.summary);
   var safeSource = sanitize(article.source?.name || 'Unknown');
   var safeImgUrl = article.image_url && article.image_url.startsWith('http') ? article.image_url : '';
+  var words = (article.content || article.summary || '').split(/\s+/).length;
+  var readMins = Math.max(1, Math.round(words / 200));
   var imgHtml = safeImgUrl
     ? '<img src="' + safeImgUrl + '" alt="' + safeTitle + '" style="width:100%;height:100%;object-fit:cover" loading="lazy" />'
     : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated)"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>';
@@ -47,13 +49,13 @@ function renderNewsCard(article, index = 0) {
   parts.push('<div class="news-card-img">' + imgHtml);
   parts.push('<span class="badge ' + cat.badge + '" style="position:absolute;top:12px;left:12px;font-size:9px">' + cat.name + '</span></div>');
   parts.push('<div class="news-card-body">');
-  parts.push('<div class="news-card-meta"><span class="text-xs text-muted">' + safeSource + '</span><span class="text-xs text-muted">·</span><span class="text-xs text-muted">' + timeAgo(article.published_at) + '</span></div>');
+  parts.push('<div class="news-card-meta"><span class="text-xs text-muted">' + safeSource + '</span><span class="text-xs text-muted">·</span><span class="text-xs text-muted">' + timeAgo(article.published_at) + '</span><span class="text-xs text-muted">·</span><span class="text-xs text-muted">⏱️ ' + readMins + 'm read</span></div>');
   parts.push('<h3 class="line-clamp-2">' + safeTitle + '</h3>');
   parts.push('<p class="line-clamp-2 mt-1">' + safeSummary + '</p></div>');
   parts.push('<div class="news-card-footer"><span class="text-xs text-muted">' + (article.view_count || 0).toLocaleString() + ' views</span>');
   parts.push('<div class="news-card-actions">');
-  parts.push('<button class="btn btn-icon btn-ghost" onclick="event.stopPropagation();toggleBookmark(' + article.id + ')" title="Bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></button>');
-  parts.push('<button class="btn btn-icon btn-ghost" onclick="event.stopPropagation();shareArticle(\'' + safeTitle + '\')" title="Share"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>');
+  parts.push('<button class="btn btn-icon btn-ghost" onclick="event.stopPropagation();event.preventDefault();toggleBookmark(' + article.id + ', this)" title="Bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></button>');
+  parts.push('<button class="btn btn-icon btn-ghost" onclick="event.stopPropagation();event.preventDefault();shareArticle(\'' + safeTitle + '\')" title="Share"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>');
   parts.push('</div></div>');
   parts.push('</a>');
   return parts.join('');

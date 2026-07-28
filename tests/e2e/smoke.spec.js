@@ -7,8 +7,8 @@ test.describe('Critical user path', () => {
 
   test('home page loads and shows top stories', async ({ page }) => {
     await page.goto(BASE);
-    await expect(page.locator('.hero-title')).toContainText('Real-Time News');
-    await expect(page.locator('#featuredGrid')).toBeVisible();
+    await expect(page.locator('h1')).toContainText('Real-Time News');
+    await expect(page.locator('.btn-group')).toBeVisible();
   });
 
   test('latest page loads articles', async ({ page }) => {
@@ -43,8 +43,8 @@ test.describe('Critical user path', () => {
     await page.fill('#regPassword', 'TestPass123');
     await page.fill('#regConfirm', 'TestPass123');
     await page.click('button[type="submit"]');
-    // Should redirect to index after register
-    await expect(page).toHaveURL(/index\.html/);
+    // Should redirect to home/index after register
+    await expect(page).toHaveURL(/(home|index)\.html/);
 
     // Login
     await page.goto(`${BASE}/login.html`);

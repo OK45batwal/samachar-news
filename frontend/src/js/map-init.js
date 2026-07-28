@@ -24,8 +24,7 @@ function addMarker(lat, lng, label, count) {
   })
   const m = L.marker([lat, lng], { icon }).addTo(markersLayer)
   m.bindPopup('<b>' + label + '</b><br/>' + count + ' article' + (count !== 1 ? 's' : ''), { className: 'map-popup' })
-  m.on('mouseover', function () { m.openPopup() })
-  m.on('mouseout', function () { m.closePopup() })
+  m.on('click', function () { window.focusCountry(label) })
   return m
 }
 
@@ -55,18 +54,64 @@ function renderSidebar(countries) {
     Malaysia: '\u{1F1F2}\u{1F1FE}', Philippines: '\u{1F1F5}\u{1F1ED}',
     Taiwan: '\u{1F1F9}\u{1F1FC}', 'Hong Kong': '\u{1F1ED}\u{1F1F0}',
   }
-  sidebar.innerHTML = countries.map(function (c) {
-    return '<div class="card" data-country="' + c.country + '" onclick="window.focusCountry(\'' + c.country + '\')"><div class="flex items-center gap-3"><span style="font-size:20px">' + (emoji[c.country] || '\u{1F30D}') + '</span><div><div class="font-semibold text-sm">' + c.country + '</div><div class="text-xs text-muted">' + c.count + ' active events</div></div></div></div>'
-  }).join('')
+  if (sidebar) {
+    sidebar.innerHTML = countries.map(function (c) {
+      return '<div class="card" data-country="' + c.country + '" onclick="window.focusCountry(\'' + c.country + '\')"><div class="flex items-center gap-3"><span style="font-size:20px">' + (emoji[c.country] || '\u{1F30D}') + '</span><div><div class="font-semibold text-sm">' + c.country + '</div><div class="text-xs text-muted">' + c.count + ' active events</div></div></div></div>'
+    }).join('')
+  }
 }
 
-window.focusCountry = function (name) {
+window.focusCountry = async function (name) {
   const c = allCountries.find(function (x) { return x.country === name })
   if (!c) return
   document.querySelectorAll('#countryList .card').forEach(function (el) { el.classList.remove('active') })
   var card = document.querySelector('#countryList .card[data-country="' + name + '"]')
   if (card) card.classList.add('active')
   map.setView([c.lat, c.lng], 4, { animate: true })
+
+  const drawer = document.getElementById('mapInspectorDrawer')
+  const drawerTitle = document.getElementById('drawerCountryTitle')
+  const drawerBody = document.getElementById('drawerBody')
+  if (drawer && drawerBody) {
+    if (drawerTitle) drawerTitle.textContent = `${c.country} Intelligence`
+    drawerBody.innerHTML = '<div class="p-4 text-center text-muted">Loading country data...</div>'
+    drawer.classList.add('open')
+
+    let articlesHtml = ''
+    try {
+      const res = await fetch(`/api/news/geo/${encodeURIComponent(name)}/articles?limit=10`)
+      if (res.ok) {
+        const data = await res.json()
+        if (data.articles && data.articles.length) {
+          articlesHtml = data.articles.map(a =>
+            `<div style="padding:10px 0;border-bottom:1px solid var(--border)">
+              <a href="article.html?id=${a.id}" class="font-semibold text-sm line-clamp-2" style="color:var(--text-primary);text-decoration:none">${a.title}</a>
+              <div class="text-xs text-muted mt-1">${a.source?.name || 'News'} · ${timeAgo(a.published_at)}</div>
+            </div>`
+          ).join('')
+        }
+      }
+    } catch (_) {}
+
+    if (!articlesHtml) {
+      articlesHtml = '<div class="text-xs text-muted p-2">No recent articles found for this country.</div>'
+    }
+
+    const keywordsHtml = (c.top_keywords || ['news', 'market', 'policy']).map(k =>
+      `<span style="font-size:10px;padding:2px 8px;border-radius:12px;background:var(--bg-elevated);color:var(--accent);margin-right:4px">${k}</span>`
+    ).join('')
+
+    drawerBody.innerHTML = `
+      <div class="card p-4 mb-4">
+        <div class="text-xs text-muted mb-1">Total Events</div>
+        <div class="font-bold text-lg text-accent">${c.count} Active News Stories</div>
+        <div class="mt-3 text-xs text-muted mb-1">Top Keywords</div>
+        <div>${keywordsHtml}</div>
+      </div>
+      <h4 class="font-semibold text-sm mb-3">Latest Stories</h4>
+      <div>${articlesHtml}</div>
+    `
+  }
 }
 
 ;(async function loadMap() {

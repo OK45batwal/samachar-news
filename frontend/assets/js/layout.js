@@ -51,13 +51,59 @@ searchOverlay?.addEventListener('click', (e) => {
   if (e.target === searchOverlay) searchOverlay.classList.remove('open');
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { closeSidebar(); searchOverlay?.classList.remove('open'); }
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+  if (e.key === 'Escape') {
+    closeSidebar();
+    searchOverlay?.classList.remove('open');
+    document.querySelector('.map-inspector-drawer')?.classList.remove('open');
+  }
+  if (((e.metaKey || e.ctrlKey) && e.key === 'k') || (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA')) {
     e.preventDefault();
     searchOverlay?.classList.toggle('open');
     searchInput?.focus();
   }
 });
+
+function initMobileNav() {
+  if (document.querySelector('.mobile-bottom-nav')) return;
+  const nav = document.createElement('nav');
+  nav.className = 'mobile-bottom-nav';
+  const path = window.location.pathname;
+  const isHome = path.endsWith('home.html') || path.endsWith('index.html') || path === '/';
+  const isLatest = path.endsWith('latest.html');
+  const isMap = path.endsWith('map.html');
+  const isBm = path.endsWith('bookmarks.html');
+  const isProf = path.endsWith('profile.html');
+
+  nav.innerHTML = `
+    <a href="home.html" class="mobile-nav-item ${isHome ? 'active' : ''}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="latest.html" class="mobile-nav-item ${isLatest ? 'active' : ''}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9h2"/><path d="M10 6h6"/><path d="M10 10h6"/></svg>
+      <span>Latest</span>
+    </a>
+    <a href="map.html" class="mobile-nav-item ${isMap ? 'active' : ''}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span>Map</span>
+    </a>
+    <a href="bookmarks.html" class="mobile-nav-item ${isBm ? 'active' : ''}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+      <span>Bookmarks</span>
+    </a>
+    <a href="profile.html" class="mobile-nav-item ${isProf ? 'active' : ''}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  `;
+  document.body.appendChild(nav);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMobileNav);
+} else {
+  initMobileNav();
+}
 
 // Theme toggle — persists to localStorage, icon sync on load
 const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
