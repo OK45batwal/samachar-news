@@ -1,6 +1,6 @@
 import enum
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy import Enum as SAEnum
@@ -9,15 +9,21 @@ from sqlalchemy.orm import relationship
 from ..database import Base
 
 
+def _utc_now():
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
 class UserRole(str, enum.Enum):
     USER = "user"
     EDITOR = "editor"
     ADMIN = "admin"
 
+
 class ArticleStatus(str, enum.Enum):
     DRAFT = "draft"
     PUBLISHED = "published"
     ARCHIVED = "archived"
+
 
 class User(Base):
     __tablename__ = "users"
@@ -30,10 +36,11 @@ class User(Base):
     role = Column(SAEnum(UserRole, values_callable=lambda x: [e.value for e in x]), default=UserRole.USER, nullable=False)
     is_active = Column(Boolean, default=True)
     preferences = Column(JSON, default=dict)
-    created_at = Column(DateTime, default=lambda: datetime.utcnow())
-    updated_at = Column(DateTime, default=lambda: datetime.utcnow(), onupdate=lambda: datetime.utcnow())
+    created_at = Column(DateTime, default=_utc_now)
+    updated_at = Column(DateTime, default=_utc_now, onupdate=_utc_now)
 
     bookmarks = relationship("Bookmark", back_populates="user", cascade="all, delete-orphan")
+
 
 class Category(Base):
     __tablename__ = "categories"
@@ -43,9 +50,10 @@ class Category(Base):
     slug = Column(String(100), unique=True, nullable=False)
     description = Column(Text)
     icon = Column(String(50))
-    created_at = Column(DateTime, default=lambda: datetime.utcnow())
+    created_at = Column(DateTime, default=_utc_now)
 
     articles = relationship("Article", back_populates="category")
+
 
 class Source(Base):
     __tablename__ = "sources"
@@ -57,9 +65,10 @@ class Source(Base):
     country = Column(String(100))
     language = Column(String(10))
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=lambda: datetime.utcnow())
+    created_at = Column(DateTime, default=_utc_now)
 
     articles = relationship("Article", back_populates="source")
+
 
 class Article(Base):
     __tablename__ = "articles"
@@ -78,19 +87,21 @@ class Article(Base):
     category_id = Column(Integer, ForeignKey("categories.id"))
     source_id = Column(Integer, ForeignKey("sources.id"))
     published_at = Column(DateTime)
-    created_at = Column(DateTime, default=lambda: datetime.utcnow())
-    updated_at = Column(DateTime, default=lambda: datetime.utcnow(), onupdate=lambda: datetime.utcnow())
+    created_at = Column(DateTime, default=_utc_now)
+    updated_at = Column(DateTime, default=_utc_now, onupdate=_utc_now)
 
     category = relationship("Category", back_populates="articles")
     source = relationship("Source", back_populates="articles")
     bookmarks = relationship("Bookmark", back_populates="article", cascade="all, delete-orphan")
+
 
 class RateLimitEntry(Base):
     __tablename__ = "rate_limits"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     key = Column(String(255), nullable=False, index=True)
-    timestamp = Column(DateTime, default=lambda: datetime.utcnow(), index=True)
+    timestamp = Column(DateTime, default=_utc_now, index=True)
+
 
 class IngestionRun(Base):
     __tablename__ = "ingestion_runs"
@@ -102,8 +113,9 @@ class IngestionRun(Base):
     feeds_failed = Column(Integer, default=0)
     articles_added = Column(Integer, default=0)
     errors = Column(JSON, default=list)
-    started_at = Column(DateTime, default=lambda: datetime.utcnow())
+    started_at = Column(DateTime, default=_utc_now)
     completed_at = Column(DateTime, nullable=True)
+
 
 class Bookmark(Base):
     __tablename__ = "bookmarks"
@@ -112,7 +124,7 @@ class Bookmark(Base):
     user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     article_id = Column(Integer, ForeignKey("articles.id", ondelete="CASCADE"), nullable=False)
     folder = Column(String(100), default="default")
-    created_at = Column(DateTime, default=lambda: datetime.utcnow())
+    created_at = Column(DateTime, default=_utc_now)
 
     user = relationship("User", back_populates="bookmarks")
     article = relationship("Article", back_populates="bookmarks")

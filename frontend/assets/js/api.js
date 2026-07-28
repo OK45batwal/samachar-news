@@ -61,6 +61,29 @@ function logout() {
   window.location.href = 'login.html';
 }
 
+async function updateProfile(data) {
+  const user = await api('/api/auth/me', {
+    method: 'PUT',
+    body: data,
+  });
+  localStorage.setItem('samachar_user', JSON.stringify(user));
+  return user;
+}
+
+async function forgotPassword(email) {
+  return api('/api/auth/forgot-password', {
+    method: 'POST',
+    body: { email },
+  });
+}
+
+async function resetPassword(token, newPassword) {
+  return api('/api/auth/reset-password', {
+    method: 'POST',
+    body: { token, new_password: newPassword },
+  });
+}
+
 function getUser() {
   const raw = localStorage.getItem('samachar_user');
   return raw ? JSON.parse(raw) : null;

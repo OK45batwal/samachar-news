@@ -77,24 +77,66 @@
     </div>
 
     <div class="tabs">
-      <span class="tab active">Reading History</span>
+      <span class="tab active" id="tabHistory" onclick="switchProfileTab('history')">Reading History</span>
       <span class="tab" onclick="location.href='bookmarks.html'">Bookmarks</span>
-      <span class="tab">Preferences</span>
-      <span class="tab">Account</span>
+      <span class="tab" id="tabAccount" onclick="switchProfileTab('account')">Account Settings</span>
     </div>
 
-    <div class="card p-4">
+    <div class="card p-6" id="historySection">
+      <h3 class="heading-sm mb-4">Recent Reading Activity</h3>
       <div class="history-item"><div class="flex justify-between"><div><div class="font-semibold text-sm">Global Markets Rally on Tech Earnings</div><div class="text-xs text-muted mt-1">Business · 2 hours ago</div></div><span class="text-xs text-muted">Read time: 4m</span></div></div>
       <div class="history-item"><div class="flex justify-between"><div><div class="font-semibold text-sm">AI Regulation Framework Approved by EU</div><div class="text-xs text-muted mt-1">Technology · 5 hours ago</div></div><span class="text-xs text-muted">Read time: 6m</span></div></div>
       <div class="history-item"><div class="flex justify-between"><div><div class="font-semibold text-sm">Climate Summit 2026: Key Highlights</div><div class="text-xs text-muted mt-1">World · 1 day ago</div></div><span class="text-xs text-muted">Read time: 8m</span></div></div>
       <div class="history-item"><div class="flex justify-between"><div><div class="font-semibold text-sm">India Wins Cricket World Cup</div><div class="text-xs text-muted mt-1">Sports · 2 days ago</div></div><span class="text-xs text-muted">Read time: 3m</span></div></div>
-      <div class="history-item"><div class="flex justify-between"><div><div class="font-semibold text-sm">Breakthrough in Quantum Computing</div><div class="text-xs text-muted mt-1">Science · 3 days ago</div></div><span class="text-xs text-muted">Read time: 5m</span></div></div>
+    </div>
+
+    <div class="card p-6" id="accountSection" style="display:none;">
+      <h3 class="heading-sm mb-4">Edit Profile & Credentials</h3>
+      <form id="profileForm" style="max-width: 480px;">
+        <div class="form-group mb-4">
+          <label class="form-label text-sm font-semibold">Full Name</label>
+          <input type="text" id="editFullName" class="input" style="width:100%" placeholder="Your Name" />
+        </div>
+        <div class="form-group mb-4">
+          <label class="form-label text-sm font-semibold">Username</label>
+          <input type="text" id="editUsername" class="input" style="width:100%" placeholder="Username" />
+        </div>
+        <hr style="border:none; border-top:1px solid var(--border); margin:20px 0" />
+        <h4 class="font-semibold text-sm mb-2">Change Password</h4>
+        <div class="form-group mb-3">
+          <label class="form-label text-xs text-muted">Current Password</label>
+          <input type="password" id="editCurrPass" class="input" style="width:100%" placeholder="••••••••" />
+        </div>
+        <div class="form-group mb-4">
+          <label class="form-label text-xs text-muted">New Password</label>
+          <input type="password" id="editNewPass" class="input" style="width:100%" placeholder="••••••••" />
+        </div>
+        <button type="submit" id="saveProfileBtn" class="btn btn-primary btn-sm">Save Changes</button>
+      </form>
     </div>
   </div>
 </section>
 <script src="assets/js/layout.js?v=3"></script>
 <script src="assets/js/api.js?v=3"></script>
 <script>
+function switchProfileTab(tab) {
+  const hSec = document.getElementById('historySection');
+  const aSec = document.getElementById('accountSection');
+  const hTab = document.getElementById('tabHistory');
+  const aTab = document.getElementById('tabAccount');
+  if (tab === 'account') {
+    hSec.style.display = 'none';
+    aSec.style.display = 'block';
+    hTab.classList.remove('active');
+    aTab.classList.add('active');
+  } else {
+    hSec.style.display = 'block';
+    aSec.style.display = 'none';
+    hTab.classList.add('active');
+    aTab.classList.remove('active');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const user = getUser();
   if (!user) { window.location.href = 'login.html'; return; }
@@ -106,11 +148,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     ? `Member since ${new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`
     : '';
 
+  document.getElementById('editFullName').value = user.full_name || '';
+  document.getElementById('editUsername').value = user.username || '';
+
   try {
     const bms = await getBookmarks();
     document.getElementById('statBookmarks').textContent = bms.length;
   } catch (e) { console.warn('load bookmarks failed:', e); document.getElementById('statBookmarks').textContent = '—'; }
   document.getElementById('statRead').textContent = '0';
+
+  document.getElementById('profileForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('saveProfileBtn');
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
+    try {
+      const payload = {
+        full_name: document.getElementById('editFullName').value,
+        username: document.getElementById('editUsername').value,
+      };
+      const currPass = document.getElementById('editCurrPass').value;
+      const newPass = document.getElementById('editNewPass').value;
+      if (newPass) {
+        payload.current_password = currPass;
+        payload.new_password = newPass;
+      }
+      const updated = await updateProfile(payload);
+      document.getElementById('profileAvatar').textContent = (updated.full_name || updated.username || 'U')[0].toUpperCase();
+      document.getElementById('profileName').textContent = updated.full_name || updated.username;
+      btn.textContent = 'Saved!';
+      setTimeout(() => { btn.textContent = 'Save Changes'; btn.disabled = false; }, 2000);
+    } catch (err) {
+      btn.textContent = 'Save Changes';
+      btn.disabled = false;
+      alert(err.message || 'Failed to update profile');
+    }
+  });
 });
 </script>
   <footer class="footer">

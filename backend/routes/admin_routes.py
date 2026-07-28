@@ -6,14 +6,15 @@ from sqlalchemy import desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from ..auth.supertokens import get_current_user
+from ..auth.auth import get_current_user
 from ..database import get_db
 from ..models.models import Article, ArticleStatus, Bookmark, Category, Source, User, UserRole
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 
 async def require_admin(user=Depends(get_current_user)):
-    if user.role != UserRole.ADMIN:
+    user_role = user.role.value if hasattr(user.role, "value") else str(user.role)
+    if user_role != "admin":
         raise HTTPException(status_code=403, detail="Admin access required")
     return user
 

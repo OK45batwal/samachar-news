@@ -1,4 +1,4 @@
-"""Integration tests for auth endpoints — profile creation and user info."""
+"""Integration tests for auth endpoints — registration, login, profile, and updates."""
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
@@ -6,15 +6,9 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from sqlalchemy.pool import StaticPool
 
 from backend.app import app
-from backend.config import settings
 from backend.database import Base, get_db
 
 TEST_DB_URL = "sqlite+aiosqlite://"
-
-needs_st = pytest.mark.skipif(
-    not settings.SUPERTOKENS_CONNECTION_URI,
-    reason="SuperTokens core not running",
-)
 
 
 @pytest_asyncio.fixture
@@ -43,18 +37,23 @@ async def client():
     await engine.dispose()
 
 
-@needs_st
 @pytest.mark.asyncio
 async def test_get_profile_unauthorized(client):
     resp = await client.get("/api/auth/me")
     assert resp.status_code == 401
 
 
-@needs_st
 @pytest.mark.asyncio
-async def test_create_profile_unauthorized(client):
-    resp = await client.post("/api/auth/profile", json={
-        "email": "test@test.com",
-        "username": "testuser",
+async def test_register_and_get_profile(client):
+    reg_resp = await client.post("/api/auth/register", json={
+        "email": "user@example.com",
+        "password": "password123",
+        "full_name": "Test User"
     })
-    assert resp.status_code == 401
+    assert reg_resp.status_code == 201
+    user_data = reg_resp.json()
+    assert user_data["email"] == "user@example.com"
+
+    me_resp = await client.get("/api/auth/me")
+    assert me_resp.status_code == 200
+    assert me_resp.json()["email"] == "user@example.com"
