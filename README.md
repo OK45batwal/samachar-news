@@ -25,8 +25,8 @@
     <p>60+ RSS sources — BBC, TechCrunch, ESPN, The Guardian, and more. Auto-ingested every 30 minutes.</p>
   </td>
   <td width="50%">
-    <h3>🧠 AI Insights</h3>
-    <p>Sentiment analysis, trending topic extraction, and risk indexing powered by scikit-learn & TextBlob.</p>
+    <h3>🧠 AI Sentiment Engine & Insights</h3>
+    <p>Real-time lexical sentiment scoring (-100 to +100), key takeaways generation, and topic cloud extraction powered by NLP processors.</p>
   </td>
 </tr>
 <tr>
