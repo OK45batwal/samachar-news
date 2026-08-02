@@ -33,6 +33,58 @@ function timeAgo(dateStr) {
   return `${Math.floor(hr / 24)}d ago`;
 }
 
+// --- Reading History Tracking Logic ---
+function trackReadingHistory(article) {
+  if (!article || !article.id) return;
+  try {
+    let history = JSON.parse(localStorage.getItem('samachar_history') || '[]');
+    history = history.filter(item => item.id !== article.id);
+    history.unshift({
+      id: article.id,
+      title: article.title,
+      category: article.category ? article.category.name : 'General',
+      source: article.source ? article.source.name : 'News',
+      readAt: new Date().toISOString(),
+    });
+    localStorage.setItem('samachar_history', JSON.stringify(history.slice(0, 50)));
+  } catch (e) {}
+}
+
+function getReadingHistory() {
+  try {
+    return JSON.parse(localStorage.getItem('samachar_history') || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+function clearReadingHistory() {
+  localStorage.removeItem('samachar_history');
+}
+
+// --- Text-To-Speech Audio Reader ---
+let currentSpeechUtterance = null;
+function speechArticle(title, content) {
+  if (!('speechSynthesis' in window)) {
+    if (window.showToast) window.showToast('Text-to-speech not supported in this browser', 'error');
+    return;
+  }
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    if (window.showToast) window.showToast('Audio playback stopped', 'info');
+    return;
+  }
+
+  const textToRead = `${title}. ${content || ''}`;
+  const utterance = new SpeechSynthesisUtterance(textToRead.slice(0, 800));
+  utterance.rate = 1.0;
+  utterance.pitch = 1.0;
+  utterance.onstart = () => { if (window.showToast) window.showToast('🔊 Reading story aloud...', 'info'); };
+  utterance.onend = () => { if (window.showToast) window.showToast('Audio playback complete', 'info'); };
+  currentSpeechUtterance = utterance;
+  window.speechSynthesis.speak(utterance);
+}
+
 function renderNewsCard(article, index = 0) {
   const cat = getCategoryStyle(article.category?.slug);
   var safeTitle = sanitize(article.title);
