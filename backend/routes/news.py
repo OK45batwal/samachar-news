@@ -234,9 +234,16 @@ async def get_articles(
                 break
         query = query.join(Source).where(Source.country == resolved)
     if q:
-        query = query.where(
-            or_(Article.title.ilike(f"%{q}%"), Article.summary.ilike(f"%{q}%"))
-        )
+        search_terms = q.strip().split()
+        for term in search_terms[:5]:
+            pattern = f"%{term}%"
+            query = query.where(
+                or_(
+                    Article.title.ilike(pattern),
+                    Article.summary.ilike(pattern),
+                    Article.author.ilike(pattern),
+                )
+            )
 
     total_q = select(func.count()).select_from(query.subquery())
     total_result = await db.execute(total_q)
@@ -247,6 +254,51 @@ async def get_articles(
     articles = result.scalars().all()
 
     return ArticleListOut(articles=articles, total=total or 0, page=page, limit=limit)
+
+
+@router.get("/trending", response_model=ArticleListOut)
+async def get_trending(
+    limit: int = Query(10, ge=1, le=50),
+    db: AsyncSession = Depends(get_db),
+):
+    query = (
+        select(Article)
+        .options(selectinload(Article.category), selectinload(Article.source))
+        .where(Article.status == ArticleStatus.PUBLISHED)
+        .order_by(desc(Article.view_count), desc(Article.published_at))
+        .limit(limit)
+    )
+    result = await db.execute(query)
+    articles = result.scalars().all()
+    return ArticleListOut(articles=articles, total=len(articles), page=1, limit=limit)
+
+
+@router.get("/ai-insights")
+async def get_ai_insights(db: AsyncSession = Depends(get_db)):
+    avg_q = select(func.avg(Article.sentiment_score)).where(Article.status == ArticleStatus.PUBLISHED)
+    avg_sent = (await db.execute(avg_q)).scalar() or 28
+
+    cat_q = (
+        select(Category.name, func.count(Article.id).label("count"), func.avg(Article.sentiment_score).label("sent"))
+        .select_from(Article)
+        .join(Category, Article.category_id == Category.id)
+        .where(Article.status == ArticleStatus.PUBLISHED)
+        .group_by(Category.name)
+    )
+    cat_rows = await db.execute(cat_q)
+    categories = [{"category": r.name, "count": r.count, "sentiment": round(r.sent or 0)} for r in cat_rows]
+
+    titles_q = select(Article.title).where(Article.status == ArticleStatus.PUBLISHED).limit(200)
+    titles = [t[0] for t in (await db.execute(titles_q)).all() if t[0]]
+    from ..ai.processor import extract_keywords
+    keywords = extract_keywords(" ".join(titles), top_n=12)
+
+    return {
+        "overall_sentiment": round(float(avg_sent)),
+        "risk_index": max(5, min(95, 100 - round(float(avg_sent)))),
+        "categories": categories,
+        "top_topics": keywords or ["AI Infrastructure", "Clean Energy", "Markets", "Space"],
+    }
 
 @router.get("/{article_id}", response_model=ArticleOut)
 async def get_article(article_id: int, db: AsyncSession = Depends(get_db)):

@@ -4,12 +4,17 @@ import { fileURLToPath } from 'url'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const ROOT = 'frontend'
-const PAGES = ['index', 'home', 'latest', 'article', 'login', 'register', 'bookmarks', 'profile', 'ai', 'map', '404', 'trending', 'live', 'history', 'forgot-password', 'contact', 'about', 'privacy', 'auth-callback']
+import { existsSync } from 'fs'
+
+const PAGES = ['index', 'home', 'latest', 'article', 'login', 'register', 'bookmarks', 'profile', 'ai', 'map', '404', 'trending', 'live', 'history', 'forgot-password', 'contact', 'about', 'privacy', 'auth-callback', 'admin', 'videos']
 
 function buildInput() {
   const entries = {}
   for (const name of PAGES) {
-    entries[name] = resolve(__dirname, ROOT, `${name}.html`)
+    const file = resolve(__dirname, ROOT, `${name}.html`)
+    if (existsSync(file)) {
+      entries[name] = file
+    }
   }
   return entries
 }

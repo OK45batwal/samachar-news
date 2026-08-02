@@ -65,6 +65,8 @@ class Source(Base):
     country = Column(String(100))
     language = Column(String(10))
     is_active = Column(Boolean, default=True)
+    etag = Column(String(255), nullable=True)
+    last_modified = Column(String(255), nullable=True)
     created_at = Column(DateTime, default=_utc_now)
 
     articles = relationship("Article", back_populates="source")

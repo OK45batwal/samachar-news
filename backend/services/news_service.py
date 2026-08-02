@@ -192,16 +192,23 @@ async def _ingest_feed(db, key, cfg):
                 pass
 
         img = _extract_image(entry)
+        title_text = entry.get("title", "")
+        summary_text = (entry.get("summary") or "")[:500]
+
+        from ..ai.processor import analyze_sentiment
+        sentiment = analyze_sentiment(title_text + " " + summary_text)
+
         article = Article(
-            title=entry.get("title", ""),
+            title=title_text,
             slug=slug,
-            summary=(entry.get("summary") or "")[:500],
+            summary=summary_text,
             content=(entry.get("content", [{}])[0].get("value", "")
-                     if entry.get("content") else entry.get("summary", "")),
+                     if entry.get("content") else summary_text),
             image_url=img,
             source_url=link,
             author=entry.get("author", ""),
             status=ArticleStatus.PUBLISHED,
+            sentiment_score=sentiment,
             category_id=category.id,
             source_id=source.id,
             published_at=published,
