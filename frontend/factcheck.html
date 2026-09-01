@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fact Check & Claim Verification Tool — Samachar</title>
+  <title>Fact Check & Claim Verification Workbench — Samachar</title>
   <meta name="description" content="Instant fact-checking tool. Verify claims, detect sensationalism, and review evidence." />
   <meta name="theme-color" content="#08090C" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=2.1" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2.1" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=2.1" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=2.5" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=2.5" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=2.5" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
   <script>
@@ -24,11 +24,14 @@
       <div class="flex items-center gap-4">
         <span id="currentDateDisplay">Tuesday, Sep 1, 2026</span>
         <span>·</span>
-        <span class="text-accent font-semibold">Fact Check & Claim Verification Workbench</span>
+        <span class="text-accent font-semibold flex items-center gap-1">
+          <span class="logo-dot"></span>
+          Fact Check & Claim Verification Workbench
+        </span>
       </div>
       <div class="flex items-center gap-4">
-        <a href="home.html" class="text-secondary">← Back to News</a>
-        <a href="trending.html" class="text-secondary">Trending Stories</a>
+        <a href="home.html" class="text-secondary hover:text-accent font-semibold">&larr; Back to News Portal</a>
+        <a href="trending.html" class="text-secondary hover:text-accent">Trending Stories</a>
       </div>
     </div>
   </div>
@@ -36,16 +39,20 @@
   <!-- Header -->
   <header class="header">
     <div class="container header-main">
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-6">
         <a href="home.html" class="logo">
           <span>SAMACHAR</span><span class="logo-dot"></span>
           <span class="logo-tag">TRUTH FIRST</span>
         </a>
+        <nav class="hide-mobile flex items-center gap-4 text-sm font-semibold text-secondary">
+          <a href="home.html" class="hover:text-primary">News Portal</a>
+          <a href="latest.html" class="hover:text-primary">All Feeds</a>
+          <a href="trending.html" class="hover:text-primary">Trending</a>
+          <a href="about.html" class="hover:text-primary">Methodology</a>
+        </nav>
       </div>
 
       <div class="flex items-center gap-3">
-        <a href="home.html" class="btn btn-ghost btn-sm">Home</a>
-        <a href="latest.html" class="btn btn-ghost btn-sm">All News</a>
         <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
@@ -58,29 +65,30 @@
   <main class="container py-8" style="max-width: 880px; margin: 24px auto 64px;">
     
     <div class="text-center mb-8">
-      <span class="badge badge-verified mb-2" style="font-size:12px;padding:6px 14px">⚡ SAMACHAR TRUTH ENGINE</span>
+      <span class="badge badge-verified mb-2" style="font-size:12px;padding:6px 14px">⚡ SAMACHAR TRUTH ENGINE 2.0</span>
       <h1 class="heading-xl mb-2">Claim Verification Workbench</h1>
-      <p class="text-secondary text-sm" style="max-width: 600px; margin: 0 auto;">
+      <p class="text-secondary text-sm" style="max-width: 600px; margin: 0 auto; line-height: 1.7;">
         Enter any viral news headline, quantitative statement, or quote to evaluate credibility, detect sensationalist clickbait, and view cross-source evidence.
       </p>
     </div>
 
     <!-- Interactive Input Card -->
-    <div class="card p-6 mb-8" style="background: var(--bg-surface); backdrop-filter: blur(16px); border-color: var(--border-light);">
+    <div class="card p-6 mb-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-md);">
       <form id="factCheckForm">
         <div class="form-group mb-4">
           <label for="claimInput" class="form-label font-semibold">News Headline, Statement, or Claim</label>
-          <textarea id="claimInput" class="textarea" rows="3" placeholder="e.g. WHO reports 78% decline in malaria mortality across 18 countries..." required></textarea>
+          <textarea id="claimInput" class="input" rows="3" placeholder="e.g. WHO reports 78% decline in pediatric malaria mortality across 18 countries following vaccine rollout..." required style="resize: vertical;"></textarea>
         </div>
         <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 12px;">
-          <div class="flex items-center gap-2 text-xs text-muted">
-            <span>One-click test:</span>
-            <button type="button" class="btn btn-ghost btn-sm" onclick="setSample('WHO reports 78% drop in pediatric malaria mortality following vaccine rollout')">Malaria Vaccine</button>
-            <button type="button" class="btn btn-ghost btn-sm" onclick="setSample('SHOCKING! You won\'t believe this secret miracle trick that scientists hate!')">Clickbait Test</button>
+          <div class="flex items-center gap-2 text-xs text-muted" style="flex-wrap: wrap;">
+            <span>Sample tests:</span>
+            <button type="button" class="btn btn-ghost btn-sm text-accent" onclick="setSample('WHO reports 78% drop in pediatric malaria mortality following vaccine rollout')">#MalariaVaccine</button>
+            <button type="button" class="btn btn-ghost btn-sm text-accent" onclick="setSample('Global Semiconductor Alliance ratifies 1.4nm photonic chip architecture')">#1.4nmChips</button>
+            <button type="button" class="btn btn-ghost btn-sm text-accent" onclick="setSample('SHOCKING! Miracle cure discovered overnight by anonymous blogger!')">#ClickbaitTest</button>
           </div>
           <button type="submit" id="verifySubmitBtn" class="btn btn-primary">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Verify Claim Now
+            Verify Claim Now &rarr;
           </button>
         </div>
       </form>
@@ -100,7 +108,7 @@
           </div>
         </div>
 
-        <p class="text-sm text-secondary mb-4" id="resultAnalysisText"></p>
+        <p class="text-sm text-secondary mb-4" id="resultAnalysisText" style="line-height: 1.7;"></p>
 
         <div class="scorecard-grid">
           <div class="scorecard-stat">
@@ -119,7 +127,7 @@
       </div>
 
       <!-- Claim Deconstruction Box -->
-      <div class="card p-6 mb-8">
+      <div class="card p-6 mb-8" style="background: var(--bg-surface-1); border-color: var(--border-light);">
         <h3 class="heading-sm mb-4 flex items-center gap-2">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           Deconstructed Claim Evidence
@@ -148,13 +156,15 @@
     </div>
   </footer>
 
-  <script src="/assets/js/api.js?v=2.1"></script>
-  <script src="/assets/js/layout.js?v=2.1"></script>
-  <script src="/assets/js/app.js?v=2.1"></script>
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="/assets/js/api.js?v=2.5"></script>
+  <script src="/assets/js/layout.js?v=2.5"></script>
+  <script src="/assets/js/app.js?v=2.5"></script>
   <script>
     function setSample(text) {
       document.getElementById('claimInput').value = text;
-      document.getElementById('factCheckForm').dispatchEvent(new Event('submit'));
+      document.getElementById('verifySubmitBtn').click();
     }
 
     async function runVerification(query) {
@@ -192,9 +202,9 @@
             <div class="claim-card">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-accent">${sanitize(c.status || 'Verified Assertion')}</span>
-                <span class="text-xs text-muted">Evidence</span>
+                <span class="text-xs text-muted">Evidence Registry</span>
               </div>
-              <p class="text-sm font-semibold mb-1">${sanitize(c.claim)}</p>
+              <p class="text-sm font-semibold mb-1" style="color:var(--text-primary)">${sanitize(c.claim)}</p>
               <p class="text-xs text-secondary">${sanitize(c.evidence || 'Corroborated by wire network')}</p>
             </div>
           `).join('');
@@ -208,7 +218,7 @@
         showToast(`Verification failed: ${err.message}`, 'error');
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Verify Claim Now';
+        btn.textContent = 'Verify Claim Now →';
       }
     }
 
@@ -218,7 +228,7 @@
         const list = await getRecentFactChecks();
         if (list && list.length) {
           container.innerHTML = list.map(q => `
-            <div class="card p-4 flex items-center justify-between gap-4">
+            <div class="card p-4 flex items-center justify-between gap-4" style="background:var(--bg-surface-1);">
               <div>
                 <span class="badge ${q.credibility_score >= 80 ? 'badge-verified' : 'badge-developing'} mb-1">${q.verdict}</span>
                 <p class="text-sm font-semibold">${sanitize(q.analysis)}</p>
