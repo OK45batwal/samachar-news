@@ -1,29 +1,50 @@
-// Samachar API Client — Dual Port (5173/8000) Compatible
-
-const API_BASE = (window.location.port === '5173' || window.location.hostname === 'localhost' && window.location.port !== '8000') 
-  ? 'http://localhost:8000' 
-  : '';
+// Samachar API Client — Resilient Multi-Port (5173/8000)
 
 async function request(endpoint, options = {}) {
-  const url = `${API_BASE}${endpoint}`;
   const token = localStorage.getItem('samachar_token');
-
   const headers = {
     'Content-Type': 'application/json',
     ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
     ...options.headers,
   };
 
+  // Primary URL (relative)
+  const primaryUrl = endpoint;
+  // Fallback URL (direct backend on 8000)
+  const fallbackUrl = `http://localhost:8000${endpoint}`;
+
   try {
-    const res = await fetch(url, { ...options, headers });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ detail: 'Network request failed' }));
-      throw new Error(err.detail || err.message || `HTTP ${res.status}`);
+    const res = await fetch(primaryUrl, { ...options, headers });
+    if (res.ok) {
+      return await res.json();
     }
-    return await res.json();
-  } catch (error) {
-    console.error(`API Error [${endpoint}]:`, error);
-    throw error;
+    // If not ok on relative, try direct 8000 fallback
+    if (window.location.port === '5173') {
+      const fallbackRes = await fetch(fallbackUrl, { ...options, headers });
+      if (fallbackRes.ok) {
+        return await fallbackRes.json();
+      }
+      const err = await fallbackRes.json().catch(() => ({ detail: 'Request failed' }));
+      throw new Error(err.detail || `HTTP ${fallbackRes.status}`);
+    }
+    const err = await res.json().catch(() => ({ detail: 'Request failed' }));
+    throw new Error(err.detail || `HTTP ${res.status}`);
+  } catch (primaryErr) {
+    if (window.location.port === '5173' && !primaryUrl.startsWith('http')) {
+      try {
+        const fallbackRes = await fetch(fallbackUrl, { ...options, headers });
+        if (fallbackRes.ok) {
+          return await fallbackRes.json();
+        }
+        const err = await fallbackRes.json().catch(() => ({ detail: 'Request failed' }));
+        throw new Error(err.detail || `HTTP ${fallbackRes.status}`);
+      } catch (fallbackErr) {
+        console.error(`API Error [${endpoint}]:`, fallbackErr);
+        throw fallbackErr;
+      }
+    }
+    console.error(`API Error [${endpoint}]:`, primaryErr);
+    throw primaryErr;
   }
 }
 
