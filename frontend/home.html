@@ -6,9 +6,9 @@
   <title>Samachar — Truth-First News Intelligence & Fact Checking</title>
   <meta name="description" content="Real-time news intelligence feed with live truth scorecards and multi-source fact verification." />
   <meta name="theme-color" content="#08090C" />
-  <link rel="stylesheet" href="assets/css/variables.css?v=2.1" />
-  <link rel="stylesheet" href="assets/css/style.css?v=2.1" />
-  <link rel="stylesheet" href="assets/css/layout.css?v=2.1" />
+  <link rel="stylesheet" href="assets/css/variables.css?v=2.2" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2.2" />
+  <link rel="stylesheet" href="assets/css/layout.css?v=2.2" />
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/icons/favicon.svg" />
   <script>
@@ -144,7 +144,7 @@
     </section>
 
     <!-- Channel Header Banner (Shown when category active) -->
-    <div id="categoryHeaderBanner" class="card p-6 mb-6" style="display: none; background: linear-gradient(180deg, var(--bg-surface-2) 0%, var(--bg-surface-1) 100%);">
+    <div id="categoryHeaderBanner" class="card p-6 mb-6" style="display: none; background: var(--bg-surface-2); border-color: var(--border-light);">
       <div class="flex items-center justify-between gap-4" style="flex-wrap: wrap;">
         <div>
           <span class="badge badge-verified mb-2" id="channelBadge">CHANNEL INTELLIGENCE</span>
@@ -154,18 +154,11 @@
       </div>
     </div>
 
-    <!-- Filter Bar & Verified Switch -->
-    <div class="flex items-center justify-between gap-4 mb-4 pb-2" style="flex-wrap: wrap;">
-      <div class="filter-tabs" id="categoryTabs">
-        <button class="tab-btn active" data-cat="">All Feeds</button>
-        <button class="tab-btn" data-cat="world">World</button>
-        <button class="tab-btn" data-cat="technology">Tech & AI</button>
-        <button class="tab-btn" data-cat="india">India</button>
-        <button class="tab-btn" data-cat="business">Business</button>
-        <button class="tab-btn" data-cat="science">Science</button>
-        <button class="tab-btn" data-cat="health">Health</button>
-        <button class="tab-btn" data-cat="sports">Sports</button>
-        <button class="tab-btn" data-cat="entertainment">Entertainment</button>
+    <!-- Feed Header Bar -->
+    <div class="flex items-center justify-between gap-4 mb-6 pb-2 border-bottom" style="flex-wrap: wrap;">
+      <div class="flex items-center gap-2">
+        <h2 class="heading-md" id="feedSectionTitle">Breaking Wire Coverage</h2>
+        <span class="text-xs text-muted">· Real-Time Evidence Feed</span>
       </div>
       <div class="flex items-center gap-2">
         <button type="button" id="verifiedOnlyToggleBtn" class="toggle-filter-btn" title="Filter verified articles">
@@ -241,9 +234,9 @@
     </div>
   </footer>
 
-  <script src="assets/js/api.js?v=2.1"></script>
-  <script src="assets/js/layout.js?v=2.1"></script>
-  <script src="assets/js/app.js?v=2.1"></script>
+  <script src="assets/js/api.js?v=2.2"></script>
+  <script src="assets/js/layout.js?v=2.2"></script>
+  <script src="assets/js/app.js?v=2.2"></script>
   <script>
     let currentCategory = '';
     let isVerifiedOnly = false;
@@ -262,12 +255,9 @@
     function updateCategoryUI() {
       const bento = document.getElementById('bentoHero');
       const banner = document.getElementById('categoryHeaderBanner');
+      const feedTitle = document.getElementById('feedSectionTitle');
       const meta = CHANNEL_METADATA[currentCategory];
 
-      // Update active tabs
-      document.querySelectorAll('#categoryTabs .tab-btn').forEach(b => {
-        b.classList.toggle('active', b.getAttribute('data-cat') === currentCategory);
-      });
       document.querySelectorAll('#mainChannelBar .category-link').forEach(b => {
         b.classList.toggle('active', b.getAttribute('data-cat') === currentCategory);
       });
@@ -278,9 +268,11 @@
         document.getElementById('channelTitle').textContent = meta.title;
         document.getElementById('channelDesc').textContent = meta.desc;
         document.getElementById('channelBadge').textContent = meta.badge;
+        feedTitle.textContent = meta.title;
       } else {
         bento.style.display = 'grid';
         banner.style.display = 'none';
+        feedTitle.textContent = 'Breaking Wire Coverage';
       }
     }
 
@@ -372,12 +364,6 @@
         window.history.pushState({ cat }, '', newUrl);
         loadNews();
       }
-
-      document.querySelectorAll('#categoryTabs .tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          switchCategory(btn.getAttribute('data-cat') || '');
-        });
-      });
 
       document.querySelectorAll('#mainChannelBar .category-link').forEach(btn => {
         if (btn.tagName === 'BUTTON') {
