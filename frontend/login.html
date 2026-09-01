@@ -182,7 +182,8 @@
         try {
           await loginUser(email, password);
           showToast('Signed in successfully! Redirecting...', 'success');
-          setTimeout(() => { window.location.href = 'home.html'; }, 500);
+          const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
+          setTimeout(() => { window.location.href = redirectUrl; }, 500);
         } catch (err) {
           showToast(err.message || 'Login failed', 'error');
           btn.disabled = false;

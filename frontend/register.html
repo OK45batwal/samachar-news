@@ -171,7 +171,8 @@
           await registerUser(email, password, fullName);
           showToast('Account created! Signing you in...', 'success');
           await loginUser(email, password);
-          setTimeout(() => { window.location.href = 'home.html'; }, 600);
+          const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
+          setTimeout(() => { window.location.href = redirectUrl; }, 600);
         } catch (err) {
           showToast(err.message || 'Registration failed', 'error');
           btn.disabled = false;

@@ -353,6 +353,12 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Auth Guard: Require login to access main news feed
+      if (!isAuthenticated()) {
+        window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+        return;
+      }
+
       const urlParams = new URLSearchParams(window.location.search);
       currentCategory = urlParams.get('cat') || '';
       
