@@ -1,5 +1,5 @@
 import asyncio
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -70,6 +70,24 @@ BENCHMARK_ARTICLES = [
         "bias_spectrum": "Neutral Analytic (Technical Audit)",
         "image_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
     },
+    {
+        "title": "Quantum Computing Lab Achieves 10,000 Logical Qubit Error Suppression Milestone",
+        "slug": "quantum-computing-lab-achieves-10000-logical-qubit-milestone",
+        "summary": "Researchers in Munich and Oxford have published peer-reviewed validation of real-time surface-code error correction sustaining logical qubit coherence for over 4 hours.",
+        "content": "In a paper published in Nature Physics, researchers demonstrated a fault-tolerant topological quantum processor that maintains quantum state coherence 10,000 times longer than bare physical qubits. The breakthrough unlocks practical algorithmic execution of complex molecular simulation models.",
+        "category_slug": "technology",
+        "source_name": "Nature Journal",
+        "fact_check_status": FactCheckStatus.VERIFIED,
+        "credibility_score": 98,
+        "sensationalism_score": 4,
+        "key_claims": [
+            {"claim": "Real-time surface-code error correction sustained for 4+ hours", "status": "Verified Fact", "evidence": "Published in Nature Physics with open dataset"},
+            {"claim": "Coherence improvement factor of 10,000x over bare qubits", "status": "Data-Backed Assertion", "evidence": "Independent telemetry replication at Oxford Quantum Lab"}
+        ],
+        "corroborating_sources": ["Nature Journal", "MIT Technology Review", "BBC News"],
+        "bias_spectrum": "Neutral Analytic (Peer Review)",
+        "image_url": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1200&q=80",
+    },
 
     # World
     {
@@ -107,6 +125,24 @@ BENCHMARK_ARTICLES = [
         "corroborating_sources": ["Reuters", "BBC News", "The Hindu"],
         "bias_spectrum": "Neutral Analytic (Regulatory Wire)",
         "image_url": "https://images.unsplash.com/photo-1505705694340-019e1e335916?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+        "title": "Global Treaty on Deep Ocean Environmental Protection Enters Formal Legal Force",
+        "slug": "global-treaty-deep-ocean-protection-enters-force",
+        "summary": "Over 75 maritime nations have deposited instruments of ratification, creating the world's first legally binding conservation regime for international waters beyond national jurisdictions.",
+        "content": "At UN Headquarters in New York, the High Seas Treaty officially entered into force after surpassing the required 60-state threshold. The treaty establishes maritime protected zones covering 30% of open oceans by 2030 and creates an environmental impact assessment committee for deep-sea mining.",
+        "category_slug": "world",
+        "source_name": "BBC News",
+        "fact_check_status": FactCheckStatus.VERIFIED,
+        "credibility_score": 98,
+        "sensationalism_score": 4,
+        "key_claims": [
+            {"claim": "High Seas Treaty deposited by 75+ ratifying nations", "status": "Official Statement", "evidence": "UN Treaty Collection depository notification"},
+            {"claim": "Protects 30% of international waters by 2030", "status": "Verified Fact", "evidence": "UN BBNJ Agreement Articles 17-22"}
+        ],
+        "corroborating_sources": ["BBC News", "Reuters", "Associated Press"],
+        "bias_spectrum": "Neutral Analytic (International Law)",
+        "image_url": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80",
     },
 
     # India
@@ -147,6 +183,24 @@ BENCHMARK_ARTICLES = [
         "bias_spectrum": "Neutral Analytic (Science & Space)",
         "image_url": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=80",
     },
+    {
+        "title": "National Highway Authority Commissions 5,000 km High-Speed Express Freight Corridor",
+        "slug": "national-highway-authority-commissions-5000km-freight-corridor",
+        "summary": "The Ministry of Road Transport confirms freight logistics transit times between Delhi and Mumbai have dropped from 48 hours to under 14 hours following automated tolling and grade separation.",
+        "content": "The completed national logistics corridor incorporates automated electronic weighing sensors and dynamic traffic control systems. Commercial logistics operators reported a 28% reduction in fuel consumption and 99.8% on-time delivery schedules across heavy freight transport.",
+        "category_slug": "india",
+        "source_name": "The Hindu",
+        "fact_check_status": FactCheckStatus.VERIFIED,
+        "credibility_score": 93,
+        "sensationalism_score": 7,
+        "key_claims": [
+            {"claim": "Logistics transit time between Delhi and Mumbai reduced to 14 hours", "status": "Verified Fact", "evidence": "NHAI audited freight transit log reports"},
+            {"claim": "28% reduction in heavy transport fuel consumption", "status": "Data-Backed Assertion", "evidence": "National Transport Corporation audited trial data"}
+        ],
+        "corroborating_sources": ["The Hindu", "Indian Express", "Bloomberg"],
+        "bias_spectrum": "Neutral Analytic (Infrastructure)",
+        "image_url": "https://images.unsplash.com/photo-1545459720-aac8509eb02c?auto=format&fit=crop&w=1200&q=80",
+    },
 
     # Business
     {
@@ -168,6 +222,24 @@ BENCHMARK_ARTICLES = [
         "bias_spectrum": "Neutral Analytic (Financial Wire)",
         "image_url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
     },
+    {
+        "title": "Global Sovereign Wealth Funds Allocate Record $450B to Clean Infrastructure Assets",
+        "slug": "sovereign-wealth-funds-allocate-450b-clean-infrastructure",
+        "summary": "Annual institutional audit reports confirm long-term capital reallocation toward energy storage grids, grid interconnection links, and carbon-negative building materials.",
+        "content": "The International Forum of Sovereign Wealth Funds published its annual global allocation census. Real asset allocations in clean infrastructure reached $450 billion, representing a 34% increase over previous fiscal cycles, with sovereign investors citing long-term inflation resilience.",
+        "category_slug": "business",
+        "source_name": "Reuters",
+        "fact_check_status": FactCheckStatus.VERIFIED,
+        "credibility_score": 95,
+        "sensationalism_score": 6,
+        "key_claims": [
+            {"claim": "$450 billion allocated by sovereign wealth funds to clean infrastructure", "status": "Data-Backed Assertion", "evidence": "IFSWF Annual Allocation Census 2026"},
+            {"claim": "34% growth in clean energy infrastructure capital deployment", "status": "Verified Fact", "evidence": "Audited asset registry of 38 sovereign funds"}
+        ],
+        "corroborating_sources": ["Reuters", "Bloomberg", "Associated Press"],
+        "bias_spectrum": "Neutral Analytic (Markets)",
+        "image_url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+    },
 
     # Science
     {
@@ -187,6 +259,24 @@ BENCHMARK_ARTICLES = [
         "corroborating_sources": ["Nature Journal", "BBC News", "Associated Press", "NASA Science"],
         "bias_spectrum": "Neutral Analytic (Scientific Peer Review)",
         "image_url": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+        "title": "Fusion Energy Reactor Sustains 100-Million-Degree Plasma for 1,000 Seconds",
+        "slug": "fusion-energy-reactor-sustains-plasma-1000-seconds",
+        "summary": "Superconducting magnetic confinement facility achieves steady-state plasma confinement, setting an operational endurance benchmark for magnetic fusion research.",
+        "content": "Engineers and plasma physicists confirmed the milestone using high-density deuterium plasma. Advanced tungsten divertor tiles and real-time AI magnetic equilibrium controllers successfully suppressed heat flux instabilities without plasma disruption.",
+        "category_slug": "science",
+        "source_name": "Nature Journal",
+        "fact_check_status": FactCheckStatus.VERIFIED,
+        "credibility_score": 98,
+        "sensationalism_score": 4,
+        "key_claims": [
+            {"claim": "Steady-state plasma confinement sustained for 1,000 seconds", "status": "Verified Fact", "evidence": "Telemetry data verified by International Atomic Energy Agency"},
+            {"claim": "Plasma core temperature maintained above 100 million degrees Celsius", "status": "Data-Backed Assertion", "evidence": "Thomson scattering and X-ray spectrometer measurements"}
+        ],
+        "corroborating_sources": ["Nature Journal", "Associated Press", "Reuters"],
+        "bias_spectrum": "Neutral Analytic (Applied Physics)",
+        "image_url": "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=1200&q=80",
     },
 
     # Health
@@ -208,6 +298,24 @@ BENCHMARK_ARTICLES = [
         "bias_spectrum": "Neutral Analytic (Global Health)",
         "image_url": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80",
     },
+    {
+        "title": "Phase-3 Clinical Trial Confirms Targeted mRNA Therapy Eliminates Pancreatic Tumor Recurrence",
+        "slug": "mrna-therapy-eliminates-pancreatic-tumor-recurrence-trial",
+        "summary": "Oncology researchers have published 3-year survival results demonstrating that personalized neoantigen mRNA vaccines induce long-lasting T-cell immune responses in resected patients.",
+        "content": "In a multicenter trial published in The New England Journal of Medicine, patients receiving customized mRNA neoantigen vaccines alongside standard adjuvant chemotherapy showed an 84% reduction in recurrence rates over 36 months compared to the control cohort.",
+        "category_slug": "health",
+        "source_name": "Nature Journal",
+        "fact_check_status": FactCheckStatus.VERIFIED,
+        "credibility_score": 97,
+        "sensationalism_score": 5,
+        "key_claims": [
+            {"claim": "84% reduction in tumor recurrence over 36 months", "status": "Data-Backed Assertion", "evidence": "NEJM multicenter Phase-3 clinical trial publication"},
+            {"claim": "Personalized neoantigen vaccines generated sustained T-cell immunity", "status": "Verified Fact", "evidence": "Flow cytometry and TCR sequencing patient assay data"}
+        ],
+        "corroborating_sources": ["Nature Journal", "BBC News", "Reuters"],
+        "bias_spectrum": "Neutral Analytic (Clinical Oncology)",
+        "image_url": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
+    },
 
     # Sports
     {
@@ -228,6 +336,24 @@ BENCHMARK_ARTICLES = [
         "bias_spectrum": "Neutral Analytic (Sports Technology)",
         "image_url": "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80",
     },
+    {
+        "title": "World Athletics Ratifies Biomechanical Sensor Integration for Marathon World Records",
+        "slug": "world-athletics-ratifies-biomechanical-sensor-standards",
+        "summary": "New international regulations standardize foot-pod pressure sensors and energy-return foam thickness limits for all accredited road race competitions.",
+        "content": "World Athletics technical delegates approved updated footwear and sensor guidelines following independent laboratory stiffness testing. The rules ensure technological fairness while providing television viewers with real-time cadence and stride efficiency telemetry.",
+        "category_slug": "sports",
+        "source_name": "BBC News",
+        "fact_check_status": FactCheckStatus.VERIFIED,
+        "credibility_score": 94,
+        "sensationalism_score": 6,
+        "key_claims": [
+            {"claim": "Standardized biomechanical sensor rules approved for accredited road races", "status": "Official Statement", "evidence": "World Athletics Technical Rulebook Amendment 2026"},
+            {"claim": "Energy-return foam stack height verified with ultrasonic laser gauges", "status": "Verified Fact", "evidence": "Independent laboratory testing certification"}
+        ],
+        "corroborating_sources": ["BBC News", "ESPN", "Associated Press"],
+        "bias_spectrum": "Neutral Analytic (Athletics)",
+        "image_url": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&q=80",
+    },
 
     # Entertainment
     {
@@ -247,6 +373,24 @@ BENCHMARK_ARTICLES = [
         "corroborating_sources": ["Associated Press", "BBC News", "Reuters"],
         "bias_spectrum": "Neutral Analytic (Arts & Culture)",
         "image_url": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+        "title": "International Guild Adopts Digital Provenance Watermarks for Authentic Human Cinema",
+        "slug": "international-guild-adopts-digital-provenance-watermarks",
+        "summary": "Leading cinematographers, screenwriters, and directors establish cryptographic metadata standards to verify on-location capture and authentic acoustic performance.",
+        "content": "The International Cinematography Guild announced the release of the C2PA-compliant Cinema Authenticity Standard. Camera manufacturers have integrated cryptographic chipsets that sign RAW sensor captures directly at the focal plane, guaranteeing unmanipulated optical capture for theatrical releases.",
+        "category_slug": "entertainment",
+        "source_name": "TechCrunch",
+        "fact_check_status": FactCheckStatus.VERIFIED,
+        "credibility_score": 95,
+        "sensationalism_score": 6,
+        "key_claims": [
+            {"claim": "C2PA-compliant Cinema Authenticity Standard ratified by Guild", "status": "Official Statement", "evidence": "International Cinematography Guild joint standard announcement"},
+            {"claim": "Cryptographic focal-plane signing integrated directly into camera hardware", "status": "Verified Fact", "evidence": "Manufacturer technical hardware integration specs"}
+        ],
+        "corroborating_sources": ["TechCrunch", "Associated Press", "BBC News"],
+        "bias_spectrum": "Neutral Analytic (Media Technology)",
+        "image_url": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80",
     }
 ]
 
@@ -256,75 +400,83 @@ async def seed_database():
     await init_db()
 
     async with async_session() as db:
-        check_user = await db.execute(select(User).where(User.email == "admin@samachar.news"))
-        if check_user.scalar_one_or_none():
-            return
-
-        # 1. Seed Users
-        admin_user = User(
-            email="admin@samachar.news",
-            username="admin",
-            hashed_password=hash_password("AdminPass123!"),
-            full_name="Samachar Chief Editor",
-            role=UserRole.ADMIN,
-        )
-        demo_user = User(
-            email="reader@samachar.news",
-            username="reader",
-            hashed_password=hash_password("ReaderPass123!"),
-            full_name="Alex Mercer",
-            role=UserRole.USER,
-        )
-        db.add_all([admin_user, demo_user])
-        await db.flush()
-
-        # 2. Seed Categories
+        # 1. Ensure Categories exist
         cat_map = {}
         for c in CATEGORIES:
-            cat = Category(name=c["name"], slug=c["slug"], description=c["description"], icon=c["icon"])
-            db.add(cat)
-            await db.flush()
+            res = await db.execute(select(Category).where(Category.slug == c["slug"]))
+            cat = res.scalar_one_or_none()
+            if not cat:
+                cat = Category(name=c["name"], slug=c["slug"], description=c["description"], icon=c["icon"])
+                db.add(cat)
+                await db.flush()
             cat_map[c["slug"]] = cat.id
 
-        # 3. Seed Sources
+        # 2. Ensure Sources exist
         src_map = {}
         for s in SOURCES:
-            src = Source(
-                name=s["name"],
-                url=s["url"],
-                feed_url=s["feed_url"],
-                country=s["country"],
-                reliability_score=s["rel"],
-            )
-            db.add(src)
-            await db.flush()
+            res = await db.execute(select(Source).where(Source.name == s["name"]))
+            src = res.scalar_one_or_none()
+            if not src:
+                src = Source(
+                    name=s["name"],
+                    url=s["url"],
+                    feed_url=s["feed_url"],
+                    country=s["country"],
+                    reliability_score=s["rel"],
+                )
+                db.add(src)
+                await db.flush()
             src_map[s["name"]] = src.id
 
-        # 4. Seed Benchmark Verified Articles
-        for a in BENCHMARK_ARTICLES:
-            art = Article(
-                title=a["title"],
-                slug=a["slug"],
-                summary=a["summary"],
-                content=a["content"],
-                image_url=a["image_url"],
-                source_url=f"https://samachar.news/verified/{a['slug']}",
-                author="Editorial Intelligence Wire",
-                status=ArticleStatus.PUBLISHED,
-                sentiment_score=20,
-                fact_check_status=a["fact_check_status"],
-                credibility_score=a["credibility_score"],
-                sensationalism_score=a["sensationalism_score"],
-                key_claims=a["key_claims"],
-                corroborating_sources=a["corroborating_sources"],
-                bias_spectrum=a["bias_spectrum"],
-                category_id=cat_map.get(a["category_slug"]),
-                source_id=src_map.get(a["source_name"]),
-                published_at=datetime.now(timezone.utc).replace(tzinfo=None),
+        # 3. Ensure Users exist
+        check_admin = await db.execute(select(User).where(User.email == "admin@samachar.news"))
+        if not check_admin.scalar_one_or_none():
+            admin_user = User(
+                email="admin@samachar.news",
+                username="admin",
+                hashed_password=hash_password("AdminPass123!"),
+                full_name="Samachar Chief Editor",
+                role=UserRole.ADMIN,
             )
-            db.add(art)
+            demo_user = User(
+                email="reader@samachar.news",
+                username="reader",
+                hashed_password=hash_password("ReaderPass123!"),
+                full_name="Alex Mercer",
+                role=UserRole.USER,
+            )
+            db.add_all([admin_user, demo_user])
+            await db.flush()
+
+        # 4. Ensure Benchmark Articles exist
+        now = datetime.now(timezone.utc).replace(tzinfo=None)
+        for i, a in enumerate(BENCHMARK_ARTICLES):
+            check_art = await db.execute(select(Article).where(Article.slug == a["slug"]))
+            if not check_art.scalar_one_or_none():
+                art = Article(
+                    title=a["title"],
+                    slug=a["slug"],
+                    summary=a["summary"],
+                    content=a["content"],
+                    image_url=a["image_url"],
+                    source_url=f"https://samachar.news/verified/{a['slug']}",
+                    author="Editorial Intelligence Wire",
+                    status=ArticleStatus.PUBLISHED,
+                    sentiment_score=20,
+                    fact_check_status=a["fact_check_status"],
+                    credibility_score=a["credibility_score"],
+                    sensationalism_score=a["sensationalism_score"],
+                    key_claims=a["key_claims"],
+                    corroborating_sources=a["corroborating_sources"],
+                    bias_spectrum=a["bias_spectrum"],
+                    category_id=cat_map.get(a["category_slug"]),
+                    source_id=src_map.get(a["source_name"]),
+                    published_at=now - timedelta(minutes=i * 25),
+                )
+                db.add(art)
 
         await db.commit()
+        print("✓ Database seeded successfully with benchmark articles.")
 
 
 if __name__ == "__main__":
