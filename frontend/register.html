@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#08090C" />
-  <title>Create Account — Samachar Truth Intelligence</title>
+  <title>Create Free Account — Samachar Truth Intelligence</title>
   <meta name="description" content="Join Samachar for truth-first news intelligence and claim verification." />
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/icons/favicon.svg" />
@@ -15,32 +15,8 @@
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
-  <style>
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg-base);
-    }
-    .auth-wrapper {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-    }
-    .auth-card {
-      width: 100%;
-      max-width: 440px;
-      background: var(--bg-surface-1);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-lg);
-      padding: 36px 32px;
-      box-shadow: var(--shadow-md);
-    }
-  </style>
 </head>
-<body>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
 
   <!-- Header -->
   <header class="header">
@@ -58,9 +34,9 @@
     </div>
   </header>
 
-  <!-- Centered Card Wrapper -->
-  <div class="auth-wrapper">
-    <div class="auth-card">
+  <!-- Centered Auth Card Wrapper -->
+  <main class="auth-page-wrapper">
+    <div class="auth-card-clean">
       
       <div class="text-center mb-6">
         <span class="badge badge-verified mb-2">FREE ONBOARDING</span>
@@ -94,10 +70,10 @@
       </div>
 
     </div>
-  </div>
+  </main>
 
   <!-- Footer -->
-  <footer class="footer" style="padding: 24px 0;">
+  <footer class="footer" style="padding: 20px 0;">
     <div class="container text-center text-xs text-muted">
       &copy; 2026 Samachar News Platform · Truth First
     </div>

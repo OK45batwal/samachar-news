@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#08090C" />
-  <title>Samachar — Truth-First News Intelligence & Fact Verification</title>
+  <title>Samachar — Real-Time Fact-Checked News Intelligence</title>
   <meta name="description" content="Autonomous real-time news intelligence platform. Triangulates 60+ global news wires, calculates objective Truth Scorecards, and eliminates sensationalist clickbait." />
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/icons/favicon.svg" />
@@ -25,27 +25,27 @@
         <span id="currentDateDisplay">Tuesday, Sep 1, 2026</span>
         <span>·</span>
         <span class="text-accent font-semibold flex items-center gap-1">
-          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block"></span>
-          Real-Time Fact Engine Active
+          <span class="logo-dot"></span>
+          Real-Time Fact Engine v2.0 Active
         </span>
       </div>
       <div class="flex items-center gap-4">
-        <a href="home.html" class="text-secondary hover:text-accent">Live Portal</a>
+        <a href="home.html" class="text-secondary hover:text-accent">Live Portal &rarr;</a>
         <a href="factcheck.html" class="text-accent font-semibold">⚡ Claim Verifier</a>
       </div>
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- Main Header -->
   <header class="header">
     <div class="container header-main">
       <div class="flex items-center gap-6">
-        <a href="home.html" class="logo">
+        <a href="index.html" class="logo">
           <span>SAMACHAR</span><span class="logo-dot"></span>
           <span class="logo-tag">TRUTH FIRST</span>
         </a>
         <nav class="nav-links hide-mobile flex items-center gap-4">
-          <a href="home.html" class="text-sm font-semibold text-secondary hover:text-primary">News Portal</a>
+          <a href="home.html" class="text-sm font-semibold text-secondary hover:text-primary">Live News</a>
           <a href="latest.html" class="text-sm font-semibold text-secondary hover:text-primary">All Feeds</a>
           <a href="factcheck.html" class="text-sm font-semibold text-accent">Fact Check Tool</a>
           <a href="trending.html" class="text-sm font-semibold text-secondary hover:text-primary">Trending</a>
@@ -64,7 +64,7 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="container py-12 text-center" style="max-width: 920px; margin: 48px auto 32px;">
+  <section class="container py-12 text-center" style="max-width: 960px; margin: 40px auto 20px;">
     <div class="flex items-center justify-center gap-2 mb-4">
       <span class="badge badge-verified" style="font-size:12px;padding:6px 14px">
         🟢 AUTONOMOUS TRUTH ENGINE 2.0
@@ -72,15 +72,15 @@
     </div>
 
     <h1 class="heading-hero mb-4">
-      News Verified by Real Evidence,<br />
+      News Verified by Evidence,<br />
       <span class="text-accent">Never Sensationalism.</span>
     </h1>
 
     <p class="text-secondary text-base mb-8" style="max-width: 680px; margin-left: auto; margin-right: auto; line-height: 1.7;">
-      Samachar cross-corroborates breaking stories across 60+ global accredited news agencies in real time, extracts quantitative claims, and produces transparent Truth Scorecards before stories reach your screen.
+      Samachar cross-corroborates breaking stories across 60+ global accredited news wires in real time, extracts quantitative claims, and produces transparent Truth Scorecards before stories reach your screen.
     </p>
 
-    <div class="flex items-center justify-center gap-4 mb-12" style="flex-wrap: wrap;">
+    <div class="flex items-center justify-center gap-4 mb-10" style="flex-wrap: wrap;">
       <a href="home.html" class="btn btn-primary" style="padding: 12px 28px; font-size: 14.5px;">
         Explore Live News Portal &rarr;
       </a>
@@ -90,25 +90,40 @@
     </div>
 
     <!-- Live Interactive Fact Checker Hero Widget -->
-    <div class="card p-6 text-left" style="background: var(--bg-surface-1); border-color: var(--border-light); max-width: 760px; margin: 0 auto; box-shadow: var(--shadow-md);">
+    <div class="card p-6 text-left" style="background: var(--bg-surface-1); border-color: var(--border-light); max-width: 780px; margin: 0 auto; box-shadow: var(--shadow-md);">
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center gap-2">
           <span class="logo-dot"></span>
-          <span class="text-xs font-bold text-accent uppercase tracking-wide">Instant Claim Verifier</span>
+          <span class="text-xs font-bold text-accent uppercase tracking-wide">Live Interactive Fact Checker</span>
         </div>
-        <span class="text-xs text-muted">Test any statement in real time</span>
+        <span class="text-xs text-muted">Test any statement below in real time</span>
       </div>
+      
       <form id="heroFactCheckForm" class="flex items-center gap-2" style="flex-wrap: wrap;">
-        <input type="text" id="heroClaimInput" class="input" style="flex: 1; min-width: 260px;" placeholder="e.g. WHO reports 78% decline in malaria mortality following vaccine rollout..." required />
-        <button type="submit" class="btn btn-primary flex items-center gap-1" style="white-space: nowrap;">
+        <input type="text" id="heroClaimInput" class="input" style="flex: 1; min-width: 260px;" placeholder="e.g. WHO reports 78% drop in pediatric malaria mortality following vaccine rollout" required />
+        <button type="submit" id="heroVerifyBtn" class="btn btn-primary flex items-center gap-1" style="white-space: nowrap;">
           Verify Now &rarr;
         </button>
       </form>
+
       <div class="flex items-center gap-3 text-xs text-muted mt-3" style="flex-wrap: wrap;">
-        <span>Popular tests:</span>
-        <a href="factcheck.html?q=WHO%20malaria%20vaccine%20mortality" class="text-secondary hover:text-accent">#MalariaVaccine</a>
-        <a href="factcheck.html?q=1.4nm%20photonic%20semiconductor" class="text-secondary hover:text-accent">#1.4nmChips</a>
-        <a href="factcheck.html?q=James%20Webb%20exoplanet%20water" class="text-secondary hover:text-accent">#JWSTExoplanet</a>
+        <span>Try sample claims:</span>
+        <button type="button" class="btn btn-ghost btn-sm sample-claim-btn" data-claim="WHO reports 78% drop in pediatric malaria mortality following vaccine rollout" style="padding:2px 8px;font-size:11px">#MalariaVaccine</button>
+        <button type="button" class="btn btn-ghost btn-sm sample-claim-btn" data-claim="Global Semiconductor Alliance ratifies 1.4nm photonic chip architecture with 45% power reduction" style="padding:2px 8px;font-size:11px">#1.4nmChips</button>
+        <button type="button" class="btn btn-ghost btn-sm sample-claim-btn" data-claim="SHOCKING SECRET! Scientists horrified by this bizarre miracle finding that changes everything!" style="padding:2px 8px;font-size:11px">#ClickbaitTest</button>
+      </div>
+
+      <!-- Live Inline Result Box -->
+      <div id="heroResultBox" class="mt-4 p-4 card" style="display:none;background:var(--bg-surface-2);border-color:var(--accent-border)">
+        <div class="flex items-center justify-between mb-2">
+          <span class="badge" id="heroVerdictBadge">🟢 CORROBORATED</span>
+          <span class="font-mono text-xs text-accent font-bold" id="heroScoreDisplay">95% Credibility</span>
+        </div>
+        <p class="text-xs text-secondary mb-3" id="heroAnalysisText"></p>
+        <div class="flex items-center justify-between text-xs text-muted">
+          <span id="heroSourcesCount">Corroborated by 4 Wires</span>
+          <a href="factcheck.html" class="text-accent font-semibold hover:underline">Deep Workbench &rarr;</a>
+        </div>
       </div>
     </div>
   </section>
@@ -116,7 +131,7 @@
   <!-- Metrics Bar -->
   <section class="container py-6 mb-12">
     <div class="card p-6" style="background: var(--bg-surface-2); border-color: var(--border);">
-      <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:24px;text-align:center">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:24px;text-align:center">
         <div>
           <div class="font-mono text-2xl font-extrabold text-accent">60+ Wires</div>
           <div class="text-xs text-secondary mt-1">Accredited Global Sources</div>
@@ -231,12 +246,61 @@
   <script src="assets/js/layout.js"></script>
   <script src="assets/js/app.js"></script>
   <script>
-    document.getElementById('heroFactCheckForm')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const q = document.getElementById('heroClaimInput').value.trim();
-      if (q) {
-        window.location.href = `factcheck.html?q=${encodeURIComponent(q)}`;
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('heroFactCheckForm');
+      const input = document.getElementById('heroClaimInput');
+      const btn = document.getElementById('heroVerifyBtn');
+      const resultBox = document.getElementById('heroResultBox');
+      const badge = document.getElementById('heroVerdictBadge');
+      const score = document.getElementById('heroScoreDisplay');
+      const analysis = document.getElementById('heroAnalysisText');
+
+      async function runHeroVerification(query) {
+        if (!query.trim()) return;
+        btn.disabled = true;
+        btn.textContent = 'Verifying...';
+
+        try {
+          const res = await verifyClaim(query);
+          resultBox.style.display = 'block';
+          
+          const cred = res.credibility_score || 85;
+          const sens = res.sensationalism_score || 10;
+          
+          if (cred >= 80) {
+            badge.className = 'badge badge-verified';
+            badge.textContent = `🟢 ${cred}% VERIFIED`;
+          } else if (cred >= 65) {
+            badge.className = 'badge badge-corroborated';
+            badge.textContent = `🔵 ${cred}% CORROBORATED`;
+          } else {
+            badge.className = 'badge badge-disputed';
+            badge.textContent = `🔴 ${sens}% SENSATIONALISM PENALTY`;
+          }
+
+          score.textContent = `${cred}% Truth Index`;
+          analysis.textContent = res.analysis || 'Factual statement audited against wire registry.';
+        } catch (err) {
+          resultBox.style.display = 'block';
+          analysis.textContent = `Verification error: ${err.message}`;
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Verify Now →';
+        }
       }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        runHeroVerification(input.value);
+      });
+
+      document.querySelectorAll('.sample-claim-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          const claim = b.getAttribute('data-claim');
+          input.value = claim;
+          runHeroVerification(claim);
+        });
+      });
     });
   </script>
 </body>

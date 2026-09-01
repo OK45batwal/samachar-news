@@ -15,32 +15,8 @@
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
-  <style>
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg-base);
-    }
-    .auth-wrapper {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-    }
-    .auth-card {
-      width: 100%;
-      max-width: 440px;
-      background: var(--bg-surface-1);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-lg);
-      padding: 36px 32px;
-      box-shadow: var(--shadow-md);
-    }
-  </style>
 </head>
-<body>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
 
   <!-- Header -->
   <header class="header">
@@ -58,9 +34,9 @@
     </div>
   </header>
 
-  <!-- Centered Card Wrapper -->
-  <div class="auth-wrapper">
-    <div class="auth-card">
+  <!-- Centered Auth Card Wrapper -->
+  <main class="auth-page-wrapper">
+    <div class="auth-card-clean">
       
       <div class="text-center mb-6">
         <span class="badge badge-verified mb-2">ACCESS ACCOUNT</span>
@@ -70,20 +46,23 @@
 
       <!-- Quick 1-Click Demo Login Banner -->
       <div class="card p-4 mb-5" style="background: var(--bg-surface-2); border-color: var(--accent-border);">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-bold text-accent">⚡ QUICK DEMO ACCESS</span>
-          <span class="text-xs text-muted">1-Click</span>
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs font-bold text-accent flex items-center gap-1">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            QUICK DEMO READER
+          </span>
+          <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px">1-TAP</span>
         </div>
-        <p class="text-xs text-secondary mb-3">Test full platform capabilities instantly with demo credentials:</p>
+        <p class="text-xs text-secondary mb-3">Test full platform features with pre-configured reader credentials:</p>
         <button type="button" id="oneClickDemoBtn" class="btn btn-primary w-full flex items-center justify-center gap-2" style="padding: 10px;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          Sign In as Demo Reader
+          1-Click Demo Sign-in
         </button>
       </div>
 
       <div class="text-center my-4 text-xs text-muted flex items-center gap-3">
         <span style="flex:1;height:1px;background:var(--border)"></span>
-        <span>OR WITH EMAIL</span>
+        <span>OR SIGN IN WITH EMAIL</span>
         <span style="flex:1;height:1px;background:var(--border)"></span>
       </div>
 
@@ -112,14 +91,14 @@
       </form>
 
       <div class="text-center text-xs text-secondary pt-4 border-top">
-        Don't have an account? <a href="register.html" class="text-accent font-semibold hover:underline">Create one free &rarr;</a>
+        Don't have an account? <a href="register.html" class="text-accent font-semibold hover:underline">Create free account &rarr;</a>
       </div>
 
     </div>
-  </div>
+  </main>
 
   <!-- Footer -->
-  <footer class="footer" style="padding: 24px 0;">
+  <footer class="footer" style="padding: 20px 0;">
     <div class="container text-center text-xs text-muted">
       &copy; 2026 Samachar News Platform · Truth First
     </div>

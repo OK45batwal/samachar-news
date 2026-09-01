@@ -92,10 +92,10 @@
           <p class="text-xs text-secondary mt-1" id="channelDesc">Monitoring 60+ global news wires with real-time claim extraction and truth scoring</p>
         </div>
         <div class="flex items-center gap-3">
-          <label class="flex items-center gap-2 text-xs font-semibold text-accent cursor-pointer p-2 card" style="background:var(--bg-secondary);border-radius:var(--radius-full);user-select:none">
-            <input type="checkbox" id="verifiedToggle" style="accent-color:var(--accent)" />
-            <span>Verified Only (85%+ Score)</span>
-          </label>
+          <button type="button" id="verifiedToggleBtn" class="toggle-filter-btn" title="Toggle verified stories filter">
+            <span class="toggle-switch-indicator"></span>
+            <span>🟢 Verified Only (85%+)</span>
+          </button>
         </div>
       </div>
     </div>
@@ -224,16 +224,18 @@
       const urlParams = new URLSearchParams(window.location.search);
       currentCategory = urlParams.get('cat') || '';
       searchQuery = urlParams.get('q') || '';
+      const toggleBtn = document.getElementById('verifiedToggleBtn');
       if (urlParams.get('verified_only') === 'true') {
         isVerifiedOnly = true;
-        document.getElementById('verifiedToggle').checked = true;
+        toggleBtn?.classList.add('active');
       }
 
       updateChannelHeader();
       fetchStories();
 
-      document.getElementById('verifiedToggle')?.addEventListener('change', (e) => {
-        isVerifiedOnly = e.target.checked;
+      toggleBtn?.addEventListener('click', () => {
+        isVerifiedOnly = !isVerifiedOnly;
+        toggleBtn.classList.toggle('active', isVerifiedOnly);
         page = 1;
         fetchStories(false);
       });

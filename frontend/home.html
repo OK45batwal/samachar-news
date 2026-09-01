@@ -168,10 +168,10 @@
         <button class="tab-btn" data-cat="entertainment">Entertainment</button>
       </div>
       <div class="flex items-center gap-2">
-        <label class="flex items-center gap-2 text-xs font-semibold text-accent cursor-pointer p-2 card" style="background:var(--bg-surface-2);border-radius:var(--radius-full);user-select:none">
-          <input type="checkbox" id="verifiedOnlyToggle" style="accent-color:var(--accent)" />
-          <span>Verified Facts Only (85%+ Score)</span>
-        </label>
+        <button type="button" id="verifiedOnlyToggleBtn" class="toggle-filter-btn" title="Filter verified articles">
+          <span class="toggle-switch-indicator"></span>
+          <span>🟢 Verified Only (85%+)</span>
+        </button>
       </div>
     </div>
 
@@ -394,8 +394,10 @@
         });
       });
 
-      document.getElementById('verifiedOnlyToggle')?.addEventListener('change', (e) => {
-        isVerifiedOnly = e.target.checked;
+      const toggleBtn = document.getElementById('verifiedOnlyToggleBtn');
+      toggleBtn?.addEventListener('click', () => {
+        isVerifiedOnly = !isVerifiedOnly;
+        toggleBtn.classList.toggle('active', isVerifiedOnly);
         loadNews();
       });
     });
