@@ -8,9 +8,9 @@
   <meta name="description" content="Join Samachar for truth-first news intelligence and claim verification." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=2.4" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2.4" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=2.4" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=2.5" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=2.5" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=2.5" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -73,7 +73,7 @@
           <a href="index.html" class="text-xs text-secondary hover:text-primary flex items-center gap-1 font-semibold">
             &larr; Back to Landing Page
           </a>
-          <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
+          <button id="authThemeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           </button>
         </div>
@@ -121,11 +121,36 @@
 
   </div>
 
-  <script src="/assets/js/api.js?v=2.4"></script>
-  <script src="/assets/js/layout.js?v=2.4"></script>
-  <script src="/assets/js/app.js?v=2.4"></script>
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="/assets/js/api.js?v=2.5"></script>
   <script>
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      if (type === 'success') toast.style.borderLeft = '4px solid var(--accent)';
+      if (type === 'error') toast.style.borderLeft = '4px solid var(--disputed)';
+      toast.textContent = message;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 250);
+      }, 3500);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      // Theme switcher
+      const themeBtn = document.getElementById('authThemeToggle');
+      themeBtn?.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') || 'dark';
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('samachar_theme', next);
+      });
+
+      // Password toggle
       const pwdInput = document.getElementById('passwordInput');
       const toggleBtn = document.getElementById('togglePasswordBtn');
       toggleBtn?.addEventListener('click', () => {

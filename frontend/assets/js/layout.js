@@ -82,43 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 4. Mobile Bottom Navigation Injection (Only on news portal views, never on auth or landing pages)
-  const currentPath = window.location.pathname;
-  const isAuthOrLanding = currentPath.endsWith('login.html') || currentPath.endsWith('register.html') || currentPath.endsWith('forgot-password.html') || currentPath.endsWith('index.html') || currentPath === '/' || currentPath === '';
-  
-  if (!isAuthOrLanding && !document.querySelector('.mobile-bottom-nav')) {
-    const isHome = currentPath.endsWith('home.html');
-    const isLatest = currentPath.endsWith('latest.html');
-    const isFactCheck = currentPath.endsWith('factcheck.html');
-    const isBookmarks = currentPath.endsWith('bookmarks.html');
-    const isProfile = currentPath.endsWith('profile.html');
-
-    const bottomNav = document.createElement('nav');
-    bottomNav.className = 'mobile-bottom-nav';
-    bottomNav.innerHTML = `
-      <a href="home.html" class="mobile-nav-item ${isHome ? 'active' : ''}">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>Top</span>
-      </a>
-      <a href="latest.html" class="mobile-nav-item ${isLatest ? 'active' : ''}">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg>
-        <span>Feeds</span>
-      </a>
-      <a href="factcheck.html" class="mobile-nav-item ${isFactCheck ? 'active' : ''}" style="color:var(--accent)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        <span>Verify</span>
-      </a>
-      <a href="bookmarks.html" class="mobile-nav-item ${isBookmarks ? 'active' : ''}">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-        <span>Saved</span>
-      </a>
-      <a href="${user ? 'profile.html' : 'login.html'}" class="mobile-nav-item ${isProfile ? 'active' : ''}">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span>Account</span>
-      </a>
-    `;
-    document.body.appendChild(bottomNav);
-  }
+  // 4. Clean Header Auth Initialization Complete
 
   // 5. Search Modal
   const searchToggle = document.getElementById('searchToggle');
