@@ -82,14 +82,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 4. Mobile Bottom Navigation Injection
-  if (!document.querySelector('.mobile-bottom-nav')) {
-    const currentPath = window.location.pathname;
-    const isHome = currentPath.endsWith('home.html') || currentPath.endsWith('/');
+  // 4. Mobile Bottom Navigation Injection (Only on news portal views, never on auth or landing pages)
+  const currentPath = window.location.pathname;
+  const isAuthOrLanding = currentPath.endsWith('login.html') || currentPath.endsWith('register.html') || currentPath.endsWith('forgot-password.html') || currentPath.endsWith('index.html') || currentPath === '/' || currentPath === '';
+  
+  if (!isAuthOrLanding && !document.querySelector('.mobile-bottom-nav')) {
+    const isHome = currentPath.endsWith('home.html');
     const isLatest = currentPath.endsWith('latest.html');
     const isFactCheck = currentPath.endsWith('factcheck.html');
     const isBookmarks = currentPath.endsWith('bookmarks.html');
-    const isProfile = currentPath.endsWith('profile.html') || currentPath.endsWith('login.html');
+    const isProfile = currentPath.endsWith('profile.html');
 
     const bottomNav = document.createElement('nav');
     bottomNav.className = 'mobile-bottom-nav';
