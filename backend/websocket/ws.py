@@ -1,103 +1,89 @@
+import asyncio
 import json
-from typing import Optional, Set
+from typing import Dict, List, Set
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from jose import JWTError, jwt
 
-import structlog
-from fastapi import WebSocket, WebSocketDisconnect
-from jose import JWTError
+from ..config import settings
 
-logger = structlog.get_logger(__name__)
+router = APIRouter()
 
 
 class ConnectionManager:
     def __init__(self):
-        self.active: Set[WebSocket] = set()
+        self.active_connections: Set[WebSocket] = set()
+        self.user_connections: Dict[str, Set[WebSocket]] = {}
 
-    async def connect(self, ws: WebSocket):
-        await ws.accept()
-        self.active.add(ws)
-        logger.info("ws_connected", active=len(self.active))
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.add(websocket)
 
-    def disconnect(self, ws: WebSocket):
-        self.active.discard(ws)
-        logger.info("ws_disconnected", active=len(self.active))
+    def disconnect(self, websocket: WebSocket):
+        self.active_connections.discard(websocket)
+        for user_id, conns in list(self.user_connections.items()):
+            conns.discard(websocket)
+            if not conns:
+                del self.user_connections[user_id]
+
+    def authenticate_user(self, user_id: str, websocket: WebSocket):
+        if user_id not in self.user_connections:
+            self.user_connections[user_id] = set()
+        self.user_connections[user_id].add(websocket)
 
     async def broadcast(self, message: dict):
-        dead = set()
-        for ws in self.active:
+        if not self.active_connections:
+            return
+        payload = json.dumps(message)
+        dead = []
+        for connection in self.active_connections:
             try:
-                await ws.send_json(message)
+                await connection.send_text(payload)
             except Exception:
-                dead.add(ws)
-        self.active -= dead
-
-    async def broadcast_news_alert(self, article: dict):
-        await self.broadcast({
-            "type": "news_alert",
-            "data": article,
-        })
-
-    async def broadcast_stats_update(self, stats: dict):
-        await self.broadcast({
-            "type": "stats_update",
-            "data": stats,
-        })
+                dead.append(connection)
+        for d in dead:
+            self.disconnect(d)
 
 
 manager = ConnectionManager()
 
 
-async def _validate_token(token: str) -> Optional[str]:
-    """Validate a JWT and return the user_id if valid."""
-    from ..auth.auth import decode_token
+@router.websocket("/api/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
     try:
-        payload = decode_token(token)
-        return payload.get("sub")
-    except JWTError:
-        return None
+        # Welcome message
+        await websocket.send_text(json.dumps({
+            "type": "connection_established",
+            "message": "Connected to Samachar Real-Time Fact & News Wire",
+            "timestamp": asyncio.get_event_loop().time()
+        }))
 
-
-async def news_ws(ws: WebSocket):
-    """WebSocket endpoint requiring initial auth message."""
-    await ws.accept()
-
-    user_id = None
-
-    try:
-        # ── Require auth within first message ──
-        data = await ws.receive_text()
-        msg = json.loads(data)
-
-        if msg.get("type") == "auth" and msg.get("token"):
-            user_id = await _validate_token(msg["token"])
-            if user_id:
-                await ws.send_json({"type": "auth_ok"})
-                logger.info("ws_authenticated")
-            else:
-                await ws.send_json({"type": "auth_error", "message": "Invalid token"})
-                await ws.close(code=4001)
-                return
-        else:
-            await ws.send_json({"type": "auth_error", "message": "Authentication required"})
-            await ws.close(code=4001)
-            return
-
-        manager.active.add(ws)
-        logger.info("ws_connected", active=len(manager.active))
-
-        # ── Normal message loop ──
         while True:
-            data = await ws.receive_text()
-            msg = json.loads(data)
-            msg_type = msg.get("type")
-
-            if msg_type == "ping":
-                await ws.send_json({"type": "pong"})
-            else:
-                await ws.send_json({"type": "error", "message": f"Unknown message type: {msg_type}"})
-
+            data = await websocket.receive_text()
+            try:
+                msg = json.loads(data)
+                if msg.get("type") == "auth":
+                    token = msg.get("token")
+                    if token:
+                        try:
+                            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+                            user_id = payload.get("sub")
+                            if user_id:
+                                manager.authenticate_user(user_id, websocket)
+                                await websocket.send_text(json.dumps({
+                                    "type": "auth_success",
+                                    "user_id": user_id
+                                }))
+                        except JWTError:
+                            await websocket.send_text(json.dumps({
+                                "type": "auth_error",
+                                "message": "Invalid auth token"
+                            }))
+                elif msg.get("type") == "ping":
+                    await websocket.send_text(json.dumps({"type": "pong"}))
+            except Exception:
+                pass
     except WebSocketDisconnect:
-        manager.active.discard(ws)
-        logger.info("ws_disconnected", active=len(manager.active))
-    except Exception as e:
-        logger.error("ws_error", error=str(e))
-        manager.active.discard(ws)
+        manager.disconnect(websocket)
+    except Exception:
+        manager.disconnect(websocket)

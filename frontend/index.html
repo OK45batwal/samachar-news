@@ -3,124 +3,241 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Samachar — Real-Time News. Smarter Insights.</title>
-  <meta name="description" content="AI-powered news intelligence platform delivering breaking stories, deep analysis, and global perspectives." />
-  <link rel="stylesheet" href="assets/css/variables.css?v=3" />
-  <link rel="stylesheet" href="assets/css/style.css?v=3" />
-  <link rel="stylesheet" href="assets/css/layout.css?v=3" />
-  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg?v=3" />
-  <style>
-    .landing-header { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1200px; margin:0 auto; }
-    .landing-hero { min-height:85vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:48px 24px; position:relative; overflow:hidden; }
-    .landing-hero::before { content:''; position:absolute; top:-40%; right:-20%; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle, var(--accent-dim) 0%, transparent 70%); pointer-events:none; }
-    .landing-hero::after { content:''; position:absolute; bottom:-30%; left:-15%; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle, var(--secondary-dim) 0%, transparent 70%); pointer-events:none; }
-    .landing-hero h1 { font-size:clamp(2.5rem, 6vw, 4.5rem); font-weight:900; line-height:1.1; margin-bottom:20px; position:relative; z-index:1; }
-    .landing-hero p { font-size:clamp(1rem, 2vw, 1.25rem); max-width:600px; margin:0 auto 36px; color:var(--text-secondary); position:relative; z-index:1; }
-    .landing-hero .btn-group { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
-    .landing-stats { display:flex; gap:40px; justify-content:center; margin-top:48px; position:relative; z-index:1; }
-    .landing-stats div { text-align:center; }
-    .features-section { padding:80px 24px; max-width:1100px; margin:0 auto; }
-    .features-section h2 { text-align:center; font-size:2rem; font-weight:800; margin-bottom:8px; }
-    .features-section .sub { text-align:center; color:var(--text-secondary); margin-bottom:48px; }
-    .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; }
-    .feature-card { padding:32px; border-radius:var(--radius-md); background:var(--bg-elevated); border:1px solid var(--border); transition:all 0.3s; }
-    .feature-card:hover { border-color:var(--accent-dim); transform:translateY(-2px); }
-    .feature-card svg { color:var(--accent); margin-bottom:16px; }
-    .feature-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:8px; }
-    .feature-card p { font-size:0.9rem; color:var(--text-secondary); line-height:1.6; }
-    .landing-cta { text-align:center; padding:80px 24px; background:var(--bg-elevated); }
-    .landing-cta h2 { font-size:2rem; font-weight:800; margin-bottom:12px; }
-    .landing-cta p { color:var(--text-secondary); margin-bottom:32px; }
-    .landing-footer { text-align:center; padding:24px; color:var(--text-tertiary); font-size:0.85rem; border-top:1px solid var(--border); }
-    @media (max-width:640px) { .landing-stats { gap:20px; flex-wrap:wrap; } }
-  </style>
+  <meta name="theme-color" content="#08090C" />
+  <title>Samachar — Truth-First News Intelligence & Fact Verification</title>
+  <meta name="description" content="Autonomous real-time news intelligence platform. Triangulates 60+ global news wires, calculates objective Truth Scorecards, and eliminates sensationalist clickbait." />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/icons/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/variables.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script>
+    const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
 </head>
 <body>
-  <header class="landing-header">
-    <a href="/" class="logo"><img src="assets/images/logo.png?v=3" alt="Samachar" width="28" height="28" /><span>Samachar</span></a>
-    <div class="flex items-center gap-3">
-      <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
-      <a href="register.html" class="btn btn-primary btn-sm">Get Started</a>
+
+  <!-- Top Utility Bar -->
+  <div class="header-topbar hide-mobile">
+    <div class="container flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <span id="currentDateDisplay">Tuesday, Sep 1, 2026</span>
+        <span>·</span>
+        <span class="text-accent font-semibold flex items-center gap-1">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block"></span>
+          Real-Time Fact Engine Active
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="home.html" class="text-secondary hover:text-accent">Live Portal</a>
+        <a href="factcheck.html" class="text-accent font-semibold">⚡ Claim Verifier</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-main">
+      <div class="flex items-center gap-6">
+        <a href="home.html" class="logo">
+          <span>SAMACHAR</span><span class="logo-dot"></span>
+          <span class="logo-tag">TRUTH FIRST</span>
+        </a>
+        <nav class="nav-links hide-mobile flex items-center gap-4">
+          <a href="home.html" class="text-sm font-semibold text-secondary hover:text-primary">News Portal</a>
+          <a href="latest.html" class="text-sm font-semibold text-secondary hover:text-primary">All Feeds</a>
+          <a href="factcheck.html" class="text-sm font-semibold text-accent">Fact Check Tool</a>
+          <a href="trending.html" class="text-sm font-semibold text-secondary hover:text-primary">Trending</a>
+          <a href="about.html" class="text-sm font-semibold text-secondary hover:text-primary">Methodology</a>
+        </nav>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+        <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Get Started Free</a>
+      </div>
     </div>
   </header>
 
-  <section class="landing-hero">
-    <div style="max-width:800px">
-      <div class="badge badge-accent" style="margin-bottom:20px;display:inline-flex;align-items:center;gap:4px">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        AI-Powered Intelligence
+  <!-- Hero Section -->
+  <section class="container py-12 text-center" style="max-width: 920px; margin: 48px auto 32px;">
+    <div class="flex items-center justify-center gap-2 mb-4">
+      <span class="badge badge-verified" style="font-size:12px;padding:6px 14px">
+        🟢 AUTONOMOUS TRUTH ENGINE 2.0
+      </span>
+    </div>
+
+    <h1 class="heading-hero mb-4">
+      News Verified by Real Evidence,<br />
+      <span class="text-accent">Never Sensationalism.</span>
+    </h1>
+
+    <p class="text-secondary text-base mb-8" style="max-width: 680px; margin-left: auto; margin-right: auto; line-height: 1.7;">
+      Samachar cross-corroborates breaking stories across 60+ global accredited news agencies in real time, extracts quantitative claims, and produces transparent Truth Scorecards before stories reach your screen.
+    </p>
+
+    <div class="flex items-center justify-center gap-4 mb-12" style="flex-wrap: wrap;">
+      <a href="home.html" class="btn btn-primary" style="padding: 12px 28px; font-size: 14.5px;">
+        Explore Live News Portal &rarr;
+      </a>
+      <a href="factcheck.html" class="btn btn-secondary" style="padding: 12px 24px; font-size: 14.5px;">
+        ⚡ Open Fact-Check Workbench
+      </a>
+    </div>
+
+    <!-- Live Interactive Fact Checker Hero Widget -->
+    <div class="card p-6 text-left" style="background: var(--bg-surface-1); border-color: var(--border-light); max-width: 760px; margin: 0 auto; box-shadow: var(--shadow-md);">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <span class="logo-dot"></span>
+          <span class="text-xs font-bold text-accent uppercase tracking-wide">Instant Claim Verifier</span>
+        </div>
+        <span class="text-xs text-muted">Test any statement in real time</span>
       </div>
-      <h1>Real-Time News.<br /><span class="text-accent">Smarter Insights.</span></h1>
-      <p>Your premier source for breaking news, deep analysis, and global perspectives — curated by AI and delivered in real time.</p>
-      <div class="btn-group">
-        <a href="home.html" class="btn btn-primary btn-lg">Explore News</a>
-        <a href="register.html" class="btn btn-secondary btn-lg">Get Started Free</a>
-      </div>
-      <div class="landing-stats">
-        <div><div class="text-accent" style="font-size:1.75rem;font-weight:800">50K+</div><div class="text-xs text-muted" style="margin-top:2px">Articles Curated</div></div>
-        <div><div class="text-accent" style="font-size:1.75rem;font-weight:800">150+</div><div class="text-xs text-muted" style="margin-top:2px">Countries Covered</div></div>
-        <div><div class="text-accent" style="font-size:1.75rem;font-weight:800">62</div><div class="text-xs text-muted" style="margin-top:2px">News Sources</div></div>
+      <form id="heroFactCheckForm" class="flex items-center gap-2" style="flex-wrap: wrap;">
+        <input type="text" id="heroClaimInput" class="input" style="flex: 1; min-width: 260px;" placeholder="e.g. WHO reports 78% decline in malaria mortality following vaccine rollout..." required />
+        <button type="submit" class="btn btn-primary flex items-center gap-1" style="white-space: nowrap;">
+          Verify Now &rarr;
+        </button>
+      </form>
+      <div class="flex items-center gap-3 text-xs text-muted mt-3" style="flex-wrap: wrap;">
+        <span>Popular tests:</span>
+        <a href="factcheck.html?q=WHO%20malaria%20vaccine%20mortality" class="text-secondary hover:text-accent">#MalariaVaccine</a>
+        <a href="factcheck.html?q=1.4nm%20photonic%20semiconductor" class="text-secondary hover:text-accent">#1.4nmChips</a>
+        <a href="factcheck.html?q=James%20Webb%20exoplanet%20water" class="text-secondary hover:text-accent">#JWSTExoplanet</a>
       </div>
     </div>
   </section>
 
-  <section class="features-section">
-    <h2>Everything You Need</h2>
-    <p class="sub">Stay informed with a complete news intelligence platform</p>
-    <div class="features-grid">
-      <div class="feature-card">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9h2"/><path d="M10 6h6"/><path d="M10 10h6"/><path d="M10 14h4"/></svg>
-        <h3>Live News Feed</h3>
-        <p>Real-time updates from 62 trusted sources across 8 categories — politics, business, technology, sports, and more.</p>
-      </div>
-      <div class="feature-card">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        <h3>Interactive World Map</h3>
-        <p>Explore stories from around the globe with our interactive map. See where news is happening in real time.</p>
-      </div>
-      <div class="feature-card">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5" fill="currentColor"/><circle cx="15" cy="10" r="1.5" fill="currentColor"/><path d="M12 17v4"/><path d="M8 21h8"/></svg>
-        <h3>AI-Powered Insights</h3>
-        <p>Get sentiment analysis, key topics, and smart summaries for every story — powered by advanced AI.</p>
-      </div>
-      <div class="feature-card">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <h3>Live Updates</h3>
-        <p>WebSocket-powered real-time alerts for breaking news. Never miss a story that matters.</p>
-      </div>
-      <div class="feature-card">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-        <h3>Smart Bookmarks</h3>
-        <p>Save articles to read later. Organize your reading list and never lose track of important stories.</p>
-      </div>
-      <div class="feature-card">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <h3>Reading History</h3>
-        <p>Track what you have read. Your personal reading history is automatically saved for easy reference.</p>
+  <!-- Metrics Bar -->
+  <section class="container py-6 mb-12">
+    <div class="card p-6" style="background: var(--bg-surface-2); border-color: var(--border);">
+      <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:24px;text-align:center">
+        <div>
+          <div class="font-mono text-2xl font-extrabold text-accent">60+ Wires</div>
+          <div class="text-xs text-secondary mt-1">Accredited Global Sources</div>
+        </div>
+        <div>
+          <div class="font-mono text-2xl font-extrabold text-secondary">0.02s</div>
+          <div class="text-xs text-secondary mt-1">Claim Extraction Latency</div>
+        </div>
+        <div>
+          <div class="font-mono text-2xl font-extrabold text-accent">100%</div>
+          <div class="text-xs text-secondary mt-1">Open Source Corroboration</div>
+        </div>
+        <div>
+          <div class="font-mono text-2xl font-extrabold text-danger">0%</div>
+          <div class="text-xs text-secondary mt-1">Sensationalist Clickbait</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="landing-cta">
-    <h2>Ready to Stay Informed?</h2>
-    <p>Join thousands of readers who trust Samachar for their daily news.</p>
-    <a href="register.html" class="btn btn-primary btn-lg">Create Free Account</a>
+  <!-- 3-Pillar Feature Showcase -->
+  <section class="container py-8 mb-16">
+    <div class="text-center mb-10">
+      <span class="badge badge-verified mb-2">INTELLIGENCE ARCHITECTURE</span>
+      <h2 class="heading-xl">How Samachar Delivers Absolute Clarity</h2>
+    </div>
+
+    <div class="news-grid">
+      <div class="card p-6">
+        <div class="font-mono text-3xl font-extrabold text-accent mb-3">01</div>
+        <h3 class="heading-sm mb-2">Multi-Wire Triangulation</h3>
+        <p class="text-xs text-secondary leading-relaxed">
+          We stream and cluster reporting from Reuters, Associated Press, BBC, Bloomberg, Nature, and The Hindu every 30 minutes to verify corroboration before publishing.
+        </p>
+      </div>
+
+      <div class="card p-6">
+        <div class="font-mono text-3xl font-extrabold text-secondary mb-3">02</div>
+        <h3 class="heading-sm mb-2">Deconstructed Claim Breakdowns</h3>
+        <p class="text-xs text-secondary leading-relaxed">
+          Every story is deconstructed into atomic factual claims, tagged with primary source citations and numerical evidence registries.
+        </p>
+      </div>
+
+      <div class="card p-6">
+        <div class="font-mono text-3xl font-extrabold text-danger mb-3">03</div>
+        <h3 class="heading-sm mb-2">Sensationalism Elimination</h3>
+        <p class="text-xs text-secondary leading-relaxed">
+          Our NLP algorithms analyze hyperbolic adjectives and uncredited rumors, applying strict penalties to clickbait headlines.
+        </p>
+      </div>
+    </div>
   </section>
 
-  <footer class="landing-footer">
-    <div class="flex items-center justify-center gap-4 mb-3" style="flex-wrap:wrap">
-      <a href="about.html" class="text-xs text-muted" style="text-decoration:none">About</a>
-      <a href="contact.html" class="text-xs text-muted" style="text-decoration:none">Contact</a>
-      <a href="privacy.html" class="text-xs text-muted" style="text-decoration:none">Privacy Policy</a>
-      <a href="admin.html" class="text-xs text-muted" style="text-decoration:none">Admin</a>
+  <!-- Call to Action Section -->
+  <section class="container py-12 mb-16 text-center">
+    <div class="card p-10" style="background: linear-gradient(180deg, var(--bg-surface-2) 0%, var(--bg-surface-1) 100%); border-color: var(--border-light);">
+      <h2 class="heading-xl mb-3">Ready for Fact-First News Intelligence?</h2>
+      <p class="text-secondary text-sm mb-6" style="max-width: 540px; margin: 0 auto;">
+        Join readers, researchers, and journalists accessing verified news feeds and real-time claim verification.
+      </p>
+      <div class="flex items-center justify-center gap-3">
+        <a href="register.html" class="btn btn-primary" style="padding:11px 24px">Create Free Account &rarr;</a>
+        <a href="home.html" class="btn btn-secondary" style="padding:11px 24px">Browse News Feed</a>
+      </div>
     </div>
-    <div>&copy; 2026 Samachar News. All rights reserved.</div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="home.html" class="logo mb-3" style="display:inline-flex"><span>SAMACHAR</span><span class="logo-dot"></span></a>
+          <p class="text-sm text-muted">Samachar is an autonomous truth-first news intelligence platform powered by real-time multi-source corroboration and claim extraction.</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-3">Intelligence</h4>
+          <div class="footer-links">
+            <a href="home.html">News Portal</a>
+            <a href="latest.html">All Stories</a>
+            <a href="factcheck.html">Fact Check Tool</a>
+            <a href="trending.html">Trending Stories</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-3">Channels</h4>
+          <div class="footer-links">
+            <a href="latest.html?cat=world">World</a>
+            <a href="latest.html?cat=technology">Tech & AI</a>
+            <a href="latest.html?cat=india">India</a>
+            <a href="latest.html?cat=business">Business & Markets</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-3">Account</h4>
+          <div class="footer-links">
+            <a href="login.html">Sign In</a>
+            <a href="register.html">Create Account</a>
+            <a href="about.html">Methodology</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Samachar News Platform. All rights reserved.</span>
+        <span>Obsidian Truth Engine 2.0</span>
+      </div>
+    </div>
   </footer>
 
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/app.js"></script>
   <script>
-    // Theme from localStorage
-    const saved = localStorage.getItem('samachar_theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', saved);
+    document.getElementById('heroFactCheckForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = document.getElementById('heroClaimInput').value.trim();
+      if (q) {
+        window.location.href = `factcheck.html?q=${encodeURIComponent(q)}`;
+      }
+    });
   </script>
 </body>
 </html>

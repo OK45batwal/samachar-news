@@ -1,5 +1,5 @@
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from fastapi import HTTPException, Request
@@ -10,7 +10,6 @@ from ..config import settings
 from ..models.models import RateLimitEntry
 
 WINDOW_SECONDS = 60
-
 _redis = None
 _redis_available = None
 
@@ -58,12 +57,12 @@ async def check_rate_limit(key: str, db: AsyncSession) -> None:
     limit = settings.RATE_LIMIT_PER_MINUTE
     blocked = await _check_redis(key, limit)
     if blocked is True:
-        raise HTTPException(status_code=429, detail="Too many requests. Try again later.")
+        raise HTTPException(status_code=429, detail="Too many requests. Please slow down.")
     if blocked is False:
         return
 
     # Fallback: DB-backed rate limiting
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
     cutoff = now - timedelta(seconds=WINDOW_SECONDS)
 
     await db.execute(
@@ -79,7 +78,7 @@ async def check_rate_limit(key: str, db: AsyncSession) -> None:
     recent = result.scalars().all()
 
     if len(recent) >= limit:
-        raise HTTPException(status_code=429, detail="Too many requests. Try again later.")
+        raise HTTPException(status_code=429, detail="Too many requests. Please slow down.")
 
     db.add(RateLimitEntry(key=key, timestamp=now))
     await db.commit()

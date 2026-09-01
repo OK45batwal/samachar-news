@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" fill="none">
+  <!-- Clean Editorial Typographic Wordmark -->
+  <text x="2" y="28" font-family="'Outfit', -apple-system, sans-serif" font-size="24" font-weight="900" letter-spacing="1" fill="currentColor">
+    SAMACHAR
+  </text>
+  <!-- Minimalist Emerald Truth Accent Dot -->
+  <circle cx="162" cy="24" r="3.5" fill="#00F59B" />
+</svg>

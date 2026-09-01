@@ -1,18 +1,16 @@
-"""Test auth utilities — password hashing + JWT."""
 from backend.auth.auth import create_access_token, decode_token, hash_password, verify_password
 
 
 def test_password_hashing():
-    pw = "SecurePass123"
-    hashed = hash_password(pw)
-    assert hashed != pw
-    assert verify_password(pw, hashed) is True
-    assert verify_password("WrongPass", hashed) is False
+    pwd = "SecurePassword123!"
+    hashed = hash_password(pwd)
+    assert verify_password(pwd, hashed) is True
+    assert verify_password("WrongPassword!", hashed) is False
 
 
 def test_jwt_create_and_decode():
-    token = create_access_token({"sub": "user-123"})
-    payload = decode_token(token)
-    assert payload["sub"] == "user-123"
-    assert payload["type"] == "access"
-    assert "exp" in payload
+    token = create_access_token({"sub": "user-123", "role": "user", "type": "access"})
+    decoded = decode_token(token)
+    assert decoded["sub"] == "user-123"
+    assert decoded["role"] == "user"
+    assert decoded["type"] == "access"

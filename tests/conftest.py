@@ -1,23 +1,11 @@
+import pytest
 import pytest_asyncio
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.pool import StaticPool
 
-from backend.database import Base
-
-TEST_DB_URL = "sqlite+aiosqlite://"
+from backend.database import init_db
+from backend.seed import seed_database
 
 
-@pytest_asyncio.fixture
-async def db_session():
-    engine = create_async_engine(TEST_DB_URL, connect_args={"check_same_thread": False}, poolclass=StaticPool)
-    session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
-
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
-    async with session_maker() as session:
-        yield session
-
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-    await engine.dispose()
+@pytest_asyncio.fixture(scope="session", autouse=True)
+async def initialize_test_database():
+    await init_db()
+    await seed_database()

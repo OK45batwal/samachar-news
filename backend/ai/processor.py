@@ -70,5 +70,5 @@ def generate_key_takeaways(title: str, summary: str, content: str) -> List[str]:
                 points.append(s)
 
     if not points:
-        points = ["Key details and breaking analysis published."]
+        points = ["Key details and verified facts reported."]
     return points

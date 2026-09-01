@@ -1,60 +1,35 @@
 import os
-import secrets
-from pathlib import Path
-
-from pydantic import model_validator
+from typing import List
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
-SECRET_FILE = ".secret_key"
-
-
-def _resolve_secret_key() -> str:
-    env_key = os.environ.get("SAMACHAR_SECRET_KEY", "")
-    if env_key:
-        return env_key
-    secret_path = Path(SECRET_FILE)
-    if secret_path.exists():
-        return secret_path.read_text().strip()
-    key = secrets.token_urlsafe(32)
-    secret_path.write_text(key)
-    return key
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
-    DATABASE_URL: str = "sqlite+aiosqlite:///./samachar.db"
-    REDIS_URL: str = "redis://localhost:6379/0"
-    SECRET_KEY: str = _resolve_secret_key()
+    APP_NAME: str = "Samachar"
+    APP_VERSION: str = "2.0.0"
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "samachar-fact-intelligence-super-secret-key-2026-xyz-abc")
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
-    CORS_ORIGINS: str = "http://localhost:8000,http://127.0.0.1:8000"
-    SENTRY_DSN: str = ""
-    PROMETHEUS_ENABLED: bool = True
-    NEWS_API_KEY: str = ""
-    RATE_LIMIT_PER_MINUTE: int = 20
-    SUPERTOKENS_CONNECTION_URI: str = ""
-    GOOGLE_CLIENT_ID: str = ""
-    GOOGLE_CLIENT_SECRET: str = ""
-    GITHUB_CLIENT_ID: str = ""
-    GITHUB_CLIENT_SECRET: str = ""
-    FACEBOOK_CLIENT_ID: str = ""
-    FACEBOOK_CLIENT_SECRET: str = ""
-    API_DOMAIN: str = "http://localhost:8000"
-    WEBSITE_DOMAIN: str = "http://localhost:8000"
 
-    @model_validator(mode="after")
-    def detect_render(self):
-        render_url = os.environ.get("RENDER_EXTERNAL_URL")
-        if render_url:
-            self.API_DOMAIN = render_url
-            self.WEBSITE_DOMAIN = render_url
-        return self
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./samachar.db")
+    REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+    RATE_LIMIT_PER_MINUTE: int = 120
+
+    CORS_ORIGINS: str = "*"
+    API_DOMAIN: str = os.getenv("API_DOMAIN", "http://localhost:8000")
+    SENTRY_DSN: str = ""
+    PROMETHEUS_ENABLED: bool = False
+
+    FEED_INGESTION_INTERVAL_MINUTES: int = 30
+    MAX_ARTICLES_PER_FEED: int = 25
 
     @property
-    def cors_origins_list(self) -> list[str]:
-        return [o.strip() for o in self.CORS_ORIGINS.split(",")]
+    def cors_origins_list(self) -> List[str]:
+        if self.CORS_ORIGINS == "*":
+            return ["*"]
+        return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
 
 
 settings = Settings()

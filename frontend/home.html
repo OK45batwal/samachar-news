@@ -3,182 +3,335 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Samachar News — Real-Time News. Smarter Insights.</title>
-  <meta name="description" content="Premium news intelligence platform with real-time updates, AI insights, and interactive world map." />
-  <link rel="stylesheet" href="assets/css/variables.css?v=3" />
-  <link rel="stylesheet" href="assets/css/style.css?v=3" />
-  <link rel="stylesheet" href="assets/css/layout.css?v=3" />
-  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg?v=3" />
+  <title>Samachar — Truth-First News Intelligence & Fact Checking</title>
+  <meta name="description" content="Real-time news intelligence feed with live truth scorecards and multi-source fact verification." />
+  <meta name="theme-color" content="#08090C" />
+  <link rel="stylesheet" href="assets/css/variables.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/icons/favicon.svg" />
+  <script>
+    const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
 </head>
 <body>
+
+  <!-- Top Utility Bar -->
+  <div class="header-topbar hide-mobile">
+    <div class="container flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <span id="currentDateDisplay">Tuesday, Sep 1, 2026</span>
+        <span>·</span>
+        <span class="text-accent flex items-center gap-1 font-semibold">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block"></span>
+          Truth Engine v2.0 Active
+        </span>
+        <span>·</span>
+        <span>Edition: <strong>Global / India</strong></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="factcheck.html" class="text-accent font-semibold flex items-center gap-1">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Claim Verification Tool
+        </a>
+        <a href="trending.html" class="text-secondary">Trending Stories</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breaking Fact Ticker Bar -->
+  <div class="ticker-bar">
+    <div class="ticker-label">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      VERIFIED NEWS
+    </div>
+    <div class="ticker-track" id="tickerTrack">
+      <div class="ticker-item"><span>🟢 98% VERIFIED:</span> <a href="latest.html">WHO Reports 78% Drop in Global Malaria Mortality Following Vaccine Rollout</a></div>
+      <div class="ticker-item"><span>🟢 96% VERIFIED:</span> <a href="latest.html">Global Semiconductor Alliance Ratifies 1.4nm Photonic Chip Architecture</a></div>
+      <div class="ticker-item"><span>🟢 99% VERIFIED:</span> <a href="latest.html">James Webb Telescope Confirms Atmospheric Water Vapor on Habitable-Zone Exoplanet</a></div>
+      <div class="ticker-item"><span>🟢 97% VERIFIED:</span> <a href="latest.html">Central Banks Transition Project Nexus Instant Settlement to Multilateral Production</a></div>
+    </div>
+  </div>
+
+  <!-- Main Header -->
   <header class="header">
-    <div class="header-inner container">
-      <div class="header-left">
-        <button id="sidebarToggle" class="btn btn-icon btn-ghost hide-desktop" aria-label="Open menu">
+    <div class="container header-main">
+      <div class="flex items-center gap-4">
+        <button id="sidebarToggle" class="btn btn-icon btn-ghost hide-desktop" aria-label="Toggle menu">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
         </button>
         <a href="home.html" class="logo">
-          <img src="assets/images/logo.png?v=3" alt="Samachar" width="28" height="28" />
-          <span>Samachar</span>
+          <span>SAMACHAR</span><span class="logo-dot"></span>
+          <span class="logo-tag">TRUTH FIRST</span>
         </a>
-                <nav class="nav-links hide-mobile">
-          <a href="home.html" class="active">Home</a>
-          <a href="latest.html" >Latest</a><a href="map.html" >World Map</a>
-          </nav>
       </div>
-      <div class="header-right">
-        <button id="searchToggle" class="btn btn-icon btn-ghost" aria-label="Search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+
+      <div class="flex items-center gap-3">
+        <button id="searchToggle" class="btn btn-secondary btn-sm hide-mobile flex items-center gap-3" style="color:var(--text-secondary);min-width:220px;justify-content:space-between">
+          <span class="flex items-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span>Search facts, topics...</span>
+          </span>
+          <kbd style="font-family:var(--font-mono);font-size:10px;padding:2px 5px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:4px">⌘K</kbd>
         </button>
-        <button id="themeToggle" class="btn btn-icon btn-ghost" aria-label="Toggle theme">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+
+        <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-        <a href="login.html" class="btn btn-ghost btn-sm hide-mobile" id="headerSignIn">Sign In</a>
-        <a href="register.html" class="btn btn-primary btn-sm" id="headerGetStarted">Get Started</a>
+
+        <div id="headerAuth" class="flex items-center gap-2"></div>
       </div>
     </div>
+
+    <!-- Category Channels Navigation Bar -->
+    <nav class="category-nav-bar" aria-label="News channels">
+      <div class="container category-nav-inner">
+        <a href="home.html" class="category-link active">🔥 Top Stories</a>
+        <a href="latest.html?cat=world" class="category-link">🌍 World</a>
+        <a href="latest.html?cat=technology" class="category-link">⚡ Tech & AI</a>
+        <a href="latest.html?cat=india" class="category-link">🇮🇳 India</a>
+        <a href="latest.html?cat=business" class="category-link">📈 Markets</a>
+        <a href="latest.html?cat=science" class="category-link">🔬 Science</a>
+        <a href="latest.html?cat=health" class="category-link">🩺 Health</a>
+        <a href="latest.html?cat=sports" class="category-link">🏆 Sports</a>
+        <a href="latest.html?cat=entertainment" class="category-link">🎬 Entertainment</a>
+        <a href="factcheck.html" class="category-link text-accent font-bold">⚡ Fact Check Tool</a>
+      </div>
+    </nav>
   </header>
 
+  <!-- Mobile Sidebar Drawer -->
   <div id="sidebarOverlay" class="sidebar-overlay"></div>
   <aside id="sidebar" class="sidebar">
-    <div class="sidebar-header">
-      <a href="home.html" class="logo"><img src="assets/images/logo.png?v=3" alt="Samachar" width="24" height="24" /><span>Samachar</span></a>
-      <button class="btn btn-icon btn-ghost" onclick="closeSidebar()" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <div class="flex items-center justify-between mb-6">
+      <a href="home.html" class="logo"><span>SAMACHAR</span><span class="logo-dot"></span></a>
+      <button class="btn btn-icon btn-ghost" onclick="document.getElementById('sidebarOverlay').click()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     </div>
-    <nav class="sidebar-nav">
-      <a href="home.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
-      <a href="latest.html?tab=breaking"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Breaking News</a>
-      <a href="latest.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9h2"/><path d="M10 6h6"/><path d="M10 10h6"/><path d="M10 14h4"/></svg> Latest News</a>
-      <a href="trending.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg> Trending</a>
-      <div class="sidebar-label">Categories</div>
-      <a href="latest.html?cat=india"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 12h.01"/><path d="M9 15h.01"/><path d="M9 18h.01"/></svg> India</a>
-      <a href="latest.html?cat=world"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> World</a>
-      <a href="latest.html?cat=technology"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Technology</a>
-      <a href="latest.html?cat=business"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg> Business</a>
-      <a href="latest.html?cat=sports"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93c4.08 4.08 4.08 10.06 0 14.14"/><path d="M19.07 4.93c-4.08 4.08-4.08 10.06 0 14.14"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/></svg> Sports</a>
-      <a href="latest.html?cat=entertainment"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg> Entertainment</a>
-      <a href="latest.html?cat=health"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 2.5-3.5 2.5-5.5A5.5 5.5 0 0 0 12 5.5 5.5 5.5 0 0 0 2.5 8.5c0 2 1 4 2.5 5.5L12 22l6.5-6.5z"/></svg> Health</a>
-      <a href="latest.html?cat=science"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v4L4 21h16L14 7V3"/><path d="M6 17h12"/></svg> Science</a>
-      <div class="sidebar-label">More</div>
-      <a href="live.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Live Updates</a>
-      <a href="videos.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Videos</a>
-      <a href="bookmarks.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg> Bookmarks</a>
-      <a href="history.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Reading History</a>
-      <a href="profile.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Profile</a>
-      <div class="sidebar-label">Authentication</div>
-      <a href="login.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Login</a>
-      <a href="register.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg> Register</a>
-      <a href="forgot-password.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Forgot Password</a>
-      <div class="sidebar-label">More</div>
-      <a href="map.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> World Map</a>
-      <a href="ai.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5" fill="currentColor"/><circle cx="15" cy="10" r="1.5" fill="currentColor"/><path d="M12 17v4"/><path d="M8 21h8"/></svg> AI Insights</a></nav></nav>
+    <div class="flex flex-col gap-3">
+      <a href="home.html" class="text-accent font-semibold">🏠 Top Stories</a>
+      <a href="latest.html">📰 All News Feed</a>
+      <a href="latest.html?verified_only=true">🟢 Verified Facts Only</a>
+      <a href="latest.html?cat=world">🌍 World</a>
+      <a href="latest.html?cat=technology">⚡ Tech & AI</a>
+      <a href="latest.html?cat=india">🇮🇳 India</a>
+      <a href="latest.html?cat=business">📈 Business & Markets</a>
+      <a href="latest.html?cat=science">🔬 Science & Space</a>
+      <a href="latest.html?cat=health">🩺 Health</a>
+      <a href="latest.html?cat=sports">🏆 Sports</a>
+      <a href="latest.html?cat=entertainment">🎬 Entertainment</a>
+      <a href="trending.html">🔥 Trending Stories</a>
+      <a href="factcheck.html" class="text-accent font-bold">⚡ Fact Check Tool</a>
+      <hr style="border-color:var(--border);margin:12px 0;" />
+      <a href="bookmarks.html">📌 Saved Bookmarks</a>
+      <a href="profile.html">👤 Account Profile</a>
+      <a href="about.html">ℹ️ Fact Methodology</a>
+    </div>
   </aside>
 
+  <!-- Main Container -->
+  <main class="container py-8">
+
+    <!-- Truth Radar Bento Hero Spotlight -->
+    <section class="bento-hero" id="bentoHero">
+      <div class="bento-main" id="heroMain">
+        <div class="skeleton w-full" style="height:380px"></div>
+      </div>
+      <div class="bento-side" id="heroSide">
+        <div class="skeleton bento-side-card" style="height:175px"></div>
+        <div class="skeleton bento-side-card" style="height:175px"></div>
+      </div>
+    </section>
+
+    <!-- Filter Bar & Verified Switch -->
+    <div class="flex items-center justify-between gap-4 mb-4 pb-2" style="flex-wrap: wrap;">
+      <div class="filter-tabs" id="categoryTabs">
+        <button class="tab-btn active" data-cat="">All Feeds</button>
+        <button class="tab-btn" data-cat="world">World</button>
+        <button class="tab-btn" data-cat="technology">Tech & AI</button>
+        <button class="tab-btn" data-cat="india">India</button>
+        <button class="tab-btn" data-cat="business">Business</button>
+        <button class="tab-btn" data-cat="science">Science</button>
+        <button class="tab-btn" data-cat="health">Health</button>
+        <button class="tab-btn" data-cat="sports">Sports</button>
+        <button class="tab-btn" data-cat="entertainment">Entertainment</button>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="flex items-center gap-2 text-xs font-semibold text-accent cursor-pointer p-2 card" style="background:var(--bg-elevated);border-radius:var(--radius-full);user-select:none">
+          <input type="checkbox" id="verifiedOnlyToggle" style="accent-color:var(--accent)" />
+          <span>Verified Facts Only (85%+ Score)</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Main Feed Grid -->
+    <div id="newsGrid" class="news-grid">
+      <!-- Injected dynamically via JS -->
+    </div>
+
+  </main>
+
+  <!-- Search Modal Overlay -->
   <div id="searchOverlay" class="search-overlay">
     <div class="search-modal">
-      <div class="search-bar">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input id="globalSearch" type="text" placeholder="Search news, topics, or locations..." autocomplete="off" />
-        <kbd>ESC</kbd>
+      <div class="p-4 border-bottom flex items-center gap-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="globalSearch" class="w-full" placeholder="Search news, claims, topics..." style="background:transparent;border:none;outline:none;font-size:16px;color:var(--text-primary)" autocomplete="off" />
+        <span class="text-xs text-muted">ESC</span>
       </div>
-      <div class="search-hints">
-        <span>Trending: </span>
-        <a href="latest.html?q=technology">Technology</a>
-        <a href="latest.html?q=politics">Politics</a>
-        <a href="latest.html?q=climate">Climate</a>
-        <a href="latest.html?q=markets">Markets</a>
+      <div class="p-4 text-xs text-muted">
+        <span>Trending:</span>
+        <a href="latest.html?q=semiconductor" class="text-accent ml-2">#Semiconductors</a>
+        <a href="latest.html?q=hydrogen" class="text-accent ml-2">#GreenHydrogen</a>
+        <a href="latest.html?q=malaria" class="text-accent ml-2">#MalariaVaccine</a>
+        <a href="latest.html?q=settlement" class="text-accent ml-2">#ProjectNexus</a>
       </div>
     </div>
   </div>
 
-  <section class="hero section">
-    <div class="container">
-      <div class="hero-content">
-        <div class="badge badge-accent animate-fade-in"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Live Intelligence</div>
-        <h1 class="heading-xl hero-title animate-fade-in" style="animation-delay:0.1s">
-          Real-Time News.<br />
-          <span class="text-accent">Smarter Insights.</span>
-        </h1>
-        <p class="hero-desc animate-fade-in" style="animation-delay:0.2s">
-          AI-powered news intelligence platform delivering breaking stories, deep analysis, and global perspectives — all in one place.
-        </p>
-        <div class="hero-actions animate-fade-in" style="animation-delay:0.3s">
-          <a href="latest.html" class="btn btn-primary btn-lg">Explore News</a>
-          <a href="ai.html" class="btn btn-secondary btn-lg">AI Insights</a>
-        </div>
-        <div class="hero-stats animate-fade-in" style="animation-delay:0.4s">
-          <div><strong class="text-accent">50K+</strong><span class="text-muted text-xs">Articles Curated</span></div>
-          <div><strong class="text-accent">12K+</strong><span class="text-muted text-xs">Active Readers</span></div>
-          <div><strong class="text-accent">150+</strong><span class="text-muted text-xs">Countries Covered</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="ticker" id="tickerBar">
-    <div class="ticker-label">LIVE</div>
-    <div class="ticker-track" id="tickerTrack"></div>
-  </div>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="heading-lg">Top Stories</h2>
-        <div class="section-actions">
-          <a href="latest.html" class="btn btn-ghost btn-sm">View All &rarr;</a>
-        </div>
-      </div>
-      <div id="featuredGrid" class="featured-grid">
-        <div class="featured-main card">
-          <div class="featured-img"><div class="skeleton" style="width:100%;height:100%"></div></div>
-          <div class="featured-body"><div class="skeleton" style="height:20px;width:80%;margin-bottom:12px"></div><div class="skeleton" style="height:14px;width:60%"></div></div>
-        </div>
-        <div class="featured-side" id="featuredSide">
-          <div class="card p-4"><div class="skeleton" style="height:14px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:60%"></div></div>
-          <div class="card p-4"><div class="skeleton" style="height:14px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:60%"></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="newsletter card p-8" style="text-align:center;max-width:600px;margin:0 auto">
-        <h2 class="heading-md mb-2">Stay Informed</h2>
-        <p class="text-muted text-sm mb-6">Get the latest news delivered to your inbox every morning.</p>
-        <form class="newsletter-form" onsubmit="event.preventDefault();alert('Subscribed! (Demo)')">
-          <input type="email" placeholder="Enter your email" class="input" required />
-          <button type="submit" class="btn btn-primary">Subscribe</button>
-        </form>
-        <p class="text-xs text-muted mt-3">No spam. Unsubscribe anytime.</p>
-      </div>
-    </div>
-  </section>
-
-    <footer class="footer">
+  <!-- Footer -->
+  <footer class="footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="home.html" class="logo mb-4" style="display:inline-flex"><img src="assets/images/logo.png?v=3" alt="Samachar" width="24" height="24" /><span>Samachar</span></a>
-          <p class="text-sm text-muted">Your premier source for real-time news intelligence and AI-powered insights.</p>
+        <div>
+          <a href="home.html" class="logo mb-3" style="display:inline-flex"><span>SAMACHAR</span><span class="logo-dot"></span></a>
+          <p class="text-sm text-muted">Samachar is an autonomous truth-first news intelligence platform powered by real-time multi-source corroboration and claim extraction.</p>
         </div>
-        <div><h5 class="font-semibold mb-4">News</h5><div class="footer-links"><a href="latest.html">Latest</a><a href="map.html" >World Map</a><a href="latest.html?tab=breaking">Breaking</a><a href="latest.html?cat=world">World</a><a href="latest.html?cat=technology">Technology</a><a href="trending.html">Trending</a></div></div>
-        
-        <div><h5 class="font-semibold mb-4">Company</h5><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy Policy</a></div></div>
+        <div>
+          <h4 class="font-bold text-sm mb-3">Intelligence</h4>
+          <div class="footer-links">
+            <a href="latest.html">Latest Feed</a>
+            <a href="latest.html?verified_only=true">Verified Facts</a>
+            <a href="factcheck.html">Fact Check Tool</a>
+            <a href="trending.html">Trending News</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-3">Channels</h4>
+          <div class="footer-links">
+            <a href="latest.html?cat=world">World</a>
+            <a href="latest.html?cat=technology">Tech & AI</a>
+            <a href="latest.html?cat=india">India</a>
+            <a href="latest.html?cat=business">Business & Markets</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-3">About</h4>
+          <div class="footer-links">
+            <a href="about.html">Methodology</a>
+            <a href="profile.html">Profile</a>
+          </div>
+        </div>
       </div>
       <div class="footer-bottom">
-        <span class="text-xs text-muted">&copy; 2026 Samachar News. All rights reserved.</span>
-        <div class="footer-social">
-          <a href="#" aria-label="Twitter"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-          <a href="#" aria-label="GitHub"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
-          <a href="#" aria-label="RSS"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"/><path d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"/><circle cx="6" cy="18" r="2"/></svg></a>
-        </div>
+        <span>&copy; 2026 Samachar News Platform. All rights reserved.</span>
+        <span>Obsidian Truth Engine 2.0</span>
       </div>
     </div>
   </footer>
 
-  <script src="assets/js/layout.js?v=3"></script>
-  <script src="assets/js/api.js?v=3"></script>
-  <script src="assets/js/app.js?v=3"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    let currentCategory = '';
+    let isVerifiedOnly = false;
+
+    async function loadNews() {
+      const grid = document.getElementById('newsGrid');
+      grid.innerHTML = Array(6).fill('<div class="skeleton card" style="height:320px"></div>').join('');
+
+      try {
+        const res = await getArticles({
+          category: currentCategory,
+          verified_only: isVerifiedOnly,
+          limit: 12
+        });
+
+        if (res.articles && res.articles.length) {
+          if (!currentCategory) {
+            renderBento(res.articles.slice(0, 3));
+            grid.innerHTML = res.articles.slice(3).map(renderNewsCard).join('');
+          } else {
+            grid.innerHTML = res.articles.map(renderNewsCard).join('');
+          }
+        } else {
+          grid.innerHTML = '<div class="text-center p-8 text-secondary w-full" style="grid-column: 1 / -1">No articles found in this category.</div>';
+        }
+      } catch (err) {
+        grid.innerHTML = `<div class="text-danger p-4 w-full" style="grid-column: 1 / -1">Error loading articles: ${err.message}</div>`;
+      }
+    }
+
+    function renderBento(top3) {
+      const heroMain = document.getElementById('heroMain');
+      const heroSide = document.getElementById('heroSide');
+      if (!top3 || !top3.length) return;
+
+      const main = top3[0];
+      const side1 = top3[1];
+      const side2 = top3[2];
+
+      heroMain.innerHTML = `
+        <div class="card-img-wrapper" style="height:380px">
+          <img src="${main.image_url || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80'}" class="bento-main-img" alt="${sanitize(main.title)}" />
+          <div style="position:absolute;top:16px;left:16px">
+            <span class="badge badge-verified">🟢 ${main.credibility_score || 96}% VERIFIED SPOTLIGHT</span>
+          </div>
+        </div>
+        <div class="bento-main-content">
+          <span class="text-xs text-accent font-semibold">${sanitize(main.category?.name || 'Top Story')} · ${timeAgo(main.published_at)}</span>
+          <h2 class="heading-lg my-2"><a href="article.html?id=${main.id}">${sanitize(main.title)}</a></h2>
+          <p class="text-sm text-secondary line-clamp-2">${sanitize(main.summary || '')}</p>
+        </div>
+      `;
+
+      if (side1 && side2) {
+        heroSide.innerHTML = `
+          <div class="bento-side-card">
+            <div>
+              <span class="badge badge-verified mb-2">🟢 ${side1.credibility_score || 94}% VERIFIED</span>
+              <h3 class="heading-sm mb-1"><a href="article.html?id=${side1.id}">${sanitize(side1.title)}</a></h3>
+              <p class="text-xs text-secondary line-clamp-2">${sanitize(side1.summary || '')}</p>
+            </div>
+            <div class="flex items-center justify-between text-xs text-muted mt-3">
+              <span>${sanitize(side1.source?.name || 'Wire')}</span>
+              <span>${timeAgo(side1.published_at)}</span>
+            </div>
+          </div>
+          <div class="bento-side-card">
+            <div>
+              <span class="badge badge-corroborated mb-2">🔵 ${side2.credibility_score || 88}% CORROBORATED</span>
+              <h3 class="heading-sm mb-1"><a href="article.html?id=${side2.id}">${sanitize(side2.title)}</a></h3>
+              <p class="text-xs text-secondary line-clamp-2">${sanitize(side2.summary || '')}</p>
+            </div>
+            <div class="flex items-center justify-between text-xs text-muted mt-3">
+              <span>${sanitize(side2.source?.name || 'Wire')}</span>
+              <span>${timeAgo(side2.published_at)}</span>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadNews();
+
+      document.querySelectorAll('#categoryTabs .tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#categoryTabs .tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = btn.getAttribute('data-cat') || '';
+          loadNews();
+        });
+      });
+
+      document.getElementById('verifiedOnlyToggle')?.addEventListener('change', (e) => {
+        isVerifiedOnly = e.target.checked;
+        loadNews();
+      });
+    });
+  </script>
 </body>
 </html>

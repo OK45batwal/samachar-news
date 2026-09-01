@@ -1,85 +1,50 @@
 import asyncio
+import os
 from contextlib import asynccontextmanager
-from pathlib import Path
-
-import structlog
-
-from . import log_config  # noqa: F401 — must be first: configure structlog before any logger
-
-logger = structlog.get_logger(__name__)
-
-from fastapi import Depends, FastAPI, Request, Response
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy import func, select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from .config import settings
-from .database import get_db, init_db
-from .models.models import Article, ArticleStatus
+from .database import init_db
 from .routes.admin_routes import router as admin_router
 from .routes.auth_routes import router as auth_router
 from .routes.bookmarks import router as bookmarks_router
+from .routes.fact_check import router as fact_check_router
 from .routes.news import router as news_router
-
-# ── Sentry ──────────────────────────────────────────────────────────────
-if settings.SENTRY_DSN:
-    import sentry_sdk
-    sentry_sdk.init(
-        dsn=settings.SENTRY_DSN,
-        enable_tracing=True,
-        traces_sample_rate=0.1,
-    )
-    logger.info("sentry_initialized")
-
-# ── Prometheus ──────────────────────────────────────────────────────────
-if settings.PROMETHEUS_ENABLED:
-    from prometheus_client import REGISTRY, Counter, Histogram, generate_latest
-    REQ_COUNT = Counter("http_requests_total", "Total HTTP requests", ["method", "path", "status"])
-    REQ_DURATION = Histogram("http_request_duration_seconds", "HTTP request duration", ["method", "path"])
+from .seed import seed_database
+from .services.scheduler import background_ingestion_loop
+from .websocket.ws import router as ws_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Startup
     await init_db()
+    await seed_database()
 
-    from .database import async_session
-    from .models.models import Article
+    # Launch background ingestion scheduler
+    scheduler_task = asyncio.create_task(background_ingestion_loop(settings.FEED_INGESTION_INTERVAL_MINUTES))
 
-    async with async_session() as db:
-        count = (await db.execute(select(func.count()).select_from(Article))).scalar() or 0
-        if count == 0:
-            logger.info("db_empty_running_seed")
-            from .seed import seed
-            await seed()
-            logger.info("categories_and_sources_seeded")
-            try:
-                from .seed_e2e_inline import seed_demo_articles
-                await seed_demo_articles()
-                logger.info("demo_articles_seeded")
-            except Exception as e:
-                logger.error("seed_e2e_failed", error=str(e))
-        else:
-            logger.info("db_not_empty_skipping_seed", article_count=count)
+    yield
 
-    from .services.scheduler import start_scheduler, stop_scheduler
-    await start_scheduler()
-    from .services.task_manager import start_ingestion
-    asyncio.ensure_future(start_ingestion())
-    logger.info("app_started", version="1.0.0")
+    # Shutdown
+    scheduler_task.cancel()
     try:
-        yield
-    finally:
-        await stop_scheduler()
-        logger.info("app_stopped")
+        await scheduler_task
+    except asyncio.CancelledError:
+        pass
 
-app = FastAPI(title="Samachar News API", version="1.0.0", lifespan=lifespan)
 
-from .websocket.ws import manager, news_ws
+app = FastAPI(
+    title=f"{settings.APP_NAME} Truth Intelligence Platform",
+    version=settings.APP_VERSION,
+    description="Real-Time Fact-Checked News Intelligence Platform with Automated Claim Extraction & Corroboration Engine",
+    lifespan=lifespan,
+)
 
-app.add_api_websocket_route("/api/ws", news_ws)
-
+# CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
@@ -88,117 +53,54 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# Security Headers Middleware
 @app.middleware("http")
-async def add_security_headers(request: Request, call_next):
-    response: Response = await call_next(request)
+async def security_headers_middleware(request: Request, call_next):
+    response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-    if request.url.scheme == "https":
-        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     response.headers["Content-Security-Policy"] = (
-        "default-src 'self'; "
-        "script-src 'self' 'unsafe-inline' https://unpkg.com; "
-        "style-src 'self' 'unsafe-inline' https://unpkg.com; "
-        "img-src 'self' https: data:; "
-        "font-src 'self' data:; "
-        "connect-src 'self' ws: wss:; "
-        "frame-ancestors 'none'"
+        "default-src 'self' https:; "
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; "
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com; "
+        "font-src 'self' https://fonts.gstatic.com data:; "
+        "img-src 'self' https: data: blob:; "
+        "connect-src 'self' ws: wss: https:; "
+        "frame-ancestors 'none';"
     )
+    if request.url.scheme == "https" or request.headers.get("x-forwarded-proto") == "https":
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response
 
-if settings.PROMETHEUS_ENABLED:
-    @app.middleware("http")
-    async def prometheus_middleware(request: Request, call_next):
-        method = request.method
-        path = request.url.path
-        with REQ_DURATION.labels(method=method, path=path).time():
-            response = await call_next(request)
-        REQ_COUNT.labels(method=method, path=path, status=response.status_code).inc()
-        return response
 
-    @app.get("/metrics")
-    async def metrics():
-        return PlainTextResponse(generate_latest(REGISTRY), media_type="text/plain; charset=utf-8")
-
+# Include Routers
 app.include_router(auth_router)
 app.include_router(news_router)
+app.include_router(fact_check_router)
 app.include_router(bookmarks_router)
 app.include_router(admin_router)
+app.include_router(ws_router)
 
-@app.get("/health")
-async def simple_health():
-    return {"status": "ok"}
 
 @app.get("/api/health")
-async def health(db: AsyncSession = Depends(get_db)):
-    db_ok = False
-    try:
-        await db.execute(select(func.count()).select_from(Article))
-        db_ok = True
-    except:
-        pass
-    return {
-        "status": "ok" if db_ok else "degraded",
-        "version": "1.0.0",
-        "database": "connected" if db_ok else "unreachable",
-        "active_connections": len(manager.active),
-    }
+async def health_check():
+    return {"status": "healthy", "platform": "Samachar Fact Intelligence", "version": settings.APP_VERSION}
 
 
-@app.get("/api/health/ingestion")
-async def ingestion_health():
-    from .services.task_manager import get_last_ingestion
-    last = await get_last_ingestion()
-    if not last:
-        return {"status": "unknown", "message": "No ingestion runs yet"}
-    # Consider stale if last run > 2 hours ago and not currently running
-    from datetime import datetime, timedelta
-    started = datetime.fromisoformat(last["started_at"].replace("Z", "+00:00"))
-    stale = datetime.utcnow() - started > timedelta(hours=2)
-    status = last["status"]
-    if status == "running":
-        return {"status": "running", "started_at": last["started_at"]}
-    if status == "failed" or stale:
-        return {"status": "degraded", "last_run": last}
-    return {"status": "ok", "last_run": last}
+# Static Files Mount
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+if os.path.exists(frontend_dir):
+    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
 
-@app.get("/api/stats")
-async def stats(db: AsyncSession = Depends(get_db)):
-    total_q = select(func.count()).select_from(Article)
-    total_result = await db.execute(total_q)
-    total = total_result.scalar() or 0
-
-    published_q = select(func.count()).where(Article.status == ArticleStatus.PUBLISHED)
-    published_result = await db.execute(published_q)
-    published = published_result.scalar() or 0
-
-    sentiment_q = select(func.avg(Article.sentiment_score)).where(Article.sentiment_score != 0)
-    sentiment_result = await db.execute(sentiment_q)
-    avg_sentiment = round(sentiment_result.scalar() or 0)
-
-    return {
-        "articles_analyzed": total or 12847,
-        "articles_published": published,
-        "sentiment_score": avg_sentiment or 64,
-        "risk_index": 43,
-        "confidence": 87,
-    }
-
-# Static files mount — prefer dist/ (Vite build), fall back to frontend/
-frontend_path = Path(__file__).resolve().parent.parent / "frontend"
-dist_path = frontend_path / "dist"
-serve_path = dist_path if dist_path.exists() else frontend_path
-if serve_path.exists():
-    app.mount("/", StaticFiles(directory=str(serve_path), html=True, check_dir=False), name="frontend")
 
 @app.exception_handler(404)
-async def not_found(request, exc):
-    from fastapi.responses import FileResponse, JSONResponse
+async def custom_404_handler(request: Request, exc):
     if request.url.path.startswith("/api/"):
-        return JSONResponse({"detail": "Not found"}, status_code=404)
-    f404 = dist_path / "404.html" if dist_path.exists() else frontend_path / "404.html"
-    if f404.exists():
-        return FileResponse(str(f404))
-    return JSONResponse({"detail": "Not found"}, status_code=404)
+        return JSONResponse(status_code=404, content={"detail": "API endpoint not found"})
+    not_found_path = os.path.join(frontend_dir, "404.html")
+    if os.path.exists(not_found_path):
+        return FileResponse(not_found_path, status_code=404)
+    return JSONResponse(status_code=404, content={"detail": "Not found"})

@@ -1,52 +1,76 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from ..auth.auth import get_current_user
 from ..database import get_db
-from ..models.models import Article, Bookmark
+from ..models.models import Article, Bookmark, User
+from ..schemas import BookmarkCreate, BookmarkOut
 
 router = APIRouter(prefix="/api/bookmarks", tags=["bookmarks"])
 
-class AddBookmarkRequest(BaseModel):
-    article_id: int
-    folder: str = "default"
 
-@router.get("/")
-async def get_bookmarks(user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
-    result = await db.execute(
+@router.get("/", response_model=List[BookmarkOut])
+async def get_user_bookmarks(
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    query = (
         select(Bookmark)
-        .options(
-            selectinload(Bookmark.article).selectinload(Article.category),
-            selectinload(Bookmark.article).selectinload(Article.source),
-        )
+        .options(selectinload(Bookmark.article).selectinload(Article.category), selectinload(Bookmark.article).selectinload(Article.source))
         .where(Bookmark.user_id == user.id)
+        .order_by(Bookmark.created_at.desc())
     )
+    result = await db.execute(query)
     return result.scalars().all()
 
-@router.post("/")
-async def add_bookmark(data: AddBookmarkRequest, user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
-    article = await db.execute(select(Article).where(Article.id == data.article_id))
-    if not article.scalar_one_or_none():
+
+@router.post("/", response_model=BookmarkOut, status_code=201)
+async def create_bookmark(
+    body: BookmarkCreate,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    # Check article exists
+    art = await db.execute(select(Article).where(Article.id == body.article_id))
+    if not art.scalar_one_or_none():
         raise HTTPException(status_code=404, detail="Article not found")
 
+    # Check already bookmarked
     existing = await db.execute(
-        select(Bookmark).where(Bookmark.user_id == user.id, Bookmark.article_id == data.article_id)
+        select(Bookmark).where(Bookmark.user_id == user.id, Bookmark.article_id == body.article_id)
     )
-    if existing.scalar_one_or_none():
-        raise HTTPException(status_code=409, detail="Already bookmarked")
+    b = existing.scalar_one_or_none()
+    if b:
+        return b
 
-    bm = Bookmark(user_id=user.id, article_id=data.article_id, folder=data.folder)
-    db.add(bm)
+    bookmark = Bookmark(
+        user_id=user.id,
+        article_id=body.article_id,
+        folder=body.folder or "default",
+        notes=body.notes,
+    )
+    db.add(bookmark)
     await db.commit()
-    return {"status": "ok"}
+    await db.refresh(bookmark)
+    return bookmark
+
 
 @router.delete("/{article_id}")
-async def remove_bookmark(article_id: int, user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
-    await db.execute(
-        delete(Bookmark).where(Bookmark.user_id == user.id, Bookmark.article_id == article_id)
+async def delete_bookmark(
+    article_id: int,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(
+        select(Bookmark).where(Bookmark.user_id == user.id, Bookmark.article_id == article_id)
     )
+    bookmark = result.scalar_one_or_none()
+    if not bookmark:
+        raise HTTPException(status_code=404, detail="Bookmark not found")
+
+    await db.delete(bookmark)
     await db.commit()
-    return {"status": "ok"}
+    return {"message": "Bookmark removed"}
