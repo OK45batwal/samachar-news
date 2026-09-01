@@ -104,17 +104,12 @@ async def get_stats_alias():
     return {"total_articles": 60, "verified_count": 52, "active_sources": 8, "credibility_avg": 94}
 
 
-# Static Files Mount
-frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
-if os.path.exists(frontend_dir):
-    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
-
-
-@app.exception_handler(404)
-async def custom_404_handler(request: Request, exc):
-    if request.url.path.startswith("/api/"):
-        return JSONResponse(status_code=404, content={"detail": "API endpoint not found"})
-    not_found_path = os.path.join(frontend_dir, "404.html")
-    if os.path.exists(not_found_path):
-        return FileResponse(not_found_path, status_code=404)
-    return JSONResponse(status_code=404, content={"detail": "Not found"})
+@app.get("/")
+async def api_root():
+    return {
+        "status": "online",
+        "service": "Samachar Real-Time Fact Intelligence API",
+        "version": settings.APP_VERSION,
+        "docs_url": "/docs",
+        "frontend_url": "http://localhost:5173",
+    }
