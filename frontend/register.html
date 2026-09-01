@@ -98,7 +98,12 @@
 
             <div class="form-group mb-4">
               <label class="form-label">Password (min 8 characters)</label>
-              <input type="password" id="passwordInput" class="input" placeholder="••••••••" required minlength="8" autocomplete="new-password" />
+              <div style="position: relative;">
+                <input type="password" id="passwordInput" class="input" placeholder="••••••••" required minlength="8" autocomplete="new-password" />
+                <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
             </div>
 
             <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 11px;">
@@ -121,6 +126,13 @@
   <script src="/assets/js/app.js?v=2.4"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const pwdInput = document.getElementById('passwordInput');
+      const toggleBtn = document.getElementById('togglePasswordBtn');
+      toggleBtn?.addEventListener('click', () => {
+        const type = pwdInput.type === 'password' ? 'text' : 'password';
+        pwdInput.type = type;
+      });
+
       document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const fullName = document.getElementById('nameInput').value.trim();
