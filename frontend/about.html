@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About Samachar & Fact-Checking Methodology</title>
+  <title>About Samachar & Verification Methodology</title>
   <meta name="description" content="Learn about Samachar's truth-first news intelligence engine and verification methodology." />
   <meta name="theme-color" content="#08090C" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=2.1" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2.1" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=2.1" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=2.5" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=2.5" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=2.5" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
   <script>
@@ -18,19 +18,42 @@
 </head>
 <body>
 
+  <!-- Top Utility Bar -->
+  <div class="header-topbar hide-mobile">
+    <div class="container flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <span id="currentDateDisplay">Tuesday, Sep 1, 2026</span>
+        <span>·</span>
+        <span class="text-accent font-semibold flex items-center gap-1">
+          <span class="logo-dot"></span>
+          Journalistic Standards & Verification Methodology
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="home.html" class="text-secondary hover:text-accent font-semibold">&larr; Back to News Portal</a>
+        <a href="factcheck.html" class="text-accent font-semibold flex items-center gap-1">⚡ Claim Verifier</a>
+      </div>
+    </div>
+  </div>
+
   <!-- Header -->
   <header class="header">
     <div class="container header-main">
-      <div class="flex items-center gap-4">
-        <a href="home.html" class="logo">
+      <div class="flex items-center gap-6">
+        <a href="index.html" class="logo">
           <span>SAMACHAR</span><span class="logo-dot"></span>
           <span class="logo-tag">TRUTH FIRST</span>
         </a>
+        <nav class="hide-mobile flex items-center gap-4 text-sm font-semibold text-secondary">
+          <a href="home.html" class="hover:text-primary">News Portal</a>
+          <a href="latest.html" class="hover:text-primary">All Feeds</a>
+          <a href="factcheck.html" class="hover:text-primary">Fact Check Tool</a>
+          <a href="trending.html" class="hover:text-primary">Trending</a>
+          <a href="about.html" class="text-accent font-bold">Methodology</a>
+        </nav>
       </div>
 
       <div class="flex items-center gap-3">
-        <a href="home.html" class="btn btn-ghost btn-sm">Home</a>
-        <a href="latest.html" class="btn btn-ghost btn-sm">All News</a>
         <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
@@ -40,36 +63,114 @@
   </header>
 
   <!-- Main Container -->
-  <main class="container py-8" style="max-width: 800px; margin: 32px auto 64px;">
-    <div class="mb-8">
-      <span class="badge badge-verified mb-2">INTELLIGENCE PLATFORM</span>
-      <h1 class="heading-xl mb-4">About Samachar</h1>
-      <p class="text-secondary text-base leading-relaxed">
-        Samachar was engineered with a single uncompromising mission: to restore absolute factual clarity to online journalism through autonomous multi-source cross-corroboration, claim extraction, and sensationalism elimination.
+  <main class="container py-8" style="max-width: 860px; margin: 24px auto 64px;">
+    
+    <!-- Hero Header -->
+    <div class="mb-10 text-center">
+      <span class="badge badge-verified mb-2" style="font-size: 12px; padding: 6px 14px;">
+        🏛️ ARCHITECTURAL MISSION
+      </span>
+      <h1 class="heading-hero mb-4" style="font-size: clamp(30px, 4.5vw, 44px);">
+        Restoring Absolute Factuality to Modern News.
+      </h1>
+      <p class="text-secondary text-base leading-relaxed" style="max-width: 700px; margin: 0 auto; line-height: 1.8;">
+        Samachar is an autonomous truth-first news platform engineered to eliminate sensationalism and uncorroborated clickbait through automated multi-wire cross-referencing and claim deconstruction.
       </p>
     </div>
 
-    <div class="card p-6 mb-8">
-      <h2 class="heading-md mb-3">Our 4-Stage Truth Verification Pipeline</h2>
-      <div class="flex flex-col gap-4">
-        <div>
-          <h4 class="font-semibold text-accent mb-1">1. Multi-Feed Parallel Ingestion</h4>
-          <p class="text-xs text-secondary">We continuously stream raw RSS and structured feeds from 60+ accredited international, national, and scientific news wires every 30 minutes.</p>
+    <!-- 4-Stage Pipeline -->
+    <div class="card p-8 mb-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-md);">
+      <h2 class="heading-md mb-6 flex items-center gap-2">
+        <span class="logo-dot"></span>
+        The 4-Stage Autonomous Truth Pipeline
+      </h2>
+
+      <div class="flex flex-col gap-6">
+        <div class="card p-5" style="background: var(--bg-surface-2); border-color: var(--border);">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="badge badge-verified font-mono">STAGE 01</span>
+            <h3 class="heading-sm">Continuous Multi-Wire Ingestion</h3>
+          </div>
+          <p class="text-xs text-secondary leading-relaxed">
+            Every 30 minutes, our distributed ingestion workers poll accredited wire feeds including Reuters, Associated Press, BBC News, Bloomberg, Nature Journal, and The Hindu, harvesting primary raw dispatches with zero human editorial bias.
+          </p>
         </div>
-        <div>
-          <h4 class="font-semibold text-accent mb-1">2. Entity Clustering & Corroboration</h4>
-          <p class="text-xs text-secondary">Natural language processors identify shared geopolitical entities, numerical metrics, and dates across concurrent reports from different publishers.</p>
+
+        <div class="card p-5" style="background: var(--bg-surface-2); border-color: var(--border);">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="badge badge-corroborated font-mono">STAGE 02</span>
+            <h3 class="heading-sm">Semantic Clustering & Entity Triangulation</h3>
+          </div>
+          <p class="text-xs text-secondary leading-relaxed">
+            Incoming dispatches are matched against an active geopolitical knowledge graph. Related articles from independent publishers are grouped together to evaluate whether multiple accredited agencies independently verify the core events.
+          </p>
         </div>
-        <div>
-          <h4 class="font-semibold text-accent mb-1">3. Sensationalism & Clickbait Indexing</h4>
-          <p class="text-xs text-secondary">Headlines and lead paragraphs are audited for emotional hyperbole, loaded adjectives, and uncredited speculation.</p>
+
+        <div class="card p-5" style="background: var(--bg-surface-2); border-color: var(--border);">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="badge badge-developing font-mono">STAGE 03</span>
+            <h3 class="heading-sm">Sensationalism & Adjective Penalty Engine</h3>
+          </div>
+          <p class="text-xs text-secondary leading-relaxed">
+            Headlines and summaries undergo NLP parsing to identify hyperbolic modifiers (e.g. "SHOCKING", "UNBELIEVABLE", "MIRACLE"), clickbait syntax, and uncredited assertions. Sensationalist phrasing incurs a direct quantitative penalty on the story's score.
+          </p>
         </div>
-        <div>
-          <h4 class="font-semibold text-accent mb-1">4. Algorithmic Truth Scorecard</h4>
-          <p class="text-xs text-secondary">Every story receives an objective Truth Score (0–100%) and a transparent claim-by-claim evidence breakdown before reaching the reader.</p>
+
+        <div class="card p-5" style="background: var(--bg-surface-2); border-color: var(--border);">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="badge badge-verified font-mono">STAGE 04</span>
+            <h3 class="heading-sm">0–100% Truth Scorecard & Claim Deconstruction</h3>
+          </div>
+          <p class="text-xs text-secondary leading-relaxed">
+            Every published article is paired with an transparent Truth Scorecard breaking down key quantitative assertions, evidence citations, and wire agency corroboration counts before it reaches your feed.
+          </p>
         </div>
       </div>
     </div>
+
+    <!-- Credibility Index Legend -->
+    <div class="card p-8 mb-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-md);">
+      <h2 class="heading-md mb-6">Credibility Score Spectrum</h2>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+        <div class="card p-4" style="background: var(--bg-surface-2); border-left: 4px solid var(--accent);">
+          <span class="badge badge-verified mb-2">🟢 85% – 100%</span>
+          <h4 class="heading-sm mb-1">Verified Fact</h4>
+          <p class="text-xs text-secondary">Corroborated by 3+ top-tier wire agencies with verifiable physical or official evidence.</p>
+        </div>
+
+        <div class="card p-4" style="background: var(--bg-surface-2); border-left: 4px solid var(--corroborated);">
+          <span class="badge badge-corroborated mb-2">🔵 70% – 84%</span>
+          <h4 class="heading-sm mb-1">Corroborated</h4>
+          <p class="text-xs text-secondary">Backed by 2 accredited sources with consistent factual metrics.</p>
+        </div>
+
+        <div class="card p-4" style="background: var(--bg-surface-2); border-left: 4px solid var(--developing);">
+          <span class="badge badge-developing mb-2">🟡 55% – 69%</span>
+          <h4 class="heading-sm mb-1">Developing</h4>
+          <p class="text-xs text-secondary">Breaking coverage with preliminary assertions awaiting secondary confirmation.</p>
+        </div>
+
+        <div class="card p-4" style="background: var(--bg-surface-2); border-left: 4px solid var(--disputed);">
+          <span class="badge badge-disputed mb-2">🔴 &lt; 55%</span>
+          <h4 class="heading-sm mb-1">Disputed / Unverified</h4>
+          <p class="text-xs text-secondary">High sensationalism or unverified single-source claims flagged with warning tags.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive CTA -->
+    <div class="card p-8 text-center" style="background: var(--bg-surface-2); border-color: var(--accent-border);">
+      <h2 class="heading-lg mb-2">Ready to Experience Truth-First News?</h2>
+      <p class="text-xs text-secondary mb-6" style="max-width: 480px; margin-left: auto; margin-right: auto;">
+        Test our claim verification algorithms directly or browse live multi-wire coverage.
+      </p>
+      <div class="flex items-center justify-center gap-4" style="flex-wrap: wrap;">
+        <a href="factcheck.html" class="btn btn-primary" style="padding: 10px 22px;">⚡ Open Fact-Check Tool</a>
+        <a href="home.html" class="btn btn-secondary" style="padding: 10px 22px;">Explore News Portal &rarr;</a>
+      </div>
+    </div>
+
   </main>
 
   <!-- Footer -->
@@ -82,8 +183,8 @@
     </div>
   </footer>
 
-  <script src="/assets/js/api.js?v=2.1"></script>
-  <script src="/assets/js/layout.js?v=2.1"></script>
-  <script src="/assets/js/app.js?v=2.1"></script>
+  <script src="/assets/js/api.js?v=2.5"></script>
+  <script src="/assets/js/layout.js?v=2.5"></script>
+  <script src="/assets/js/app.js?v=2.5"></script>
 </body>
 </html>
