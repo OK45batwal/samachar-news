@@ -16,68 +16,105 @@
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
 </head>
-<body style="min-height: 100vh; display: flex; flex-direction: column;">
+<body style="min-height: 100vh; background: var(--bg-base);">
 
-  <!-- Header -->
-  <header class="header">
-    <div class="container header-main">
-      <a href="index.html" class="logo">
-        <span>SAMACHAR</span><span class="logo-dot"></span>
-        <span class="logo-tag">TRUTH FIRST</span>
-      </a>
-      <div class="flex items-center gap-3">
-        <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
-        <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        </button>
-      </div>
-    </div>
-  </header>
+  <div class="auth-split-layout">
+    
+    <!-- Left Column: Editorial Showcase -->
+    <div class="auth-sidebar-promo">
+      <div>
+        <a href="index.html" class="logo mb-8" style="display: inline-flex;">
+          <span>SAMACHAR</span><span class="logo-dot"></span>
+          <span class="logo-tag">TRUTH FIRST</span>
+        </a>
 
-  <!-- Centered Auth Card Wrapper -->
-  <main class="auth-page-wrapper">
-    <div class="auth-card-clean">
-      
-      <div class="text-center mb-6">
-        <span class="badge badge-verified mb-2">FREE ONBOARDING</span>
-        <h1 class="heading-lg mb-1">Create Account</h1>
-        <p class="text-xs text-secondary">Join readers accessing verified news intelligence</p>
-      </div>
+        <div style="margin-top: 36px; max-width: 460px;">
+          <span class="badge badge-verified mb-3">🟢 FREE ONBOARDING</span>
+          <h2 class="heading-xl mb-4" style="line-height: 1.18;">
+            Join Thousands of Readers Accessing Verified Intelligence.
+          </h2>
+          <p class="text-secondary text-sm mb-8" style="line-height: 1.7;">
+            Unlock real-time truth scorecards, atomic claim breakdowns, personalized category filters, and an encrypted bookmarks archive.
+          </p>
 
-      <form id="registerForm">
-        <div class="form-group mb-4">
-          <label class="form-label font-semibold">Full Name</label>
-          <input type="text" id="nameInput" class="input" placeholder="Alex Mercer" required autocomplete="name" />
+          <!-- Feature List -->
+          <div class="flex flex-col gap-4 mb-6">
+            <div class="flex items-center gap-3">
+              <span class="badge badge-verified" style="font-size:11px">✓ 60+ WIRES</span>
+              <span class="text-xs text-secondary">Real-time triangulation across Reuters, AP, BBC, Bloomberg</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge badge-verified" style="font-size:11px">✓ 0–100% SCORE</span>
+              <span class="text-xs text-secondary">Automated credibility index and clickbait penalty detector</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge badge-verified" style="font-size:11px">✓ CLAIM TOOLS</span>
+              <span class="text-xs text-secondary">Full access to interactive claim verification workbench</span>
+            </div>
+          </div>
         </div>
-
-        <div class="form-group mb-4">
-          <label class="form-label font-semibold">Email Address</label>
-          <input type="email" id="emailInput" class="input" placeholder="you@example.com" required autocomplete="email" />
-        </div>
-
-        <div class="form-group mb-4">
-          <label class="form-label font-semibold">Password (min 8 characters)</label>
-          <input type="password" id="passwordInput" class="input" placeholder="••••••••" required minlength="8" autocomplete="new-password" />
-        </div>
-
-        <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 11px;">
-          Create Free Account &rarr;
-        </button>
-      </form>
-
-      <div class="text-center text-xs text-secondary pt-4 border-top">
-        Already have an account? <a href="login.html" class="text-accent font-semibold hover:underline">Sign in &rarr;</a>
       </div>
 
+      <div class="flex items-center justify-between pt-6 border-top text-xs text-muted" style="margin-top: 32px;">
+        <span>&copy; 2026 Samachar News Platform</span>
+        <div class="flex items-center gap-3">
+          <a href="about.html" class="text-secondary hover:text-accent">Methodology</a>
+          <span>·</span>
+          <a href="index.html" class="text-secondary hover:text-accent">Home</a>
+        </div>
+      </div>
     </div>
-  </main>
 
-  <!-- Footer -->
-  <footer class="footer" style="padding: 20px 0;">
-    <div class="container text-center text-xs text-muted">
-      &copy; 2026 Samachar News Platform · Truth First
+    <!-- Right Column: Registration Card -->
+    <div class="auth-form-container">
+      <div class="auth-card-inner">
+        
+        <div class="flex items-center justify-between mb-6">
+          <a href="index.html" class="text-xs text-secondary hover:text-primary flex items-center gap-1">
+            &larr; Back to Landing Page
+          </a>
+          <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+
+        <div class="card p-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-md);">
+          <div class="text-center mb-6">
+            <span class="badge badge-verified mb-2">JOIN INTELLIGENCE</span>
+            <h1 class="heading-lg mb-1">Create Account</h1>
+            <p class="text-xs text-secondary">Join readers accessing verified news intelligence</p>
+          </div>
+
+          <form id="registerForm">
+            <div class="form-group mb-4">
+              <label class="form-label">Full Name</label>
+              <input type="text" id="nameInput" class="input" placeholder="Alex Mercer" required autocomplete="name" />
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="emailInput" class="input" placeholder="you@example.com" required autocomplete="email" />
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="form-label">Password (min 8 characters)</label>
+              <input type="password" id="passwordInput" class="input" placeholder="••••••••" required minlength="8" autocomplete="new-password" />
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 11px;">
+              Create Free Account &rarr;
+            </button>
+          </form>
+
+          <div class="text-center text-xs text-secondary pt-3 border-top">
+            Already have an account? <a href="login.html" class="text-accent font-semibold hover:underline">Sign in &rarr;</a>
+          </div>
+        </div>
+
+      </div>
     </div>
-  </footer>
+
+  </div>
 
   <script src="assets/js/api.js"></script>
   <script src="assets/js/layout.js"></script>

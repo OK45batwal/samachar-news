@@ -1,6 +1,8 @@
-// Samachar API Client
+// Samachar API Client — Dual Port (5173/8000) Compatible
 
-const API_BASE = window.location.origin;
+const API_BASE = (window.location.port === '5173' || window.location.hostname === 'localhost' && window.location.port !== '8000') 
+  ? 'http://localhost:8000' 
+  : '';
 
 async function request(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`;
@@ -126,25 +128,36 @@ async function resetPassword(token, newPassword) {
   });
 }
 
-// Bookmarks
-async function getBookmarks() {
-  return request('/api/bookmarks/');
+// Bookmarks Endpoints
+async function getBookmarks(folder = null) {
+  const query = folder ? `?folder=${encodeURIComponent(folder)}` : '';
+  return request(`/api/bookmarks/${query}`);
 }
 
-async function createBookmark(articleId, folder = 'default', notes = '') {
+async function createBookmark(articleId, folder = 'default', notes = null) {
   return request('/api/bookmarks/', {
     method: 'POST',
     body: JSON.stringify({ article_id: articleId, folder, notes }),
   });
 }
 
-async function deleteBookmark(articleId) {
-  return request(`/api/bookmarks/${articleId}`, {
+async function deleteBookmark(bookmarkId) {
+  return request(`/api/bookmarks/${bookmarkId}`, {
     method: 'DELETE',
   });
 }
 
+// Helper: Check Current Auth
 function getUser() {
-  const raw = localStorage.getItem('samachar_user');
-  return raw ? JSON.parse(raw) : null;
+  const userStr = localStorage.getItem('samachar_user');
+  if (!userStr) return null;
+  try {
+    return JSON.parse(userStr);
+  } catch {
+    return null;
+  }
+}
+
+function isAuthenticated() {
+  return !!localStorage.getItem('samachar_token');
 }
