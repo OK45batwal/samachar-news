@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Saved Bookmarks — Samachar</title>
-  <meta name="description" content="Your saved news articles and research archive." />
+  <title>Saved Bookmarks & Research Archive — Samachar</title>
+  <meta name="description" content="Your saved news articles, research archive, and verified reports." />
   <meta name="theme-color" content="#08090C" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=2.1" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2.1" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=2.1" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=2.5" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=2.5" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=2.5" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
   <script>
@@ -18,19 +18,41 @@
 </head>
 <body>
 
+  <!-- Top Utility Bar -->
+  <div class="header-topbar hide-mobile">
+    <div class="container flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <span id="currentDateDisplay">Tuesday, Sep 1, 2026</span>
+        <span>·</span>
+        <span class="text-accent font-semibold flex items-center gap-1">
+          <span class="logo-dot"></span>
+          Saved Reading & Research Archive
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="home.html" class="text-secondary hover:text-accent font-semibold">&larr; Back to News Portal</a>
+        <a href="profile.html" class="text-secondary hover:text-accent">User Preferences</a>
+      </div>
+    </div>
+  </div>
+
   <!-- Header -->
   <header class="header">
     <div class="container header-main">
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-6">
         <a href="home.html" class="logo">
           <span>SAMACHAR</span><span class="logo-dot"></span>
           <span class="logo-tag">TRUTH FIRST</span>
         </a>
+        <nav class="hide-mobile flex items-center gap-4 text-sm font-semibold text-secondary">
+          <a href="home.html" class="hover:text-primary">News Portal</a>
+          <a href="latest.html" class="hover:text-primary">All Feeds</a>
+          <a href="factcheck.html" class="hover:text-primary">Fact Check Tool</a>
+          <a href="bookmarks.html" class="text-accent font-bold">Bookmarks</a>
+        </nav>
       </div>
 
       <div class="flex items-center gap-3">
-        <a href="home.html" class="btn btn-ghost btn-sm">Home</a>
-        <a href="latest.html" class="btn btn-ghost btn-sm">All News</a>
         <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
@@ -40,40 +62,133 @@
   </header>
 
   <!-- Main Container -->
-  <main class="container py-8" style="max-width: 960px; margin: 0 auto;">
-    <div class="mb-6">
-      <span class="badge badge-verified mb-1">📌 SAVED ARCHIVE</span>
-      <h1 class="heading-lg">Your Bookmarks</h1>
-      <p class="text-xs text-secondary">Saved verified articles and research stories</p>
+  <main class="container py-8" style="max-width: 1080px; margin: 24px auto 64px;">
+    
+    <!-- Section Title Banner -->
+    <div class="card p-6 mb-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-md);">
+      <div class="flex items-center justify-between gap-4" style="flex-wrap: wrap;">
+        <div>
+          <span class="badge badge-verified mb-2">📌 ENCRYPTED ARCHIVE</span>
+          <h1 class="heading-lg">Your Saved Bookmarks</h1>
+          <p class="text-xs text-secondary mt-1">Personal collection of verified articles, truth scorecards, and research evidence.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="latest.html" class="btn btn-primary btn-sm">
+            + Discover More Stories
+          </a>
+        </div>
+      </div>
     </div>
 
+    <!-- Bookmarks Grid -->
     <div id="bookmarksList" class="news-grid">
       <!-- Injected dynamically -->
     </div>
+
   </main>
 
-  <script src="/assets/js/api.js?v=2.1"></script>
-  <script src="/assets/js/layout.js?v=2.1"></script>
-  <script src="/assets/js/app.js?v=2.1"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const user = getUser();
-      if (!user) {
-        window.location.href = 'login.html';
-        return;
-      }
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none;padding-top:0">
+        <span>&copy; 2026 Samachar News Platform. All rights reserved.</span>
+        <span>Obsidian Truth Engine 2.0</span>
+      </div>
+    </div>
+  </footer>
 
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="/assets/js/api.js?v=2.5"></script>
+  <script src="/assets/js/layout.js?v=2.5"></script>
+  <script src="/assets/js/app.js?v=2.5"></script>
+  <script>
+    async function loadBookmarks() {
       const listEl = document.getElementById('bookmarksList');
+      listEl.innerHTML = Array(6).fill('<div class="skeleton card" style="height:320px"></div>').join('');
+
       try {
         const bookmarks = await getBookmarks();
         if (bookmarks && bookmarks.length) {
-          listEl.innerHTML = bookmarks.map(b => b.article ? renderNewsCard(b.article) : '').join('');
+          listEl.innerHTML = bookmarks.map(b => {
+            if (!b.article) return '';
+            const art = b.article;
+            const safeTitle = sanitize(art.title);
+            const safeSummary = sanitize(art.summary || '');
+            const safeSource = sanitize(art.source?.name || 'Wire');
+            const safeCat = sanitize(art.category?.name || 'Top News');
+            const credScore = art.credibility_score || 92;
+            const imgUrl = art.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+
+            return `
+              <article class="card" id="bookmark-card-${b.id}">
+                <div class="card-img-wrapper">
+                  <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'" />
+                  <div style="position:absolute;top:10px;left:10px;">
+                    <span class="badge badge-verified">🟢 ${credScore}% VERIFIED</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="flex items-center justify-between text-xs text-muted mb-2">
+                    <span class="font-semibold text-accent">${safeCat}</span>
+                    <span>Saved in Archive</span>
+                  </div>
+                  <h3 class="heading-sm mb-2 line-clamp-2">
+                    <a href="article.html?id=${art.id}">${safeTitle}</a>
+                  </h3>
+                  <p class="text-xs text-secondary line-clamp-3">${safeSummary}</p>
+                </div>
+                <div class="card-footer">
+                  <span class="text-xs text-muted font-medium">${safeSource}</span>
+                  <div class="flex items-center gap-2">
+                    <button onclick="removeBookmarkItem(${b.id})" class="btn btn-ghost btn-sm text-danger" title="Remove Bookmark">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    </button>
+                    <a href="article.html?id=${art.id}" class="btn btn-secondary btn-sm">Read &rarr;</a>
+                  </div>
+                </div>
+              </article>
+            `;
+          }).join('');
         } else {
-          listEl.innerHTML = '<div class="p-8 text-center text-secondary w-full" style="grid-column:1/-1">You have no saved bookmarks yet. <br><a href="latest.html" class="text-accent font-semibold mt-2 inline-block">Browse Verified News &rarr;</a></div>';
+          listEl.innerHTML = `
+            <div class="card p-12 text-center w-full" style="grid-column: 1 / -1; background: var(--bg-surface-1); border-color: var(--border-light);">
+              <div style="font-size: 36px; margin-bottom: 12px;">📌</div>
+              <h2 class="heading-md mb-2">No Saved Bookmarks Yet</h2>
+              <p class="text-xs text-secondary mb-6" style="max-width: 420px; margin-left: auto; margin-right: auto;">
+                Save articles while reading the live feeds to reference their evidence and truth scorecards anytime.
+              </p>
+              <a href="home.html" class="btn btn-primary btn-sm">
+                Explore Live News Portal &rarr;
+              </a>
+            </div>
+          `;
         }
       } catch (err) {
-        listEl.innerHTML = `<div class="p-4 text-danger w-full" style="grid-column:1/-1">Failed to load bookmarks: ${err.message}</div>`;
+        listEl.innerHTML = `<div class="p-6 text-danger w-full" style="grid-column: 1 / -1">Failed to load bookmarks: ${err.message}</div>`;
       }
+    }
+
+    async function removeBookmarkItem(bookmarkId) {
+      try {
+        await deleteBookmark(bookmarkId);
+        showToast('Bookmark removed from archive', 'info');
+        const el = document.getElementById(`bookmark-card-${bookmarkId}`);
+        if (el) el.remove();
+        loadBookmarks();
+      } catch (err) {
+        showToast(err.message || 'Failed to remove bookmark', 'error');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Auth Guard: Redirect if not signed in
+      if (!isAuthenticated()) {
+        window.location.href = 'login.html?redirect=bookmarks.html';
+        return;
+      }
+
+      loadBookmarks();
     });
   </script>
 </body>
