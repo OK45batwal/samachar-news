@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Article Intelligence — Samachar</title>
   <meta name="description" content="Verified news analysis and fact-checking scorecard on Samachar." />
+  <meta name="theme-color" content="#08090C" />
   <link rel="stylesheet" href="assets/css/variables.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/icons/favicon.svg" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -250,8 +252,15 @@
         chipsContainer.innerHTML = sources.map(s => `<span class="badge badge-corroborated">✓ ${sanitize(s)}</span>`).join('');
         document.getElementById('scorecardSourcesCount').textContent = `${sources.length} Wires`;
 
-        document.getElementById('bookmarkBtn').addEventListener('click', () => {
-          handleSaveBookmark(article.id);
+        document.getElementById('bookmarkBtn').addEventListener('click', async () => {
+          await handleSaveBookmark(article.id);
+          const btn = document.getElementById('bookmarkBtn');
+          btn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+            Saved in Bookmarks
+          `;
+          btn.classList.add('btn-primary');
+          btn.classList.remove('btn-secondary');
         });
 
       } catch (err) {
