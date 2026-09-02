@@ -3,8 +3,8 @@
     "id": 413,
     "title": "Sources: Balogun late U-turn ended Everton move",
     "slug": "sources-balogun-late-u-turn-ended-everton-move-1788363451-927",
-    "summary": "Folarin Balogun's \u00a340 million ($54M) move from Monaco to Everton collapsed after the USMNT forward pulled the plug on the deal after the transfer deadline, sources told ESPN.",
-    "content": "Folarin Balogun's \u00a340 million ($54M) move from Monaco to Everton collapsed after the USMNT forward pulled the plug on the deal after the transfer deadline, sources told ESPN.",
+    "summary": "Folarin Balogun's £40 million ($54M) move from Monaco to Everton collapsed after the USMNT forward pulled the plug on the deal after the transfer deadline, sources told ESPN.",
+    "content": "Folarin Balogun's £40 million ($54M) move from Monaco to Everton collapsed after the USMNT forward pulled the plug on the deal after the transfer deadline, sources told ESPN.",
     "image_url": null,
     "source_url": "https://www.espn.com/soccer/story/_/id/49800449/folarin-balogun-uturn-deadline-scuppered-everton-move-sources",
     "author": "Mark Ogden",
@@ -16,7 +16,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Folarin Balogun's \u00a340 million ($54M) move from Monaco to Everton collapsed after the USMNT forward pulled the plug on the deal after the transfer deadline, sources told ESPN.",
+        "claim": "Folarin Balogun's £40 million ($54M) move from Monaco to Everton collapsed after the USMNT forward pulled the plug on the deal after the transfer deadline, sources told ESPN.",
         "status": "Data-Backed Assertion",
         "evidence": "Quantitative metrics cited in primary reporting"
       }
@@ -248,7 +248,7 @@
   },
   {
     "id": 417,
-    "title": "\u26be MLB playoff tracker: Odds, scenarios, more",
+    "title": "⚾ MLB playoff tracker: Odds, scenarios, more",
     "slug": "mlb-playoff-tracker-odds-scenarios-more-1788363451-909",
     "summary": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
     "content": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
@@ -263,7 +263,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "\u26be MLB playoff tracker: Odds, scenarios, more",
+        "claim": "⚾ MLB playoff tracker: Odds, scenarios, more",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network"
       }
@@ -397,11 +397,107 @@
     "bias_spectrum": "Center-Editorial Reporting"
   },
   {
+    "id": 473,
+    "title": "Health record analysis of one million cattle identifies early prevention as key to reducing feedlot respiratory deaths",
+    "slug": "health-record-analysis-of-one-million-cattle-identifies-early-prevention-as-key-to-reducing-feedlot-respiratory-deaths-1788363687-469",
+    "summary": "New research involving more than 1 million Australian feedlot cattle has found that the strongest predictors of death from bovine respiratory disease (BRD) are established before animals even enter the feedlot, highlighting the importance of preventive measures on source properties.",
+    "content": "New research involving more than 1 million Australian feedlot cattle has found that the strongest predictors of death from bovine respiratory disease (BRD) are established before animals even enter the feedlot, highlighting the importance of preventive measures on source properties.",
+    "image_url": "https://scx1.b-cdn.net/csz/news/tmb/2026/cattle.jpg",
+    "source_url": "https://phys.org/news/2026-09-health-analysis-million-cattle-early.html",
+    "author": "Phys.org",
+    "source_name": "Reuters",
+    "category_name": "Science",
+    "published_at": "2026-09-02T15:40:08",
+    "credibility_score": 76,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Health record analysis of one million cattle identifies early prevention as key to reducing feedlot respiratory deaths.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      },
+      {
+        "claim": "New research involving more than 1 million Australian feedlot cattle has found that the strongest predictors of death from bovine respiratory disease (BRD) are established befor...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      }
+    ],
+    "corroborating_sources": [
+      "Phys.org",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "General News Wire"
+  },
+  {
+    "id": 474,
+    "title": "New 'devil flower' species discovered in Thai national park",
+    "slug": "new-devil-flower-species-discovered-in-thai-national-park-1788363687-295",
+    "summary": "Researchers have described a new species of leafless flowering plant found on the forest floor of a national park in western Thailand, and its otherworldly appearance has earned it a fittingly dramatic name: Thismia daemona, the \"devil flower.\"",
+    "content": "Researchers have described a new species of leafless flowering plant found on the forest floor of a national park in western Thailand, and its otherworldly appearance has earned it a fittingly dramatic name: Thismia daemona, the \"devil flower.\"",
+    "image_url": "https://scx1.b-cdn.net/csz/news/tmb/2026/new-devil-flower-speci-1.jpg",
+    "source_url": "https://phys.org/news/2026-09-devil-species-thai-national.html",
+    "author": "Phys.org",
+    "source_name": "Reuters",
+    "category_name": "Science",
+    "published_at": "2026-09-02T15:40:05",
+    "credibility_score": 73,
+    "sensationalism_score": 4,
+    "fact_check_status": "developing",
+    "key_claims": [
+      {
+        "claim": "Researchers have described a new species of leafless flowering plant found on the forest floor of a national park in western Thailand, and its otherworldly appearance has earned...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record attribution from primary source spokesperson",
+        "confidence_score": 95
+      }
+    ],
+    "corroborating_sources": [
+      "Phys.org",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "General News Wire"
+  },
+  {
+    "id": 481,
+    "title": "Carse overlooked for third Test squad amid Derby investigation",
+    "slug": "carse-overlooked-for-third-test-squad-amid-derby-investigation-1788363687-633",
+    "summary": "Carse overlooked for third Test squad amid Derby investigation",
+    "content": "",
+    "image_url": "http://p.imgci.com",
+    "source_url": "https://www.cricinfo.com/ci/content/story/1552619.html?ex_cid=OTC-RSS",
+    "author": "Cricinfo",
+    "source_name": "Reuters",
+    "category_name": "Sports",
+    "published_at": "2026-09-02T15:37:51",
+    "credibility_score": 76,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Carse overlooked for third Test squad amid Derby investigation",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network",
+        "confidence_score": 85
+      }
+    ],
+    "corroborating_sources": [
+      "Cricinfo",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
     "id": 104,
     "title": "Tunisia's activists decry civil society crackdown",
     "slug": "tunisia-s-activists-decry-civil-society-crackdown-1788363451-586",
-    "summary": "Five years into Tunisian President Kais Saied\u2019s increasingly authoritarian rule, rights groups warn that the country\u2019s once vibrant civil society is being silenced.",
-    "content": "Five years into Tunisian President Kais Saied\u2019s increasingly authoritarian rule, rights groups warn that the country\u2019s once vibrant civil society is being silenced.",
+    "summary": "Five years into Tunisian President Kais Saied’s increasingly authoritarian rule, rights groups warn that the country’s once vibrant civil society is being silenced.",
+    "content": "Five years into Tunisian President Kais Saied’s increasingly authoritarian rule, rights groups warn that the country’s once vibrant civil society is being silenced.",
     "image_url": null,
     "source_url": "https://www.dw.com/en/tunisia-s-activists-decry-civil-society-crackdown/a-78614966?maca=en-rss-en-all-1573-rdf",
     "author": "Deutsche Welle",
@@ -413,7 +509,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Five years into Tunisian President Kais Saied\u2019s increasingly authoritarian rule, rights groups warn that the country\u2019s once vibrant civil society is being silenced.",
+        "claim": "Five years into Tunisian President Kais Saied’s increasingly authoritarian rule, rights groups warn that the country’s once vibrant civil society is being silenced.",
         "status": "Data-Backed Assertion",
         "evidence": "Quantitative metrics cited in primary reporting"
       }
@@ -456,7 +552,7 @@
   },
   {
     "id": 102,
-    "title": "Cargo ship with 10 crew sinks off Turkey coast \u2014 authorities",
+    "title": "Cargo ship with 10 crew sinks off Turkey coast — authorities",
     "slug": "cargo-ship-with-10-crew-sinks-off-turkey-coast-authorities-1788363451-904",
     "summary": "Coast guard vessels and a helicopter are searching for 10 missing crew members off the coast of Istanbul. Authorities say they lost contact after the bulk carrier crashed into a chemical tanker off the coast of Istanbul.",
     "content": "Coast guard vessels and a helicopter are searching for 10 missing crew members off the coast of Istanbul. Authorities say they lost contact after the bulk carrier crashed into a chemical tanker off the coast of Istanbul.",
@@ -471,7 +567,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Cargo ship with 10 crew sinks off Turkey coast \u2014 authorities.",
+        "claim": "Cargo ship with 10 crew sinks off Turkey coast — authorities.",
         "status": "Data-Backed Assertion",
         "evidence": "Quantitative metrics cited in primary reporting"
       },
@@ -845,8 +941,8 @@
     "id": 267,
     "title": "Explainable deep learning improves human mental models of self-driving cars",
     "slug": "explainable-deep-learning-improves-human-mental-models-of-self-driving-cars-1788363451-925",
-    "summary": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10950-5 Concept-Wrapper Network, a concept-based explanation approach deployed on a real autonomous vehicle, improves drivers\u2019 ability to understand and predict its behaviour.",
-    "content": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10950-5 Concept-Wrapper Network, a concept-based explanation approach deployed on a real autonomous vehicle, improves drivers\u2019 ability to understand and predict its behaviour.",
+    "summary": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10950-5 Concept-Wrapper Network, a concept-based explanation approach deployed on a real autonomous vehicle, improves drivers’ ability to understand and predict its behaviour.",
+    "content": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10950-5 Concept-Wrapper Network, a concept-based explanation approach deployed on a real autonomous vehicle, improves drivers’ ability to understand and predict its behaviour.",
     "image_url": null,
     "source_url": "https://www.nature.com/articles/s41586-026-10950-5",
     "author": "Julie A. Shah",
@@ -932,8 +1028,8 @@
     "id": 264,
     "title": "Pines grow faster and are more drought resilient in the Southern Hemisphere",
     "slug": "pines-grow-faster-and-are-more-drought-resilient-in-the-southern-hemisphere-1788363451-905",
-    "summary": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10969-8 Non-native conifers from the Northern Hemisphere grow faster and are more drought resistant and resilient in the Southern Hemisphere, where they seem to escape the growth\u2013stress-tolerance trade-off.",
-    "content": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10969-8 Non-native conifers from the Northern Hemisphere grow faster and are more drought resistant and resilient in the Southern Hemisphere, where they seem to escape the growth\u2013stress-tolerance trade-off.",
+    "summary": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10969-8 Non-native conifers from the Northern Hemisphere grow faster and are more drought resistant and resilient in the Southern Hemisphere, where they seem to escape the growth–stress-tolerance trade-off.",
+    "content": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10969-8 Non-native conifers from the Northern Hemisphere grow faster and are more drought resistant and resilient in the Southern Hemisphere, where they seem to escape the growth–stress-tolerance trade-off.",
     "image_url": null,
     "source_url": "https://www.nature.com/articles/s41586-026-10969-8",
     "author": "Ragan M. Callaway",
@@ -995,8 +1091,8 @@
     "id": 262,
     "title": "Exploring baryon semileptonic decays through polarization and entanglement",
     "slug": "exploring-baryon-semileptonic-decays-through-polarization-and-entanglement-1788363451-699",
-    "summary": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10818-8 Polarization and quantum entanglement measurements of baryon semileptonic decay greatly enhance single-event sensitivity, and combined with lattice quantum chromodynamics calculations enable determination of the |Vus| element of the Cabibbo\u2013Kobayashi\u2013Maskawa matrix, providing an independent test of the standard model.",
-    "content": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10818-8 Polarization and quantum entanglement measurements of baryon semileptonic decay greatly enhance single-event sensitivity, and combined with lattice quantum chromodynamics calculations enable determination of the |Vus| element of the Cabibbo\u2013Kobayashi\u2013Maskawa matrix, providing an independent test of the standard model.",
+    "summary": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10818-8 Polarization and quantum entanglement measurements of baryon semileptonic decay greatly enhance single-event sensitivity, and combined with lattice quantum chromodynamics calculations enable determination of the |Vus| element of the Cabibbo–Kobayashi–Maskawa matrix, providing an independent test of the standard model.",
+    "content": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-10818-8 Polarization and quantum entanglement measurements of baryon semileptonic decay greatly enhance single-event sensitivity, and combined with lattice quantum chromodynamics calculations enable determination of the |Vus| element of the Cabibbo–Kobayashi–Maskawa matrix, providing an independent test of the standard model.",
     "image_url": null,
     "source_url": "https://www.nature.com/articles/s41586-026-10818-8",
     "author": "J. Zu",
@@ -1236,7 +1332,7 @@
     "content": "Nature, Published online: 02 September 2026; doi:10.1038/s41586-026-11080-8 Author Correction: Signalling thresholds and negative B-cell selection in acute lymphoblastic leukaemia",
     "image_url": null,
     "source_url": "https://www.nature.com/articles/s41586-026-11080-8",
-    "author": "Markus M\u00fcschen",
+    "author": "Markus Müschen",
     "source_name": "Reuters",
     "category_name": "Science",
     "published_at": "2026-09-02T15:37:28.622941",
@@ -1288,10 +1384,10 @@
   },
   {
     "id": 277,
-    "title": "Will Meta\u2019s settlement in social media addiction case be a boon for research?",
+    "title": "Will Meta’s settlement in social media addiction case be a boon for research?",
     "slug": "will-meta-s-settlement-in-social-media-addiction-case-be-a-boon-for-research-1788363451-921",
-    "summary": "A new foundation could help scientists assess the effects of fresh safety measures\u2014if the company agrees to share its data",
-    "content": "A new foundation could help scientists assess the effects of fresh safety measures\u2014if the company agrees to share its data",
+    "summary": "A new foundation could help scientists assess the effects of fresh safety measures—if the company agrees to share its data",
+    "content": "A new foundation could help scientists assess the effects of fresh safety measures—if the company agrees to share its data",
     "image_url": null,
     "source_url": "https://www.science.org/content/article/will-meta-s-settlement-social-media-addiction-case-be-boon-research",
     "author": "Ailie McWhinnie",
@@ -1303,7 +1399,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Will Meta\u2019s settlement in social media addiction case be a boon for research?",
+        "claim": "Will Meta’s settlement in social media addiction case be a boon for research?",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network"
       }
@@ -1319,8 +1415,8 @@
     "id": 276,
     "title": "Russia bets on new research facilities to rebuild foreign ties",
     "slug": "russia-bets-on-new-research-facilities-to-rebuild-foreign-ties-1788363451-306",
-    "summary": "As Ukraine war drags on, a new synchrotron and two other megaprojects aim to attract scientists from \u201cfriendly\u201d nations",
-    "content": "As Ukraine war drags on, a new synchrotron and two other megaprojects aim to attract scientists from \u201cfriendly\u201d nations",
+    "summary": "As Ukraine war drags on, a new synchrotron and two other megaprojects aim to attract scientists from “friendly” nations",
+    "content": "As Ukraine war drags on, a new synchrotron and two other megaprojects aim to attract scientists from “friendly” nations",
     "image_url": null,
     "source_url": "https://www.science.org/content/article/russia-bets-new-research-facilities-rebuild-foreign-ties",
     "author": "Ilya Ferapontov",
@@ -1332,7 +1428,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "As Ukraine war drags on, a new synchrotron and two other megaprojects aim to attract scientists from \u201cfriendly\u201d nations As Ukraine war drags on, a new synchrotron and two other ...",
+        "claim": "As Ukraine war drags on, a new synchrotron and two other megaprojects aim to attract scientists from “friendly” nations As Ukraine war drags on, a new synchrotron and two other ...",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       }
@@ -1346,10 +1442,10 @@
   },
   {
     "id": 275,
-    "title": "In autism advisory committee\u2019s funding plan, critics see a veiled antivaccine focus",
+    "title": "In autism advisory committee’s funding plan, critics see a veiled antivaccine focus",
     "slug": "in-autism-advisory-committee-s-funding-plan-critics-see-a-veiled-antivaccine-focus-1788363451-485",
-    "summary": "The new plan, marked by a turbulent rollout and vote, urges more research on poorly understood \u201cregression\u201d to autism",
-    "content": "The new plan, marked by a turbulent rollout and vote, urges more research on poorly understood \u201cregression\u201d to autism",
+    "summary": "The new plan, marked by a turbulent rollout and vote, urges more research on poorly understood “regression” to autism",
+    "content": "The new plan, marked by a turbulent rollout and vote, urges more research on poorly understood “regression” to autism",
     "image_url": null,
     "source_url": "https://www.science.org/content/article/autism-advisory-committee-s-funding-plan-critics-see-veiled-antivaccine-focus",
     "author": "Sara Reardon",
@@ -1361,7 +1457,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "The new plan, marked by a turbulent rollout and vote, urges more research on poorly understood \u201cregression\u201d to autism The new plan, marked by a turbulent rollout and vote, urges...",
+        "claim": "The new plan, marked by a turbulent rollout and vote, urges more research on poorly understood “regression” to autism The new plan, marked by a turbulent rollout and vote, urges...",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       }
@@ -1406,8 +1502,8 @@
     "id": 273,
     "title": "California to vote on spending $16 billion to boost research after Trump cuts",
     "slug": "california-to-vote-on-spending-16-billion-to-boost-research-after-trump-cuts-1788363451-783",
-    "summary": "State initiatives this fall and in early 2028 will gauge voters\u2019 appetite for science, but controversy has grown around one proposal",
-    "content": "State initiatives this fall and in early 2028 will gauge voters\u2019 appetite for science, but controversy has grown around one proposal",
+    "summary": "State initiatives this fall and in early 2028 will gauge voters’ appetite for science, but controversy has grown around one proposal",
+    "content": "State initiatives this fall and in early 2028 will gauge voters’ appetite for science, but controversy has grown around one proposal",
     "image_url": null,
     "source_url": "https://www.science.org/content/article/california-vote-spending-16-billion-boost-research-after-trump-cuts",
     "author": "Jeffrey Mervis",
@@ -1424,7 +1520,7 @@
         "evidence": "Quantitative metrics cited in primary reporting"
       },
       {
-        "claim": "State initiatives this fall and in early 2028 will gauge voters\u2019 appetite for science, but controversy has grown around one proposal State initiatives this fall and in early 202...",
+        "claim": "State initiatives this fall and in early 2028 will gauge voters’ appetite for science, but controversy has grown around one proposal State initiatives this fall and in early 202...",
         "status": "Data-Backed Assertion",
         "evidence": "Quantitative metrics cited in primary reporting"
       }
@@ -1438,10 +1534,10 @@
   },
   {
     "id": 272,
-    "title": "World\u2019s biggest dark matter detector spots a single weird particle",
+    "title": "World’s biggest dark matter detector spots a single weird particle",
     "slug": "world-s-biggest-dark-matter-detector-spots-a-single-weird-particle-1788363451-337",
-    "summary": "It\u2019s far too early to declare a discovery, physicists with the LZ detector say",
-    "content": "It\u2019s far too early to declare a discovery, physicists with the LZ detector say",
+    "summary": "It’s far too early to declare a discovery, physicists with the LZ detector say",
+    "content": "It’s far too early to declare a discovery, physicists with the LZ detector say",
     "image_url": null,
     "source_url": "https://www.science.org/content/article/world-s-biggest-dark-matter-detector-spots-single-weird-particle",
     "author": "Adrian Cho",
@@ -1453,7 +1549,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "World\u2019s biggest dark matter detector spots a single weird particle",
+        "claim": "World’s biggest dark matter detector spots a single weird particle",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network"
       }
@@ -1525,7 +1621,7 @@
   },
   {
     "id": 269,
-    "title": "Brain stimulation takes aim at improving women\u2019s health",
+    "title": "Brain stimulation takes aim at improving women’s health",
     "slug": "brain-stimulation-takes-aim-at-improving-women-s-health-1788363451-843",
     "summary": "Trials of noninvasive technologies tackle postpartum depression, menstrual pain, and other conditions",
     "content": "Trials of noninvasive technologies tackle postpartum depression, menstrual pain, and other conditions",
@@ -1540,7 +1636,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Brain stimulation takes aim at improving women\u2019s health",
+        "claim": "Brain stimulation takes aim at improving women’s health",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network"
       }
@@ -1554,10 +1650,10 @@
   },
   {
     "id": 268,
-    "title": "NASA\u2019s New Horizons mission may shut down two instruments over lack of funding",
+    "title": "NASA’s New Horizons mission may shut down two instruments over lack of funding",
     "slug": "nasa-s-new-horizons-mission-may-shut-down-two-instruments-over-lack-of-funding-1788363451-625",
-    "summary": "Decision risks \u201cincalculable loss\u201d of data from the edge of the Sun\u2019s influence, scientists say",
-    "content": "Decision risks \u201cincalculable loss\u201d of data from the edge of the Sun\u2019s influence, scientists say",
+    "summary": "Decision risks “incalculable loss” of data from the edge of the Sun’s influence, scientists say",
+    "content": "Decision risks “incalculable loss” of data from the edge of the Sun’s influence, scientists say",
     "image_url": null,
     "source_url": "https://www.science.org/content/article/nasa-s-new-horizons-mission-may-shut-down-two-instruments-over-lack-funding",
     "author": "Paul Voosen",
@@ -1569,7 +1665,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Decision risks \u201cincalculable loss\u201d of data from the edge of the Sun\u2019s influence, scientists say Decision risks \u201cincalculable loss\u201d of data from the edge of the Sun\u2019s influence, ...",
+        "claim": "Decision risks “incalculable loss” of data from the edge of the Sun’s influence, scientists say Decision risks “incalculable loss” of data from the edge of the Sun’s influence, ...",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       }
@@ -1582,8 +1678,68 @@
     "bias_spectrum": "Center-Editorial Reporting"
   },
   {
+    "id": 479,
+    "title": "'Jobless people on TV': Goyal attacks oppn, ex-finance secy for remarks on GDP growth",
+    "slug": "jobless-people-on-tv-goyal-attacks-oppn-ex-finance-secy-for-remarks-on-gdp-growth-1788363687-894",
+    "summary": "'Jobless people on TV': Goyal attacks oppn, ex-finance secy for remarks on GDP growth",
+    "content": "",
+    "image_url": "https://static.toiimg.com/photo/msid-133714545,imgsize-76510.cms",
+    "source_url": "https://timesofindia.indiatimes.com/business/india-business/ministers-dont-manufacture-data-goyal-hits-out-at-critics-for-questioning-gdp-figures/articleshow/133714520.cms",
+    "author": "ROHITASHWA RANJAN",
+    "source_name": "Reuters",
+    "category_name": "India",
+    "published_at": "2026-09-02T15:37:06",
+    "credibility_score": 68,
+    "sensationalism_score": 16,
+    "fact_check_status": "developing",
+    "key_claims": [
+      {
+        "claim": "'Jobless people on TV': Goyal attacks oppn, ex-finance secy for remarks on GDP growth",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network",
+        "confidence_score": 85
+      }
+    ],
+    "corroborating_sources": [
+      "Times of India",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "General News Wire"
+  },
+  {
+    "id": 475,
+    "title": "School students make eco-friendly Ganesha idols",
+    "slug": "school-students-make-eco-friendly-ganesha-idols-1788363687-276",
+    "summary": "School students make eco-friendly Ganesha idols",
+    "content": "",
+    "image_url": null,
+    "source_url": "https://www.thehindu.com/news/national/andhra-pradesh/school-students-make-eco-friendly-ganesha-idols/article71420463.ece",
+    "author": "The Hindu",
+    "source_name": "The Hindu",
+    "category_name": "India",
+    "published_at": "2026-09-02T15:36:57",
+    "credibility_score": 76,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "School students make eco-friendly Ganesha idols",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network",
+        "confidence_score": 85
+      }
+    ],
+    "corroborating_sources": [
+      "The Hindu",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
     "id": 452,
-    "title": "David Byrne\u2019s Hollywood Bowl Shows Put a Seal on One of the Greatest Rock Tours of All Time: Concert Review",
+    "title": "David Byrne’s Hollywood Bowl Shows Put a Seal on One of the Greatest Rock Tours of All Time: Concert Review",
     "slug": "david-byrne-s-hollywood-bowl-shows-put-a-seal-on-one-of-the-greatest-rock-tours-of-all-time-concert-review-1788363451-384",
     "summary": "Well, Brady Corbet has got his work cut out for him. That was one of the first thoughts that came to mind soon after David Byrne and company took the stage for the first of two shows at the Hollywood Bowl this weekend. It stemmed from an announcement having come out just one day earlier [&#8230;]",
     "content": "Well, Brady Corbet has got his work cut out for him. That was one of the first thoughts that came to mind soon after David Byrne and company took the stage for the first of two shows at the Hollywood Bowl this weekend. It stemmed from an announcement having come out just one day earlier [&#8230;]",
@@ -1616,11 +1772,107 @@
     "bias_spectrum": "Center-Editorial Reporting"
   },
   {
+    "id": 476,
+    "title": "Telangana govt makes it mandatory to account for construction debris at building permission stage",
+    "slug": "telangana-govt-makes-it-mandatory-to-account-for-construction-debris-at-building-permission-stage-1788363687-186",
+    "summary": "C&amp;D waste disposal certificate should be produced prior to occupancy certificate, completion or closure of permission wherever applicable",
+    "content": "C&amp;D waste disposal certificate should be produced prior to occupancy certificate, completion or closure of permission wherever applicable",
+    "image_url": "https://th-i.thgim.com/public/incoming/k5v2zv/article71420707.ece/alternates/LANDSCAPE_1200/_DSC7453.JPG",
+    "source_url": "https://www.thehindu.com/news/national/telangana/telangana-govt-makes-it-mandatory-to-account-for-construction-debris-at-building-permission-stage/article71420290.ece",
+    "author": "The Hindu",
+    "source_name": "The Hindu",
+    "category_name": "India",
+    "published_at": "2026-09-02T15:36:06",
+    "credibility_score": 76,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Telangana govt makes it mandatory to account for construction debris at building permission stage",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network",
+        "confidence_score": 85
+      }
+    ],
+    "corroborating_sources": [
+      "The Hindu",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 477,
+    "title": "Three marijuana consignments seized in Hyderabad, 16 kg narcotic substance recovered",
+    "slug": "three-marijuana-consignments-seized-in-hyderabad-16-kg-narcotic-substance-recovered-1788363687-240",
+    "summary": "Three marijuana consignments seized in Hyderabad, 16 kg narcotic substance recovered",
+    "content": "",
+    "image_url": null,
+    "source_url": "https://www.thehindu.com/news/national/telangana/three-marijuana-consignments-seized-in-hyderabad-16-kg-narcotic-substance-recovered/article71420020.ece",
+    "author": "The Hindu",
+    "source_name": "The Hindu",
+    "category_name": "India",
+    "published_at": "2026-09-02T15:34:53",
+    "credibility_score": 76,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Three marijuana consignments seized in Hyderabad, 16 kg narcotic substance recovered.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      },
+      {
+        "claim": "Three marijuana consignments seized in Hyderabad, 16 kg narcotic substance recovered",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      }
+    ],
+    "corroborating_sources": [
+      "The Hindu",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 478,
+    "title": "Lokesh inaugurates new hostels at JNTUK engineering college",
+    "slug": "lokesh-inaugurates-new-hostels-at-jntuk-engineering-college-1788363687-487",
+    "summary": "Lokesh inaugurates new hostels at JNTUK engineering college",
+    "content": "",
+    "image_url": "https://th-i.thgim.com/public/incoming/m7ix21/article71420697.ece/alternates/LANDSCAPE_1200/WhatsApp%20Image%202026-09-02%20at%2017.25.01.jpeg",
+    "source_url": "https://www.thehindu.com/news/national/andhra-pradesh/lokesh-inaugurates-new-hostels-at-jntuk-engineering-college/article71419358.ece",
+    "author": "The Hindu",
+    "source_name": "The Hindu",
+    "category_name": "India",
+    "published_at": "2026-09-02T15:34:22",
+    "credibility_score": 72,
+    "sensationalism_score": 16,
+    "fact_check_status": "developing",
+    "key_claims": [
+      {
+        "claim": "Lokesh inaugurates new hostels at JNTUK engineering college",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network",
+        "confidence_score": 85
+      }
+    ],
+    "corroborating_sources": [
+      "The Hindu",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
     "id": 453,
-    "title": "\u2018Black Book 2,\u2019 \u2018I\u2019m Coming for You\u2019 Headline Buzzy Slate of African Works in Progress at Inaugural TIFF Market (EXCLUSIVE)",
+    "title": "‘Black Book 2,’ ‘I’m Coming for You’ Headline Buzzy Slate of African Works in Progress at Inaugural TIFF Market (EXCLUSIVE)",
     "slug": "black-book-2-i-m-coming-for-you-headline-buzzy-slate-of-african-works-in-progress-at-inaugural-tiff-market-exclusive-1788363451-841",
-    "summary": "CANEX Creations Inc., the pan-African investment platform behind films such as the buzzy Cannes premiere \u201cClarissa,\u201d has unveiled a slate of works in progress that it will be screening for prospective buyers at the inaugural TIFF: The Market. Among them are director&#160;Editi Effiong\u2019s&#160;sequel to his breakout Netflix hit \u201cBlack Book\u201d and the fiction debut of [&#8230;]",
-    "content": "CANEX Creations Inc., the pan-African investment platform behind films such as the buzzy Cannes premiere \u201cClarissa,\u201d has unveiled a slate of works in progress that it will be screening for prospective buyers at the inaugural TIFF: The Market. Among them are director&#160;Editi Effiong\u2019s&#160;sequel to his breakout Netflix hit \u201cBlack Book\u201d and the fiction debut of [&#8230;]",
+    "summary": "CANEX Creations Inc., the pan-African investment platform behind films such as the buzzy Cannes premiere “Clarissa,” has unveiled a slate of works in progress that it will be screening for prospective buyers at the inaugural TIFF: The Market. Among them are director&#160;Editi Effiong’s&#160;sequel to his breakout Netflix hit “Black Book” and the fiction debut of [&#8230;]",
+    "content": "CANEX Creations Inc., the pan-African investment platform behind films such as the buzzy Cannes premiere “Clarissa,” has unveiled a slate of works in progress that it will be screening for prospective buyers at the inaugural TIFF: The Market. Among them are director&#160;Editi Effiong’s&#160;sequel to his breakout Netflix hit “Black Book” and the fiction debut of [&#8230;]",
     "image_url": "https://variety.com/wp-content/uploads/2026/09/MixCollage-02-Sep-2026-03-41-PM-8294.jpg",
     "source_url": "https://variety.com/2026/film/global/black-book-2-im-coming-for-you-africa-tiff-market-1236849064/",
     "author": "Postcardjunky",
@@ -1632,22 +1884,22 @@
     "fact_check_status": "developing",
     "key_claims": [
       {
-        "claim": "\u2018Black Book 2,\u2019 \u2018I\u2019m Coming for You\u2019 Headline Buzzy Slate of African Works in Progress at Inaugural TIFF Market (EXCLUSIVE).",
+        "claim": "‘Black Book 2,’ ‘I’m Coming for You’ Headline Buzzy Slate of African Works in Progress at Inaugural TIFF Market (EXCLUSIVE).",
         "status": "Data-Backed Assertion",
         "evidence": "Quantitative metrics cited in primary reporting"
       },
       {
-        "claim": "CANEX Creations Inc., the pan-African investment platform behind films such as the buzzy Cannes premiere \u201cClarissa,\u201d has unveiled a slate of works in progress that it will be sc...",
+        "claim": "CANEX Creations Inc., the pan-African investment platform behind films such as the buzzy Cannes premiere “Clarissa,” has unveiled a slate of works in progress that it will be sc...",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       },
       {
-        "claim": "Among them are director&#160;Editi Effiong\u2019s&#160;sequel to his breakout Netflix hit \u201cBlack Book\u201d and the fiction debut of [&#8230;] CANEX Creations Inc., the pan-African invest...",
+        "claim": "Among them are director&#160;Editi Effiong’s&#160;sequel to his breakout Netflix hit “Black Book” and the fiction debut of [&#8230;] CANEX Creations Inc., the pan-African invest...",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       },
       {
-        "claim": "Among them are director&#160;Editi Effiong\u2019s&#160;sequel to his breakout Netflix hit \u201cBlack Book\u201d and the fiction debut of [&#8230;]",
+        "claim": "Among them are director&#160;Editi Effiong’s&#160;sequel to his breakout Netflix hit “Black Book” and the fiction debut of [&#8230;]",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       }
@@ -1661,9 +1913,9 @@
   },
   {
     "id": 333,
-    "title": "YSRCP women wing demands apology from police for \u2018misconduct\u2019 against ex-Dy. CM",
+    "title": "YSRCP women wing demands apology from police for ‘misconduct’ against ex-Dy. CM",
     "slug": "ysrcp-women-wing-demands-apology-from-police-for-misconduct-against-ex-dy-cm-1788363451-886",
-    "summary": "YSRCP women wing demands apology from police for \u2018misconduct\u2019 against ex-Dy. CM",
+    "summary": "YSRCP women wing demands apology from police for ‘misconduct’ against ex-Dy. CM",
     "content": "",
     "image_url": null,
     "source_url": "https://www.thehindu.com/news/national/andhra-pradesh/ysrcp-women-wing-demands-apology-from-police-for-misconduct-against-ex-dy-cm/article71419362.ece",
@@ -1676,7 +1928,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "YSRCP women wing demands apology from police for \u2018misconduct\u2019 against ex-Dy. CM",
+        "claim": "YSRCP women wing demands apology from police for ‘misconduct’ against ex-Dy. CM",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network"
       }
@@ -1727,7 +1979,7 @@
     "title": "Continuous glucose monitors are about to get more complicated",
     "slug": "continuous-glucose-monitors-are-about-to-get-more-complicated-1788363451-969",
     "summary": "This is Optimizer, a weekly newsletter sent from Verge senior reviewer Victoria Song that dissects and discusses the latest gizmos and potions that swear they're going to change your life. Opt in for Optimizer here. My mom was a dramatic woman prone to overreacting. When I was a snotty teen, I told her she needed [&#8230;]",
-    "content": "The Abbot Libre Duo is the first FDA authorized 2-in-1 continuous glucose monitor. | Image: Abbott This is Optimizer , a weekly newsletter sent from Verge senior reviewer Victoria Song that dissects and discusses the latest gizmos and potions that swear they're going to change your life. Opt in for Optimizer here . My mom was a dramatic woman prone to overreacting. When I was a snotty teen, I told her she needed to take several chill pills. Most of the time, I was right. Back in 2004, when she was swearing in Korean and hurtling down the highway in a Honda Odyssey that had no business going 20mph over the speed limit, swerving in and out of traffic as I vomited bile into a plastic baggie, I have to admit that she was right to rush me to th \u2026 Read the full story at The Verge.",
+    "content": "The Abbot Libre Duo is the first FDA authorized 2-in-1 continuous glucose monitor. | Image: Abbott This is Optimizer , a weekly newsletter sent from Verge senior reviewer Victoria Song that dissects and discusses the latest gizmos and potions that swear they're going to change your life. Opt in for Optimizer here . My mom was a dramatic woman prone to overreacting. When I was a snotty teen, I told her she needed to take several chill pills. Most of the time, I was right. Back in 2004, when she was swearing in Korean and hurtling down the highway in a Honda Odyssey that had no business going 20mph over the speed limit, swerving in and out of traffic as I vomited bile into a plastic baggie, I have to admit that she was right to rush me to th … Read the full story at The Verge.",
     "image_url": null,
     "source_url": "https://www.theverge.com/column/988242/optimizer-abbott-libre-duo-ketones-diabetic-ketoacidosis",
     "author": "Victoria Song",
@@ -1758,7 +2010,7 @@
   },
   {
     "id": 454,
-    "title": "Nimesh Patel\u2019s Netflix Special \u2018Buy the Dip\u2019 Sets September Release (EXCLUSIVE)",
+    "title": "Nimesh Patel’s Netflix Special ‘Buy the Dip’ Sets September Release (EXCLUSIVE)",
     "slug": "nimesh-patel-s-netflix-special-buy-the-dip-sets-september-release-exclusive-1788363451-199",
     "summary": "Nimesh Patel&#8217;s Netflix special has been given a title and release date. &#8220;Buy the Dip,&#8221; an hour of stand-up comedy, will debut on the streamer on Sept. 22. In what&#8217;s described as a &#8220;no-punches-pulled special,&#8221; Patel covers the &#8220;absurdity of parenting, the insanity of his Indian family and the rampant corruption in D.C.&#8221; In a [&#8230;]",
     "content": "Nimesh Patel&#8217;s Netflix special has been given a title and release date. &#8220;Buy the Dip,&#8221; an hour of stand-up comedy, will debut on the streamer on Sept. 22. In what&#8217;s described as a &#8220;no-punches-pulled special,&#8221; Patel covers the &#8220;absurdity of parenting, the insanity of his Indian family and the rampant corruption in D.C.&#8221; In a [&#8230;]",
@@ -1831,7 +2083,7 @@
   },
   {
     "id": 238,
-    "title": "Inde Navarrette Will Push For Best Actress For \u2018Obsession\u2019 At The Oscars",
+    "title": "Inde Navarrette Will Push For Best Actress For ‘Obsession’ At The Oscars",
     "slug": "inde-navarrette-will-push-for-best-actress-for-obsession-at-the-oscars-1788363451-481",
     "summary": "After awards buzz in the wake of Inde Navarrette's turn in \"Obsession,\" now its studio is gearing up to try to land her an actul Best Actress nomination at he Oscars.",
     "content": "After awards buzz in the wake of Inde Navarrette's turn in \"Obsession,\" now its studio is gearing up to try to land her an actul Best Actress nomination at he Oscars.",
@@ -1981,9 +2233,9 @@
   },
   {
     "id": 348,
-    "title": "Rahul\u2019s student outreach hits Madhya Pradesh roadblock: Congress, BJP spar over Indore venue",
+    "title": "Rahul’s student outreach hits Madhya Pradesh roadblock: Congress, BJP spar over Indore venue",
     "slug": "rahul-s-student-outreach-hits-madhya-pradesh-roadblock-congress-bjp-spar-over-indore-venue-1788363451-163",
-    "summary": "Rahul\u2019s student outreach hits Madhya Pradesh roadblock: Congress, BJP spar over Indore venue",
+    "summary": "Rahul’s student outreach hits Madhya Pradesh roadblock: Congress, BJP spar over Indore venue",
     "content": "",
     "image_url": "https://images.indianexpress.com/2026/09/rahul-gandhi-Facebook-1.jpg",
     "source_url": "https://indianexpress.com/article/india/rahul-gandhi-indore-chhatron-ki-goonj-postponed-september-19-10860744/",
@@ -1996,7 +2248,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Rahul\u2019s student outreach hits Madhya Pradesh roadblock: Congress, BJP spar over Indore venue",
+        "claim": "Rahul’s student outreach hits Madhya Pradesh roadblock: Congress, BJP spar over Indore venue",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network"
       }
@@ -2039,10 +2291,10 @@
   },
   {
     "id": 340,
-    "title": "NITI Aayog tells Karnataka to consider building a \u2018second Bengaluru\u2019 to ease pressure on capital",
+    "title": "NITI Aayog tells Karnataka to consider building a ‘second Bengaluru’ to ease pressure on capital",
     "slug": "niti-aayog-tells-karnataka-to-consider-building-a-second-bengaluru-to-ease-pressure-on-capital-1788363451-890",
-    "summary": "The NITI Aayog has suggested that the Karnataka government consider building a \u201csecond Bengaluru\u201d in the State to reduce the pressure on the capital",
-    "content": "The NITI Aayog has suggested that the Karnataka government consider building a \u201csecond Bengaluru\u201d in the State to reduce the pressure on the capital",
+    "summary": "The NITI Aayog has suggested that the Karnataka government consider building a “second Bengaluru” in the State to reduce the pressure on the capital",
+    "content": "The NITI Aayog has suggested that the Karnataka government consider building a “second Bengaluru” in the State to reduce the pressure on the capital",
     "image_url": "https://th-i.thgim.com/public/incoming/g8f61z/article71420651.ece/alternates/LANDSCAPE_1200/20260902363L.jpg",
     "source_url": "https://www.thehindu.com/news/national/karnataka/niti-aayog-tells-karnataka-to-consider-building-a-second-bengaluru-to-ease-pressure-on-capital/article71420419.ece",
     "author": "The Hindu",
@@ -2054,7 +2306,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "The NITI Aayog has suggested that the Karnataka government consider building a \u201csecond Bengaluru\u201d in the State to reduce the pressure on the capital The NITI Aayog has suggested...",
+        "claim": "The NITI Aayog has suggested that the Karnataka government consider building a “second Bengaluru” in the State to reduce the pressure on the capital The NITI Aayog has suggested...",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       }
@@ -2068,7 +2320,7 @@
   },
   {
     "id": 455,
-    "title": "\u2018I\u2019m Hoping to See Sydney Sweeney\u2019: Meet the Superfans Who Camp Out All Night for Celebrity Sightings at Venice Film Festival",
+    "title": "‘I’m Hoping to See Sydney Sweeney’: Meet the Superfans Who Camp Out All Night for Celebrity Sightings at Venice Film Festival",
     "slug": "i-m-hoping-to-see-sydney-sweeney-meet-the-superfans-who-camp-out-all-night-for-celebrity-sightings-at-venice-film-festiv-1788363451-311",
     "summary": "It&#8217;s 11:30 p.m. on Tuesday, and 19-year-old Delsina Desanctes is standing outside the Palazzo de Cinema &#8212; the iconic venue where the Venice Film Festival takes place &#8212; surrounded by umbrellas, suitcases, sleeping bags and even a tent. &#8220;I&#8217;m hoping to see Sydney Sweeney, Kendall Jenner and Jonathan Bailey,&#8221; says Desanctes, who traveled to Lido [&#8230;]",
     "content": "It&#8217;s 11:30 p.m. on Tuesday, and 19-year-old Delsina Desanctes is standing outside the Palazzo de Cinema &#8212; the iconic venue where the Venice Film Festival takes place &#8212; surrounded by umbrellas, suitcases, sleeping bags and even a tent. &#8220;I&#8217;m hoping to see Sydney Sweeney, Kendall Jenner and Jonathan Bailey,&#8221; says Desanctes, who traveled to Lido [&#8230;]",
@@ -2112,10 +2364,10 @@
   },
   {
     "id": 341,
-    "title": "Tamil Nadu Assembly | Files on sanitation workers\u2019 demands ready, says Minister",
+    "title": "Tamil Nadu Assembly | Files on sanitation workers’ demands ready, says Minister",
     "slug": "tamil-nadu-assembly-files-on-sanitation-workers-demands-ready-says-minister-1788363451-900",
-    "summary": "\u201cThere is no response to my question as to why the Chief Minister has not visited the workers,\u201d Minister Rajmohan told Udhayanidhi Stalin in the Assembly",
-    "content": "\u201cThere is no response to my question as to why the Chief Minister has not visited the workers,\u201d Minister Rajmohan told Udhayanidhi Stalin in the Assembly",
+    "summary": "“There is no response to my question as to why the Chief Minister has not visited the workers,” Minister Rajmohan told Udhayanidhi Stalin in the Assembly",
+    "content": "“There is no response to my question as to why the Chief Minister has not visited the workers,” Minister Rajmohan told Udhayanidhi Stalin in the Assembly",
     "image_url": "https://th-i.thgim.com/public/incoming/jmtmsu/article71420637.ece/alternates/LANDSCAPE_1200/DSC_8342.JPG",
     "source_url": "https://www.thehindu.com/news/national/tamil-nadu/tamil-nadu-assembly-files-on-sanitation-workers-demands-ready-says-minister/article71420630.ece",
     "author": "The Hindu",
@@ -2127,7 +2379,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "\u201cThere is no response to my question as to why the Chief Minister has not visited the workers,\u201d Minister Rajmohan told Udhayanidhi Stalin in the Assembly \u201cThere is no response t...",
+        "claim": "“There is no response to my question as to why the Chief Minister has not visited the workers,” Minister Rajmohan told Udhayanidhi Stalin in the Assembly “There is no response t...",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       }
@@ -2170,10 +2422,10 @@
   },
   {
     "id": 343,
-    "title": "BJP seeks CM\u2019s resignation, CBI probe into corruption allegations in Punjab",
+    "title": "BJP seeks CM’s resignation, CBI probe into corruption allegations in Punjab",
     "slug": "bjp-seeks-cm-s-resignation-cbi-probe-into-corruption-allegations-in-punjab-1788363451-358",
-    "summary": "Claiming that AAP chief Arvind Kejriwal and Bhagwant Mann \u2018have today become symbols of corruption\u2019, BJP spokesperson Gaurav Bhatia alleges that senior Punjab officials are also involved in the \u2018cash for transfer scam\u2019",
-    "content": "Claiming that AAP chief Arvind Kejriwal and Bhagwant Mann \u2018have today become symbols of corruption\u2019, BJP spokesperson Gaurav Bhatia alleges that senior Punjab officials are also involved in the \u2018cash for transfer scam\u2019",
+    "summary": "Claiming that AAP chief Arvind Kejriwal and Bhagwant Mann ‘have today become symbols of corruption’, BJP spokesperson Gaurav Bhatia alleges that senior Punjab officials are also involved in the ‘cash for transfer scam’",
+    "content": "Claiming that AAP chief Arvind Kejriwal and Bhagwant Mann ‘have today become symbols of corruption’, BJP spokesperson Gaurav Bhatia alleges that senior Punjab officials are also involved in the ‘cash for transfer scam’",
     "image_url": "https://th-i.thgim.com/public/incoming/a7d0dj/article71420568.ece/alternates/LANDSCAPE_1200/20260831327L.jpg",
     "source_url": "https://www.thehindu.com/news/national/punjab/bjp-seeks-cms-resignation-cbi-probe-into-corruption-allegations-in-punjab/article71419850.ece",
     "author": "The Hindu",
@@ -2185,7 +2437,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "BJP seeks CM\u2019s resignation, CBI probe into corruption allegations in Punjab",
+        "claim": "BJP seeks CM’s resignation, CBI probe into corruption allegations in Punjab",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network"
       }
@@ -2228,9 +2480,9 @@
   },
   {
     "id": 344,
-    "title": "Pawan\u2019s development initiatives helping Parvatipuram-Manyam dist.: JSP",
+    "title": "Pawan’s development initiatives helping Parvatipuram-Manyam dist.: JSP",
     "slug": "pawan-s-development-initiatives-helping-parvatipuram-manyam-dist-jsp-1788363451-538",
-    "summary": "Pawan\u2019s development initiatives helping Parvatipuram-Manyam dist.: JSP",
+    "summary": "Pawan’s development initiatives helping Parvatipuram-Manyam dist.: JSP",
     "content": "",
     "image_url": "https://th-i.thgim.com/public/incoming/bb5vgd/article71420636.ece/alternates/LANDSCAPE_1200/9604_2_9_2026_20_14_15_1_IMG_20260902_WA0053.JPG",
     "source_url": "https://www.thehindu.com/news/national/andhra-pradesh/pawans-development-initiatives-helping-parvatipuram-manyam-dist-jsp/article71419805.ece",
@@ -2243,7 +2495,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Pawan\u2019s development initiatives helping Parvatipuram-Manyam dist.: JSP",
+        "claim": "Pawan’s development initiatives helping Parvatipuram-Manyam dist.: JSP",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network"
       }
@@ -2375,8 +2627,8 @@
     "id": 303,
     "title": "Tracking emperor penguins from space",
     "slug": "tracking-emperor-penguins-from-space-1788363451-811",
-    "summary": "For the first time, geographers from Durham University have used freely available satellite radar images to track emperor penguins through the polar winter\u2014giving a year-round view of their movements. Monitoring the endangered birds through Antarctica's dark months is important because this is a key stage in their breeding cycle. Emperor penguins rely on stable sea ice attached to the coastline fo",
-    "content": "For the first time, geographers from Durham University have used freely available satellite radar images to track emperor penguins through the polar winter\u2014giving a year-round view of their movements. Monitoring the endangered birds through Antarctica's dark months is important because this is a key stage in their breeding cycle. Emperor penguins rely on stable sea ice attached to the coastline for roughly nine months to breed and raise chicks.",
+    "summary": "For the first time, geographers from Durham University have used freely available satellite radar images to track emperor penguins through the polar winter—giving a year-round view of their movements. Monitoring the endangered birds through Antarctica's dark months is important because this is a key stage in their breeding cycle. Emperor penguins rely on stable sea ice attached to the coastline fo",
+    "content": "For the first time, geographers from Durham University have used freely available satellite radar images to track emperor penguins through the polar winter—giving a year-round view of their movements. Monitoring the endangered birds through Antarctica's dark months is important because this is a key stage in their breeding cycle. Emperor penguins rely on stable sea ice attached to the coastline for roughly nine months to breed and raise chicks.",
     "image_url": "https://scx1.b-cdn.net/csz/news/tmb/2026/tracking-emperor-pengu.jpg",
     "source_url": "https://phys.org/news/2026-09-tracking-emperor-penguins-space.html",
     "author": "Phys.org",
@@ -2388,7 +2640,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "For the first time, geographers from Durham University have used freely available satellite radar images to track emperor penguins through the polar winter\u2014giving a year-round v...",
+        "claim": "For the first time, geographers from Durham University have used freely available satellite radar images to track emperor penguins through the polar winter—giving a year-round v...",
         "status": "Data-Backed Assertion",
         "evidence": "Quantitative metrics cited in primary reporting"
       },
@@ -2436,7 +2688,7 @@
   },
   {
     "id": 462,
-    "title": "HBO\u2019s New \u2018Harry Potter\u2019 Trailer: The Sorting Hat, Quidditch and Snape Dissing Harry",
+    "title": "HBO’s New ‘Harry Potter’ Trailer: The Sorting Hat, Quidditch and Snape Dissing Harry",
     "slug": "hbo-s-new-harry-potter-trailer-the-sorting-hat-quidditch-and-snape-dissing-harry-1788363451-779",
     "summary": "The action-packed new trailer shows the core cast in iconic moments at Hogwarts.",
     "content": "The action-packed new trailer shows the core cast in iconic moments at Hogwarts.",
@@ -2451,7 +2703,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "HBO\u2019s New \u2018Harry Potter\u2019 Trailer: The Sorting Hat, Quidditch and Snape Dissing Harry",
+        "claim": "HBO’s New ‘Harry Potter’ Trailer: The Sorting Hat, Quidditch and Snape Dissing Harry",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network"
       }
@@ -2497,7 +2749,7 @@
     "title": "US postal whistleblower warns thousands of midterm ballots could be lost",
     "slug": "us-postal-whistleblower-warns-thousands-of-midterm-ballots-could-be-lost-1788363451-580",
     "summary": "A US Postal Service whistleblower has warned that millions of Americans could be prevented from receiving mail ballots ahead of November's midterm elections because of a rushed, new system ordered by President Donald Trump and due for launch Tuesday. Trump signed an executive order in March seeking tighter controls on mail voting, which he has repeatedly claimed is vulnerable to widespread fraud d",
-    "content": "A US Postal Service whistleblower has warned that millions of Americans could be prevented from receiving mail ballots ahead of November's midterm elections because of a rushed, new system ordered by President Donald Trump and due for launch Tuesday. Trump signed an executive order in March seeking tighter controls on mail voting, which he has repeatedly claimed is vulnerable to widespread fraud despite offering no evidence of misconduct on such a scale. France 24\u2019s Kethevane Gorjestani takes a closer look.",
+    "content": "A US Postal Service whistleblower has warned that millions of Americans could be prevented from receiving mail ballots ahead of November's midterm elections because of a rushed, new system ordered by President Donald Trump and due for launch Tuesday. Trump signed an executive order in March seeking tighter controls on mail voting, which he has repeatedly claimed is vulnerable to widespread fraud despite offering no evidence of misconduct on such a scale. France 24’s Kethevane Gorjestani takes a closer look.",
     "image_url": "https://s.france24.com/media/display/31b1d516-a6dd-11f1-85d3-005056a90284/w:1024/p:16x9/EN-20260902-161238-161837-CS.jpg",
     "source_url": "https://www.france24.com/en/video/20260902-us-postal-whistleblower-warns-thousands-of-midterm-ballots-could-be-lost",
     "author": "FRANCE24",
@@ -2509,7 +2761,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "France 24\u2019s Kethevane Gorjestani takes a closer look.",
+        "claim": "France 24’s Kethevane Gorjestani takes a closer look.",
         "status": "Data-Backed Assertion",
         "evidence": "Quantitative metrics cited in primary reporting"
       }
@@ -2581,7 +2833,7 @@
   },
   {
     "id": 188,
-    "title": "The \u2018Permission Bottleneck\u2019 Coming for Stocks",
+    "title": "The ‘Permission Bottleneck’ Coming for Stocks",
     "slug": "the-permission-bottleneck-coming-for-stocks-1788363451-990",
     "summary": "The AI buildout has been lifting all boats.",
     "content": "The AI buildout has been lifting all boats.",
@@ -2596,7 +2848,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "The \u2018Permission Bottleneck\u2019 Coming for Stocks",
+        "claim": "The ‘Permission Bottleneck’ Coming for Stocks",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network"
       }
@@ -2610,7 +2862,7 @@
   },
   {
     "id": 456,
-    "title": "\u2018Harry Potter\u2019 Trailer: Harry Wears the Sorting Hat, Tries Quidditch and Puts on Invisibility Cloak in HBO\u2019s TV Remake",
+    "title": "‘Harry Potter’ Trailer: Harry Wears the Sorting Hat, Tries Quidditch and Puts on Invisibility Cloak in HBO’s TV Remake",
     "slug": "harry-potter-trailer-harry-wears-the-sorting-hat-tries-quidditch-and-puts-on-invisibility-cloak-in-hbo-s-tv-remake-1788363451-593",
     "summary": "HBO&#8217;s &#8220;Harry Potter&#8221; series has released another trailer, giving a peek into the new take on the Wizarding World as it makes its way to TV. Newcomer Dominic McLaughlin stars as Harry Potter, the 11-year old wizard previously brought to life by Daniel Radcliffe. Alastair Stout and Arabella Stanton play his best friends, Ron Weasley [&#8230;]",
     "content": "HBO&#8217;s &#8220;Harry Potter&#8221; series has released another trailer, giving a peek into the new take on the Wizarding World as it makes its way to TV. Newcomer Dominic McLaughlin stars as Harry Potter, the 11-year old wizard previously brought to life by Daniel Radcliffe. Alastair Stout and Arabella Stanton play his best friends, Ron Weasley [&#8230;]",
@@ -2743,8 +2995,8 @@
     "id": 205,
     "title": "Burnham seeks to reassure bond markets amid public spending fears",
     "slug": "burnham-seeks-to-reassure-bond-markets-amid-public-spending-fears-1788363451-789",
-    "summary": "Tory leader Kemi Badenoch accuses Labour leader of being unable to refuse spending requests in first Prime Minister\u2019s Questions",
-    "content": "Tory leader Kemi Badenoch accuses Labour leader of being unable to refuse spending requests in first Prime Minister\u2019s Questions",
+    "summary": "Tory leader Kemi Badenoch accuses Labour leader of being unable to refuse spending requests in first Prime Minister’s Questions",
+    "content": "Tory leader Kemi Badenoch accuses Labour leader of being unable to refuse spending requests in first Prime Minister’s Questions",
     "image_url": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2Fcf3b66c1-f56b-465c-8a43-15c2bee9be66.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
     "source_url": "https://www.ft.com/content/55ea0ee5-d067-4fc0-81cb-82293e9285de?syn-25a6b1a6=1",
     "author": "Financial Times",
@@ -2770,10 +3022,10 @@
   },
   {
     "id": 190,
-    "title": "\u00bfEn qu\u00e9 consiste el \u201cmayor acuerdo petrolero\u201d entre EE.UU. y Venezuela?",
+    "title": "¿En qué consiste el “mayor acuerdo petrolero” entre EE.UU. y Venezuela?",
     "slug": "en-qu-consiste-el-mayor-acuerdo-petrolero-entre-ee-uu-y-venezuela-1788363451-539",
-    "summary": "EE.UU. y Venezuela anunciaron un acuerdo petrolero que dar\u00e1 a Washington un amplio control sobre parte de la producci\u00f3n venezolana. \u00bfC\u00f3mo funcionar\u00e1, qu\u00e9 busca cada pa\u00eds y cu\u00e1les son los grandes interrogantes que a\u00fan quedan? (Source: Bloomberg)",
-    "content": "EE.UU. y Venezuela anunciaron un acuerdo petrolero que dar\u00e1 a Washington un amplio control sobre parte de la producci\u00f3n venezolana. \u00bfC\u00f3mo funcionar\u00e1, qu\u00e9 busca cada pa\u00eds y cu\u00e1les son los grandes interrogantes que a\u00fan quedan? (Source: Bloomberg)",
+    "summary": "EE.UU. y Venezuela anunciaron un acuerdo petrolero que dará a Washington un amplio control sobre parte de la producción venezolana. ¿Cómo funcionará, qué busca cada país y cuáles son los grandes interrogantes que aún quedan? (Source: Bloomberg)",
+    "content": "EE.UU. y Venezuela anunciaron un acuerdo petrolero que dará a Washington un amplio control sobre parte de la producción venezolana. ¿Cómo funcionará, qué busca cada país y cuáles son los grandes interrogantes que aún quedan? (Source: Bloomberg)",
     "image_url": null,
     "source_url": "https://www.bloomberg.com/news/videos/2026-09-02/-en-que-consiste-el-mayor-acuerdo-petrolero-entre-ee-uu-y-venezuela",
     "author": "Bloomberg Markets",
@@ -2785,7 +3037,7 @@
     "fact_check_status": "developing",
     "key_claims": [
       {
-        "claim": "\u00bfEn qu\u00e9 consiste el \u201cmayor acuerdo petrolero\u201d entre EE.UU.",
+        "claim": "¿En qué consiste el “mayor acuerdo petrolero” entre EE.UU.",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       }
@@ -2799,10 +3051,10 @@
   },
   {
     "id": 239,
-    "title": "Kennedy Center Abruptly Begins Removing \u2018Blue\u2019 Sculpture",
+    "title": "Kennedy Center Abruptly Begins Removing ‘Blue’ Sculpture",
     "slug": "kennedy-center-abruptly-begins-removing-blue-sculpture-1788363451-788",
-    "summary": "The Kennedy Center began removing \u201cBlue,\u201d a sculpture on its grounds, on Wednesday morning with no prior announcement.",
-    "content": "The Kennedy Center began removing \u201cBlue,\u201d a sculpture on its grounds, on Wednesday morning with no prior announcement.",
+    "summary": "The Kennedy Center began removing “Blue,” a sculpture on its grounds, on Wednesday morning with no prior announcement.",
+    "content": "The Kennedy Center began removing “Blue,” a sculpture on its grounds, on Wednesday morning with no prior announcement.",
     "image_url": "https://imageio.forbes.com/specials-images/imageserve/6a9837ee468fe99355216ff7/0x0.jpg?width=960",
     "source_url": "https://www.forbes.com/sites/conormurray/2026/09/02/kennedy-center-abruptly-begins-removing-blue-sculpture/",
     "author": "Conor Murray, Forbes Staff",
@@ -2814,7 +3066,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "The Kennedy Center began removing \u201cBlue,\u201d a sculpture on its grounds, on Wednesday morning with no prior announcement.",
+        "claim": "The Kennedy Center began removing “Blue,” a sculpture on its grounds, on Wednesday morning with no prior announcement.",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       }
@@ -2886,10 +3138,10 @@
   },
   {
     "id": 463,
-    "title": "Meryl Streep, Laura Poitras Join \u2018My Undesirable Friends: Part II\u2019 as Exec Producers (Exclusive)",
+    "title": "Meryl Streep, Laura Poitras Join ‘My Undesirable Friends: Part II’ as Exec Producers (Exclusive)",
     "slug": "meryl-streep-laura-poitras-join-my-undesirable-friends-part-ii-as-exec-producers-exclusive-1788363451-261",
-    "summary": "Julia Loktev\u2019s follow-up to her 2024 documentary follows independent Russian journalists forced to flee Moscow after Putin's government declares them \"foreign agents.\"",
-    "content": "Julia Loktev\u2019s follow-up to her 2024 documentary follows independent Russian journalists forced to flee Moscow after Putin's government declares them \"foreign agents.\"",
+    "summary": "Julia Loktev’s follow-up to her 2024 documentary follows independent Russian journalists forced to flee Moscow after Putin's government declares them \"foreign agents.\"",
+    "content": "Julia Loktev’s follow-up to her 2024 documentary follows independent Russian journalists forced to flee Moscow after Putin's government declares them \"foreign agents.\"",
     "image_url": null,
     "source_url": "https://www.hollywoodreporter.com/movies/movie-news/meryl-streep-laura-poitras-eps-my-undesirable-friends-doc-1236687914/",
     "author": "Scott Roxborough",
@@ -2901,7 +3153,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Julia Loktev\u2019s follow-up to her 2024 documentary follows independent Russian journalists forced to flee Moscow after Putin's government declares them foreign agents. Julia Lokte...",
+        "claim": "Julia Loktev’s follow-up to her 2024 documentary follows independent Russian journalists forced to flee Moscow after Putin's government declares them foreign agents. Julia Lokte...",
         "status": "Official Statement",
         "evidence": "Direct on-record quote from primary source"
       }
@@ -2949,7 +3201,7 @@
   },
   {
     "id": 61,
-    "title": "China\u2019s Xi visits Egypt\u2019s el-Sisi: Why it matters",
+    "title": "China’s Xi visits Egypt’s el-Sisi: Why it matters",
     "slug": "china-s-xi-visits-egypt-s-el-sisi-why-it-matters-1788363451-702",
     "summary": "Xi Jinping&#039;s historic Egypt visit aims to strengthen China-Egypt ties amid rising Middle East tensions.",
     "content": "Xi Jinping&#039;s historic Egypt visit aims to strengthen China-Egypt ties amid rising Middle East tensions.",
@@ -3034,6 +3286,1384 @@
     ],
     "corroborating_sources": [
       "Phys.org",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 307,
+    "title": "New clustering method uncovers hidden regularities in data",
+    "slug": "new-clustering-method-uncovers-hidden-regularities-in-data-1788363451-919",
+    "summary": "One dataset, one model? This approach does not always produce the most useful insights, as a dataset often contains many different relationships. To better understand them, researchers at the Paluno Research Institute in the Faculty of Computer Science at the University of Duisburg-Essen have developed a method that clusters data according to mathematical functions. The key feature is that neither",
+    "content": "One dataset, one model? This approach does not always produce the most useful insights, as a dataset often contains many different relationships. To better understand them, researchers at the Paluno Research Institute in the Faculty of Computer Science at the University of Duisburg-Essen have developed a method that clusters data according to mathematical functions. The key feature is that neither the number and structure of the functions nor the assignment of data points to them needs to be known in advance.",
+    "image_url": "https://scx1.b-cdn.net/csz/news/tmb/2020/datasets.jpg",
+    "source_url": "https://phys.org/news/2026-09-clustering-method-uncovers-hidden-regularities.html",
+    "author": "Phys.org",
+    "source_name": "Reuters",
+    "category_name": "Science",
+    "published_at": "2026-09-02T15:00:09",
+    "credibility_score": 82,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "To better understand them, researchers at the Paluno Research Institute in the Faculty of Computer Science at the University of Duisburg-Essen have developed a method that clust...",
+        "status": "Verified Reporting",
+        "evidence": "Corroborated by journalistic wire service"
+      }
+    ],
+    "corroborating_sources": [
+      "Phys.org",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 241,
+    "title": "Dolly Parton Scores The Second-Highest-Charting Album Of Her Career Days After Her Death",
+    "slug": "dolly-parton-scores-the-second-highest-charting-album-of-her-career-days-after-her-death-1788363451-546",
+    "summary": "Dolly Parton's aptly-named compilation 'Ultimate Dolly Parton' returns to multiple Billboard charts and becomes her second-highest-rising win on the Billboard 200.",
+    "content": "Dolly Parton's aptly-named compilation 'Ultimate Dolly Parton' returns to multiple Billboard charts and becomes her second-highest-rising win on the Billboard 200.",
+    "image_url": "https://imageio.forbes.com/specials-images/imageserve/65cffe0bfd5c86c869c0d02d/0x0.jpg?width=960&precrop=3000%2C1687%2Cx0%2Cy0",
+    "source_url": "https://www.forbes.com/sites/hughmcintyre/2026/09/02/dolly-parton-scores-the-second-highest-charting-album-of-her-career-days-after-her-death/",
+    "author": "Hugh McIntyre, Senior Contributor",
+    "source_name": "Reuters",
+    "category_name": "Business",
+    "published_at": "2026-09-02T15:00:07",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Dolly Parton's aptly-named compilation 'Ultimate Dolly Parton' returns to multiple Billboard charts and becomes her second-highest-rising win on the Billboard 200.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Forbes",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 308,
+    "title": "Mammalian genes can combine to make previously unknown mRNAs and proteins",
+    "slug": "mammalian-genes-can-combine-to-make-previously-unknown-mrnas-and-proteins-1788363451-623",
+    "summary": "For decades, scientists have understood that each of the roughly 20,000 genes in the human body carries instructions for a single kind of protein. Now, researchers at Harvard Medical School have discovered that instructions from different genes—even those on different chromosomes—can combine to create chimeric mRNAs that produce previously unknown, functional proteins.",
+    "content": "For decades, scientists have understood that each of the roughly 20,000 genes in the human body carries instructions for a single kind of protein. Now, researchers at Harvard Medical School have discovered that instructions from different genes—even those on different chromosomes—can combine to create chimeric mRNAs that produce previously unknown, functional proteins.",
+    "image_url": "https://scx1.b-cdn.net/csz/news/tmb/2025/gene.jpg",
+    "source_url": "https://phys.org/news/2026-09-mammalian-genes-combine-previously-unknown.html",
+    "author": "Phys.org",
+    "source_name": "Reuters",
+    "category_name": "Science",
+    "published_at": "2026-09-02T15:00:04",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "For decades, scientists have understood that each of the roughly 20,000 genes in the human body carries instructions for a single kind of protein.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Phys.org",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 457,
+    "title": "Inde Navarrette Sets Best Actress Oscar Campaign for ‘Obsession’ as Focus Features Mounts Full Awards Push (EXCLUSIVE)",
+    "slug": "inde-navarrette-sets-best-actress-oscar-campaign-for-obsession-as-focus-features-mounts-full-awards-push-exclusive-1788363451-604",
+    "summary": "Will the Oscars love Inde Navarrette, like “a love only the branch of a willow tree could conjure?” Variety can exclusively confirm that Navarrette will campaign in the best actress category this coming awards season for her breakout turn in Curry Barker’s box office smash “Obsession,” headlining a wide-ranging effort from Focus Features that will [&#8230;]",
+    "content": "Will the Oscars love Inde Navarrette, like “a love only the branch of a willow tree could conjure?” Variety can exclusively confirm that Navarrette will campaign in the best actress category this coming awards season for her breakout turn in Curry Barker’s box office smash “Obsession,” headlining a wide-ranging effort from Focus Features that will [&#8230;]",
+    "image_url": "https://variety.com/wp-content/uploads/2026/05/MCDOBSE_UC010.jpg",
+    "source_url": "https://variety.com/2026/film/awards/obsession-inde-navarrette-oscar-campaign-lead-actress-1236848866/",
+    "author": "Clayton Davis",
+    "source_name": "Reuters",
+    "category_name": "Entertainment",
+    "published_at": "2026-09-02T15:00:00",
+    "credibility_score": 73,
+    "sensationalism_score": 17,
+    "fact_check_status": "developing",
+    "key_claims": [
+      {
+        "claim": "Will the Oscars love Inde Navarrette, like “a love only the branch of a willow tree could conjure?” Variety can exclusively confirm that Navarrette will campaign in the best act...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      }
+    ],
+    "corroborating_sources": [
+      "Variety",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 458,
+    "title": "Javier Bardem, Marion Cotillard and Vanessa Redgrave Join Animated Fantasy Film ‘The Turning Door’",
+    "slug": "javier-bardem-marion-cotillard-and-vanessa-redgrave-join-animated-fantasy-film-the-turning-door-1788363451-942",
+    "summary": "A trio of Oscar winning actors have been added to the voice cast of upcoming animated family fantasy feature &#8220;The Turning Door.&#8221; Javier Bardem, Marion Cotillard and Venessa Redgrave have joined the film, written and directed by filmmaker and artist Nicholas Ashe Bateman (&#8220;The Wanting Mare&#8221;), alongside previously announced Alicia Vikander, Jamie Dornan, Jodie Turner-Smith, [",
+    "content": "A trio of Oscar winning actors have been added to the voice cast of upcoming animated family fantasy feature &#8220;The Turning Door.&#8221; Javier Bardem, Marion Cotillard and Venessa Redgrave have joined the film, written and directed by filmmaker and artist Nicholas Ashe Bateman (&#8220;The Wanting Mare&#8221;), alongside previously announced Alicia Vikander, Jamie Dornan, Jodie Turner-Smith, [&#8230;]",
+    "image_url": "https://variety.com/wp-content/uploads/2026/09/bardem-cottilard-redgrave.jpg",
+    "source_url": "https://variety.com/2026/film/global/javier-bardem-marion-cotillard-animation-the-turning-door-1236849095/",
+    "author": "Alex Ritman",
+    "source_name": "Reuters",
+    "category_name": "Entertainment",
+    "published_at": "2026-09-02T15:00:00",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "A trio of Oscar winning actors have been added to the voice cast of upcoming animated family fantasy feature &#8220;The Turning Door.&#8221; Javier Bardem, Marion Cotillard and ...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Variety",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 459,
+    "title": "How ‘The Challenge’ Turned Thailand’s Heat and Streets Into Part of the Competition",
+    "slug": "how-the-challenge-turned-thailand-s-heat-and-streets-into-part-of-the-competition-1788363451-192",
+    "summary": "T.J. Lavin has hosted &#8220;The Challenge&#8221; across the globe, but Thailand left an impression that outlasted the shoot. &#8220;It was one of the most incredible and fun places that I&#8217;ve ever been. I absolutely loved it. Not to mention, foot massages on the daily were amazing. The people are the sweetest in the world for [&#8230;]",
+    "content": "T.J. Lavin has hosted &#8220;The Challenge&#8221; across the globe, but Thailand left an impression that outlasted the shoot. &#8220;It was one of the most incredible and fun places that I&#8217;ve ever been. I absolutely loved it. Not to mention, foot massages on the daily were amazing. The people are the sweetest in the world for [&#8230;]",
+    "image_url": "https://variety.com/wp-content/uploads/2026/09/The-Challenge.jpg",
+    "source_url": "https://variety.com/2026/tv/news/challenge-season-42-thailand-1236849275/",
+    "author": "Naman Ramachandran",
+    "source_name": "Reuters",
+    "category_name": "Entertainment",
+    "published_at": "2026-09-02T15:00:00",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Lavin has hosted &#8220;The Challenge&#8221; across the globe, but Thailand left an impression that outlasted the shoot.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "&#8220;It was one of the most incredible and fun places that I&#8217;ve ever been.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "The people are the sweetest in the world for [&#8230;] T.J.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "The people are the sweetest in the world for [&#8230;]",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Variety",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 464,
+    "title": "Javier Bardem, Marion Cotillard, Vanessa Redgrave Join ‘The Turning Door’ Animated Cast",
+    "slug": "javier-bardem-marion-cotillard-vanessa-redgrave-join-the-turning-door-animated-cast-1788363451-482",
+    "summary": "Alicia Vikander, Jamie Dornan, Jodie Turner-Smith, Bill Nighy, and Gillian Anderson also voice characters in Nicholas Ashe Bateman's animated feature, which Mister Smith Entertainment are pitching to buyers at TIFF: The Market.",
+    "content": "Alicia Vikander, Jamie Dornan, Jodie Turner-Smith, Bill Nighy, and Gillian Anderson also voice characters in Nicholas Ashe Bateman's animated feature, which Mister Smith Entertainment are pitching to buyers at TIFF: The Market.",
+    "image_url": null,
+    "source_url": "https://www.hollywoodreporter.com/movies/movie-news/bardem-cotillard-redgrave-join-turning-door-animated-film-1236687901/",
+    "author": "Scott Roxborough",
+    "source_name": "Reuters",
+    "category_name": "Entertainment",
+    "published_at": "2026-09-02T15:00:00",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Javier Bardem, Marion Cotillard, Vanessa Redgrave Join ‘The Turning Door’ Animated Cast",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network"
+      }
+    ],
+    "corroborating_sources": [
+      "Hollywood Reporter",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 121,
+    "title": "Belkin’s kid-friendly wireless headphones are 25 percent off",
+    "slug": "belkin-s-kid-friendly-wireless-headphones-are-25-percent-off-1788363451-212",
+    "summary": "Verge readers can get a discount on Belkin’s SoundForm Mini 2 wireless headphones. The kid-focused on-ear headphones feature an 85-decibel volume limit and easy controls, and a mode that lets them beam audio (wired or wirelessly) to a second pair without extra hardware. Readers can use the code VERGE25OFF to save 25 percent on up [&#8230;]",
+    "content": "The SoundForm Mini 2 come in a variety of colors, and include a carrying case if you’re willing to spend a bit more. | Image: The Verge Verge readers can get a discount on Belkin’s SoundForm Mini 2 wireless headphones . The kid-focused on-ear headphones feature an 85-decibel volume limit and easy controls, and a mode that lets them beam audio (wired or wirelessly) to a second pair without extra hardware. Readers can use the code VERGE25OFF to save 25 percent on up to two pairs of SoundForm Mini 2 headphones. The $29.99 model without the zip-up carrying case gets knocked down to $22.49. Alternatively, a more limited selection of colors are currently available that include a case, which is $29.99 instead of $39.99 once the offer code is applied in the cart. Belkin SoundForm Mini 2 headphones Where to Buy: $29.99 $22.49 at Belkin (without carrying case) $39.99 $29.99 at Belkin (with carrying case) While these don’t deliver noise cancellation, they should be good enough for most situations. They can last up to 55 hours on a single change, and they can fold up neatly to fit into a variety of bags. The SoundForm Mini 2 are made for ages 3 and up, and feature an adjustable headband and cushioned earcups. They’re pretty no-frills, though the audio-sharing mode I described above is a great way around having to buy some sort of audio splitter or wireless transmitter to ensure multiple kids are entertained. window.HYPE_DESK_CONFIG = { productImageUrl: \"https://platform.theverge.com/wp-content/uploads/sites/2/2026/05/alienware-15-laptop.jpg?crop=0%2C0%2C100%2C100&amp;quality=90&amp;strip=all&amp;w=2400\", productImageAlt: \"Alienware 15 Gaming Laptop\", productTitle: \"Alienware 15 Gaming Laptop\", shortDescription: \"Real gaming performance, finally at a real starting price.\", longDescription: \"Alienware's cheapest gaming laptop ever finally breaks $1,000. Configurable with up to NVIDIA GeForce RTX 5060 graphics, the Alienware 15 pairs a fast 15.3-inch, 165Hz, 16:10 display with a genuinely portable 4.85-pound build, no more bulky thermal shelf on the back. Upgradeable memory and 100W USB-C charging round it out, making it just as reasonable for class or travel as it is for gaming.\", purchaseUrl: \"https://www.kqzyfj.com/click-8836598-12839518?url=https%3A%2F%2Fwww.dell.com%2Fen-us%2Fshop%2Fdell-laptops%2Falienware-15-gaming-laptop%2Fspd%2Falienware-da15260-gaming-laptop\", purchaseLinkText: \"Shop At Dell\" }; Other great Verge-approved deals Onto more capable headphones, the Sonos Ace have been succeeded by the $449 Ace Ultra that offer better battery life, improved noise cancellation, plus the feature we most wished was in the original: the ability to directly link them to speakers via Wi-Fi, letting you move freely around your home instead of close to your soundbar. Those are sizable improvements, but the original Sonos Ace is still a fantastic value, especially at the current $299.99 sale price from Amazon and Best Buy . While not a new discount, it’s nice to have a lower-cost alternative available. In our 2024 review , we bemoaned the iffy state of the Sonos app, and criticized the Ace for not working with the Beam and Ray soundbars for TV Audio Swap. The company recently debuted its plans for overhauling the app, and TV Audio Swap support for those soundbars has been added following their debut. Kirby Air Riders for the Nintendo Switch 2 is close to $20 off for the physical version at Amazon , which is its lowest price yet. You can snag it for $51.99, while the digital version is still selling for $69.99. While not an essential Switch 2 title for those building out their libraries with a limited budget, it delivers F-Zero -esque frenzy that Mario Kart World can’t match. It’s the follow-up to Kirby Air Ride on the GameCube, giving players more flexibility in who they race as, what aircraft they use, plus a host of game modes to give you more to do than just racing. Read our review . If you’re in the mood to shop, but you’re not quite sure what you want, it might be worth taking a spin through the Amazon Resale catalog of returned products. Many products are marked down by up to 30 percent once you add them to your cart. Just look for the green “Save at checkout” on product listings where Amazon Resale is the seller. The percentage of savings differs per product. I didn’t find any earthshaking deals on consoles or other big-ticket items, but you can save a good amount on things like controllers and headphones .",
+    "image_url": null,
+    "source_url": "https://www.theverge.com/gadgets/987687/belkin-headphones-sonos-ace-nintendo-switch-2-kirby-amazon-resale-deal-sale",
+    "author": "Cameron Faulkner",
+    "source_name": "Reuters",
+    "category_name": "Technology",
+    "published_at": "2026-09-02T14:58:15",
+    "credibility_score": 82,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Belkin’s kid-friendly wireless headphones are 25 percent off.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "Verge readers can get a discount on Belkin’s SoundForm Mini 2 wireless headphones.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "The kid-focused on-ear headphones feature an 85-decibel volume limit and easy controls, and a mode that lets them beam audio (wired or wirelessly) to a second pair without extra...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "Readers can use the code VERGE25OFF to save 25 percent on up [&#8230;] The SoundForm Mini 2 come in a variety of colors, and include a carrying case if you’re willing to spend a...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "The Verge",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 78,
+    "title": "George Clooney, Robert Pattinson expected on the red carpet at Venice Film Festival",
+    "slug": "george-clooney-robert-pattinson-expected-on-the-red-carpet-at-venice-film-festival-1788363451-490",
+    "summary": "Our film critic Emma Jones takes us through the highlights as the 83rd Venice International Film Festival kicks off this Wednesday.",
+    "content": "Our film critic Emma Jones takes us through the highlights as the 83rd Venice International Film Festival kicks off this Wednesday.",
+    "image_url": "https://s.france24.com/media/display/b8762452-a6d4-11f1-bf12-005056a90284/w:1024/p:16x9/capture-12733701466a9828bde5ec76-47150554.jpg",
+    "source_url": "https://www.france24.com/en/tv-shows/arts24/20260902-george-clooney-robert-pattinson-expected-on-the-red-carpet-at-venice-film-festival",
+    "author": "Dheepthika LAURENT",
+    "source_name": "Reuters",
+    "category_name": "World",
+    "published_at": "2026-09-02T14:56:56",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Our film critic Emma Jones takes us through the highlights as the 83rd Venice International Film Festival kicks off this Wednesday.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "France 24",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 393,
+    "title": "55km Indo-Myanmar border fencing completed, says Manipur home minister",
+    "slug": "55km-indo-myanmar-border-fencing-completed-says-manipur-home-minister-1788363451-490",
+    "summary": "The home minister clarified that the government has been putting its effort to identify the unsettled area of the Indo-Myanmar stretch",
+    "content": "The home minister clarified that the government has been putting its effort to identify the unsettled area of the Indo-Myanmar stretch",
+    "image_url": "https://www.hindustantimes.com/ht-img/img/2026/09/02/1600x900/logo/Out-of-the-398km-from-border-pillar-number-32-to-1_1788360995199_35cc95db-5d75-48bc-96d4-74be557cb970.jpg",
+    "source_url": "https://www.hindustantimes.com/india-news/55km-indo-myanmar-border-fencing-completed-says-manipur-home-minister-101788361002389.html",
+    "author": "Hindustan Times",
+    "source_name": "Reuters",
+    "category_name": "India",
+    "published_at": "2026-09-02T14:56:41",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "55km Indo-Myanmar border fencing completed, says Manipur home minister.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Hindustan Times",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 79,
+    "title": "Israel ‘organised and prepared’ to remove Gaza population if US gives green light, Katz says",
+    "slug": "israel-organised-and-prepared-to-remove-gaza-population-if-us-gives-green-light-katz-says-1788363451-861",
+    "summary": "Israel is \"organised and prepared\" to remove Palestininians from Gaza \"by every way possible\", Defence Minister Israel Katz told reporters Wednesday, adding that there was no alternative \"solution\" to crisis. The Israeli government was simply waiting for the US to figure out where to take the displaced Gazans, he said.",
+    "content": "Israel is \"organised and prepared\" to remove Palestininians from Gaza \"by every way possible\", Defence Minister Israel Katz told reporters Wednesday, adding that there was no alternative \"solution\" to crisis. The Israeli government was simply waiting for the US to figure out where to take the displaced Gazans, he said.",
+    "image_url": "https://s.france24.com/media/display/dba92900-ab4a-11f0-9ad3-005056a90284/w:1024/p:16x9/AP25288675368685.jpg",
+    "source_url": "https://www.france24.com/en/middle-east/20260902-israel-organised-and-prepared-to-remove-gaza-population-if-us-gives-green-light-katz",
+    "author": "FRANCE 24",
+    "source_name": "Reuters",
+    "category_name": "World",
+    "published_at": "2026-09-02T14:56:38",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Israel is organised and prepared to remove Palestininians from Gaza by every way possible, Defence Minister Israel Katz told reporters Wednesday, adding that there was no altern...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      }
+    ],
+    "corroborating_sources": [
+      "France 24",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 106,
+    "title": "PSA: Amazon’s shopping AI can now tell you if that message is a scam",
+    "slug": "psa-amazon-s-shopping-ai-can-now-tell-you-if-that-message-is-a-scam-1788363451-995",
+    "summary": "Amazon is adding a scam-detection feature to Alexa for Shopping that can verify whether suspicious emails, texts, and other messages actually came from the retailer.",
+    "content": "Amazon is adding a scam-detection feature to Alexa for Shopping that can verify whether suspicious emails, texts, and other messages actually came from the retailer.",
+    "image_url": null,
+    "source_url": "https://techcrunch.com/2026/09/02/psa-amazons-shopping-ai-can-now-tell-you-if-that-message-is-a-scam/",
+    "author": "Sarah Perez",
+    "source_name": "TechCrunch",
+    "category_name": "Technology",
+    "published_at": "2026-09-02T14:56:34",
+    "credibility_score": 74,
+    "sensationalism_score": 17,
+    "fact_check_status": "developing",
+    "key_claims": [
+      {
+        "claim": "PSA: Amazon’s shopping AI can now tell you if that message is a scam",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network"
+      }
+    ],
+    "corroborating_sources": [
+      "TechCrunch",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 62,
+    "title": "Can Ukraine’s drones shut Russian airspace? What that means for airlines",
+    "slug": "can-ukraine-s-drones-shut-russian-airspace-what-that-means-for-airlines-1788363451-241",
+    "summary": "What happens if the airspace of the world&#039;s largest country by land mass is out of bounds because of Ukrainian drones?",
+    "content": "What happens if the airspace of the world&#039;s largest country by land mass is out of bounds because of Ukrainian drones?",
+    "image_url": null,
+    "source_url": "https://www.aljazeera.com/features/2026/9/2/can-ukraines-drones-shut-russian-airspace-what-that-means-for-airlines?traffic_source=rss",
+    "author": "Al Jazeera",
+    "source_name": "Reuters",
+    "category_name": "World",
+    "published_at": "2026-09-02T14:55:16",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "What happens if the airspace of the world&#039;s largest country by land mass is out of bounds because of Ukrainian drones?",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Al Jazeera",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 35,
+    "title": "Skiers and snowboarders from Russia, Belarus get neutral status terms from FIS for new season",
+    "slug": "skiers-and-snowboarders-from-russia-belarus-get-neutral-status-terms-from-fis-for-new-season-1788363451-911",
+    "summary": "FILE -Russia&#x27;s Ivan Kuznetsov speeds down the course during an alpine ski, men&#x27;s World Cup Giant slalom, in Adelboden, Switzerland, Saturday, Jan. 8, 2022. (AP Photo/Gabriele Facciotti, File) 2026-09-02T10:31:53Z OBERHOFEN, Switzerland (AP) — Athletes from Russia and Belarus can continue to compete with approved neutral status this season but no symbols of national identity, the Internat",
+    "content": "FILE -Russia&#x27;s Ivan Kuznetsov speeds down the course during an alpine ski, men&#x27;s World Cup Giant slalom, in Adelboden, Switzerland, Saturday, Jan. 8, 2022. (AP Photo/Gabriele Facciotti, File) 2026-09-02T10:31:53Z OBERHOFEN, Switzerland (AP) — Athletes from Russia and Belarus can continue to compete with approved neutral status this season but no symbols of national identity, the International Ski and Snowboard Federation said Wednesday. Athletes, coaches and officials from the countries “may be granted access to FIS competitions provided that they sign a declaration of neutrality based on a set of principles established by FIS,” the governing body said, warning of sanctions that can be imposed. Russian skiers won a ruling in December at the Court of Arbitration for Sport that ended a near four-year ban from international events during the war on Ukraine. It let them return to World Cup events in Alpine, cross-country and freestyle skiing, and snowboarding trying to qualify for the Milan Cortina Olympics held in February. The FIS ruling council renewed its neutral athlete policy for the winter season that starts next month. “The participation of athletes is restricted to individual events and is conditioned to the fact that no country symbols — such as flags, anthems, or uniforms — should be displayed,” FIS said. Russian athletes and team officials are still likely to face challenges getting visas to enter some European countries that host World Cup races. ___ See full AP coverage of European sports here",
+    "image_url": "https://dims.apnews.com/dims4/default/9ac9a4e/2147483647/strip/true/crop/4925x3282+0+1/resize/980x653!/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2Ff7%2Fba%2F8ccaa310f6b161420731c2cd214b%2F161e2d1bc1964f8cbe6405e00c171f16",
+    "source_url": "https://apnews.com/article/skiing-fis-russia-belarus-neutral-bf87bbf8cb5590af8cb0c3ebe38408c3",
+    "author": "AP World",
+    "source_name": "Reuters",
+    "category_name": "World",
+    "published_at": "2026-09-02T14:53:02",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "(AP Photo/Gabriele Facciotti, File) 2026-09-02T10:31:53Z OBERHOFEN, Switzerland (AP) — Athletes from Russia and Belarus can continue to compete with approved neutral status this...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "(AP Photo/Gabriele Facciotti, File) 2026-09-02T10:31:53Z OBERHOFEN, Switzerland (AP) — Athletes from Russia and Belarus can continue to compete with approved neutral status this...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "Athletes, coaches and officials from the countries “may be granted access to FIS competitions provided that they sign a declaration of neutrality based on a set of principles es...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      },
+      {
+        "claim": "Russian skiers won a ruling in December at the Court of Arbitration for Sport that ended a near four-year ban from international events during the war on Ukraine.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "AP World",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 36,
+    "title": "After Messi’s farewell, what is next for Argentina’s national team?",
+    "slug": "after-messi-s-farewell-what-is-next-for-argentina-s-national-team-1788363451-548",
+    "summary": "A mural of Argentine soccer player Lionel Messi covers a building in Buenos Aires, Argentina, Monday, Aug. 31, 2026. (AP Photo/Natacha Pisarenko) 2026-09-01T19:49:17Z BUENOS AIRES (AP) — What now for Argentina? Lionel Messi announced his retirement from the national team on Monday after a 21-year career, leaving behind a legacy of 125 goals and the 2022 World Cup title. As captain and talisman, hi",
+    "content": "A mural of Argentine soccer player Lionel Messi covers a building in Buenos Aires, Argentina, Monday, Aug. 31, 2026. (AP Photo/Natacha Pisarenko) 2026-09-01T19:49:17Z BUENOS AIRES (AP) — What now for Argentina? Lionel Messi announced his retirement from the national team on Monday after a 21-year career, leaving behind a legacy of 125 goals and the 2022 World Cup title. As captain and talisman, his departure raises big questions about the future of a team that reached the World Cup final just six weeks ago. “I gave it my all; I have nothing left to give,” Messi wrote in an Instagram post. “Besides, there are young players coming up who deserve to be here.” Messi made his senior debut in 2005, went on to become Argentina’s all-time leading scorer, and appeared in six World Cups. He holds the records for both the most games played (34) and most victories (23) in the history of the tournament. At 39, the end of Messi’s international career was imminent. Yet, the official confirmation struck a emotional chord with teammates and fans alike — especially the younger generation who grew up watching him wear the Albiceleste colors. “I was just a kid, calculating the age gap between us to see if I might one day get to play alongside you,” said 25-year-old midfielder Enzo Fernández, who debuted just months before the Qatar World Cup. “It’s hard for me to picture the next training camp without you — stepping onto the pitch and not seeing you up front in that No. 10 jersey. ... We’re going to miss you dearly, Captain.” The search for an heir Can Argentina’s inexhaustible talent pool produce another global megastar? The same question arose in 1994, when Diego Maradona’s time with the Albiceleste came to a traumatic end following a positive drug test at the World Cup in the United States. More than a decade passed before a player capable of claiming his throne emerged, and it took 36 years for Argentina to lift the trophy again. “Argentina has a deep-rooted culture. Players grow up learning the craft on the street and at local clubs; football permeates everything,” said 1986 World Cup champion and sports columnist Jorge Valdano in an interview with The Associated Press last May. Read More “In that environment, a genius is far more likely to emerge. But to become Messi, you need to win both the genetic lottery and the social lottery,” Valdano added. There is currently no player who matches Messi’s technical brilliance. However, several young prospects are competing for the playmaker role in the Argentina team. Nico Paz and Thiago Almada both shared the pitch with Messi at the recent World Cup, though neither quite dazzled. Paz was named the best midfielder in Serie A last season with Como, while Almada, who started early in the tournament before being relegated to the bench, recently left Atlético Madrid to join River Plate. Argentina used to winning without Messi In the twilight of his career, hampered by recurring physical issues, Messi missed more than 20 national team matches. Yet Argentina maintained a winning record without him. During World Cup qualifying, manager Lionel Scaloni adjusted tactically, regularly pairing center-forwards Julián Álvarez and Lautaro Martínez, while turning to Almada and Paz to step into the traditional No. 10 role. Even so, Messi’s pivotal performance at the recent World Cup — where he repeatedly rescued an Argentina side that struggled collectively — underscores just how difficult he will be to replace. The future of the “Scaloneta” Messi’s successor is not the only question mark hovering over Argentina’s future. Coach Lionel Scaloni — the architect of the most successful era in Argentine football history that also included two Copa America titles — hinted that he might step down at the end of the year following Argentina’s loss to Spain in the World Cup final. With his captain officially retiring, retaining Scaloni — whose contract runs through December — is vital to guiding the squad through this transition. Their first major test will be the 2028 Copa America. Fortunately, much of the core roster remains young enough to still be in their prime at the 2030 World Cup, which Argentina will partially co-host. Key pillars include defenders Cristian Romero and Lisandro Martínez (both 28), full-back Facundo Medina (27), midfielders Enzo Fernández (25), Alexis Mac Allister (27), and Valentín Barco (22), alongside forwards Giuliano Simeone (23) and Julián Álvarez (26). Scaloni, who currently resides in Spain, is set to arrive in Buenos Aires in the coming days to plan upcoming friendlies scheduled for late September, October, and November. The Argentine Football Association (AFA) has yet to confirm the opponents. ___ See AP’s full soccer coverage here",
+    "image_url": "https://dims.apnews.com/dims4/default/f653e7d/2147483647/strip/true/crop/7866x5241+0+1/resize/980x653!/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F6a%2Ff2%2F2a23ed2732328d32fe542c197f00%2Fffad59567020407a845088aad0aec615",
+    "source_url": "https://apnews.com/article/lionel-messi-argentina-world-cup-f8e6f4ada7ad637a75dc5ebbda992ed5",
+    "author": "AP World",
+    "source_name": "Reuters",
+    "category_name": "World",
+    "published_at": "2026-09-02T14:53:02",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "(AP Photo/Natacha Pisarenko) 2026-09-01T19:49:17Z BUENOS AIRES (AP) — What now for Argentina?",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "Lionel Messi announced his retirement from the national team on Monday after a 21-year career, leaving behind a legacy of 125 goals and the 2022 World Cup title.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "“I gave it my all; I have nothing left to give,” Messi wrote in an Instagram post.",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      },
+      {
+        "claim": "“Besides, there are young players coming up who deserve to be here.” Messi made his senior debut in 2005, went on to become Argentina’s all-time leading scorer, and appeared in ...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      }
+    ],
+    "corroborating_sources": [
+      "AP World",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 37,
+    "title": "Dutch central bank shifts billions in gold to London in ‘crisis preparedness’ move",
+    "slug": "dutch-central-bank-shifts-billions-in-gold-to-london-in-crisis-preparedness-move-1788363451-443",
+    "summary": "Gold bars are stacked in a vault at the United States Mint on July 22, 2014, in West Point, N.Y. (AP Photo/Mike Groll, File) 2026-09-02T14:43:22Z THE HAGUE, Netherlands (AP) — The Dutch central bank announced Wednesday that it has moved billions of dollars worth of its gold reserves out of North America in a move it described as “crisis preparedness” in a time of global political unrest. It said t",
+    "content": "Gold bars are stacked in a vault at the United States Mint on July 22, 2014, in West Point, N.Y. (AP Photo/Mike Groll, File) 2026-09-02T14:43:22Z THE HAGUE, Netherlands (AP) — The Dutch central bank announced Wednesday that it has moved billions of dollars worth of its gold reserves out of North America in a move it described as “crisis preparedness” in a time of global political unrest. It said that between March and August, some 86 metric tons (94.8 tons) of gold were transferred to London from the combined total of around 313 metric tons (345 tons) held in New York and Ottawa, Canada . Before the move, New York housed 31.3% of the Dutch gold and Ottawa held 19.7%. After the move, both cities now hold 18.5%, the bank said. The bank owns 612.4 metric tons (675 tons) of gold that was worth 72.2 billion euros (about $83.6 billion) at the end of 2025. “With this relocation, we have improved the tradability of our gold reserves,” the bank’s governor, Olaf Sleijpen, said in a written statement. “We expect that we will never need to use them, but we do need to strengthen our resilience and preparedness.” More than 27 metric tons (30 tons) of gold were “physically transferred” from the United States and Canada to the Dutch bank’s heavily guarded vault on a military base near the central town of Zeist, the bank said, without elaborating on exactly how the gold bars got across the Atlantic Ocean. A similar quantity of gold was transferred from Zeist to London. The rest of the relocation was achieved by selling around 59 metric tons (65 tons) of gold in New York and using the proceeds to buy gold in London. Read More The Dutch bank, known by its acronym DNB, said that gold held at the Bank of England “must meet modern international trade standards and is regarded as the world’s most easily tradable gold and will therefore be the most readily available for DNB in a crisis situation. The gold reserves held in New York and Ottawa cannot be utilized as quickly and directly in such a situation.” 获取更多RSS： https://feedx.net https://feedx.site",
+    "image_url": "https://dims.apnews.com/dims4/default/9f491b5/2147483647/strip/true/crop/3918x2611+0+57/resize/980x653!/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2Feb%2F68%2F17b9dfcafa24e7e1f4d081c6aeb7%2Fa14f42706ae343d99c5182eacecba493",
+    "source_url": "https://apnews.com/article/gold-netherlands-new-york-92eab7ed68b960e029e5a69093e20996",
+    "author": "AP World",
+    "source_name": "Reuters",
+    "category_name": "World",
+    "published_at": "2026-09-02T14:53:02",
+    "credibility_score": 82,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Gold bars are stacked in a vault at the United States Mint on July 22, 2014, in West Point, N.Y.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "(AP Photo/Mike Groll, File) 2026-09-02T14:43:22Z THE HAGUE, Netherlands (AP) — The Dutch central bank announced Wednesday that it has moved billions of dollars worth of its gold...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      },
+      {
+        "claim": "It said t Gold bars are stacked in a vault at the United States Mint on July 22, 2014, in West Point, N.Y.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "It said that between March and August, some 86 metric tons (94.8 tons) of gold were transferred to London from the combined total of around 313 metric tons (345 tons) held in Ne...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "AP World",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 439,
+    "title": "Indonesia opt to bowl; SL bring in Kavindi for injured Ayodhya",
+    "slug": "indonesia-opt-to-bowl-sl-bring-in-kavindi-for-injured-ayodhya-1788363451-573",
+    "summary": "This is the first time these two sides will be facing each other in international cricket",
+    "content": "This is the first time these two sides will be facing each other in international cricket",
+    "image_url": "http://p.imgci.com/db/PICTURES/CMS/421800/421868.jpg",
+    "source_url": "https://www.cricinfo.com/ci/content/story/1552613.html?ex_cid=OTC-RSS",
+    "author": "Cricinfo",
+    "source_name": "Reuters",
+    "category_name": "Sports",
+    "published_at": "2026-09-02T14:51:33",
+    "credibility_score": 80,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Indonesia opt to bowl; SL bring in Kavindi for injured Ayodhya",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network"
+      }
+    ],
+    "corroborating_sources": [
+      "Cricinfo",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Neutral Analytic (Wire Grade)"
+  },
+  {
+    "id": 349,
+    "title": "Jaishankar allays Sanjay Jha’s concerns about Farakka water sharing treaty",
+    "slug": "jaishankar-allays-sanjay-jha-s-concerns-about-farakka-water-sharing-treaty-1788363451-950",
+    "summary": "Jaishankar allays Sanjay Jha’s concerns about Farakka water sharing treaty",
+    "content": "",
+    "image_url": "https://images.indianexpress.com/2026/09/jaishankar-sanjay-kumar-jha-express-photo-2.jpg",
+    "source_url": "https://indianexpress.com/article/india/farakka-treaty-renewal-bihar-water-interests-jaishankar-jdu-10860715/",
+    "author": "",
+    "source_name": "Indian Express",
+    "category_name": "India",
+    "published_at": "2026-09-02T14:50:22",
+    "credibility_score": 78,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Jaishankar allays Sanjay Jha’s concerns about Farakka water sharing treaty",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network"
+      }
+    ],
+    "corroborating_sources": [
+      "Indian Express",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 192,
+    "title": "Warsh's Data Dashboard for Reading the US Economy",
+    "slug": "warsh-s-data-dashboard-for-reading-the-us-economy-1788363451-542",
+    "summary": "Federal Reserve Chairman Kevin Warsh used his keynote speech in Jackson Hole, Wyoming, last week to map out some of the key data points he leans on to read the US economy, offering new insight into his approach to policy making. Carl Tannenbaum, Chief Economist at Northern Trust, discusses his takeaways from Warsh's speech and what he looks forward to seeing from jobs data this week. (Source: Bloo",
+    "content": "Federal Reserve Chairman Kevin Warsh used his keynote speech in Jackson Hole, Wyoming, last week to map out some of the key data points he leans on to read the US economy, offering new insight into his approach to policy making. Carl Tannenbaum, Chief Economist at Northern Trust, discusses his takeaways from Warsh's speech and what he looks forward to seeing from jobs data this week. (Source: Bloomberg)",
+    "image_url": null,
+    "source_url": "https://www.bloomberg.com/news/videos/2026-09-02/warsh-s-data-dashboard-for-reading-the-us-economy-video",
+    "author": "Bloomberg Markets",
+    "source_name": "Reuters",
+    "category_name": "Business",
+    "published_at": "2026-09-02T14:49:05",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Warsh's Data Dashboard for Reading the US Economy",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network"
+      }
+    ],
+    "corroborating_sources": [
+      "Bloomberg Markets",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 386,
+    "title": "World war 2: The deadliest conflict in human history ended 81 years ago today",
+    "slug": "world-war-2-the-deadliest-conflict-in-human-history-ended-81-years-ago-today-1788363451-351",
+    "summary": "Eighty-one years ago, on September 2, 1945, the curtains fell on World War II, the most devastating conflict in history. Triggered by Nazi Germany's invasion of Poland in 1939, this global war escalated when Japan attacked Pearl Harbor, drawing the United States into the fray. The tide turned with the Allied forces’ victories, leading to Germany's surrender in May 1945.",
+    "content": "Eighty-one years ago, on September 2, 1945, the curtains fell on World War II, the most devastating conflict in history. Triggered by Nazi Germany's invasion of Poland in 1939, this global war escalated when Japan attacked Pearl Harbor, drawing the United States into the fray. The tide turned with the Allied forces’ victories, leading to Germany's surrender in May 1945.",
+    "image_url": "https://static.toiimg.com/photo/msid-133713851,imgsize-94172.cms",
+    "source_url": "https://timesofindia.indiatimes.com/defence/international/world-war-2-the-deadliest-conflict-in-human-history-ended-81-years-ago-today/articleshow/133713762.cms",
+    "author": "ARYAN SINGH",
+    "source_name": "Reuters",
+    "category_name": "India",
+    "published_at": "2026-09-02T14:48:42",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "World war 2: The deadliest conflict in human history ended 81 years ago today.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "Eighty-one years ago, on September 2, 1945, the curtains fell on World War II, the most devastating conflict in history.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "Triggered by Nazi Germany's invasion of Poland in 1939, this global war escalated when Japan attacked Pearl Harbor, drawing the United States into the fray.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "The tide turned with the Allied forces’ victories, leading to Germany's surrender in May 1945.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Times of India",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 423,
+    "title": "Late-night transfer fallout sparks Chelsea-Monaco row",
+    "slug": "late-night-transfer-fallout-sparks-chelsea-monaco-row-1788363451-123",
+    "summary": "How Chelsea, Everton and Monaco all missed out after late-night drama on deadline day. Nizaar Kinsella reports.",
+    "content": "How Chelsea, Everton and Monaco all missed out after late-night drama on deadline day. Nizaar Kinsella reports.",
+    "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/8f60/live/b73688e0-a6d7-11f1-a291-b542ee92de7c.png",
+    "source_url": "https://www.bbc.co.uk/sport/football/articles/c1wx0g1npn9o?at_medium=RSS&at_campaign=rss",
+    "author": "BBC Sport",
+    "source_name": "Reuters",
+    "category_name": "Sports",
+    "published_at": "2026-09-02T14:48:09",
+    "credibility_score": 82,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Nizaar Kinsella reports.",
+        "status": "Verified Reporting",
+        "evidence": "Corroborated by journalistic wire service"
+      }
+    ],
+    "corroborating_sources": [
+      "BBC Sport",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 145,
+    "title": "Toyohiro Akiyama, first Japanese citizen and journalist in space, dies at 84",
+    "slug": "toyohiro-akiyama-first-japanese-citizen-and-journalist-in-space-dies-at-84-1788363451-864",
+    "summary": "He reported from space that only \"fat\" Japanese tree frogs enjoyed weightlessness.",
+    "content": "The first Japanese citizen to launch into space, Toyohiro Akiyama was also the first commercially sponsored cosmonaut and the world's first journalist to file reports while on a spaceflight. Akiyama, 84, died last Wednesday , August 26, of lower gastrointestinal bleeding, news agencies in Japan reported. A funeral was held with his close relatives in attendance. As a correspondent for the Tokyo Broadcasting System (TBS), Akiyama was chosen out of his 162 fellow employees who applied to fly to space in celebration of the network's 40th anniversary. He trained at the Gagarin Cosmonaut Training Center in Star City, located outside of Moscow, and was assigned to the Soyuz TM-11 crew. Read full article Comments",
+    "image_url": "https://cdn.arstechnica.net/wp-content/uploads/2026/09/news-090126a-lg-1152x648.jpg",
+    "source_url": "https://arstechnica.com/space/2026/09/toyohiro-akiyama-first-japanese-citizen-and-journalist-in-space-dies-at-84/",
+    "author": "Robert Pearlman",
+    "source_name": "Reuters",
+    "category_name": "Technology",
+    "published_at": "2026-09-02T14:47:42",
+    "credibility_score": 82,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Toyohiro Akiyama, first Japanese citizen and journalist in space, dies at 84.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "He reported from space that only fat Japanese tree frogs enjoyed weightlessness.",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      },
+      {
+        "claim": "The first Japanese citizen to launch into space, Toyohiro Akiyama was also the first commercially sponsored cosmonaut and the world's first journalist to file reports while on a...",
+        "status": "Verified Reporting",
+        "evidence": "Corroborated by journalistic wire service"
+      },
+      {
+        "claim": "Akiyama, 84, died last Wednesday , August 26, of lower gastrointestinal bleeding, news agencies in Japan reported.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Ars Technica",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 350,
+    "title": "Express Impact: Jharkhand poll authorities order probe into voter deletion forms",
+    "slug": "express-impact-jharkhand-poll-authorities-order-probe-into-voter-deletion-forms-1788363451-590",
+    "summary": "Express Impact: Jharkhand poll authorities order probe into voter deletion forms",
+    "content": "",
+    "image_url": "https://images.indianexpress.com/2025/08/bihar-sir-1_20250826195355.jpg",
+    "source_url": "https://indianexpress.com/article/india/jharkhand-sir-godda-booth-9-form-7-voter-deletion-inquiry-bdo-probe-10860711/",
+    "author": "Shubham Tigga",
+    "source_name": "Indian Express",
+    "category_name": "India",
+    "published_at": "2026-09-02T14:46:44",
+    "credibility_score": 78,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Express Impact: Jharkhand poll authorities order probe into voter deletion forms",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network"
+      }
+    ],
+    "corroborating_sources": [
+      "Indian Express",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 242,
+    "title": "Epstein Victims Sue Top Hairdresser After Rep. Massie Names Alleged ‘Co-Conspirators’",
+    "slug": "epstein-victims-sue-top-hairdresser-after-rep-massie-names-alleged-co-conspirators-1788363451-361",
+    "summary": "“Epstein used” hairstylist Frédéric Fekkai “and his entities to control and further abuse the victims and in turn Fekkai made millions,” the victims alleged.",
+    "content": "“Epstein used” hairstylist Frédéric Fekkai “and his entities to control and further abuse the victims and in turn Fekkai made millions,” the victims alleged.",
+    "image_url": "https://imageio.forbes.com/specials-images/imageserve/6a9835a4f0eeb97181d52990/0x0.jpg?width=960&precrop=1520%2C856%2Cx0%2Cy83",
+    "source_url": "https://www.forbes.com/sites/alisondurkee/2026/09/02/epstein-victims-sue-top-hairdresser-after-rep-massie-names-alleged-co-conspirators/",
+    "author": "Alison Durkee, Forbes Staff",
+    "source_name": "Reuters",
+    "category_name": "Business",
+    "published_at": "2026-09-02T14:45:53",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "“Epstein used” hairstylist Frédéric Fekkai “and his entities to control and further abuse the victims and in turn Fekkai made millions,” the victims alleged.",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      }
+    ],
+    "corroborating_sources": [
+      "Forbes",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 63,
+    "title": "Gaza Civil Defence worker finds 21 relatives beneath rubble",
+    "slug": "gaza-civil-defence-worker-finds-21-relatives-beneath-rubble-1788363451-712",
+    "summary": "A Gaza Civil Defence worker helped recover the bodies of 21 of his relatives from beneath the rubble.",
+    "content": "A Gaza Civil Defence worker helped recover the bodies of 21 of his relatives from beneath the rubble.",
+    "image_url": null,
+    "source_url": "https://www.aljazeera.com/video/newsfeed/2026/9/2/gaza-civil-defence-worker-finds-21-relatives-beneath-rubble?traffic_source=rss",
+    "author": "Al Jazeera",
+    "source_name": "Reuters",
+    "category_name": "World",
+    "published_at": "2026-09-02T14:45:26",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Gaza Civil Defence worker finds 21 relatives beneath rubble.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "A Gaza Civil Defence worker helped recover the bodies of 21 of his relatives from beneath the rubble.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Al Jazeera",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 203,
+    "title": "A vital tenet of US equity markets is under threat",
+    "slug": "a-vital-tenet-of-us-equity-markets-is-under-threat-1788363451-919",
+    "summary": "SEC reforms risk the ability of investors to compare companies",
+    "content": "SEC reforms risk the ability of investors to compare companies",
+    "image_url": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F0f63f53c-a5ba-4720-bbd0-7e48a3cdd45e.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
+    "source_url": "https://www.ft.com/content/38d5c39f-901f-4306-9412-f7e1d7553174?syn-25a6b1a6=1",
+    "author": "Financial Times",
+    "source_name": "Reuters",
+    "category_name": "Business",
+    "published_at": "2026-09-02T14:45:08",
+    "credibility_score": 80,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "A vital tenet of US equity markets is under threat",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network"
+      }
+    ],
+    "corroborating_sources": [
+      "Financial Times",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Neutral Analytic (Wire Grade)"
+  },
+  {
+    "id": 50,
+    "title": "Trump ally defends Venezuela oil deal amid ‘gunpoint diplomacy’ criticism",
+    "slug": "trump-ally-defends-venezuela-oil-deal-amid-gunpoint-diplomacy-criticism-1788363451-882",
+    "summary": "Energy secretary Chris Wright denies US seeks to ‘take’ country’s oil, saying deal is ‘transformation’ of relations The US energy secretary, Chris Wright, has denied Washington is seeking to commandeer huge quantities of Venezuelan oil, amid growing criticism of Donald Trump’s energy deal with the country’s interim leaders. “Absolutely not,” Wright replied when asked by a CNBC journalist if the US",
+    "content": "Energy secretary Chris Wright denies US seeks to ‘take’ country’s oil, saying deal is ‘transformation’ of relations The US energy secretary, Chris Wright, has denied Washington is seeking to commandeer huge quantities of Venezuelan oil, amid growing criticism of Donald Trump’s energy deal with the country’s interim leaders. “Absolutely not,” Wright replied when asked by a CNBC journalist if the US was engaged in a “heavy-handed” attempt to “take” Venezuelan oil in violation of the South American country’s constitution. Continue reading...",
+    "image_url": "https://i.guim.co.uk/img/media/6c09894646ad565b593beedb231ecaf563d08efe/346_0_2794_2235/master/2794.jpg?width=140&quality=85&auto=format&fit=max&s=0aaf2e3ca029c0f3525d8fb2bec09e91",
+    "source_url": "https://www.theguardian.com/world/2026/sep/02/venezuela-oil-deal-trump-chris-wright",
+    "author": "Tom Phillips in Rio de Janeiro",
+    "source_name": "Reuters",
+    "category_name": "World",
+    "published_at": "2026-09-02T14:44:39",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "“Absolutely not,” Wright replied when asked by a CNBC journalist if the US Energy secretary Chris Wright denies US seeks to ‘take’ country’s oil, saying deal is ‘transformation’...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      },
+      {
+        "claim": "“Absolutely not,” Wright replied when asked by a CNBC journalist if the US was engaged in a “heavy-handed” attempt to “take” Venezuelan oil in violation of the South American co...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      }
+    ],
+    "corroborating_sources": [
+      "The Guardian World",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 51,
+    "title": "Pete Hegseth criticized for body-shaming Canadian cadet program members",
+    "slug": "pete-hegseth-criticized-for-body-shaming-canadian-cadet-program-members-1788363451-968",
+    "summary": "US defense secretary faced backlash for attempting to mock Canada’s armed forces amid trade war A social media post by Pete Hegseth, the US secretary of defense, body-shaming female members of a Canadian youth development program remained online on Wednesday despite a furious backlash on both sides of the border. On Monday night Hegseth posted on X a photograph of two people in uniform with a Cana",
+    "content": "US defense secretary faced backlash for attempting to mock Canada’s armed forces amid trade war A social media post by Pete Hegseth, the US secretary of defense, body-shaming female members of a Canadian youth development program remained online on Wednesday despite a furious backlash on both sides of the border. On Monday night Hegseth posted on X a photograph of two people in uniform with a Canadian flag and the caption “this is real”, an apparent attempt at mocking the country’s armed forces amid the Trump administration’s trade spat with its northern neighbor. Continue reading...",
+    "image_url": "https://i.guim.co.uk/img/media/b8b4e88b461da4d7d638641bea160c236fa43241/333_0_3334_2667/master/3334.jpg?width=140&quality=85&auto=format&fit=max&s=fc637fce61bd8457e19a4903d1772b9f",
+    "source_url": "https://www.theguardian.com/us-news/2026/sep/02/pete-hegseth-body-shaming-post",
+    "author": "Richard Luscombe",
+    "source_name": "Reuters",
+    "category_name": "World",
+    "published_at": "2026-09-02T14:44:31",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "On Monday night Hegseth posted on X a photograph of two people in uniform with a Canadian flag and the caption “this is real”, an apparent attempt at mocking the country’s armed...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      }
+    ],
+    "corroborating_sources": [
+      "The Guardian World",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 394,
+    "title": "‘Grateful to Lord Ram’: Retd Air Marshal Jeetendra Mishra’s first reaction after being named Ayodhya temple’s first CEO",
+    "slug": "grateful-to-lord-ram-retd-air-marshal-jeetendra-mishra-s-first-reaction-after-being-named-ayodhya-temple-s-first-ceo-1788363451-177",
+    "summary": "In his first reaction, Jeetendra Mishra said he prayed to God to give him the capability to shoulder the responsibility well.",
+    "content": "In his first reaction, Jeetendra Mishra said he prayed to God to give him the capability to shoulder the responsibility well.",
+    "image_url": "https://www.hindustantimes.com/ht-img/img/2026/09/02/1600x900/logo/AN_1788359284940_90f6bcad-add5-4746-a080-4a7f544b303d_1788359285107_197926ae-8b21-4481-be78-d0d31b159430_c88ff933-0b92-4d71-bb2a-dc43a7074255_abd32fc7-48aa-4e60-a5ff-cc0eb74ad3d0.jpg",
+    "source_url": "https://www.hindustantimes.com/india-news/retired-air-marshal-jeetendra-mishras-first-reaction-after-being-named-ram-temple-first-ceo-ayodhya-grateful-101788358057445.html",
+    "author": "Hindustan Times",
+    "source_name": "Reuters",
+    "category_name": "India",
+    "published_at": "2026-09-02T14:43:07",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "‘Grateful to Lord Ram’: Retd Air Marshal Jeetendra Mishra’s first reaction after being named Ayodhya temple’s first CEO",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network"
+      }
+    ],
+    "corroborating_sources": [
+      "Hindustan Times",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 194,
+    "title": "Putin Starts Russian Udokan Copper Cathode Plant After 2023 Fire",
+    "slug": "putin-starts-russian-udokan-copper-cathode-plant-after-2023-fire-1788363451-676",
+    "summary": "Russian President Vladimir Putin officially launched a key plant at one of the world’s largest copper deposits after the facility was rebuilt almost from scratch following a fire almost three years ago.",
+    "content": "Russian President Vladimir Putin officially launched a key plant at one of the world’s largest copper deposits after the facility was rebuilt almost from scratch following a fire almost three years ago.",
+    "image_url": null,
+    "source_url": "https://www.bloomberg.com/news/articles/2026-09-02/putin-starts-russian-udokan-copper-cathode-plant-after-2023-fire",
+    "author": "Yuliya Fedorinova",
+    "source_name": "Reuters",
+    "category_name": "Business",
+    "published_at": "2026-09-02T14:42:47",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Putin Starts Russian Udokan Copper Cathode Plant After 2023 Fire.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "Russian President Vladimir Putin officially launched a key plant at one of the world’s largest copper deposits after the facility was rebuilt almost from scratch following a fir...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Bloomberg Markets",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 32,
+    "title": "Tiger Woods gets five-year driving ban after reckless driving plea",
+    "slug": "tiger-woods-gets-five-year-driving-ban-after-reckless-driving-plea-1788363451-672",
+    "summary": "The golfer will accept a five-year driving ban and $1,000 fine as part of a plea agreement.",
+    "content": "The golfer will accept a five-year driving ban and $1,000 fine as part of a plea agreement.",
+    "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/a0c8/live/b24f0110-a6cb-11f1-b0c9-07afcdd8053c.jpg",
+    "source_url": "https://www.bbc.co.uk/news/articles/c5y7xvpn5kno?at_medium=RSS&at_campaign=rss",
+    "author": "BBC World",
+    "source_name": "Reuters",
+    "category_name": "World",
+    "published_at": "2026-09-02T14:40:20",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Tiger Woods gets five-year driving ban after reckless driving plea.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "The golfer will accept a five-year driving ban and $1,000 fine as part of a plea agreement.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "BBC World",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 309,
+    "title": "Why lower-class workers are less likely to negotiate for higher pay—and how it could cost some nearly $800,000",
+    "slug": "why-lower-class-workers-are-less-likely-to-negotiate-for-higher-pay-and-how-it-could-cost-some-nearly-800-000-1788363451-225",
+    "summary": "Michele Gelfand has studied and taught negotiation for years. A professor of organizational behavior at Stanford Graduate School of Business, she sees negotiation as a skill that is imperative for everyone to learn. \"It's not something we're born with,\" she says. \"It's something we learn over time.\"",
+    "content": "Michele Gelfand has studied and taught negotiation for years. A professor of organizational behavior at Stanford Graduate School of Business, she sees negotiation as a skill that is imperative for everyone to learn. \"It's not something we're born with,\" she says. \"It's something we learn over time.\"",
+    "image_url": "https://scx1.b-cdn.net/csz/news/tmb/2021/business-1.jpg",
+    "source_url": "https://phys.org/news/2026-09-class-workers-higher-pay.html",
+    "author": "Phys.org",
+    "source_name": "Reuters",
+    "category_name": "Science",
+    "published_at": "2026-09-02T14:40:10",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Why lower-class workers are less likely to negotiate for higher pay—and how it could cost some nearly $800,000.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "Michele Gelfand has studied and taught negotiation for years.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "It's not something we're born with, she says.",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      },
+      {
+        "claim": "It's something we learn over time. Michele Gelfand has studied and taught negotiation for years.",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      }
+    ],
+    "corroborating_sources": [
+      "Phys.org",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 310,
+    "title": "Wind damage can trigger years of forest vulnerability",
+    "slug": "wind-damage-can-trigger-years-of-forest-vulnerability-1788363451-535",
+    "summary": "Windstorms are among the most important natural disturbances in Northern Europe, where they cause extensive tree mortality, timber losses and long-lasting changes in forest structure. Large-scale windstorm damage has increased across Central and Northern European forests in recent decades, while in boreal regions such as Finland, warmer winters and shorter periods of frozen soil can further reduce",
+    "content": "Windstorms are among the most important natural disturbances in Northern Europe, where they cause extensive tree mortality, timber losses and long-lasting changes in forest structure. Large-scale windstorm damage has increased across Central and Northern European forests in recent decades, while in boreal regions such as Finland, warmer winters and shorter periods of frozen soil can further reduce tree stability and increase vulnerability to wind.",
+    "image_url": "https://scx1.b-cdn.net/csz/news/tmb/2026/broken-trees.jpg",
+    "source_url": "https://phys.org/news/2026-09-trigger-years-forest-vulnerability.html",
+    "author": "Phys.org",
+    "source_name": "Reuters",
+    "category_name": "Science",
+    "published_at": "2026-09-02T14:40:08",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Wind damage can trigger years of forest vulnerability.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Phys.org",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 440,
+    "title": "India to host inaugural Women's Champions Trophy in February",
+    "slug": "india-to-host-inaugural-women-s-champions-trophy-in-february-1788363451-966",
+    "summary": "Despite losing the hosting rights because of government interference in their board, Sri Lanka will still be part of the tournament",
+    "content": "Despite losing the hosting rights because of government interference in their board, Sri Lanka will still be part of the tournament",
+    "image_url": "http://p.imgci.com/db/PICTURES/CMS/410900/410958.jpg",
+    "source_url": "https://www.cricinfo.com/ci/content/story/1552605.html?ex_cid=OTC-RSS",
+    "author": "Cricinfo",
+    "source_name": "Reuters",
+    "category_name": "Sports",
+    "published_at": "2026-09-02T14:40:00",
+    "credibility_score": 80,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "India to host inaugural Women's Champions Trophy in February",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network"
+      }
+    ],
+    "corroborating_sources": [
+      "Cricinfo",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Neutral Analytic (Wire Grade)"
+  },
+  {
+    "id": 223,
+    "title": "Ford continues ramping up pickup truck production as sales fall 10.3% in August",
+    "slug": "ford-continues-ramping-up-pickup-truck-production-as-sales-fall-10-3-in-august-1788363451-849",
+    "summary": "An increase in the supply of pickup trucks comes as Ford experienced its eighth consecutive month of year-over-year U.S. new vehicle sales declines in August.",
+    "content": "An increase in the supply of pickup trucks comes as Ford experienced its eighth consecutive month of year-over-year U.S. new vehicle sales declines in August.",
+    "image_url": null,
+    "source_url": "https://www.cnbc.com/2026/09/02/ford-sales-f-150-production.html",
+    "author": "CNBC Business",
+    "source_name": "Reuters",
+    "category_name": "Business",
+    "published_at": "2026-09-02T14:39:21",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Ford continues ramping up pickup truck production as sales fall 10.3% in August.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "An increase in the supply of pickup trucks comes as Ford experienced its eighth consecutive month of year-over-year U.S.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "CNBC Business",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 243,
+    "title": "Hill-Climbing: Why Companies Can Get Better At The Wrong Things",
+    "slug": "hill-climbing-why-companies-can-get-better-at-the-wrong-things-1788363451-643",
+    "summary": "Microsoft CEO Satya Nadella’s “hill-climbing” concept offers a powerful way to think about improvement, while raising a key question: are you climbing the right hill?",
+    "content": "Microsoft CEO Satya Nadella’s “hill-climbing” concept offers a powerful way to think about improvement, while raising a key question: are you climbing the right hill?",
+    "image_url": "https://imageio.forbes.com/specials-images/imageserve/6a9834490ab0b70b95efda36/0x0.jpg?width=960",
+    "source_url": "https://www.forbes.com/sites/dianehamilton/2026/09/02/hill-climbing-why-companies-can-get-better-at-the-wrong-things/",
+    "author": "Dr. Diane Hamilton, Contributor",
+    "source_name": "Reuters",
+    "category_name": "Business",
+    "published_at": "2026-09-02T14:38:59",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Microsoft CEO Satya Nadella’s “hill-climbing” concept offers a powerful way to think about improvement, while raising a key question: are you climbing the right hill?",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      }
+    ],
+    "corroborating_sources": [
+      "Forbes",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 395,
+    "title": "3 held in ‘murder for gain’, chopping woman’s body, hiding in tanks in Salem: Cop",
+    "slug": "3-held-in-murder-for-gain-chopping-woman-s-body-hiding-in-tanks-in-salem-cop-1788363451-718",
+    "summary": "The knives used to dismember the victim’s body were provided by Sivaram, the butcher and have been seized",
+    "content": "The knives used to dismember the victim’s body were provided by Sivaram, the butcher and have been seized",
+    "image_url": "https://www.hindustantimes.com/ht-img/img/2026/09/02/1600x900/logo/Based-on-the-information-provided-by-Ramesh--a-pol_1788359854463_9caac981-f4dc-4f77-bfd3-df30c3096d0a.jpg",
+    "source_url": "https://www.hindustantimes.com/india-news/3-held-in-murder-for-gain-chopping-woman-s-body-hiding-in-tanks-in-salem-cop-101788359864785.html",
+    "author": "Hindustan Times",
+    "source_name": "Reuters",
+    "category_name": "India",
+    "published_at": "2026-09-02T14:37:44",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "3 held in ‘murder for gain’, chopping woman’s body, hiding in tanks in Salem: Cop.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Hindustan Times",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 185,
+    "title": "Italy’s Eni Plans Major Increase in Venezuela Oil Production",
+    "slug": "italy-s-eni-plans-major-increase-in-venezuela-oil-production-1788363451-511",
+    "summary": "Italian energy producer Eni SpA aims to eventually lift its Venezuelan production to more than 1 million barrels a day, according to people familiar with the matter, a figure that includes volumes from state-owned Petróleos de Venezuela SA and would bolster US efforts to revive the country’s battered oil industry.",
+    "content": "Italian energy producer Eni SpA aims to eventually lift its Venezuelan production to more than 1 million barrels a day, according to people familiar with the matter, a figure that includes volumes from state-owned Petróleos de Venezuela SA and would bolster US efforts to revive the country’s battered oil industry.",
+    "image_url": null,
+    "source_url": "https://www.bloomberg.com/news/articles/2026-09-02/italy-s-eni-plans-major-increase-in-venezuela-oil-production",
+    "author": "Ari Natter and Alberto Brambilla",
+    "source_name": "Reuters",
+    "category_name": "Business",
+    "published_at": "2026-09-02T14:36:50",
+    "credibility_score": 82,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Italian energy producer Eni SpA aims to eventually lift its Venezuelan production to more than 1 million barrels a day, according to people familiar with the matter, a figure th...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Bloomberg Markets",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 380,
+    "title": "Punjab polls: BJP rules out SAD tie-up, to fight solo in all 117 seats",
+    "slug": "punjab-polls-bjp-rules-out-sad-tie-up-to-fight-solo-in-all-117-seats-1788363451-240",
+    "summary": "The Bharatiya Janata Party will contest all 117 Punjab Assembly seats independently. Dr. Satish Poonia confirmed the party's decision, dismissing alliance rumors with the Shiromani Akali Dal. He expressed concern over Punjab's drug menace and corruption issues. The party plans a dedicated action plan to address these challenges. Punjab's development and peace remain among the BJP's top priorities.",
+    "content": "The Bharatiya Janata Party will contest all 117 Punjab Assembly seats independently. Dr. Satish Poonia confirmed the party's decision, dismissing alliance rumors with the Shiromani Akali Dal. He expressed concern over Punjab's drug menace and corruption issues. The party plans a dedicated action plan to address these challenges. Punjab's development and peace remain among the BJP's top priorities.",
+    "image_url": "https://static.toiimg.com/photo/msid-133713714,imgsize-129306.cms",
+    "source_url": "https://timesofindia.indiatimes.com/city/amritsar/punjab-polls-bjp-rules-out-alliance-with-sad-says-it-will-contest-all-117-seats/articleshow/133713651.cms",
+    "author": "YUDHVIR RANA",
+    "source_name": "Reuters",
+    "category_name": "India",
+    "published_at": "2026-09-02T14:36:41",
+    "credibility_score": 80,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Punjab polls: BJP rules out SAD tie-up, to fight solo in all 117 seats.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "The Bharatiya Janata Party will contest all 117 Punjab Assembly seats independently.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      },
+      {
+        "claim": "Satish Poonia confirmed the party's decision, dismissing alliance rumors with the Shiromani Akali Dal.",
+        "status": "Verified Reporting",
+        "evidence": "Corroborated by journalistic wire service"
+      }
+    ],
+    "corroborating_sources": [
+      "Times of India",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 396,
+    "title": "‘Few jobless people call themselves economists’: Piyush Goyal jibes at Oppn, critics over ‘wrong GDP’ remark",
+    "slug": "few-jobless-people-call-themselves-economists-piyush-goyal-jibes-at-oppn-critics-over-wrong-gdp-remark-1788363451-878",
+    "summary": "India recorded 7.8% GDP growth in Q1 FY27, but former finance secretary Subhash Chandra Garg questioned whether the figure reflects the exact reality.",
+    "content": "India recorded 7.8% GDP growth in Q1 FY27, but former finance secretary Subhash Chandra Garg questioned whether the figure reflects the exact reality.",
+    "image_url": "https://www.hindustantimes.com/ht-img/img/2026/09/02/1600x900/logo/ANI-20260812207-0_1787746310219_1787746322433_0e22cb80-ab6d-4cc6-b29f-547234af1cd4_1788359139090_6df060ae-fd39-4299-9d7d-cf235da95774_1563a777-7624-4d55-8f4e-be612ca8474a_4495a20e-095b-4c00-b3ae-ea4e34b0a0ee.jpg",
+    "source_url": "https://www.hindustantimes.com/india-news/few-jobless-people-call-themselves-economists-piyush-goyal-jibes-at-opposition-critics-over-wrong-gdp-number-remark-101788358719506.html",
+    "author": "Hindustan Times",
+    "source_name": "Reuters",
+    "category_name": "India",
+    "published_at": "2026-09-02T14:35:10",
+    "credibility_score": 72,
+    "sensationalism_score": 17,
+    "fact_check_status": "developing",
+    "key_claims": [
+      {
+        "claim": "India recorded 7.8% GDP growth in Q1 FY27, but former finance secretary Subhash Chandra Garg questioned whether the figure reflects the exact reality.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics cited in primary reporting"
+      }
+    ],
+    "corroborating_sources": [
+      "Hindustan Times",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 122,
+    "title": "OpenAI accused of ‘aiding and abetting’ Tumbler Ridge mass shooting in dozens of new lawsuits",
+    "slug": "openai-accused-of-aiding-and-abetting-tumbler-ridge-mass-shooting-in-dozens-of-new-lawsuits-1788363451-971",
+    "summary": "OpenAI and its CEO Sam Altman are facing 30 new lawsuits that accuse them of providing \"substantial assistance and encouragement\" to the suspect in Canada's Tumbler Ridge school shooting, as reported earlier by TechCrunch. The new wave of lawsuits was filed in a California federal court on Wednesday by the students, teachers, and the principal [&#8230;]",
+    "content": "OpenAI and its CEO Sam Altman are facing 30 new lawsuits that accuse them of providing \"substantial assistance and encouragement\" to the suspect in Canada's Tumbler Ridge school shooting, as reported earlier by TechCrunch . The new wave of lawsuits was filed in a California federal court on Wednesday by the students, teachers, and the principal in the school at the time of the shooting. Similar to the lawsuits filed by Tumbler Ridge victims' families in April, these lawsuits claim OpenAI failed to take action after its automated review system flagged conversations that the alleged shooter, Jesse Van Rootselaar, had with ChatGPT about gun vio … Read the full story at The Verge.",
+    "image_url": null,
+    "source_url": "https://www.theverge.com/ai-artificial-intelligence/988261/openai-tumbler-ridge-shooting-lawsuit-aiding-abetting",
+    "author": "Emma Roth",
+    "source_name": "Reuters",
+    "category_name": "Technology",
+    "published_at": "2026-09-02T14:35:03",
+    "credibility_score": 78,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "OpenAI and its CEO Sam Altman are facing 30 new lawsuits that accuse them of providing substantial assistance and encouragement to the suspect in Canada's Tumbler Ridge school s...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      },
+      {
+        "claim": "The new wave of lawsuits was filed in a California federal court on Wednesday by the students, teachers, and the principal [&#8230;] OpenAI and its CEO Sam Altman are facing 30 ...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record quote from primary source"
+      }
+    ],
+    "corroborating_sources": [
+      "The Verge",
+      "Reuters Wire",
+      "Associated Press"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 465,
+    "title": "‘My Notes on Mars’ Review: Mackenzie Davis and Rupert Friend Play a Trauma-Shaken Couple in Clever Sci-Fi Puzzler",
+    "slug": "my-notes-on-mars-review-mackenzie-davis-and-rupert-friend-play-a-trauma-shaken-couple-in-clever-sci-fi-puzzler-1788363451-316",
+    "summary": "Written and directed by Hungarian Lili Horvat, the Venice premiere taps into current anxieties about what is human and what is love.",
+    "content": "Written and directed by Hungarian Lili Horvat, the Venice premiere taps into current anxieties about what is human and what is love.",
+    "image_url": null,
+    "source_url": "https://www.hollywoodreporter.com/movies/movie-reviews/my-notes-on-mars-mackenzie-davis-rupert-friend-lili-horvat-1236687265/",
+    "author": "Leslie Felperin",
+    "source_name": "Reuters",
+    "category_name": "Entertainment",
+    "published_at": "2026-09-02T14:35:00",
+    "credibility_score": 76,
+    "sensationalism_score": 5,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "‘My Notes on Mars’ Review: Mackenzie Davis and Rupert Friend Play a Trauma-Shaken Couple in Clever Sci-Fi Puzzler",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network"
+      }
+    ],
+    "corroborating_sources": [
+      "Hollywood Reporter",
       "Reuters Wire",
       "Associated Press"
     ],

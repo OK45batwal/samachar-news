@@ -1,0 +1,46 @@
+name: 24x7 Live Real-World News Ingestion & Dataset Updater
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Runs every hour 24/7
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run MEKA 3.0 Live RSS Ingestion
+        run: |
+          python -m scripts.cron_ingest
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install NPM Packages & Build
+        run: |
+          npm ci || npm install
+          npm run build
+
+      - name: Commit & Push Updated Dataset
+        run: |
+          git config --global user.name "Samachar News Bot"
+          git config --global user.email "bot@samachar.news"
+          git add frontend/assets/data/news.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(data): auto-update 24x7 real-world news dataset [skip ci]" && git push origin main)
