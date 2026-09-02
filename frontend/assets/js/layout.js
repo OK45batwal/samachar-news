@@ -110,6 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
             <a href="latest.html?q=malaria" class="search-tag-pill">#MalariaVaccine</a>
             <a href="latest.html?q=settlement" class="search-tag-pill">#ProjectNexus</a>
           </div>
+        <div class="search-modal-footer">
+          <div class="flex items-center gap-3">
+            <span><kbd style="padding:2px 5px;background:var(--bg-surface-2);border-radius:4px;border:1px solid var(--border)">↵</kbd> View All</span>
+            <span><kbd style="padding:2px 5px;background:var(--bg-surface-2);border-radius:4px;border:1px solid var(--border)">ESC</kbd> Close</span>
+          </div>
+          <span class="text-accent font-semibold">Samachar Spotlight 2.0</span>
         </div>
       </div>
     `;

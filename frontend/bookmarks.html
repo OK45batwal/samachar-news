@@ -6,9 +6,10 @@
   <title>Saved Bookmarks & Research Archive — Samachar</title>
   <meta name="description" content="Your saved news articles, research archive, and verified reports." />
   <meta name="theme-color" content="#08090C" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=2.5" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2.5" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=2.5" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=2.8" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=2.8" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=2.8" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
   <script>
@@ -53,6 +54,12 @@
       </div>
 
       <div class="flex items-center gap-3">
+        <button id="searchToggle" class="btn btn-secondary btn-sm flex items-center gap-2" style="color:var(--text-secondary);" title="Search news and claims (⌘K)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span class="hide-mobile" style="min-width:140px;text-align:left;">Search facts, topics...</span>
+          <kbd class="hide-mobile" style="font-family:var(--font-mono);font-size:10px;padding:2px 6px;background:var(--bg-surface-2);border:1px solid var(--border);border-radius:4px">⌘K</kbd>
+        </button>
+
         <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
@@ -65,7 +72,7 @@
   <main class="container py-8" style="max-width: 1080px; margin: 24px auto 64px;">
     
     <!-- Section Title Banner -->
-    <div class="card p-6 mb-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-md);">
+    <div class="card p-6 mb-6" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-md);">
       <div class="flex items-center justify-between gap-4" style="flex-wrap: wrap;">
         <div>
           <span class="badge badge-verified mb-2">📌 ENCRYPTED ARCHIVE</span>
@@ -73,11 +80,21 @@
           <p class="text-xs text-secondary mt-1">Personal collection of verified articles, truth scorecards, and research evidence.</p>
         </div>
         <div class="flex items-center gap-3">
+          <span class="badge badge-verified" id="bookmarkCountBadge" style="font-size:12px;padding:6px 12px;">Loading...</span>
           <a href="latest.html" class="btn btn-primary btn-sm">
             + Discover More Stories
           </a>
         </div>
       </div>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="flex items-center gap-2 mb-6" id="bookmarkFilters" style="flex-wrap: wrap;">
+      <button class="category-link active" data-filter="all" onclick="filterBookmarks('all', this)">All Saved</button>
+      <button class="category-link" data-filter="technology" onclick="filterBookmarks('technology', this)">Tech & AI</button>
+      <button class="category-link" data-filter="world" onclick="filterBookmarks('world', this)">World</button>
+      <button class="category-link" data-filter="business" onclick="filterBookmarks('business', this)">Markets</button>
+      <button class="category-link" data-filter="science" onclick="filterBookmarks('science', this)">Science</button>
     </div>
 
     <!-- Bookmarks Grid -->
@@ -99,71 +116,94 @@
 
   <div id="toastContainer" class="toast-container"></div>
 
-  <script src="/assets/js/api.js?v=2.5"></script>
-  <script src="/assets/js/layout.js?v=2.5"></script>
-  <script src="/assets/js/app.js?v=2.5"></script>
+  <script src="/assets/js/api.js?v=2.8"></script>
+  <script src="/assets/js/layout.js?v=2.8"></script>
+  <script src="/assets/js/app.js?v=2.8"></script>
   <script>
+    let allBookmarksData = [];
+    let currentFilter = 'all';
+
+    function renderBookmarksGrid(data) {
+      const listEl = document.getElementById('bookmarksList');
+      const filtered = currentFilter === 'all' 
+        ? data 
+        : data.filter(b => b.article && (b.article.category?.slug === currentFilter || b.article.category?.name?.toLowerCase().includes(currentFilter)));
+
+      if (filtered && filtered.length) {
+        listEl.innerHTML = filtered.map(b => {
+          if (!b.article) return '';
+          const art = b.article;
+          const safeTitle = sanitize(art.title);
+          const safeSummary = sanitize(art.summary || '');
+          const safeSource = sanitize(art.source?.name || 'Wire');
+          const safeCat = sanitize(art.category?.name || 'Top News');
+          const credScore = art.credibility_score || 92;
+          const imgUrl = art.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+
+          return `
+            <article class="card" id="bookmark-card-${b.id}" style="background:var(--bg-surface-1);border-color:var(--border-light);display:flex;flex-direction:column;justify-content:space-between;">
+              <div>
+                <div class="card-img-wrapper" style="position:relative;height:180px;overflow:hidden;border-radius:var(--radius-sm) var(--radius-sm) 0 0;">
+                  <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'" />
+                  <div style="position:absolute;top:10px;left:10px;">
+                    <span class="badge badge-verified">🟢 ${credScore}% VERIFIED</span>
+                  </div>
+                </div>
+                <div class="p-5">
+                  <div class="flex items-center justify-between text-xs text-muted mb-2">
+                    <span class="font-bold text-accent">${safeCat}</span>
+                    <span>${timeAgo(art.published_at)}</span>
+                  </div>
+                  <h3 class="heading-sm mb-2 line-clamp-2">
+                    <a href="article.html?id=${art.id}" style="color:var(--text-primary);text-decoration:none;">${safeTitle}</a>
+                  </h3>
+                  <p class="text-xs text-secondary line-clamp-3" style="line-height:1.6;">${safeSummary}</p>
+                </div>
+              </div>
+              <div class="p-4 border-top flex items-center justify-between" style="background:var(--bg-surface-2);">
+                <span class="text-xs text-muted font-medium">${safeSource}</span>
+                <div class="flex items-center gap-2">
+                  <button onclick="removeBookmarkItem(${b.id})" class="btn btn-ghost btn-sm text-danger" title="Remove Bookmark">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  </button>
+                  <a href="article.html?id=${art.id}" class="btn btn-primary btn-sm">Read &rarr;</a>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+      } else {
+        listEl.innerHTML = `
+          <div class="card p-12 text-center w-full" style="grid-column: 1 / -1; background: var(--bg-surface-1); border-color: var(--border-light);">
+            <div style="font-size: 36px; margin-bottom: 12px;">📌</div>
+            <h2 class="heading-md mb-2">No Saved Bookmarks in this Category</h2>
+            <p class="text-xs text-secondary mb-6" style="max-width: 420px; margin-left: auto; margin-right: auto;">
+              Save articles while reading the live feeds to reference their evidence and truth scorecards anytime.
+            </p>
+            <a href="home.html" class="btn btn-primary btn-sm">
+              Explore Live News Portal &rarr;
+            </a>
+          </div>
+        `;
+      }
+    }
+
+    function filterBookmarks(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('#bookmarkFilters .category-link').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBookmarksGrid(allBookmarksData);
+    }
+
     async function loadBookmarks() {
       const listEl = document.getElementById('bookmarksList');
       listEl.innerHTML = Array(6).fill('<div class="skeleton card" style="height:320px"></div>').join('');
 
       try {
         const bookmarks = await getBookmarks();
-        if (bookmarks && bookmarks.length) {
-          listEl.innerHTML = bookmarks.map(b => {
-            if (!b.article) return '';
-            const art = b.article;
-            const safeTitle = sanitize(art.title);
-            const safeSummary = sanitize(art.summary || '');
-            const safeSource = sanitize(art.source?.name || 'Wire');
-            const safeCat = sanitize(art.category?.name || 'Top News');
-            const credScore = art.credibility_score || 92;
-            const imgUrl = art.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
-
-            return `
-              <article class="card" id="bookmark-card-${b.id}">
-                <div class="card-img-wrapper">
-                  <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'" />
-                  <div style="position:absolute;top:10px;left:10px;">
-                    <span class="badge badge-verified">🟢 ${credScore}% VERIFIED</span>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="flex items-center justify-between text-xs text-muted mb-2">
-                    <span class="font-semibold text-accent">${safeCat}</span>
-                    <span>Saved in Archive</span>
-                  </div>
-                  <h3 class="heading-sm mb-2 line-clamp-2">
-                    <a href="article.html?id=${art.id}">${safeTitle}</a>
-                  </h3>
-                  <p class="text-xs text-secondary line-clamp-3">${safeSummary}</p>
-                </div>
-                <div class="card-footer">
-                  <span class="text-xs text-muted font-medium">${safeSource}</span>
-                  <div class="flex items-center gap-2">
-                    <button onclick="removeBookmarkItem(${b.id})" class="btn btn-ghost btn-sm text-danger" title="Remove Bookmark">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                    </button>
-                    <a href="article.html?id=${art.id}" class="btn btn-secondary btn-sm">Read &rarr;</a>
-                  </div>
-                </div>
-              </article>
-            `;
-          }).join('');
-        } else {
-          listEl.innerHTML = `
-            <div class="card p-12 text-center w-full" style="grid-column: 1 / -1; background: var(--bg-surface-1); border-color: var(--border-light);">
-              <div style="font-size: 36px; margin-bottom: 12px;">📌</div>
-              <h2 class="heading-md mb-2">No Saved Bookmarks Yet</h2>
-              <p class="text-xs text-secondary mb-6" style="max-width: 420px; margin-left: auto; margin-right: auto;">
-                Save articles while reading the live feeds to reference their evidence and truth scorecards anytime.
-              </p>
-              <a href="home.html" class="btn btn-primary btn-sm">
-                Explore Live News Portal &rarr;
-              </a>
-            </div>
-          `;
-        }
+        allBookmarksData = bookmarks || [];
+        document.getElementById('bookmarkCountBadge').textContent = `${allBookmarksData.length} Saved Stories`;
+        renderBookmarksGrid(allBookmarksData);
       } catch (err) {
         listEl.innerHTML = `<div class="p-6 text-danger w-full" style="grid-column: 1 / -1">Failed to load bookmarks: ${err.message}</div>`;
       }
@@ -173,9 +213,9 @@
       try {
         await deleteBookmark(bookmarkId);
         showToast('Bookmark removed from archive', 'info');
-        const el = document.getElementById(`bookmark-card-${bookmarkId}`);
-        if (el) el.remove();
-        loadBookmarks();
+        allBookmarksData = allBookmarksData.filter(b => b.id !== bookmarkId);
+        document.getElementById('bookmarkCountBadge').textContent = `${allBookmarksData.length} Saved Stories`;
+        renderBookmarksGrid(allBookmarksData);
       } catch (err) {
         showToast(err.message || 'Failed to remove bookmark', 'error');
       }
