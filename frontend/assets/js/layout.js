@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
     searchOverlay = document.createElement('div');
     searchOverlay.id = 'searchOverlay';
     searchOverlay.className = 'search-overlay';
-    searchOverlay.innerHTML = `
     searchOverlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:99999;display:none;align-items:flex-start;justify-content:center;padding-top:10vh;";
     searchOverlay.innerHTML = `
       <div class="search-modal" style="width:100%;max-width:640px;background:#101625;border:1px solid #222D42;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,0.9),0 0 0 1px rgba(0,245,155,0.3);overflow:hidden;margin:0 16px;display:flex;flex-direction:column;box-sizing:border-box;">
