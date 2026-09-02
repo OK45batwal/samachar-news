@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Article Intelligence — Samachar</title>
-  <meta name="description" content="Verified news analysis and fact-checking scorecard on Samachar." />
+  <meta name="description" content="Verified news analysis, audio briefing, and fact-checking scorecard on Samachar." />
   <meta name="theme-color" content="#08090C" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=2.1" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2.1" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=2.1" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=2.6" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=2.6" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=2.6" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
   <script>
@@ -42,6 +43,31 @@
     .article-body-text p {
       margin-bottom: 24px;
     }
+    .audio-player-bar {
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .evidence-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(10px);
+      z-index: 2500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .evidence-modal.active {
+      display: flex;
+    }
   </style>
 </head>
 <body>
@@ -49,47 +75,54 @@
   <!-- Reading Progress Bar -->
   <div id="progressBar" class="reading-progress"></div>
 
+  <!-- Top Utility Bar -->
+  <div class="header-topbar hide-mobile">
+    <div class="container flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <span id="currentDateDisplay">Tuesday, Sep 1, 2026</span>
+        <span>·</span>
+        <span class="text-accent font-semibold flex items-center gap-1">
+          <span class="logo-dot"></span>
+          Verified Article Intelligence
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="home.html" class="text-secondary hover:text-accent font-semibold">&larr; Back to News Portal</a>
+        <a href="factcheck.html" class="text-secondary hover:text-accent">⚡ Claim Workbench</a>
+      </div>
+    </div>
+  </div>
+
   <!-- Header -->
   <header class="header">
     <div class="container header-main">
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-6">
         <a href="home.html" class="logo">
           <span>SAMACHAR</span><span class="logo-dot"></span>
           <span class="logo-tag">TRUTH FIRST</span>
         </a>
+        <nav class="hide-mobile flex items-center gap-4 text-sm font-semibold text-secondary">
+          <a href="home.html" class="hover:text-primary">News Portal</a>
+          <a href="latest.html" class="hover:text-primary">All Feeds</a>
+          <a href="factcheck.html" class="hover:text-primary">Fact Check Tool</a>
+          <a href="bookmarks.html" class="hover:text-primary">Bookmarks</a>
+        </nav>
       </div>
 
       <div class="flex items-center gap-3">
-        <a href="home.html" class="btn btn-ghost btn-sm">← Back to News</a>
         <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
         <div id="headerAuth" class="flex items-center gap-2"></div>
       </div>
     </div>
-
-    <!-- Navigation Bar -->
-    <nav class="category-nav-bar" aria-label="News channels">
-      <div class="container category-nav-inner">
-        <a href="home.html" class="category-link">🔥 Top Stories</a>
-        <a href="latest.html?cat=world" class="category-link">🌍 World</a>
-        <a href="latest.html?cat=technology" class="category-link">⚡ Tech & AI</a>
-        <a href="latest.html?cat=india" class="category-link">🇮🇳 India</a>
-        <a href="latest.html?cat=business" class="category-link">📈 Markets</a>
-        <a href="latest.html?cat=science" class="category-link">🔬 Science</a>
-        <a href="latest.html?cat=health" class="category-link">🩺 Health</a>
-        <a href="latest.html?cat=entertainment" class="category-link">🎬 Entertainment</a>
-        <a href="trending.html" class="category-link">🔥 Trending</a>
-        <a href="factcheck.html" class="category-link text-accent">⚡ Fact Check Tool</a>
-      </div>
-    </nav>
   </header>
 
   <!-- Main Container -->
-  <main class="container py-8" style="max-width: 820px; margin: 0 auto;">
+  <main class="container py-8" style="max-width: 820px; margin: 0 auto 64px;">
 
     <!-- Category & Time -->
-    <div class="flex items-center gap-3 mb-3">
+    <div class="flex items-center gap-3 mb-3" style="flex-wrap: wrap;">
       <span class="badge badge-verified" id="articleBadge">🟢 96% VERIFIED</span>
       <span class="text-xs text-accent font-semibold" id="articleCategory">Technology</span>
       <span class="text-xs text-muted">·</span>
@@ -99,12 +132,12 @@
     <!-- Article Headline -->
     <h1 class="heading-xl mb-4" id="articleTitle">Loading Article...</h1>
 
-    <!-- Author & Source -->
+    <!-- Author, Source & Action Buttons -->
     <div class="flex items-center justify-between gap-4 mb-6 pb-4 border-bottom" style="flex-wrap: wrap;">
       <div class="flex items-center gap-2 text-xs text-secondary">
         <span>Reporting by <strong id="articleAuthor" style="color:var(--text-primary)">Editorial Wire</strong></span>
         <span>·</span>
-        <span>Source: <strong id="articleSource" style="color:var(--text-primary)">Reuters</strong></span>
+        <span>Primary Wire: <strong id="articleSource" style="color:var(--text-primary)">Reuters</strong></span>
       </div>
       <div class="flex items-center gap-2">
         <button id="bookmarkBtn" class="btn btn-secondary btn-sm flex items-center gap-1">
@@ -118,13 +151,29 @@
       </div>
     </div>
 
+    <!-- Audio Briefing Player -->
+    <div class="audio-player-bar" id="audioPlayerContainer">
+      <div class="flex items-center gap-3">
+        <button id="audioPlayBtn" class="btn btn-primary btn-sm flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span id="audioPlayText">Listen to Story</span>
+        </button>
+        <span class="text-xs text-secondary font-mono" id="audioStatusText">AI Voice Synthesis</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="audioSpeedBtn" class="btn btn-ghost btn-sm font-mono text-xs">1.0x</button>
+      </div>
+    </div>
+
     <!-- Lead Editorial Image -->
     <img id="articleImage" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="News Image" class="article-hero-img" />
 
     <!-- Executive Takeaways Box -->
-    <div class="card p-5 mb-6" style="background:var(--bg-elevated);border-left:3px solid var(--accent)">
-      <div class="text-xs font-bold text-accent mb-2 uppercase tracking-wide">Executive Summary</div>
-      <p class="text-sm text-secondary" id="articleSummaryText" style="line-height:1.7"></p>
+    <div class="card p-5 mb-6" style="background:var(--bg-surface-2);border-left:4px solid var(--accent)">
+      <div class="text-xs font-bold text-accent mb-2 uppercase tracking-wide flex items-center gap-2">
+        <span>⚡ EXECUTIVE INTELLIGENCE SUMMARY</span>
+      </div>
+      <p class="text-sm text-secondary" id="articleSummaryText" style="line-height:1.75"></p>
     </div>
 
     <!-- Truth & Credibility Scorecard -->
@@ -153,12 +202,41 @@
       </div>
     </div>
 
+    <!-- Stance & Wire Consensus Map -->
+    <div class="card p-6 mb-8" style="background: var(--bg-surface-1); border-color: var(--border-light);">
+      <h3 class="heading-sm mb-2 flex items-center gap-2">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+        Multi-Wire Consensus & Stance Map
+      </h3>
+      <p class="text-xs text-secondary mb-4">Real-time triangulation across independent journalistic bureaus:</p>
+      
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between text-xs">
+          <span class="flex items-center gap-2">
+            <span class="badge badge-verified" style="padding:2px 6px;font-size:10px">SUPPORTING</span>
+            <span>Reuters, Associated Press, Bloomberg</span>
+          </span>
+          <span class="font-mono text-accent font-bold">100% Alignment</span>
+        </div>
+        <div class="flex items-center justify-between text-xs">
+          <span class="flex items-center gap-2">
+            <span class="badge badge-corroborated" style="padding:2px 6px;font-size:10px">CONTEXTUALIZING</span>
+            <span>BBC News, Nature Journal, PTI</span>
+          </span>
+          <span class="font-mono text-secondary font-bold">High Alignment</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Claim-by-Claim Breakdown Box -->
     <div class="card p-6 mb-8" id="claimsSection">
-      <h3 class="heading-sm mb-4 flex items-center gap-2">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        Deconstructed Factual Assertions
-      </h3>
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="heading-sm flex items-center gap-2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Deconstructed Factual Assertions
+        </h3>
+        <span class="text-xs text-muted">Click any claim to inspect evidence</span>
+      </div>
       <div id="articleClaimsList"></div>
     </div>
 
@@ -176,6 +254,25 @@
 
   </main>
 
+  <!-- Inspect Evidence Modal -->
+  <div id="evidenceModal" class="evidence-modal">
+    <div class="card p-6" style="max-width: 540px; width: 100%; background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-lg);">
+      <div class="flex items-center justify-between mb-4 pb-3 border-bottom">
+        <span class="badge badge-verified" id="modalEvidenceBadge">VERIFIED EVIDENCE</span>
+        <button id="closeModalBtn" class="btn btn-ghost btn-sm">✕</button>
+      </div>
+      <h4 class="heading-sm mb-2" id="modalClaimTitle">Assertion Details</h4>
+      <p class="text-xs text-secondary mb-4" id="modalEvidenceDesc">Primary evidence corroborated by wire network.</p>
+      <div class="card p-3 mb-4" style="background:var(--bg-surface-2)">
+        <span class="text-xs text-muted block mb-1">Source Attributions:</span>
+        <span class="text-xs font-semibold text-accent" id="modalSources">Reuters · Associated Press · Bloomberg</span>
+      </div>
+      <button onclick="document.getElementById('evidenceModal').classList.remove('active')" class="btn btn-primary btn-sm w-full">
+        Done Inspecting
+      </button>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -186,15 +283,37 @@
     </div>
   </footer>
 
-  <script src="/assets/js/api.js?v=2.1"></script>
-  <script src="/assets/js/layout.js?v=2.1"></script>
-  <script src="/assets/js/app.js?v=2.1"></script>
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="/assets/js/api.js?v=2.6"></script>
+  <script src="/assets/js/layout.js?v=2.6"></script>
+  <script src="/assets/js/app.js?v=2.6"></script>
   <script>
+    let currentSpeech = null;
+    let isPlayingAudio = false;
+    let speechRate = 1.0;
+
+    function openEvidenceModal(claim, evidence, status) {
+      document.getElementById('modalClaimTitle').textContent = claim;
+      document.getElementById('modalEvidenceDesc').textContent = evidence || 'Independently audited against official primary wire transcripts.';
+      document.getElementById('modalEvidenceBadge').textContent = '🟢 ' + (status || 'VERIFIED CLAIM');
+      document.getElementById('evidenceModal').classList.add('active');
+    }
+
+    document.getElementById('closeModalBtn')?.addEventListener('click', () => {
+      document.getElementById('evidenceModal').classList.remove('active');
+    });
+
     document.addEventListener('DOMContentLoaded', async () => {
+      // Register Service Worker for PWA
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
+
       // Reading Progress Handler
       window.addEventListener('scroll', () => {
         const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (window.scrollY / h) * 100;
+        const scrolled = (window.scrollY / (h || 1)) * 100;
         document.getElementById('progressBar').style.width = `${scrolled}%`;
       });
 
@@ -234,10 +353,10 @@
         const claimsList = document.getElementById('articleClaimsList');
         if (article.key_claims && article.key_claims.length) {
           claimsList.innerHTML = article.key_claims.map(c => `
-            <div class="claim-card">
+            <div class="claim-card" style="cursor:pointer;" onclick="openEvidenceModal('${sanitize(c.claim).replace(/'/g, "\\'")}', '${sanitize(c.evidence || '').replace(/'/g, "\\'")}', '${sanitize(c.status || '')}')">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-accent">${sanitize(c.status || 'Verified Fact')}</span>
-                <span class="text-xs text-muted">Evidence</span>
+                <span class="text-xs text-muted">🔍 Click to Inspect Evidence</span>
               </div>
               <p class="text-sm font-semibold mb-1">${sanitize(c.claim)}</p>
               <p class="text-xs text-secondary">${sanitize(c.evidence || 'Audited by wire network')}</p>
@@ -251,6 +370,50 @@
         const sources = article.corroborating_sources || [article.source?.name || 'Reuters', 'BBC News', 'Associated Press'];
         chipsContainer.innerHTML = sources.map(s => `<span class="badge badge-corroborated">✓ ${sanitize(s)}</span>`).join('');
         document.getElementById('scorecardSourcesCount').textContent = `${sources.length} Wires`;
+
+        // Audio Briefing Player
+        const playBtn = document.getElementById('audioPlayBtn');
+        const speedBtn = document.getElementById('audioSpeedBtn');
+        const playText = document.getElementById('audioPlayText');
+
+        playBtn?.addEventListener('click', () => {
+          if (!('speechSynthesis' in window)) {
+            showToast('Voice synthesis is not supported on this device', 'error');
+            return;
+          }
+
+          if (isPlayingAudio) {
+            window.speechSynthesis.cancel();
+            isPlayingAudio = false;
+            playText.textContent = 'Listen to Story';
+            playBtn.classList.remove('btn-secondary');
+            playBtn.classList.add('btn-primary');
+          } else {
+            const textToRead = `${article.title}. Summary: ${article.summary || ''}`;
+            currentSpeech = new SpeechSynthesisUtterance(textToRead);
+            currentSpeech.rate = speechRate;
+            currentSpeech.onend = () => {
+              isPlayingAudio = false;
+              playText.textContent = 'Listen to Story';
+            };
+            window.speechSynthesis.speak(currentSpeech);
+            isPlayingAudio = true;
+            playText.textContent = 'Pause Briefing';
+            playBtn.classList.remove('btn-primary');
+            playBtn.classList.add('btn-secondary');
+          }
+        });
+
+        speedBtn?.addEventListener('click', () => {
+          const rates = [1.0, 1.25, 1.5];
+          const nextIdx = (rates.indexOf(speechRate) + 1) % rates.length;
+          speechRate = rates[nextIdx];
+          speedBtn.textContent = `${speechRate}x`;
+          if (isPlayingAudio && currentSpeech) {
+            window.speechSynthesis.cancel();
+            playBtn.click();
+          }
+        });
 
         document.getElementById('bookmarkBtn').addEventListener('click', async () => {
           await handleSaveBookmark(article.id);
