@@ -84,6 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 4. Clean Header Auth Initialization Complete
 
+  // 0. Auto-Flush Stale Service Worker Cache
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      for (let reg of regs) reg.unregister();
+    });
+  }
+
   // 5. Universal Search Command Palette & Modal
   let searchOverlay = document.getElementById('searchOverlay');
   
@@ -110,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <a href="latest.html?q=malaria" class="search-tag-pill">#MalariaVaccine</a>
             <a href="latest.html?q=settlement" class="search-tag-pill">#ProjectNexus</a>
           </div>
+        </div>
         <div class="search-modal-footer">
           <div class="flex items-center gap-3">
             <span><kbd style="padding:2px 5px;background:var(--bg-surface-2);border-radius:4px;border:1px solid var(--border)">↵</kbd> View All</span>
