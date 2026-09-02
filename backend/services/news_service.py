@@ -1,5 +1,6 @@
 import asyncio
 import re
+import random
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 import feedparser
@@ -169,8 +170,13 @@ async def ingest_all_feeds() -> Dict[str, Any]:
         src_result = await db.execute(select(Source))
         sources = {s.name: s.id for s in src_result.scalars().all()}
 
+        seen_urls = set()
         for item in all_fetched:
-            # Check for duplicate URL
+            if not item.get("source_url") or item["source_url"] in seen_urls:
+                continue
+            seen_urls.add(item["source_url"])
+
+            # Check for duplicate URL in DB
             existing = await db.execute(select(Article).where(Article.source_url == item["source_url"]))
             if existing.scalar_one_or_none():
                 continue
@@ -186,7 +192,7 @@ async def ingest_all_feeds() -> Dict[str, Any]:
 
             # Generate unique slug
             base_slug = re.sub(r'[^a-zA-Z0-9]+', '-', item["title"].lower()).strip('-')[:120]
-            unique_slug = f"{base_slug}-{int(datetime.now().timestamp())}"
+            unique_slug = f"{base_slug}-{int(datetime.now().timestamp())}-{random.randint(100, 999)}"
 
             article = Article(
                 title=item["title"],
@@ -208,12 +214,14 @@ async def ingest_all_feeds() -> Dict[str, Any]:
                 source_id=sources.get(item["source_name"], list(sources.values())[0] if sources else None),
                 published_at=item["published_at"],
             )
-            db.add(article)
-            created_count += 1
-            if fact_metrics["credibility_score"] >= 80:
-                verified_count += 1
-
-        await db.commit()
+            try:
+                db.add(article)
+                await db.commit()
+                created_count += 1
+                if fact_metrics["credibility_score"] >= 80:
+                    verified_count += 1
+            except Exception:
+                await db.rollback()
 
     return {
         "fetched": len(all_fetched),

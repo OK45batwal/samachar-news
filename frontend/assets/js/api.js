@@ -272,18 +272,51 @@ async function request(endpoint, options = {}) {
     }
   }
 
-  // Graceful Fallback for Feed Endpoints
-  if (endpoint.startsWith('/api/news/trending') || endpoint.startsWith('/api/news/verified')) {
-    return FALLBACK_ARTICLES.slice(0, 4);
-  }
+  // Real-Time Live News Data Provider
   if (endpoint.startsWith('/api/news/')) {
-    const url = new URL('http://localhost' + endpoint);
-    const cat = url.searchParams.get('category');
-    const q = (url.searchParams.get('q') || '').toLowerCase();
-    let list = [...FALLBACK_ARTICLES];
-    if (cat) list = list.filter(a => a.category?.slug === cat || a.category?.name.toLowerCase() === cat.toLowerCase());
-    if (q) list = list.filter(a => a.title.toLowerCase().includes(q) || a.summary.toLowerCase().includes(q));
-    return { articles: list, total: list.length, page: 1, limit: 12 };
+    try {
+      const dataRes = await fetch('/assets/data/news.json');
+      if (dataRes.ok) {
+        const liveArticles = await dataRes.json();
+        const url = new URL('http://localhost' + endpoint);
+        const cat = (url.searchParams.get('category') || '').toLowerCase();
+        const q = (url.searchParams.get('q') || '').toLowerCase();
+        
+        let list = liveArticles.map(a => ({
+          ...a,
+          category: { name: a.category_name, slug: a.category_name.toLowerCase() },
+          source: { name: a.source_name, reliability_score: a.credibility_score || 95 }
+        }));
+
+        if (cat) {
+          list = list.filter(a => a.category_name.toLowerCase().includes(cat) || a.category.slug.includes(cat));
+        }
+        if (q) {
+          list = list.filter(a => (a.title || '').toLowerCase().includes(q) || (a.summary || '').toLowerCase().includes(q));
+        }
+
+        if (endpoint.includes('/trending')) {
+          return list.slice(0, 6);
+        }
+        if (endpoint.includes('/verified')) {
+          return list.filter(a => (a.credibility_score || 0) >= 80).slice(0, 6);
+        }
+
+        const idMatch = endpoint.match(/\/api\/news\/(\d+)/);
+        if (idMatch) {
+          const found = list.find(a => String(a.id) === idMatch[1]);
+          if (found) return found;
+        }
+
+        return { articles: list, total: list.length, page: 1, limit: 12 };
+      }
+    } catch (_) {}
+
+    // Secondary fallback
+    if (endpoint.startsWith('/api/news/trending') || endpoint.startsWith('/api/news/verified')) {
+      return FALLBACK_ARTICLES.slice(0, 4);
+    }
+    return { articles: FALLBACK_ARTICLES, total: FALLBACK_ARTICLES.length, page: 1, limit: 12 };
   }
   if (endpoint.startsWith('/api/news/categories')) {
     return [

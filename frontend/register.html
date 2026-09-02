@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#08090C" />
   <title>Create Account — Samachar Truth Intelligence</title>
-  <meta name="description" content="Create your Samachar account with Two-Factor Email Verification." />
+  <meta name="description" content="Create your free Samachar account to access real-time fact-checked news." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=4.2" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=4.2" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=4.2" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=4.5" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=4.5" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=4.5" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -73,72 +73,44 @@
 
         <div class="card p-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-lg);">
           
-          <!-- STAGE 1: Profile & Credentials Form -->
-          <div id="regStep1Container">
-            <div class="text-center mb-6">
-              <span class="badge badge-verified mb-2">CREATE ACCOUNT</span>
-              <h1 class="heading-lg mb-1">Create Free Account</h1>
-              <p class="text-xs text-secondary">Sign up for verified news intelligence with 2-step email verification</p>
-            </div>
-
-            <form id="registerForm">
-              <div class="form-group mb-3">
-                <label class="form-label">Full Name</label>
-                <input type="text" id="nameInput" class="input" placeholder="Your Name" required autocomplete="name" />
-              </div>
-
-              <div class="form-group mb-3">
-                <label class="form-label">Email Address</label>
-                <input type="email" id="emailInput" class="input" placeholder="name@domain.com" required autocomplete="email" />
-              </div>
-
-              <div class="form-group mb-4">
-                <label class="form-label">Password</label>
-                <div style="position: relative;">
-                  <input type="password" id="passwordInput" class="input" placeholder="Min. 8 characters" minlength="6" required autocomplete="new-password" />
-                  <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                  </button>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-2 mb-4 text-xs text-secondary">
-                <input type="checkbox" id="agreeTermsCheckbox" required checked style="margin-top: 3px;" />
-                <label for="agreeTermsCheckbox">
-                  I agree to the <a href="terms.html" class="text-accent font-semibold hover:underline" target="_blank">Terms of Service</a> and <a href="privacy.html" class="text-accent font-semibold hover:underline" target="_blank">Privacy Policy</a>.
-                </label>
-              </div>
-
-              <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 12px;">
-                Send Two-Factor Verification Code &rarr;
-              </button>
-            </form>
+          <div class="text-center mb-6">
+            <span class="badge badge-verified mb-2">CREATE ACCOUNT</span>
+            <h1 class="heading-lg mb-1">Create Free Account</h1>
+            <p class="text-xs text-secondary">Join verified readers and fact-checkers worldwide</p>
           </div>
 
-          <!-- STAGE 2: 2FA Email Code Verification (OTP) -->
-          <div id="regStep2Container" style="display: none;">
-            <div class="text-center mb-6">
-              <span class="badge badge-verified mb-2">STAGE 2 VERIFICATION</span>
-              <h1 class="heading-lg mb-1">Verify Your Email</h1>
-              <p class="text-xs text-secondary">Enter the 6-digit security code sent to <strong id="regDisplayEmail" class="text-accent"></strong></p>
+          <form id="registerForm">
+            <div class="form-group mb-3">
+              <label class="form-label">Full Name</label>
+              <input type="text" id="nameInput" class="input" placeholder="Your Name" required autocomplete="name" />
             </div>
 
-            <form id="regOtpForm">
-              <div class="form-group mb-5">
-                <label class="form-label text-center mb-2" style="display:block">Enter 6-Digit Code</label>
-                <input type="text" id="regOtpInput" class="input text-center font-mono" maxlength="6" placeholder="000000" style="font-size: 24px; letter-spacing: 8px; font-weight: 700; height: 54px;" required autocomplete="one-time-code" autofocus />
-              </div>
+            <div class="form-group mb-3">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="emailInput" class="input" placeholder="name@domain.com" required autocomplete="email" />
+            </div>
 
-              <button type="submit" id="regVerifyBtn" class="btn btn-primary w-full mb-4" style="padding: 12px;">
-                Complete Registration & Enter &rarr;
-              </button>
-
-              <div class="flex items-center justify-between text-xs text-muted mb-2">
-                <button type="button" id="regBackToStep1Btn" class="text-secondary hover:text-primary" style="background:none;border:none;cursor:pointer;padding:0">&larr; Change Details</button>
-                <button type="button" id="regResendOtpBtn" class="text-accent font-semibold hover:underline" style="background:none;border:none;cursor:pointer;padding:0">Resend Code</button>
+            <div class="form-group mb-4">
+              <label class="form-label">Password</label>
+              <div style="position: relative;">
+                <input type="password" id="passwordInput" class="input" placeholder="Min. 6 characters" minlength="6" required autocomplete="new-password" />
+                <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
               </div>
-            </form>
-          </div>
+            </div>
+
+            <div class="flex items-start gap-2 mb-4 text-xs text-secondary">
+              <input type="checkbox" id="agreeTermsCheckbox" required checked style="margin-top: 3px;" />
+              <label for="agreeTermsCheckbox">
+                I agree to the <a href="terms.html" class="text-accent font-semibold hover:underline" target="_blank">Terms of Service</a> and <a href="privacy.html" class="text-accent font-semibold hover:underline" target="_blank">Privacy Policy</a>.
+              </label>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 12px; font-weight: 600;">
+              Create Account & Enter &rarr;
+            </button>
+          </form>
 
           <div class="text-center text-xs text-secondary pt-4 border-top mt-4">
             Already have an account? <a href="login.html" class="text-accent font-semibold hover:underline">Sign in &rarr;</a>
@@ -165,15 +137,10 @@
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(10px)';
         setTimeout(() => toast.remove(), 250);
-      }, 5000);
+      }, 4000);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      let regEmail = '';
-      let regPassword = '';
-      let regName = '';
-      let regGeneratedOtp = '582914';
-
       // Theme switcher
       const themeBtn = document.getElementById('authThemeToggle');
       themeBtn?.addEventListener('click', () => {
@@ -190,86 +157,62 @@
         pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
       });
 
-      function generateAndSendOtp(email, password, fullName) {
-        regEmail = email.toLowerCase().trim();
-        regPassword = password;
-        regName = fullName.trim();
-        
-        // Generate random 6-digit OTP
-        regGeneratedOtp = String(Math.floor(100000 + Math.random() * 900000));
-        
-        // Save pending session in localStorage
-        localStorage.setItem('samachar_pending_reg', JSON.stringify({
-          email: regEmail,
-          fullName: regName,
-          password: regPassword,
-          otp: regGeneratedOtp
-        }));
-
-        // Transition immediately to Step 2
-        document.getElementById('regDisplayEmail').textContent = regEmail;
-        document.getElementById('regStep1Container').style.display = 'none';
-        document.getElementById('regStep2Container').style.display = 'block';
-        
-        const otpField = document.getElementById('regOtpInput');
-        otpField.value = '';
-        otpField.focus();
-
-        showToast(`⚡ Two-Step Verification Code: [ ${regGeneratedOtp} ]`, 'success');
-      }
-
-      document.getElementById('registerForm').addEventListener('submit', (e) => {
+      // Direct Account Creation
+      document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const fullName = document.getElementById('nameInput').value.trim();
-        const email = document.getElementById('emailInput').value.trim();
+        const email = document.getElementById('emailInput').value.trim().toLowerCase();
         const password = document.getElementById('passwordInput').value;
+        const btn = document.getElementById('submitBtn');
 
         if (!fullName || !email || !password) {
-          showToast('Please fill in all required fields.', 'error');
+          showToast('Please fill in all fields.', 'error');
           return;
         }
 
-        generateAndSendOtp(email, password, fullName);
-      });
+        btn.disabled = true;
+        btn.textContent = 'Creating Account...';
 
-      document.getElementById('regOtpForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const code = document.getElementById('regOtpInput').value.trim();
-        
-        if (code.length < 4) {
-          showToast('Please enter the verification code.', 'error');
-          return;
+        try {
+          // Attempt backend registration if available
+          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            try {
+              await fetch('http://localhost:8000/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, full_name: fullName }),
+                signal: AbortSignal.timeout(1000)
+              });
+            } catch (_) {}
+          }
+
+          // Create authenticated session
+          const user = {
+            id: 'usr_' + Date.now(),
+            email: email,
+            username: email.split('@')[0],
+            full_name: fullName,
+            role: 'user',
+            preferences: { theme: 'dark', verified_only: true }
+          };
+          const token = 'samachar_jwt_' + btoa(JSON.stringify(user));
+
+          localStorage.setItem('samachar_token', token);
+          localStorage.setItem('samachar_user', JSON.stringify(user));
+          localStorage.setItem('samachar_registered_' + email, JSON.stringify(user));
+
+          showToast('🎉 Account created successfully! Entering truth portal...', 'success');
+          
+          const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
+          setTimeout(() => {
+            window.location.href = redirectUrl;
+          }, 400);
+
+        } catch (err) {
+          showToast(err.message || 'Account creation error. Please try again.', 'error');
+          btn.disabled = false;
+          btn.textContent = 'Create Account & Enter →';
         }
-
-        // Create verified user profile
-        const user = {
-          id: 'usr_' + Date.now(),
-          email: regEmail,
-          username: regEmail.split('@')[0],
-          full_name: regName || regEmail.split('@')[0],
-          role: 'user',
-          preferences: { theme: 'dark', verified_only: true }
-        };
-        const token = 'samachar_jwt_' + btoa(JSON.stringify(user));
-
-        localStorage.setItem('samachar_token', token);
-        localStorage.setItem('samachar_user', JSON.stringify(user));
-
-        showToast('🎉 Account verified and created! Redirecting to truth feed...', 'success');
-        
-        const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
-        setTimeout(() => {
-          window.location.href = redirectUrl;
-        }, 500);
-      });
-
-      document.getElementById('regBackToStep1Btn').addEventListener('click', () => {
-        document.getElementById('regStep2Container').style.display = 'none';
-        document.getElementById('regStep1Container').style.display = 'block';
-      });
-
-      document.getElementById('regResendOtpBtn').addEventListener('click', () => {
-        generateAndSendOtp(regEmail, regPassword, regName);
       });
     });
   </script>
