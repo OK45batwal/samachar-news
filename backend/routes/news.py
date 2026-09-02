@@ -127,6 +127,14 @@ async def get_platform_stats(db: AsyncSession = Depends(get_db)):
     }
 
 
+@router.post("/sync")
+async def trigger_news_sync():
+    """Trigger on-demand live RSS feed ingestion and truth evaluation."""
+    from ..services.news_service import ingest_all_feeds
+    result = await ingest_all_feeds()
+    return {"status": "success", "data": result}
+
+
 @router.get("/{id}", response_model=ArticleOut)
 async def get_article(id: int, db: AsyncSession = Depends(get_db)):
     query = (
