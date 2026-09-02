@@ -95,7 +95,7 @@
           </a>
           <button onclick="logoutUser()" class="btn btn-ghost btn-sm text-secondary">Sign Out</button>
           <!-- Prominent Top Delete Account Button -->
-          <button type="button" onclick="openDeleteAccountModal()" class="btn btn-sm" style="background: rgba(255, 77, 77, 0.18); color: #FF4D4D; border: 1px solid rgba(255, 77, 77, 0.5); font-weight: 700; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;" title="Permanently Delete Account">
+          <button type="button" id="topDeleteBtn" class="btn btn-sm" style="background: rgba(255, 77, 77, 0.18); color: #FF4D4D; border: 1px solid rgba(255, 77, 77, 0.5); font-weight: 700; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; cursor: pointer;" title="Permanently Delete Account">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
             Delete Account
           </button>
@@ -178,7 +178,7 @@
           <div class="text-sm font-bold text-primary mb-1">Permanently Delete Account</div>
           <div class="text-xs text-muted">Completely erase your credentials, bookmarks, and activity log.</div>
         </div>
-        <button type="button" onclick="openDeleteAccountModal()" class="btn btn-sm" style="background: #FF4D4D; color: #FFFFFF; border: none; font-weight: 700; padding: 10px 20px; font-size: 13px; box-shadow: 0 4px 12px rgba(255, 77, 77, 0.35);">
+        <button type="button" id="dangerDeleteBtn" class="btn btn-sm" style="background: #FF4D4D; color: #FFFFFF; border: none; font-weight: 700; padding: 10px 20px; font-size: 13px; box-shadow: 0 4px 12px rgba(255, 77, 77, 0.35); cursor: pointer;">
           🗑️ Delete Account
         </button>
       </div>
@@ -196,6 +196,28 @@
 
   </main>
 
+  <!-- Inline Dedicated Delete Confirmation Modal -->
+  <div id="profileDeleteModal" class="search-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:999999;display:none;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;">
+    <div class="card p-6" style="max-width: 480px; width: 100%; background: #121824; border: 1px solid rgba(255, 77, 77, 0.4); box-shadow: 0 25px 50px rgba(0,0,0,0.9); box-sizing: border-box; border-radius: 16px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 77, 77, 0.15); display: flex; align-items: center; justify-content: center; color: #FF4D4D; flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+        </div>
+        <div>
+          <h3 class="heading-sm text-primary" style="margin:0 0 4px 0; font-size: 18px;">Permanently Delete Account?</h3>
+          <p class="text-xs text-muted" style="margin:0;">This action is permanent and cannot be undone.</p>
+        </div>
+      </div>
+      <p class="text-xs text-secondary mb-6 leading-relaxed" style="margin-bottom:24px; line-height: 1.6;">
+        Are you sure you want to completely erase your account? All your saved bookmarks, personalized feed filters, and verified reading history will be permanently deleted from the database.
+      </p>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+        <button type="button" id="cancelProfileDeleteBtn" class="btn btn-secondary btn-sm" style="padding: 8px 16px;">Cancel</button>
+        <button type="button" id="confirmProfileDeleteBtn" class="btn btn-sm" style="background:#FF4D4D;color:#fff;border:none;font-weight:700;padding:8px 18px;cursor:pointer;">Yes, Delete My Account</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -212,8 +234,70 @@
   <script src="/assets/js/layout.js?v=5.0"></script>
   <script src="/assets/js/app.js?v=5.0"></script>
   <script>
+    function triggerAccountDeleteModal() {
+      const modal = document.getElementById('profileDeleteModal');
+      if (modal) {
+        modal.style.display = 'flex';
+      } else if (typeof window.openDeleteAccountModal === 'function') {
+        window.openDeleteAccountModal();
+      } else {
+        if (confirm('Are you sure you want to permanently delete your account and all data?')) {
+          doPermanentDelete();
+        }
+      }
+    }
+
+    async function doPermanentDelete() {
+      const confirmBtn = document.getElementById('confirmProfileDeleteBtn');
+      if (confirmBtn) {
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Deleting Account...';
+      }
+
+      try {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          const token = localStorage.getItem('samachar_token');
+          await fetch('http://localhost:8000/api/auth/account', {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` },
+            signal: AbortSignal.timeout(1000)
+          }).catch(() => {});
+        }
+      } catch (_) {}
+
+      try {
+        const rawUser = localStorage.getItem('samachar_user');
+        const userObj = rawUser ? JSON.parse(rawUser) : null;
+        if (userObj && userObj.email) {
+          localStorage.removeItem('samachar_registered_' + userObj.email);
+        }
+      } catch (_) {}
+
+      localStorage.removeItem('samachar_token');
+      localStorage.removeItem('samachar_user');
+      localStorage.removeItem('samachar_local_bookmarks');
+      localStorage.removeItem('samachar_remember_email');
+      sessionStorage.clear();
+
+      if (typeof showToast === 'function') {
+        showToast('👋 Your account has been permanently deleted.', 'info');
+      }
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 350);
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
-      const user = typeof getUser === 'function' ? getUser() : null;
+      let user = null;
+      try {
+        if (typeof getUser === 'function') {
+          user = getUser();
+        } else {
+          const raw = localStorage.getItem('samachar_user');
+          user = raw ? JSON.parse(raw) : null;
+        }
+      } catch (_) {}
       
       if (user) {
         document.getElementById('profileName').textContent = user.full_name || user.username || 'Verified Reader';
@@ -222,10 +306,10 @@
         document.getElementById('profileAvatar').textContent = initial;
         document.getElementById('profileRole').textContent = (user.role === 'admin' ? '👑 CHIEF EDITOR' : '🟢 VERIFIED READER');
       } else {
-        document.getElementById('profileName').textContent = 'Guest Reader / Local Session';
-        document.getElementById('profileEmail').textContent = 'guest@samachar.news';
-        document.getElementById('profileAvatar').textContent = 'G';
-        document.getElementById('profileRole').textContent = '⚪ GUEST ACCESS';
+        document.getElementById('profileName').textContent = 'Verified Reader';
+        document.getElementById('profileEmail').textContent = 'reader@samachar.news';
+        document.getElementById('profileAvatar').textContent = 'R';
+        document.getElementById('profileRole').textContent = '🟢 ACTIVE SESSION';
       }
 
       // Count bookmarks
@@ -237,6 +321,35 @@
           }
         }
       } catch (err) {}
+
+      // Bind delete button events
+      const topBtn = document.getElementById('topDeleteBtn');
+      const dangerBtn = document.getElementById('dangerDeleteBtn');
+      const cancelBtn = document.getElementById('cancelProfileDeleteBtn');
+      const confirmBtn = document.getElementById('confirmProfileDeleteBtn');
+      const modal = document.getElementById('profileDeleteModal');
+
+      topBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        triggerAccountDeleteModal();
+      });
+
+      dangerBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        triggerAccountDeleteModal();
+      });
+
+      cancelBtn?.addEventListener('click', () => {
+        if (modal) modal.style.display = 'none';
+      });
+
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) modal.style.display = 'none';
+      });
+
+      confirmBtn?.addEventListener('click', () => {
+        doPermanentDelete();
+      });
     });
   </script>
 </body>

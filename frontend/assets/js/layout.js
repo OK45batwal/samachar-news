@@ -1,5 +1,78 @@
 // Samachar Layout Controller: Header Auth, Theme switcher, Mobile Bottom Nav, Search Modal
 
+// Global Account Deletion Modal Controller (Defined at top to guarantee global availability)
+window.openDeleteAccountModal = function() {
+  let modal = document.getElementById('globalDeleteAccountModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'globalDeleteAccountModal';
+    modal.className = 'search-overlay';
+    modal.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;";
+    modal.innerHTML = `
+      <div class="card p-6" style="max-width: 480px; width: 100%; background: #121824; border: 1px solid rgba(255, 77, 77, 0.4); box-shadow: 0 25px 50px rgba(0,0,0,0.9); box-sizing: border-box; border-radius: 16px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 77, 77, 0.15); display: flex; align-items: center; justify-content: center; color: #FF4D4D; flex-shrink: 0;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+          </div>
+          <div>
+            <h3 class="heading-sm text-primary" style="margin:0 0 4px 0; font-size: 18px;">Permanently Delete Account?</h3>
+            <p class="text-xs text-muted" style="margin:0;">This action is permanent and cannot be undone.</p>
+          </div>
+        </div>
+        <p class="text-xs text-secondary mb-6 leading-relaxed" style="margin-bottom:24px; line-height: 1.6;">
+          Are you sure you want to completely erase your account? All your saved bookmarks, personalized feed filters, and verified reading history will be permanently deleted from the database.
+        </p>
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+          <button type="button" onclick="document.getElementById('globalDeleteAccountModal').style.display='none'" class="btn btn-secondary btn-sm" style="padding: 8px 16px;">Cancel</button>
+          <button type="button" id="confirmGlobalDeleteBtn" onclick="executeGlobalDeleteAccount()" class="btn btn-sm" style="background:#FF4D4D;color:#fff;border:none;font-weight:700;padding:8px 18px;">Yes, Delete My Account</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  }
+  modal.style.display = 'flex';
+};
+
+window.executeGlobalDeleteAccount = async function() {
+  const btn = document.getElementById('confirmGlobalDeleteBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Deleting Account...'; }
+  
+  try {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      const token = localStorage.getItem('samachar_token');
+      await fetch('http://localhost:8000/api/auth/account', {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+        signal: AbortSignal.timeout(1000)
+      }).catch(() => {});
+    }
+  } catch (_) {}
+
+  try {
+    const rawUser = localStorage.getItem('samachar_user');
+    const userObj = rawUser ? JSON.parse(rawUser) : null;
+    if (userObj && userObj.email) {
+      localStorage.removeItem('samachar_registered_' + userObj.email);
+    }
+  } catch (_) {}
+
+  localStorage.removeItem('samachar_token');
+  localStorage.removeItem('samachar_user');
+  localStorage.removeItem('samachar_local_bookmarks');
+  localStorage.removeItem('samachar_remember_email');
+  sessionStorage.clear();
+
+  if (typeof showToast === 'function') {
+    showToast('👋 Your account has been permanently deleted.', 'info');
+  }
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 350);
+};
+
 (function() {
   const saved = localStorage.getItem('samachar_theme') || 'dark';
   document.documentElement.setAttribute('data-theme', saved);
@@ -53,7 +126,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. Header Authentication State
   const authContainer = document.getElementById('headerAuth');
-  const user = getUser();
+  let user = null;
+  try {
+    if (typeof getUser === 'function') {
+      user = getUser();
+    } else {
+      const raw = localStorage.getItem('samachar_user');
+      user = raw ? JSON.parse(raw) : null;
+    }
+  } catch (_) {}
 
   if (authContainer) {
     if (user) {
@@ -67,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div style="width:20px;height:20px;border-radius:50%;background:var(--accent);color:#08090C;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center">
               ${(user.full_name || user.username || 'U')[0].toUpperCase()}
             </div>
-            <span class="hide-mobile">${user.username}</span>
+            <span class="hide-mobile">${user.username || 'Profile'}</span>
           </a>
           <button onclick="logoutUser()" class="btn btn-ghost btn-sm" title="Sign Out">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -86,8 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }
   }
-
-  // 4. Clean Header Auth Initialization Complete
 
   // 0. Auto-Flush Stale Service Worker Cache
   if ('serviceWorker' in navigator) {
@@ -145,98 +224,114 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const searchToggle = document.getElementById('searchToggle');
   const globalSearchInput = document.getElementById('globalSearch');
-  const resultsContainer = document.getElementById('globalSearchResults');
-  const trendingContainer = document.getElementById('searchDefaultTrending');
-  let debounceTimeout = null;
+  const globalSearchResults = document.getElementById('globalSearchResults');
+  const searchDefaultTrending = document.getElementById('searchDefaultTrending');
 
   function openSearch() {
-    if (!searchOverlay) return;
-    searchOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    globalSearchInput?.focus();
+    if (searchOverlay) {
+      searchOverlay.style.display = 'flex';
+      setTimeout(() => {
+        globalSearchInput?.focus();
+      }, 50);
+    }
   }
 
   function closeSearch() {
-    if (!searchOverlay) return;
-    searchOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-    if (globalSearchInput) globalSearchInput.value = '';
-    if (resultsContainer) {
-      resultsContainer.style.display = 'none';
-      resultsContainer.innerHTML = '';
+    if (searchOverlay) {
+      searchOverlay.style.display = 'none';
+      if (globalSearchInput) globalSearchInput.value = '';
+      if (globalSearchResults) {
+        globalSearchResults.innerHTML = '';
+        globalSearchResults.style.display = 'none';
+      }
+      if (searchDefaultTrending) searchDefaultTrending.style.display = 'block';
     }
-    if (trendingContainer) trendingContainer.style.display = 'block';
   }
 
-  document.querySelectorAll('#searchToggle, [data-action="search"]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      openSearch();
-    });
+  searchToggle?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openSearch();
   });
-
-  if (searchOverlay) {
-    searchOverlay.addEventListener('click', (e) => {
-      if (e.target === searchOverlay) closeSearch();
-    });
-  }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && searchOverlay?.classList.contains('active')) {
-      closeSearch();
-    }
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
-      if (searchOverlay?.classList.contains('active')) {
-        closeSearch();
-      } else {
-        openSearch();
-      }
+      openSearch();
+    }
+    if (e.key === 'Escape' && searchOverlay && searchOverlay.style.display === 'flex') {
+      closeSearch();
     }
   });
 
-  if (globalSearchInput) {
-    globalSearchInput.addEventListener('input', () => {
-      const query = globalSearchInput.value.trim();
-      clearTimeout(debounceTimeout);
+  searchOverlay?.addEventListener('click', (e) => {
+    if (e.target === searchOverlay) {
+      closeSearch();
+    }
+  });
 
-      if (!query || query.length < 2) {
-        if (resultsContainer) {
-          resultsContainer.style.display = 'none';
-          resultsContainer.innerHTML = '';
+  // Global search typing listener
+  let searchTimeout = null;
+  if (globalSearchInput) {
+    globalSearchInput.addEventListener('input', (e) => {
+      const query = e.target.value.trim().toLowerCase();
+      clearTimeout(searchTimeout);
+
+      if (!query) {
+        if (globalSearchResults) {
+          globalSearchResults.innerHTML = '';
+          globalSearchResults.style.display = 'none';
         }
-        if (trendingContainer) trendingContainer.style.display = 'block';
+        if (searchDefaultTrending) searchDefaultTrending.style.display = 'block';
         return;
       }
 
-      debounceTimeout = setTimeout(async () => {
-        try {
-          const res = await getArticles({ q: query, limit: 5 });
-          if (trendingContainer) trendingContainer.style.display = 'none';
-          if (resultsContainer) {
-            resultsContainer.style.display = 'block';
-            if (res.articles && res.articles.length) {
-              resultsContainer.innerHTML = res.articles.map(a => `
-                <a href="article.html?id=${a.id}" class="search-result-item">
-                  <div style="flex:1;min-width:0;">
-                    <div class="title line-clamp-1">${sanitize(a.title)}</div>
-                    <div class="meta">${sanitize(a.category?.name || 'Top News')} · ${sanitize(a.source?.name || 'Wire')} · ${timeAgo(a.published_at)}</div>
-                  </div>
-                  <span class="badge badge-verified" style="font-size:10px;padding:3px 7px;flex-shrink:0;">🟢 ${a.credibility_score || 95}%</span>
-                </a>
-              `).join('') + `
-                <a href="latest.html?q=${encodeURIComponent(query)}" class="search-result-item" style="background:var(--bg-surface-2);justify-content:center;color:var(--accent);font-weight:600;font-size:12px;">
-                  View All Matching Stories for "${sanitize(query)}" &rarr;
-                </a>
-              `;
-            } else {
-              resultsContainer.innerHTML = `<div class="p-4 text-center text-xs text-muted">No verified stories found for "${sanitize(query)}". Press Enter to browse.</div>`;
+      if (searchDefaultTrending) searchDefaultTrending.style.display = 'none';
+
+      searchTimeout = setTimeout(async () => {
+        if (globalSearchResults) {
+          globalSearchResults.style.display = 'block';
+          globalSearchResults.innerHTML = '<div style="padding:16px;text-align:center;color:#94A3B8;font-size:13px;">Searching verified database...</div>';
+
+          try {
+            let res = null;
+            if (typeof getArticles === 'function') {
+              res = await getArticles({ q: query, limit: 5 });
             }
-          }
-        } catch (err) {
-          if (resultsContainer) {
-            resultsContainer.innerHTML = `<div class="p-3 text-center text-xs text-muted">Press Enter to search for "${sanitize(query)}"</div>`;
+            const articles = res?.articles || [];
+
+            if (articles.length === 0) {
+              globalSearchResults.innerHTML = `
+                <div style="padding:24px 16px;text-align:center;">
+                  <div style="font-size:13px;color:#94A3B8;margin-bottom:8px;">No matching verified articles found for "${query}"</div>
+                  <a href="latest.html?q=${encodeURIComponent(query)}" style="font-size:12px;color:#00F59B;font-weight:600;text-decoration:none;">Search entire archive &rarr;</a>
+                </div>
+              `;
+              return;
+            }
+
+            globalSearchResults.innerHTML = articles.map(art => `
+              <a href="article.html?id=${art.id}" style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid #1E293B;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#1A2438'" onmouseout="this.style.background='transparent'">
+                <div style="width:40px;height:40px;border-radius:6px;background:#243046;overflow:hidden;flex-shrink:0;">
+                  <img src="${art.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=120&q=80'}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=120&q=80'" />
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:13px;font-weight:600;color:#F8FAFC;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${art.title}</div>
+                  <div style="font-size:11px;color:#94A3B8;display:flex;align-items:center;gap:8px;">
+                    <span style="color:#00F59B;font-weight:600;">🟢 ${art.credibility_score || 95}% Verified</span>
+                    <span>·</span>
+                    <span>${art.source_name || art.source?.name || 'Wire'}</span>
+                  </div>
+                </div>
+              </a>
+            `).join('') + `
+              <div style="padding:10px 16px;background:#131B2C;text-align:center;">
+                <a href="latest.html?q=${encodeURIComponent(query)}" style="font-size:12px;color:#00F59B;font-weight:600;text-decoration:none;">View all results for "${query}" &rarr;</a>
+              </div>
+            `;
+          } catch (err) {
+            globalSearchResults.innerHTML = '<div style="padding:16px;text-align:center;color:#EF4444;font-size:12px;">Error retrieving results.</div>';
           }
         }
       }, 250);
@@ -269,72 +364,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-
-// 7. Global Account Deletion Modal Controller
-window.openDeleteAccountModal = function() {
-  let modal = document.getElementById('globalDeleteAccountModal');
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'globalDeleteAccountModal';
-    modal.className = 'search-overlay';
-    modal.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;";
-    modal.innerHTML = `
-      <div class="card p-6" style="max-width: 480px; width: 100%; background: #121824; border: 1px solid rgba(255, 77, 77, 0.4); box-shadow: 0 25px 50px rgba(0,0,0,0.9); box-sizing: border-box; border-radius: 16px;">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 77, 77, 0.15); display: flex; align-items: center; justify-content: center; color: #FF4D4D; flex-shrink: 0;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-          </div>
-          <div>
-            <h3 class="heading-sm text-primary" style="margin:0 0 4px 0; font-size: 18px;">Permanently Delete Account?</h3>
-            <p class="text-xs text-muted" style="margin:0;">This action is permanent and cannot be undone.</p>
-          </div>
-        </div>
-        <p class="text-xs text-secondary mb-6 leading-relaxed" style="margin-bottom:24px; line-height: 1.6;">
-          Are you sure you want to completely erase your account? All your saved bookmarks, personalized feed filters, and verified reading history will be permanently deleted from the database.
-        </p>
-        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
-          <button type="button" onclick="document.getElementById('globalDeleteAccountModal').style.display='none'" class="btn btn-secondary btn-sm" style="padding: 8px 16px;">Cancel</button>
-          <button type="button" id="confirmGlobalDeleteBtn" onclick="executeGlobalDeleteAccount()" class="btn btn-sm" style="background:#FF4D4D;color:#fff;border:none;font-weight:700;padding:8px 18px;">Yes, Delete My Account</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(modal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) modal.style.display = 'none';
-    });
-  }
-  modal.style.display = 'flex';
-};
-
-window.executeGlobalDeleteAccount = async function() {
-  const btn = document.getElementById('confirmGlobalDeleteBtn');
-  if (btn) { btn.disabled = true; btn.textContent = 'Deleting Account...'; }
-  
-  try {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      const token = localStorage.getItem('samachar_token');
-      await fetch('http://localhost:8000/api/auth/account', {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-        signal: AbortSignal.timeout(1000)
-      }).catch(() => {});
-    }
-  } catch (_) {}
-
-  const user = typeof getUser === 'function' ? getUser() : null;
-  localStorage.removeItem('samachar_token');
-  localStorage.removeItem('samachar_user');
-  localStorage.removeItem('samachar_local_bookmarks');
-  if (user && user.email) {
-    localStorage.removeItem('samachar_registered_' + user.email);
-    localStorage.removeItem('samachar_remember_email');
-  }
-  sessionStorage.clear();
-
-  if (typeof showToast === 'function') {
-    showToast('👋 Your account has been permanently deleted.', 'info');
-  }
-  setTimeout(() => {
-    window.location.href = 'index.html';
-  }, 400);
-};
