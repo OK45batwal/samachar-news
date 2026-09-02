@@ -10,6 +10,15 @@
     ],
     "headers": [
       {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
+      {
         "source": "**",
         "headers": [
           {
@@ -39,7 +48,7 @@
         ]
       },
       {
-        "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css)",
+        "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|woff2)",
         "headers": [
           {
             "key": "Cache-Control",
