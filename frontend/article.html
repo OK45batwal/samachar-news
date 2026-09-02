@@ -426,6 +426,13 @@
           btn.classList.remove('btn-secondary');
         });
 
+        window.addEventListener('scroll', () => {
+          const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const scrolled = (window.scrollY / docHeight) * 100;
+          const progressBar = document.getElementById('readingProgress');
+          if (progressBar) progressBar.style.width = `${Math.min(100, Math.max(0, scrolled))}%`;
+        });
+
       } catch (err) {
         document.getElementById('articleTitle').textContent = 'Article Not Found';
         document.getElementById('articleBody').innerHTML = `<p class="text-danger">Failed to load article: ${err.message}</p>`;

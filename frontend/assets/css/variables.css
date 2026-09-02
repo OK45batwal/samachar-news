@@ -23,51 +23,70 @@
   --disputed: #F43F5E;
   --disputed-dim: rgba(244, 63, 94, 0.14);
 
+  /* Channel Specific Chromatic Accents */
+  --chan-tech: #818CF8;
+  --chan-tech-dim: rgba(129, 140, 248, 0.15);
+  --chan-world: #38BDF8;
+  --chan-world-dim: rgba(56, 189, 248, 0.15);
+  --chan-india: #FB923C;
+  --chan-india-dim: rgba(251, 146, 60, 0.15);
+  --chan-markets: #34D399;
+  --chan-markets-dim: rgba(52, 211, 153, 0.15);
+  --chan-science: #A78BFA;
+  --chan-science-dim: rgba(167, 139, 250, 0.15);
+  --chan-health: #F472B6;
+  --chan-health-dim: rgba(244, 114, 182, 0.15);
+  --chan-sports: #FBBF24;
+  --chan-sports-dim: rgba(251, 191, 36, 0.15);
+
   /* Shared Radii */
   --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
   /* Easing & Physics */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-normal: 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Default & Obsidian Dark Theme */
 :root, [data-theme="dark"] {
-  --bg-base: #08090C;
-  --bg-surface-1: #10131B;
-  --bg-surface-2: #161A26;
-  --bg-surface-3: #1D2333;
-  --bg-elevated: #22293C;
-  --bg-glass: rgba(16, 19, 27, 0.82);
-  --bg-glass-heavy: rgba(8, 9, 12, 0.92);
+  --bg-base: #080B10;
+  --bg-surface-1: #0E131F;
+  --bg-surface-2: #161D2E;
+  --bg-surface-3: #1E273D;
+  --bg-elevated: #242E46;
+  --bg-glass: rgba(14, 19, 31, 0.85);
+  --bg-glass-heavy: rgba(8, 11, 16, 0.94);
 
   --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
   --text-muted: #64748B;
 
-  --border: #1E2536;
-  --border-light: #2A344A;
-  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border: #1B2336;
+  --border-light: #28344E;
+  --border-subtle: rgba(255, 255, 255, 0.07);
 
-  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.55);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.7);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.75);
+  --shadow-glow: 0 0 25px rgba(0, 245, 155, 0.16);
 }
 
-/* Editorial Light Theme */
+/* Editorial Warm Parchment Light Theme */
 [data-theme="light"] {
-  --bg-base: #F8FAFC;
+  --bg-base: #F8F9FB;
   --bg-surface-1: #FFFFFF;
-  --bg-surface-2: #F1F5F9;
+  --bg-surface-2: #F1F4F9;
   --bg-surface-3: #E2E8F0;
   --bg-elevated: #FFFFFF;
-  --bg-glass: rgba(255, 255, 255, 0.88);
-  --bg-glass-heavy: rgba(248, 250, 252, 0.95);
+  --bg-glass: rgba(255, 255, 255, 0.9);
+  --bg-glass-heavy: rgba(248, 249, 251, 0.96);
 
   --text-primary: #0F172A;
   --text-secondary: #475569;
@@ -75,7 +94,7 @@
 
   --border: #E2E8F0;
   --border-light: #CBD5E1;
-  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-subtle: rgba(0, 0, 0, 0.06);
 
   --accent: #059669;
   --accent-hover: #047857;
@@ -86,4 +105,5 @@
   --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.05);
   --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
   --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.12);
+  --shadow-glow: 0 0 20px rgba(5, 150, 105, 0.12);
 }

@@ -60,6 +60,18 @@ function getCategoryDefaultImage(catName) {
 }
 window.getCategoryDefaultImage = getCategoryDefaultImage;
 
+function getCategoryBadgeClass(catName) {
+  const slug = (catName || '').toLowerCase().trim();
+  if (slug.includes('tech')) return 'badge-chan-tech';
+  if (slug.includes('world')) return 'badge-chan-world';
+  if (slug.includes('india')) return 'badge-chan-india';
+  if (slug.includes('business') || slug.includes('market')) return 'badge-chan-markets';
+  if (slug.includes('science')) return 'badge-chan-science';
+  if (slug.includes('health')) return 'badge-chan-health';
+  if (slug.includes('sport')) return 'badge-chan-sports';
+  return 'badge-verified';
+}
+
 // News Card Builder with precise alignment
 function renderNewsCard(article) {
   const safeTitle = sanitize(article.title);
@@ -70,6 +82,9 @@ function renderNewsCard(article) {
   const credScore = article.credibility_score || 88;
   const status = article.fact_check_status || 'verified';
   const imgUrl = article.image_url || getCategoryDefaultImage(safeCat);
+  const catBadgeClass = getCategoryBadgeClass(safeCat);
+  const wordCount = (article.content || article.summary || '').split(/\s+/).length;
+  const readMins = Math.max(1, Math.ceil(wordCount / 180));
 
   let badgeClass = 'badge-verified';
   let badgeLabel = `🟢 ${credScore}% VERIFIED`;
@@ -95,8 +110,8 @@ function renderNewsCard(article) {
       </div>
       <div class="card-body">
         <div class="flex items-center justify-between text-xs text-muted mb-2">
-          <span class="font-semibold text-accent">${safeCat}</span>
-          <span>${timeStr}</span>
+          <span class="badge ${catBadgeClass}" style="font-size:10px;padding:2px 6px;">${safeCat}</span>
+          <span class="flex items-center gap-1"><span>⏱️ ${readMins}m read</span> · <span>${timeStr}</span></span>
         </div>
         <h3 class="heading-sm mb-2 line-clamp-2">
           <a href="article.html?id=${article.id}" style="color:var(--text-primary)">${safeTitle}</a>
