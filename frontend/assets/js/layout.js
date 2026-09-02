@@ -93,15 +93,15 @@ document.addEventListener('DOMContentLoaded', () => {
     searchOverlay.className = 'search-overlay';
     searchOverlay.innerHTML = `
       <div class="search-modal">
-        <div class="p-4 border-bottom flex items-center gap-3">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="globalSearch" class="w-full" placeholder="Search news, claims, topics (Press Enter to view all)..." style="background:transparent;border:none;outline:none;font-size:15px;color:var(--text-primary)" autocomplete="off" />
-          <kbd style="font-family:var(--font-mono);font-size:10px;padding:2px 6px;background:var(--bg-surface-2);border:1px solid var(--border);border-radius:4px;color:var(--text-muted)">ESC</kbd>
+        <div class="search-input-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--accent);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="globalSearch" class="search-input-field" placeholder="Search verified news, claims, topics (Press Enter to view all)..." autocomplete="off" />
+          <kbd style="font-family:var(--font-mono);font-size:10px;padding:3px 8px;background:var(--bg-surface-2);border:1px solid var(--border);border-radius:6px;color:var(--text-muted);flex-shrink:0;">ESC</kbd>
         </div>
         <div id="globalSearchResults" class="search-results-list" style="display:none"></div>
-        <div class="p-4 text-xs text-muted" id="searchDefaultTrending">
-          <div class="font-semibold mb-2" style="color:var(--text-secondary)">Trending Topics:</div>
-          <div class="flex items-center" style="flex-wrap:wrap;gap:6px;">
+        <div class="p-5 text-xs text-muted" id="searchDefaultTrending">
+          <div class="font-bold mb-3" style="color:var(--text-primary);letter-spacing:0.5px;text-transform:uppercase;font-size:11px;">🔥 Popular Trending Topics:</div>
+          <div class="flex items-center" style="flex-wrap:wrap;gap:8px;">
             <a href="latest.html?q=semiconductor" class="search-tag-pill">#Semiconductors</a>
             <a href="latest.html?q=hydrogen" class="search-tag-pill">#GreenHydrogen</a>
             <a href="latest.html?q=malaria" class="search-tag-pill">#MalariaVaccine</a>
