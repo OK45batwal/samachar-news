@@ -118,9 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('samachar_theme', next);
       updateThemeIcon(next);
-      if (typeof showToast === 'function') {
-        showToast(`Switched to ${next === 'dark' ? 'Obsidian Dark' : 'Editorial Light'}`, 'info');
-      }
     });
   }
 
