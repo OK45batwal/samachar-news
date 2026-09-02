@@ -99,32 +99,39 @@ document.addEventListener('DOMContentLoaded', () => {
     searchOverlay.id = 'searchOverlay';
     searchOverlay.className = 'search-overlay';
     searchOverlay.innerHTML = `
-      <div class="search-modal">
-        <div class="search-input-header">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--accent);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="globalSearch" class="search-input-field" placeholder="Search verified news, claims, topics (Press Enter to view all)..." autocomplete="off" />
-          <div class="flex items-center gap-2 flex-shrink-0">
-            <kbd class="hide-mobile" style="font-family:var(--font-mono);font-size:10px;padding:3px 8px;background:var(--bg-surface-2);border:1px solid var(--border);border-radius:6px;color:var(--text-muted)">ESC</kbd>
-            <button id="closeSearchModalBtn" type="button" class="btn btn-ghost btn-sm" style="padding:4px 8px;color:var(--text-secondary);font-size:14px;line-height:1;" title="Close search (ESC)">✕</button>
+    searchOverlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:99999;display:none;align-items:flex-start;justify-content:center;padding-top:10vh;";
+    searchOverlay.innerHTML = `
+      <div class="search-modal" style="width:100%;max-width:640px;background:#101625;border:1px solid #222D42;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,0.9),0 0 0 1px rgba(0,245,155,0.3);overflow:hidden;margin:0 16px;display:flex;flex-direction:column;box-sizing:border-box;">
+        
+        <div style="padding:14px 18px;background:#161E30;border-bottom:1px solid #222D42;display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00F59B" stroke-width="2.5" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="globalSearch" placeholder="Search verified news, claims, topics (Press Enter to view all)..." style="flex:1;min-width:0;width:auto;background:transparent;border:none!important;outline:none!important;box-shadow:none!important;font-size:15px;font-weight:500;color:#F8FAFC;padding:4px 0;margin:0;" autocomplete="off" />
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <kbd class="hide-mobile" style="font-family:monospace;font-size:10px;padding:3px 7px;background:#202B40;border:1px solid #2E3E5C;border-radius:5px;color:#94A3B8;">ESC</kbd>
+            <button id="closeSearchModalBtn" type="button" style="background:transparent;border:none;color:#94A3B8;font-size:16px;cursor:pointer;padding:4px 8px;line-height:1;border-radius:4px;" title="Close">✕</button>
           </div>
         </div>
-        <div id="globalSearchResults" class="search-results-list" style="display:none"></div>
-        <div class="p-5 text-xs text-muted" id="searchDefaultTrending">
-          <div class="font-bold mb-3" style="color:var(--text-primary);letter-spacing:0.5px;text-transform:uppercase;font-size:11px;">🔥 Popular Trending Topics:</div>
-          <div class="flex items-center" style="flex-wrap:wrap;gap:8px;">
-            <a href="latest.html?q=semiconductor" class="search-tag-pill">#Semiconductors</a>
-            <a href="latest.html?q=hydrogen" class="search-tag-pill">#GreenHydrogen</a>
-            <a href="latest.html?q=malaria" class="search-tag-pill">#MalariaVaccine</a>
-            <a href="latest.html?q=settlement" class="search-tag-pill">#ProjectNexus</a>
+        
+        <div id="globalSearchResults" style="display:none;max-height:360px;overflow-y:auto;border-top:1px solid #222D42;"></div>
+        
+        <div id="searchDefaultTrending" style="padding:18px 20px;">
+          <div style="font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">🔥 Popular Trending Topics:</div>
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;">
+            <a href="latest.html?q=semiconductor" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:#1B2436;border:1px solid #2A3854;color:#00F59B;font-size:12px;font-weight:600;text-decoration:none;">#Semiconductors</a>
+            <a href="latest.html?q=hydrogen" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:#1B2436;border:1px solid #2A3854;color:#00F59B;font-size:12px;font-weight:600;text-decoration:none;">#GreenHydrogen</a>
+            <a href="latest.html?q=malaria" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:#1B2436;border:1px solid #2A3854;color:#00F59B;font-size:12px;font-weight:600;text-decoration:none;">#MalariaVaccine</a>
+            <a href="latest.html?q=settlement" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:#1B2436;border:1px solid #2A3854;color:#00F59B;font-size:12px;font-weight:600;text-decoration:none;">#ProjectNexus</a>
           </div>
         </div>
-        <div class="search-modal-footer">
-          <div class="flex items-center gap-3">
-            <span><kbd style="padding:2px 5px;background:var(--bg-surface-2);border-radius:4px;border:1px solid var(--border)">↵</kbd> View All</span>
-            <span><kbd style="padding:2px 5px;background:var(--bg-surface-2);border-radius:4px;border:1px solid var(--border)">ESC</kbd> Close</span>
+
+        <div style="padding:10px 18px;background:#161E30;border-top:1px solid #222D42;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#94A3B8;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span><kbd style="padding:2px 5px;background:#202B40;border:1px solid #2E3E5C;border-radius:4px;color:#F8FAFC;">↵</kbd> View All</span>
+            <span><kbd style="padding:2px 5px;background:#202B40;border:1px solid #2E3E5C;border-radius:4px;color:#F8FAFC;">ESC</kbd> Close</span>
           </div>
-          <span class="text-accent font-semibold">Samachar Spotlight 2.0</span>
+          <span style="color:#00F59B;font-weight:600;">Samachar Spotlight 2.0</span>
         </div>
+
       </div>
     `;
     document.body.appendChild(searchOverlay);
