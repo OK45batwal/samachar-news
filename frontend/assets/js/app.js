@@ -58,6 +58,7 @@ function getCategoryDefaultImage(catName) {
   const slug = (catName || '').toLowerCase().trim();
   return CATEGORY_PHOTOS[slug] || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
 }
+window.getCategoryDefaultImage = getCategoryDefaultImage;
 
 // News Card Builder with precise alignment
 function renderNewsCard(article) {
