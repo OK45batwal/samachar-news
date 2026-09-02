@@ -351,28 +351,98 @@ async function request(endpoint, options = {}) {
 
 // News Endpoints
 async function getArticles(params = {}) {
-  const query = new URLSearchParams();
-  if (params.category) query.set('category', params.category);
-  if (params.q) query.set('q', params.q);
-  if (params.verified_only) query.set('verified_only', 'true');
-  if (params.sort) query.set('sort', params.sort);
-  if (params.page) query.set('page', params.page);
-  if (params.limit) query.set('limit', params.limit);
+  const isLocalDev = window.location.port === '5173' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  if (isLocalDev) {
+    try {
+      const query = new URLSearchParams();
+      if (params.category) query.set('category', params.category);
+      if (params.q) query.set('q', params.q);
+      if (params.verified_only) query.set('verified_only', 'true');
+      if (params.sort) query.set('sort', params.sort);
+      if (params.page) query.set('page', params.page);
+      if (params.limit) query.set('limit', params.limit);
+      const res = await fetch(`http://localhost:8000/api/news/?${query.toString()}`, { signal: AbortSignal.timeout(1000) });
+      if (res.ok) return await res.json();
+    } catch (_) {}
+  }
 
-  return request(`/api/news/?${query.toString()}`);
+  // Load from live real-world news dataset
+  try {
+    const dataRes = await fetch('/assets/data/news.json?v=5.0');
+    if (dataRes.ok) {
+      let list = await dataRes.json();
+      list = list.map(a => ({
+        ...a,
+        category: { name: a.category_name, slug: (a.category_name || '').toLowerCase() },
+        source: { name: a.source_name, reliability_score: a.credibility_score || 95 }
+      }));
+
+      if (params.category) {
+        const cat = params.category.toLowerCase();
+        list = list.filter(a => a.category_name?.toLowerCase().includes(cat) || a.category.slug.includes(cat));
+      }
+      if (params.q) {
+        const q = params.q.toLowerCase();
+        list = list.filter(a => (a.title || '').toLowerCase().includes(q) || (a.summary || '').toLowerCase().includes(q));
+      }
+      if (params.verified_only) {
+        list = list.filter(a => (a.credibility_score || 0) >= 80);
+      }
+      return { articles: list, total: list.length, page: 1, limit: params.limit || 12 };
+    }
+  } catch (_) {}
+
+  return request(`/api/news/`);
 }
 
 async function getArticleById(id) {
+  try {
+    const dataRes = await fetch('/assets/data/news.json?v=5.0');
+    if (dataRes.ok) {
+      const list = await dataRes.json();
+      const found = list.find(a => String(a.id) === String(id) || a.slug === id);
+      if (found) {
+        return {
+          ...found,
+          category: { name: found.category_name, slug: (found.category_name || '').toLowerCase() },
+          source: { name: found.source_name, reliability_score: found.credibility_score || 95 }
+        };
+      }
+    }
+  } catch (_) {}
+
   const found = FALLBACK_ARTICLES.find(a => String(a.id) === String(id));
   if (found) return found;
   return request(`/api/news/${id}`);
 }
 
 async function getTrending(limit = 6) {
+  try {
+    const dataRes = await fetch('/assets/data/news.json?v=5.0');
+    if (dataRes.ok) {
+      const list = await dataRes.json();
+      return list.slice(0, limit).map(a => ({
+        ...a,
+        category: { name: a.category_name, slug: (a.category_name || '').toLowerCase() },
+        source: { name: a.source_name, reliability_score: a.credibility_score || 95 }
+      }));
+    }
+  } catch (_) {}
   return request(`/api/news/trending?limit=${limit}`);
 }
 
 async function getVerifiedArticles(limit = 6) {
+  try {
+    const dataRes = await fetch('/assets/data/news.json?v=5.0');
+    if (dataRes.ok) {
+      const list = await dataRes.json();
+      return list.filter(a => (a.credibility_score || 0) >= 80).slice(0, limit).map(a => ({
+        ...a,
+        category: { name: a.category_name, slug: (a.category_name || '').toLowerCase() },
+        source: { name: a.source_name, reliability_score: a.credibility_score || 95 }
+      }));
+    }
+  } catch (_) {}
   return request(`/api/news/verified?limit=${limit}`);
 }
 
