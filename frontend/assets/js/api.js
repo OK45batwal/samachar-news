@@ -405,7 +405,7 @@ async function logoutUser() {
   } finally {
     localStorage.removeItem('samachar_token');
     localStorage.removeItem('samachar_user');
-    window.location.href = 'home.html';
+    window.location.href = 'index.html';
   }
 }
 

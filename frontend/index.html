@@ -14,6 +14,10 @@
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
+    // If user is already authenticated, bypass landing page and go straight to live news portal
+    if (localStorage.getItem('samachar_token')) {
+      window.location.replace('home.html');
+    }
   </script>
 </head>
 <body>
