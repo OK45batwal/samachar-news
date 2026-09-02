@@ -100,11 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div id="globalSearchResults" class="search-results-list" style="display:none"></div>
         <div class="p-4 text-xs text-muted" id="searchDefaultTrending">
-          <span class="font-semibold">Trending Searches:</span>
-          <a href="latest.html?q=semiconductor" class="text-accent ml-2 font-medium">#Semiconductors</a>
-          <a href="latest.html?q=hydrogen" class="text-accent ml-2 font-medium">#GreenHydrogen</a>
-          <a href="latest.html?q=malaria" class="text-accent ml-2 font-medium">#MalariaVaccine</a>
-          <a href="latest.html?q=settlement" class="text-accent ml-2 font-medium">#ProjectNexus</a>
+          <div class="font-semibold mb-2" style="color:var(--text-secondary)">Trending Topics:</div>
+          <div class="flex items-center" style="flex-wrap:wrap;gap:6px;">
+            <a href="latest.html?q=semiconductor" class="search-tag-pill">#Semiconductors</a>
+            <a href="latest.html?q=hydrogen" class="search-tag-pill">#GreenHydrogen</a>
+            <a href="latest.html?q=malaria" class="search-tag-pill">#MalariaVaccine</a>
+            <a href="latest.html?q=settlement" class="search-tag-pill">#ProjectNexus</a>
+          </div>
         </div>
       </div>
     `;
