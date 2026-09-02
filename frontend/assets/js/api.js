@@ -185,19 +185,8 @@ async function request(endpoint, options = {}) {
     return registeredUser;
   }
 
+  // Auth Endpoints Fallback Handling
   if (endpoint === '/api/auth/send-otp' && options.method === 'POST') {
-    try {
-      const res = await fetch(primaryUrl, { ...options, headers });
-      if (res.ok) return await res.json();
-    } catch (_) {}
-
-    if (isLocalDev) {
-      try {
-        const fallbackRes = await fetch(fallbackUrl, { ...options, headers });
-        if (fallbackRes.ok) return await fallbackRes.json();
-      } catch (_) {}
-    }
-
     const body = JSON.parse(options.body || '{}');
     const email = body.email || 'reader@samachar.news';
     const clientOtp = `${Math.floor(100000 + Math.random() * 900000)}`;
@@ -206,6 +195,14 @@ async function request(endpoint, options = {}) {
       full_name: body.full_name || email.split('@')[0],
       password: body.password
     }));
+
+    if (isLocalDev) {
+      try {
+        const fallbackRes = await fetch(fallbackUrl, { ...options, headers, signal: AbortSignal.timeout(1500) });
+        if (fallbackRes.ok) return await fallbackRes.json();
+      } catch (_) {}
+    }
+
     return {
       status: "success",
       message: `Verification code sent to ${email}`,
@@ -214,29 +211,43 @@ async function request(endpoint, options = {}) {
   }
 
   if (endpoint === '/api/auth/verify-otp' && options.method === 'POST') {
-    try {
-      const res = await fetch(primaryUrl, { ...options, headers });
-      if (res.ok) return await res.json();
-    } catch (_) {}
-
-    if (isLocalDev) {
+    const body = JSON.parse(options.body || '{}');
+    const email = body.email || 'reader@samachar.news';
+    const pendingRaw = localStorage.getItem('samachar_pending_otp_' + email);
+    let fullName = email.split('@')[0].toUpperCase();
+    if (pendingRaw) {
       try {
-        const fallbackRes = await fetch(fallbackUrl, { ...options, headers });
-        if (fallbackRes.ok) return await fallbackRes.json();
+        const parsed = JSON.parse(pendingRaw);
+        if (parsed.full_name) fullName = parsed.full_name;
       } catch (_) {}
     }
 
-    const body = JSON.parse(options.body || '{}');
-    const email = body.email || 'reader@samachar.news';
     const user = {
       id: 'usr_' + btoa(email).replace(/[^a-zA-Z0-9]/g, '').slice(0, 12),
       email: email,
       username: email.split('@')[0],
-      full_name: email.split('@')[0].toUpperCase() + ' (Verified Reader)',
+      full_name: fullName,
       role: 'user',
       preferences: { theme: 'dark', verified_only: true }
     };
     const mockToken = 'samachar_jwt_' + btoa(JSON.stringify(user));
+
+    if (isLocalDev) {
+      try {
+        const fallbackRes = await fetch(fallbackUrl, { ...options, headers, signal: AbortSignal.timeout(1500) });
+        if (fallbackRes.ok) {
+          const data = await fallbackRes.json();
+          if (data.access_token) {
+            localStorage.setItem('samachar_token', data.access_token);
+            localStorage.setItem('samachar_user', JSON.stringify(data.user));
+          }
+          return data;
+        }
+      } catch (_) {}
+    }
+
+    localStorage.setItem('samachar_token', mockToken);
+    localStorage.setItem('samachar_user', JSON.stringify(user));
     return {
       access_token: mockToken,
       token_type: 'bearer',
