@@ -253,3 +253,11 @@ async def reset_password(req: Request, body: dict, db: AsyncSession = Depends(ge
     revoke_token(token)
     await db.commit()
     return {"message": "Password updated successfully. You can now log in."}
+
+
+@router.delete("/account")
+async def delete_account(current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    """Permanently delete the authenticated user's account, data, and active sessions."""
+    await db.delete(current_user)
+    await db.commit()
+    return {"status": "success", "message": "Account and associated data deleted permanently."}
