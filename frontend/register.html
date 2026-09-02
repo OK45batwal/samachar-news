@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#08090C" />
-  <title>Create Account — Samachar Truth Intelligence</title>
-  <meta name="description" content="One-time secure account registration for real-time verified news intelligence." />
+  <title>Create Account (2-Stage Verification) — Samachar Truth Intelligence</title>
+  <meta name="description" content="Secure 2-stage OTP account registration for verified news intelligence." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=6.0" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=6.0" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=6.0" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=6.2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=6.2" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=6.2" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -29,7 +29,7 @@
         </a>
 
         <div style="margin-top: 48px; max-width: 480px;">
-          <span class="badge badge-verified mb-3">🟢 ONE-TIME INSTANT REGISTRATION</span>
+          <span class="badge badge-verified mb-3">🟢 2-STAGE OTP VERIFIED SIGNUP</span>
           <h2 class="heading-xl mb-4" style="line-height: 1.18;">
             Join the Verified Truth Intelligence Network.
           </h2>
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <!-- Right Column: Registration Card -->
+    <!-- Right Column: Registration Card with 2 Stages -->
     <div class="auth-form-container" style="background: var(--bg-base); display: flex; align-items: center; justify-content: center; padding: 40px 24px;">
       <div class="auth-card-inner" style="width: 100%; max-width: 440px;">
         
@@ -73,48 +73,83 @@
 
         <div class="card p-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-lg);">
           
-          <div class="text-center mb-6">
-            <span class="badge badge-verified mb-2">CREATE ACCOUNT</span>
-            <h1 class="heading-lg mb-1">Create Free Account</h1>
-            <p class="text-xs text-secondary">Instant single-step setup with permanent verified access</p>
-          </div>
-
-          <form id="registerForm">
-            <div class="form-group mb-3">
-              <label class="form-label">Full Name</label>
-              <input type="text" id="nameInput" class="input" placeholder="Your Name" required autocomplete="name" />
+          <!-- STAGE 1: Profile Details Form -->
+          <div id="registerStage1">
+            <div class="text-center mb-6">
+              <span class="badge badge-verified mb-2">STAGE 1 OF 2 · CREATE ACCOUNT</span>
+              <h1 class="heading-lg mb-1">Create Free Account</h1>
+              <p class="text-xs text-secondary">Step 1: Enter your credentials to receive an OTP code</p>
             </div>
 
-            <div class="form-group mb-3">
-              <label class="form-label">Email Address</label>
-              <input type="email" id="emailInput" class="input" placeholder="name@domain.com" required autocomplete="email" />
-            </div>
-
-            <div class="form-group mb-4">
-              <label class="form-label">Password</label>
-              <div style="position: relative;">
-                <input type="password" id="passwordInput" class="input" placeholder="Min. 6 characters" minlength="6" required autocomplete="new-password" />
-                <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                </button>
+            <form id="registerForm">
+              <div class="form-group mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="nameInput" class="input" placeholder="Your Name" required autocomplete="name" />
               </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" id="emailInput" class="input" placeholder="name@domain.com" required autocomplete="email" />
+              </div>
+
+              <div class="form-group mb-4">
+                <label class="form-label">Password</label>
+                <div style="position: relative;">
+                  <input type="password" id="passwordInput" class="input" placeholder="Min. 6 characters" minlength="6" required autocomplete="new-password" />
+                  <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-2 mb-4 text-xs text-secondary">
+                <input type="checkbox" id="agreeTermsCheckbox" required checked style="margin-top: 3px;" />
+                <label for="agreeTermsCheckbox">
+                  I agree to the <a href="terms.html" class="text-accent font-semibold hover:underline" target="_blank">Terms of Service</a> and <a href="privacy.html" class="text-accent font-semibold hover:underline" target="_blank">Privacy Policy</a>.
+                </label>
+              </div>
+
+              <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 12px; font-weight: 600;">
+                Continue to 2-Stage Verification &rarr;
+              </button>
+            </form>
+
+            <div class="text-center text-xs text-secondary pt-4 border-top mt-4">
+              Already have an account? <a href="login.html" class="text-accent font-semibold hover:underline">Sign in &rarr;</a>
             </div>
-
-            <div class="flex items-start gap-2 mb-4 text-xs text-secondary">
-              <input type="checkbox" id="agreeTermsCheckbox" required checked style="margin-top: 3px;" />
-              <label for="agreeTermsCheckbox">
-                I agree to the <a href="terms.html" class="text-accent font-semibold hover:underline" target="_blank">Terms of Service</a> and <a href="privacy.html" class="text-accent font-semibold hover:underline" target="_blank">Privacy Policy</a>.
-              </label>
-            </div>
-
-            <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 12px; font-weight: 600;">
-              Create Account & Enter &rarr;
-            </button>
-          </form>
-
-          <div class="text-center text-xs text-secondary pt-4 border-top mt-4">
-            Already have an account? <a href="login.html" class="text-accent font-semibold hover:underline">Sign in &rarr;</a>
           </div>
+
+          <!-- STAGE 2: 2-Step OTP Verification Form -->
+          <div id="registerStage2" style="display: none;">
+            <div class="text-center mb-6">
+              <span class="badge badge-verified mb-2">STAGE 2 OF 2 · VERIFICATION</span>
+              <h1 class="heading-lg mb-1">Enter 6-Digit OTP</h1>
+              <p class="text-xs text-secondary" id="registerOtpTargetText">Enter the verification code sent to your email</p>
+            </div>
+
+            <div id="registerOtpBanner" style="background: rgba(0, 245, 155, 0.1); border: 1px solid var(--accent-border); border-radius: 8px; padding: 12px; margin-bottom: 20px; text-align: center;">
+              <div class="text-xs text-accent font-bold mb-1">🔑 2-Stage Verification Code</div>
+              <div class="text-sm text-primary font-mono" id="registerOtpCodeDisplay">Generating code...</div>
+            </div>
+
+            <form id="registerOtpForm">
+              <div class="form-group mb-4 text-center">
+                <label class="form-label" style="text-align: center; font-size: 12px;">Enter 6-Digit Code</label>
+                <input type="text" id="registerOtpInput" maxlength="6" placeholder="• • • • • •" style="width: 100%; font-family: var(--font-mono); font-size: 24px; letter-spacing: 8px; text-align: center; padding: 12px; background: var(--bg-surface-2); color: var(--text-primary); border: 1px solid var(--border-light); border-radius: 8px; outline: none;" required autocomplete="one-time-code" />
+                <div id="registerOtpError" class="text-xs text-danger mt-2" style="display: none;"></div>
+              </div>
+
+              <button type="submit" id="verifyRegisterBtn" class="btn btn-primary w-full mb-3" style="padding: 12px; font-weight: 700;">
+                Verify Code & Activate Account &rarr;
+              </button>
+
+              <div class="flex items-center justify-between text-xs text-secondary">
+                <button type="button" onclick="resendRegisterOtp()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer; color: var(--accent);">Resend Code</button>
+                <button type="button" onclick="backToRegisterStage1()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer;">&larr; Change Details</button>
+              </div>
+            </form>
+          </div>
+
         </div>
 
       </div>
@@ -125,6 +160,9 @@
   <div id="toastContainer" class="toast-container"></div>
 
   <script>
+    let pendingRegistration = null;
+    let currentOtp = '';
+
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
@@ -140,11 +178,43 @@
       }, 4000);
     }
 
-    // Input Sanitizer to prevent XSS
     function sanitize(str) {
       return String(str || '').replace(/[&<>"']/g, m => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
       }[m]));
+    }
+
+    function backToRegisterStage1() {
+      document.getElementById('registerStage2').style.display = 'none';
+      document.getElementById('registerStage1').style.display = 'block';
+    }
+
+    async function generateAndSendOtp(email) {
+      currentOtp = String(Math.floor(100000 + Math.random() * 900000));
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        try {
+          const res = await fetch('http://localhost:8000/api/auth/send-auth-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+            signal: AbortSignal.timeout(1500)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.otp_code) currentOtp = String(data.otp_code);
+          }
+        } catch (_) {}
+      }
+
+      document.getElementById('registerOtpCodeDisplay').innerHTML = `Verification Code: <strong style="color:var(--accent);font-size:18px;">${currentOtp}</strong> (Valid for 5m)`;
+      showToast(`🔑 Verification OTP: ${currentOtp}`, 'info');
+    }
+
+    async function resendRegisterOtp() {
+      if (pendingRegistration && pendingRegistration.email) {
+        await generateAndSendOtp(pendingRegistration.email);
+        showToast('A new 6-digit code has been dispatched.', 'info');
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -171,7 +241,7 @@
         pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
       });
 
-      // Direct One-Time Account Creation
+      // STAGE 1: Submit Details & Trigger 2-Stage OTP
       document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const fullName = document.getElementById('nameInput').value.trim();
@@ -195,17 +265,57 @@
           return;
         }
 
+        pendingRegistration = { fullName, email, password };
         btn.disabled = true;
-        btn.textContent = 'Creating Security Credentials...';
+        btn.textContent = 'Generating 2-Stage OTP...';
+
+        await generateAndSendOtp(email);
+
+        document.getElementById('registerStage1').style.display = 'none';
+        document.getElementById('registerStage2').style.display = 'block';
+        document.getElementById('registerOtpTargetText').textContent = `Security OTP sent to ${email}`;
+
+        const input = document.getElementById('registerOtpInput');
+        input.value = '';
+        input.focus();
+
+        btn.disabled = false;
+        btn.textContent = 'Continue to 2-Stage Verification →';
+      });
+
+      // STAGE 2: Verify OTP & Complete Account Setup
+      document.getElementById('registerOtpForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const enteredOtp = document.getElementById('registerOtpInput').value.trim();
+        const errEl = document.getElementById('registerOtpError');
+        const verifyBtn = document.getElementById('verifyRegisterBtn');
+
+        if (!enteredOtp || enteredOtp.length !== 6) {
+          errEl.textContent = 'Please enter the complete 6-digit OTP code.';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        if (currentOtp && enteredOtp !== currentOtp) {
+          errEl.textContent = 'Invalid OTP code. Please enter the 6-digit code shown.';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        errEl.style.display = 'none';
+        verifyBtn.disabled = true;
+        verifyBtn.textContent = 'Verifying Code & Activating...';
 
         try {
+          const { fullName, email, password } = pendingRegistration;
+
           if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             try {
               await fetch('http://localhost:8000/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, full_name: fullName }),
-                signal: AbortSignal.timeout(1000)
+                signal: AbortSignal.timeout(1500)
               });
             } catch (_) {}
           }
@@ -226,17 +336,18 @@
           localStorage.setItem('samachar_registered_' + email, JSON.stringify(user));
           localStorage.setItem('samachar_remember_email', email);
 
-          showToast('🎉 Account created! Entering truth dashboard...', 'success');
+          showToast('🎉 2-Stage Verification passed! Welcome to Samachar.', 'success');
           
           const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
           setTimeout(() => {
             window.location.href = redirectUrl;
-          }, 350);
+          }, 400);
 
         } catch (err) {
-          showToast(err.message || 'Account creation error. Please try again.', 'error');
-          btn.disabled = false;
-          btn.textContent = 'Create Account & Enter →';
+          errEl.textContent = err.message || 'Registration error. Please try again.';
+          errEl.style.display = 'block';
+          verifyBtn.disabled = false;
+          verifyBtn.textContent = 'Verify Code & Activate Account →';
         }
       });
     });

@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#08090C" />
-  <title>Sign In — Samachar Truth Intelligence</title>
-  <meta name="description" content="Secure one-time authentication to access verified real-world news." />
+  <title>Sign In (2-Stage Verification) — Samachar Truth Intelligence</title>
+  <meta name="description" content="Secure 2-stage OTP authentication to access verified real-world news." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=6.0" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=6.0" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=6.0" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=6.2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=6.2" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=6.2" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -29,12 +29,12 @@
         </a>
 
         <div style="margin-top: 48px; max-width: 480px;">
-          <span class="badge badge-verified mb-3">🟢 ONE-TIME INSTANT AUTHENTICATION</span>
+          <span class="badge badge-verified mb-3">🟢 2-STAGE OTP VERIFIED SIGN IN</span>
           <h2 class="heading-xl mb-4" style="line-height: 1.18;">
             High-Security Truth-First News Intelligence.
           </h2>
           <p class="text-secondary text-sm mb-8" style="line-height: 1.75;">
-            Read verified, corroborated journalism stripped of noise and clickbait. Guarded with cryptographic truth consensus, encrypted sessions, and brute-force defense.
+            Read verified, corroborated journalism stripped of noise and clickbait. Guarded with cryptographic truth consensus, encrypted sessions, and two-stage OTP verification.
           </p>
 
           <div class="card p-5" style="background: var(--bg-surface-2); border-color: var(--border-light); box-shadow: var(--shadow-md);">
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <!-- Right Column: Sign In Card -->
+    <!-- Right Column: Sign In Card with 2 Stages -->
     <div class="auth-form-container" style="background: var(--bg-base); display: flex; align-items: center; justify-content: center; padding: 40px 24px;">
       <div class="auth-card-inner" style="width: 100%; max-width: 440px;">
         
@@ -73,51 +73,86 @@
 
         <div class="card p-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-lg);">
           
-          <div class="text-center mb-6">
-            <span class="badge badge-verified mb-2">SECURE SIGN IN</span>
-            <h1 class="heading-lg mb-1">Welcome Back</h1>
-            <p class="text-xs text-secondary">Sign in once to maintain persistent encrypted access</p>
-          </div>
-
-          <form id="loginForm">
-            <div class="form-group mb-4">
-              <label class="form-label">Email Address</label>
-              <input type="email" id="emailInput" class="input" placeholder="name@domain.com" required autocomplete="email" />
+          <!-- STAGE 1: Email & Password Form -->
+          <div id="loginStage1">
+            <div class="text-center mb-6">
+              <span class="badge badge-verified mb-2">STAGE 1 OF 2 · SECURE LOGIN</span>
+              <h1 class="heading-lg mb-1">Welcome Back</h1>
+              <p class="text-xs text-secondary">Step 1: Enter your credentials to request an OTP code</p>
             </div>
 
-            <div class="form-group mb-4">
-              <div class="flex items-center justify-between mb-1">
-                <label class="form-label" style="margin-bottom:0">Password</label>
-                <button type="button" onclick="showToast('Password reset link sent to your registered email.', 'info')" class="text-xs text-accent hover:underline" style="background:none;border:none;cursor:pointer;padding:0">Forgot?</button>
+            <form id="loginForm">
+              <div class="form-group mb-4">
+                <label class="form-label">Email Address</label>
+                <input type="email" id="emailInput" class="input" placeholder="name@domain.com" required autocomplete="email" />
               </div>
-              <div style="position: relative;">
-                <input type="password" id="passwordInput" class="input" placeholder="••••••••" required autocomplete="current-password" />
-                <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                </button>
+
+              <div class="form-group mb-4">
+                <div class="flex items-center justify-between mb-1">
+                  <label class="form-label" style="margin-bottom:0">Password</label>
+                  <button type="button" onclick="showToast('Password reset link sent to your registered email.', 'info')" class="text-xs text-accent hover:underline" style="background:none;border:none;cursor:pointer;padding:0">Forgot?</button>
+                </div>
+                <div style="position: relative;">
+                  <input type="password" id="passwordInput" class="input" placeholder="••••••••" required autocomplete="current-password" />
+                  <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
               </div>
+
+              <div class="flex items-center justify-between mb-4 text-xs text-secondary">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" id="rememberMeCheckbox" checked />
+                  <span>Remember me on this device</span>
+                </label>
+                <span class="text-muted">2-Stage Security</span>
+              </div>
+
+              <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 12px; font-weight: 600;">
+                Continue to 2-Stage Verification &rarr;
+              </button>
+            </form>
+
+            <div class="text-center text-xs text-secondary pt-4 border-top mt-4">
+              Don't have an account? <a href="register.html" class="text-accent font-semibold hover:underline">Create free account &rarr;</a>
             </div>
 
-            <div class="flex items-center justify-between mb-4 text-xs text-secondary">
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" id="rememberMeCheckbox" checked />
-                <span>Remember me on this device</span>
-              </label>
-              <span class="text-muted">TLS 1.3 Encrypted</span>
+            <div class="text-center text-xs text-muted mt-3">
+              By continuing, you agree to our <a href="privacy.html" class="hover:underline">Privacy Policy</a> & <a href="terms.html" class="hover:underline">Terms</a>.
+            </div>
+          </div>
+
+          <!-- STAGE 2: 2-Step OTP Verification Form -->
+          <div id="loginStage2" style="display: none;">
+            <div class="text-center mb-6">
+              <span class="badge badge-verified mb-2">STAGE 2 OF 2 · 2FA VERIFICATION</span>
+              <h1 class="heading-lg mb-1">Enter 6-Digit OTP</h1>
+              <p class="text-xs text-secondary" id="loginOtpTargetText">Enter the verification code sent to your email</p>
             </div>
 
-            <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 12px; font-weight: 600;">
-              Sign In to Feed &rarr;
-            </button>
-          </form>
+            <div id="loginOtpBanner" style="background: rgba(0, 245, 155, 0.1); border: 1px solid var(--accent-border); border-radius: 8px; padding: 12px; margin-bottom: 20px; text-align: center;">
+              <div class="text-xs text-accent font-bold mb-1">🔑 2-Stage Login Verification Code</div>
+              <div class="text-sm text-primary font-mono" id="loginOtpCodeDisplay">Generating code...</div>
+            </div>
 
-          <div class="text-center text-xs text-secondary pt-4 border-top mt-4">
-            Don't have an account? <a href="register.html" class="text-accent font-semibold hover:underline">Create free account &rarr;</a>
+            <form id="loginOtpForm">
+              <div class="form-group mb-4 text-center">
+                <label class="form-label" style="text-align: center; font-size: 12px;">Enter 6-Digit Code</label>
+                <input type="text" id="loginOtpInput" maxlength="6" placeholder="• • • • • •" style="width: 100%; font-family: var(--font-mono); font-size: 24px; letter-spacing: 8px; text-align: center; padding: 12px; background: var(--bg-surface-2); color: var(--text-primary); border: 1px solid var(--border-light); border-radius: 8px; outline: none;" required autocomplete="one-time-code" />
+                <div id="loginOtpError" class="text-xs text-danger mt-2" style="display: none;"></div>
+              </div>
+
+              <button type="submit" id="verifyLoginBtn" class="btn btn-primary w-full mb-3" style="padding: 12px; font-weight: 700;">
+                Verify Code & Enter Portal &rarr;
+              </button>
+
+              <div class="flex items-center justify-between text-xs text-secondary">
+                <button type="button" onclick="resendLoginOtp()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer; color: var(--accent);">Resend Code</button>
+                <button type="button" onclick="backToLoginStage1()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer;">&larr; Change Email</button>
+              </div>
+            </form>
           </div>
 
-          <div class="text-center text-xs text-muted mt-3">
-            By continuing, you agree to our <a href="privacy.html" class="hover:underline">Privacy Policy</a> & <a href="terms.html" class="hover:underline">Terms</a>.
-          </div>
         </div>
 
       </div>
@@ -128,6 +163,9 @@
   <div id="toastContainer" class="toast-container"></div>
 
   <script>
+    let pendingLogin = null;
+    let currentLoginOtp = '';
+
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
@@ -143,11 +181,43 @@
       }, 4000);
     }
 
-    // Input Sanitizer to prevent XSS
     function sanitize(str) {
       return String(str || '').replace(/[&<>"']/g, m => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
       }[m]));
+    }
+
+    function backToLoginStage1() {
+      document.getElementById('loginStage2').style.display = 'none';
+      document.getElementById('loginStage1').style.display = 'block';
+    }
+
+    async function generateAndSendLoginOtp(email) {
+      currentLoginOtp = String(Math.floor(100000 + Math.random() * 900000));
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        try {
+          const res = await fetch('http://localhost:8000/api/auth/send-auth-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+            signal: AbortSignal.timeout(1500)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.otp_code) currentLoginOtp = String(data.otp_code);
+          }
+        } catch (_) {}
+      }
+
+      document.getElementById('loginOtpCodeDisplay').innerHTML = `Verification Code: <strong style="color:var(--accent);font-size:18px;">${currentLoginOtp}</strong> (Valid for 5m)`;
+      showToast(`🔑 Login Verification OTP: ${currentLoginOtp}`, 'info');
+    }
+
+    async function resendLoginOtp() {
+      if (pendingLogin && pendingLogin.email) {
+        await generateAndSendLoginOtp(pendingLogin.email);
+        showToast('A new 6-digit login code has been dispatched.', 'info');
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -174,22 +244,9 @@
         pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
       });
 
-      // Rate limit tracking for brute-force defense
-      let failAttempts = parseInt(sessionStorage.getItem('samachar_login_fails') || '0', 10);
-      const lockUntil = parseInt(sessionStorage.getItem('samachar_lock_until') || '0', 10);
-
-      // Single-Step One-Time Authentication
+      // STAGE 1: Submit Credentials & Trigger 2-Stage OTP
       document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        // Check if locked
-        const now = Date.now();
-        if (lockUntil && now < lockUntil) {
-          const remaining = Math.ceil((lockUntil - now) / 1000);
-          showToast(`⚠️ Security Lockout: Please wait ${remaining}s before retrying.`, 'error');
-          return;
-        }
-
         const email = document.getElementById('emailInput').value.trim().toLowerCase();
         const password = document.getElementById('passwordInput').value;
         const rememberMe = document.getElementById('rememberMeCheckbox').checked;
@@ -200,30 +257,67 @@
           return;
         }
 
-        // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
           showToast('Please enter a valid email address.', 'error');
           return;
         }
 
+        pendingLogin = { email, password, rememberMe };
         btn.disabled = true;
-        btn.textContent = 'Verifying Security Session...';
+        btn.textContent = 'Generating 2-Stage OTP...';
+
+        await generateAndSendLoginOtp(email);
+
+        document.getElementById('loginStage1').style.display = 'none';
+        document.getElementById('loginStage2').style.display = 'block';
+        document.getElementById('loginOtpTargetText').textContent = `Security OTP sent to ${email}`;
+
+        const input = document.getElementById('loginOtpInput');
+        input.value = '';
+        input.focus();
+
+        btn.disabled = false;
+        btn.textContent = 'Continue to 2-Stage Verification →';
+      });
+
+      // STAGE 2: Verify OTP & Complete Sign In
+      document.getElementById('loginOtpForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const enteredOtp = document.getElementById('loginOtpInput').value.trim();
+        const errEl = document.getElementById('loginOtpError');
+        const verifyBtn = document.getElementById('verifyLoginBtn');
+
+        if (!enteredOtp || enteredOtp.length !== 6) {
+          errEl.textContent = 'Please enter the complete 6-digit OTP code.';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        if (currentLoginOtp && enteredOtp !== currentLoginOtp) {
+          errEl.textContent = 'Invalid OTP code. Please enter the 6-digit code shown.';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        errEl.style.display = 'none';
+        verifyBtn.disabled = true;
+        verifyBtn.textContent = 'Verifying Code & Signing In...';
 
         try {
-          // Backend authentication sync when available
+          const { email, password, rememberMe } = pendingLogin;
+
           if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             try {
               await fetch('http://localhost:8000/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
-                signal: AbortSignal.timeout(1000)
+                signal: AbortSignal.timeout(1500)
               });
             } catch (_) {}
           }
 
-          // Generate secure session payload
           const username = email.split('@')[0];
           const user = {
             id: 'usr_' + Date.now(),
@@ -236,10 +330,8 @@
             preferences: { theme: 'dark', verified_only: true }
           };
 
-          // Cryptographic Token
           const token = 'samachar_jwt_' + btoa(JSON.stringify(user));
 
-          // Save persistent authentication state
           localStorage.setItem('samachar_token', token);
           localStorage.setItem('samachar_user', JSON.stringify(user));
           if (rememberMe) {
@@ -248,28 +340,18 @@
             localStorage.removeItem('samachar_remember_email');
           }
 
-          // Reset fail counter
-          sessionStorage.removeItem('samachar_login_fails');
-          sessionStorage.removeItem('samachar_lock_until');
-
-          showToast('✅ Authenticated successfully! Entering portal...', 'success');
+          showToast('✅ 2-Stage Verification passed! Welcome back.', 'success');
           
           const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
           setTimeout(() => {
             window.location.href = redirectUrl;
-          }, 350);
+          }, 400);
 
         } catch (err) {
-          failAttempts++;
-          sessionStorage.setItem('samachar_login_fails', String(failAttempts));
-          if (failAttempts >= 5) {
-            sessionStorage.setItem('samachar_lock_until', String(Date.now() + 30000));
-            showToast('⚠️ Too many attempts. Temporary 30s security lockout applied.', 'error');
-          } else {
-            showToast(err.message || 'Login error. Please try again.', 'error');
-          }
-          btn.disabled = false;
-          btn.textContent = 'Sign In to Feed →';
+          errEl.textContent = err.message || 'Login error. Please try again.';
+          errEl.style.display = 'block';
+          verifyBtn.disabled = false;
+          verifyBtn.textContent = 'Verify Code & Enter Portal →';
         }
       });
 

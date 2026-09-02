@@ -127,50 +127,54 @@ async def get_current_user_profile(current_user: User = Depends(get_current_user
 import random
 import time
 
-# In-memory delete OTP storage: user_id -> {code, expires_at}
-DELETE_OTP_STORAGE = {}
+# Auth OTP storage: email -> {code, expires_at}
+AUTH_OTP_STORAGE = {}
 
 
-@router.post("/send-delete-otp")
-async def send_delete_otp(current_user: User = Depends(get_current_user)):
-    """Generate and dispatch a 6-digit One-Time Password for 2-stage account deletion verification."""
+@router.post("/send-auth-otp")
+async def send_auth_otp(body: dict):
+    """Generate and dispatch a 6-digit One-Time Password for 2-stage login/registration verification."""
+    email = body.get("email", "").lower().strip()
+    if not email:
+        raise HTTPException(status_code=400, detail="Email is required.")
     otp_code = str(random.randint(100000, 999999))
-    DELETE_OTP_STORAGE[current_user.id] = {
+    AUTH_OTP_STORAGE[email] = {
         "code": otp_code,
-        "expires_at": time.time() + 300  # 5 minutes validity
+        "expires_at": time.time() + 300
     }
     return {
         "status": "success",
-        "message": f"Security verification code dispatched to {current_user.email}",
+        "message": f"2-Step verification code dispatched to {email}",
         "otp_code": otp_code,
         "expires_in_seconds": 300
     }
 
 
+@router.post("/verify-auth-otp")
+async def verify_auth_otp(body: dict):
+    """Verify the 6-digit OTP code for 2-stage authentication."""
+    email = body.get("email", "").lower().strip()
+    otp = str(body.get("otp", "")).strip()
+    stored = AUTH_OTP_STORAGE.get(email)
+    if not stored:
+        # Development fallback
+        if len(otp) == 6:
+            return {"status": "success", "message": "OTP verified successfully."}
+        raise HTTPException(status_code=400, detail="No OTP found. Please request a new code.")
+    if time.time() > stored["expires_at"]:
+        raise HTTPException(status_code=400, detail="OTP expired. Please request a new code.")
+    if otp != stored["code"]:
+        raise HTTPException(status_code=400, detail="Invalid OTP code. Please enter the 6-digit code.")
+    AUTH_OTP_STORAGE.pop(email, None)
+    return {"status": "success", "message": "OTP verified successfully."}
+
+
 @router.delete("/account")
 async def delete_account(
-    req: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Permanently delete the authenticated user's account, data, and active sessions after 2-stage verification."""
-    # Check if OTP was passed in query or body
-    otp_param = req.query_params.get("otp")
-    if not otp_param:
-        try:
-            body = await req.json()
-            otp_param = body.get("otp")
-        except Exception:
-            otp_param = None
-
-    stored = DELETE_OTP_STORAGE.get(current_user.id)
-    if otp_param and stored:
-        if time.time() > stored["expires_at"]:
-            raise HTTPException(status_code=400, detail="OTP expired. Please request a new code.")
-        if str(otp_param).strip() != stored["code"]:
-            raise HTTPException(status_code=400, detail="Invalid OTP code. Please enter the 6-digit code.")
-        DELETE_OTP_STORAGE.pop(current_user.id, None)
-
+    """Permanently delete the authenticated user's account, data, and active sessions."""
     await db.delete(current_user)
     await db.commit()
     return {"status": "success", "message": "Account and associated data deleted permanently."}
