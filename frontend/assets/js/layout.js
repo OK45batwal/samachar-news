@@ -84,35 +84,125 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 4. Clean Header Auth Initialization Complete
 
-  // 5. Search Modal
-  const searchToggle = document.getElementById('searchToggle');
-  const searchOverlay = document.getElementById('searchOverlay');
+  // 5. Universal Search Command Palette & Modal
+  let searchOverlay = document.getElementById('searchOverlay');
+  
+  if (!searchOverlay && !window.location.pathname.includes('login') && !window.location.pathname.includes('register')) {
+    searchOverlay = document.createElement('div');
+    searchOverlay.id = 'searchOverlay';
+    searchOverlay.className = 'search-overlay';
+    searchOverlay.innerHTML = `
+      <div class="search-modal">
+        <div class="p-4 border-bottom flex items-center gap-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="globalSearch" class="w-full" placeholder="Search news, claims, topics (Press Enter to view all)..." style="background:transparent;border:none;outline:none;font-size:15px;color:var(--text-primary)" autocomplete="off" />
+          <kbd style="font-family:var(--font-mono);font-size:10px;padding:2px 6px;background:var(--bg-surface-2);border:1px solid var(--border);border-radius:4px;color:var(--text-muted)">ESC</kbd>
+        </div>
+        <div id="globalSearchResults" class="search-results-list" style="display:none"></div>
+        <div class="p-4 text-xs text-muted" id="searchDefaultTrending">
+          <span class="font-semibold">Trending Searches:</span>
+          <a href="latest.html?q=semiconductor" class="text-accent ml-2 font-medium">#Semiconductors</a>
+          <a href="latest.html?q=hydrogen" class="text-accent ml-2 font-medium">#GreenHydrogen</a>
+          <a href="latest.html?q=malaria" class="text-accent ml-2 font-medium">#MalariaVaccine</a>
+          <a href="latest.html?q=settlement" class="text-accent ml-2 font-medium">#ProjectNexus</a>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(searchOverlay);
+  }
+
   const globalSearchInput = document.getElementById('globalSearch');
+  const resultsContainer = document.getElementById('globalSearchResults');
+  const trendingContainer = document.getElementById('searchDefaultTrending');
+  let debounceTimeout = null;
 
-  if (searchToggle && searchOverlay) {
-    searchToggle.addEventListener('click', () => {
-      searchOverlay.classList.add('active');
-      globalSearchInput?.focus();
+  function openSearch() {
+    if (!searchOverlay) return;
+    searchOverlay.classList.add('active');
+    globalSearchInput?.focus();
+  }
+
+  function closeSearch() {
+    if (!searchOverlay) return;
+    searchOverlay.classList.remove('active');
+    if (globalSearchInput) globalSearchInput.value = '';
+    if (resultsContainer) {
+      resultsContainer.style.display = 'none';
+      resultsContainer.innerHTML = '';
+    }
+    if (trendingContainer) trendingContainer.style.display = 'block';
+  }
+
+  document.querySelectorAll('#searchToggle, [data-action="search"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openSearch();
     });
+  });
 
+  if (searchOverlay) {
     searchOverlay.addEventListener('click', (e) => {
-      if (e.target === searchOverlay) {
-        searchOverlay.classList.remove('active');
+      if (e.target === searchOverlay) closeSearch();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && searchOverlay?.classList.contains('active')) {
+      closeSearch();
+    }
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+  });
+
+  if (globalSearchInput) {
+    globalSearchInput.addEventListener('input', () => {
+      const query = globalSearchInput.value.trim();
+      clearTimeout(debounceTimeout);
+
+      if (!query || query.length < 2) {
+        if (resultsContainer) {
+          resultsContainer.style.display = 'none';
+          resultsContainer.innerHTML = '';
+        }
+        if (trendingContainer) trendingContainer.style.display = 'block';
+        return;
       }
+
+      debounceTimeout = setTimeout(async () => {
+        try {
+          const res = await getArticles({ q: query, limit: 5 });
+          if (trendingContainer) trendingContainer.style.display = 'none';
+          if (resultsContainer) {
+            resultsContainer.style.display = 'block';
+            if (res.articles && res.articles.length) {
+              resultsContainer.innerHTML = res.articles.map(a => `
+                <a href="article.html?id=${a.id}" class="search-result-item">
+                  <div style="flex:1;min-width:0;">
+                    <div class="title line-clamp-1">${sanitize(a.title)}</div>
+                    <div class="meta">${sanitize(a.category?.name || 'Top News')} · ${sanitize(a.source?.name || 'Wire')} · ${timeAgo(a.published_at)}</div>
+                  </div>
+                  <span class="badge badge-verified" style="font-size:10px;padding:3px 7px;flex-shrink:0;">🟢 ${a.credibility_score || 95}%</span>
+                </a>
+              `).join('') + `
+                <a href="latest.html?q=${encodeURIComponent(query)}" class="search-result-item" style="background:var(--bg-surface-2);justify-content:center;color:var(--accent);font-weight:600;font-size:12px;">
+                  View All Matching Stories for "${sanitize(query)}" &rarr;
+                </a>
+              `;
+            } else {
+              resultsContainer.innerHTML = `<div class="p-4 text-center text-xs text-muted">No verified stories found for "${sanitize(query)}". Press Enter to browse.</div>`;
+            }
+          }
+        } catch (err) {
+          if (resultsContainer) {
+            resultsContainer.innerHTML = `<div class="p-3 text-center text-xs text-muted">Press Enter to search for "${sanitize(query)}"</div>`;
+          }
+        }
+      }, 250);
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
-        searchOverlay.classList.remove('active');
-      }
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        searchOverlay.classList.add('active');
-        globalSearchInput?.focus();
-      }
-    });
-
-    globalSearchInput?.addEventListener('keydown', (e) => {
+    globalSearchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const query = globalSearchInput.value.trim();
         if (query) {
