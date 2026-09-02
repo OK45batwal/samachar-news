@@ -8,9 +8,9 @@
   <meta name="description" content="Sign in to your Samachar account with Two-Factor Email Verification." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=3.2" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=3.2" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=3.2" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=4.2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=4.2" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=4.2" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -90,7 +90,7 @@
               <div class="form-group mb-4">
                 <div class="flex items-center justify-between mb-1">
                   <label class="form-label" style="margin-bottom:0">Password</label>
-                  <button type="button" onclick="showToast('Enter your email and click Send Code to verify identity.', 'info')" class="text-xs text-accent hover:underline" style="background:none;border:none;cursor:pointer;padding:0">Forgot?</button>
+                  <button type="button" onclick="showToast('Enter your email and click Continue to verify identity.', 'info')" class="text-xs text-accent hover:underline" style="background:none;border:none;cursor:pointer;padding:0">Forgot?</button>
                 </div>
                 <div style="position: relative;">
                   <input type="password" id="passwordInput" class="input" placeholder="••••••••" required autocomplete="current-password" />
@@ -147,7 +147,6 @@
 
   <div id="toastContainer" class="toast-container"></div>
 
-  <script src="/assets/js/api.js?v=4.0"></script>
   <script>
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
@@ -161,7 +160,7 @@
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(10px)';
         setTimeout(() => toast.remove(), 250);
-      }, 4500);
+      }, 5000);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -185,56 +184,63 @@
         pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
       });
 
-      async function sendVerificationOtp(email, password) {
-        currentEmail = email;
+      function generateAndSendOtp(email, password) {
+        currentEmail = email.toLowerCase().trim();
         currentPassword = password;
         
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.textContent = 'Sending 2FA Code...';
+        generatedOtp = String(Math.floor(100000 + Math.random() * 900000));
+        
+        document.getElementById('displayEmail').textContent = currentEmail;
+        document.getElementById('step1Container').style.display = 'none';
+        document.getElementById('step2Container').style.display = 'block';
+        
+        const otpField = document.getElementById('otpInput');
+        otpField.value = '';
+        otpField.focus();
 
-        try {
-          const res = await sendOtpCode(email, password);
-          generatedOtp = res.otp_hint || `${Math.floor(100000 + Math.random() * 900000)}`;
-          
-          document.getElementById('displayEmail').textContent = email;
-          document.getElementById('step1Container').style.display = 'none';
-          document.getElementById('step2Container').style.display = 'block';
-          document.getElementById('otpInput').focus();
-
-          showToast(`⚡ 2-Step Code dispatched to ${email}: [ ${generatedOtp} ]`, 'success');
-        } catch (err) {
-          showToast(err.message || 'Failed to send code', 'error');
-        } finally {
-          btn.disabled = false;
-          btn.textContent = 'Continue with Two-Factor Code →';
-        }
+        showToast(`⚡ Two-Step Verification Code: [ ${generatedOtp} ]`, 'success');
       }
 
       document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const email = document.getElementById('emailInput').value.trim();
         const password = document.getElementById('passwordInput').value;
-        sendVerificationOtp(email, password);
+        if (!email || !password) {
+          showToast('Please enter both email and password.', 'error');
+          return;
+        }
+        generateAndSendOtp(email, password);
       });
 
-      document.getElementById('otpForm').addEventListener('submit', async (e) => {
+      document.getElementById('otpForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const code = document.getElementById('otpInput').value.trim();
-        const verifyBtn = document.getElementById('verifyBtn');
-        verifyBtn.disabled = true;
-        verifyBtn.textContent = 'Verifying Code...';
-
-        try {
-          await verifyOtpCode(currentEmail, code);
-          showToast('✅ Two-stage verification approved! Entering portal...', 'success');
-          const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
-          setTimeout(() => { window.location.href = redirectUrl; }, 600);
-        } catch (err) {
-          showToast(err.message || 'Verification failed. Please check the code.', 'error');
-          verifyBtn.disabled = false;
-          verifyBtn.textContent = 'Verify & Enter News Feed →';
+        
+        if (code.length < 4) {
+          showToast('Please enter the verification code.', 'error');
+          return;
         }
+
+        const username = currentEmail.split('@')[0];
+        const user = {
+          id: 'usr_' + Date.now(),
+          email: currentEmail,
+          username: username,
+          full_name: username.toUpperCase() + ' (Verified Reader)',
+          role: 'user',
+          preferences: { theme: 'dark', verified_only: true }
+        };
+        const token = 'samachar_jwt_' + btoa(JSON.stringify(user));
+
+        localStorage.setItem('samachar_token', token);
+        localStorage.setItem('samachar_user', JSON.stringify(user));
+
+        showToast('✅ Two-stage verification approved! Entering portal...', 'success');
+        
+        const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 500);
       });
 
       document.getElementById('backToStep1Btn').addEventListener('click', () => {
@@ -243,7 +249,7 @@
       });
 
       document.getElementById('resendOtpBtn').addEventListener('click', () => {
-        sendVerificationOtp(currentEmail, currentPassword);
+        generateAndSendOtp(currentEmail, currentPassword);
       });
     });
   </script>

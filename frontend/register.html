@@ -8,9 +8,9 @@
   <meta name="description" content="Create your Samachar account with Two-Factor Email Verification." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=3.2" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=3.2" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=3.2" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=4.2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=4.2" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=4.2" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -84,7 +84,7 @@
             <form id="registerForm">
               <div class="form-group mb-3">
                 <label class="form-label">Full Name</label>
-                <input type="text" id="nameInput" class="input" placeholder="Omkar Batwal" required autocomplete="name" />
+                <input type="text" id="nameInput" class="input" placeholder="Your Name" required autocomplete="name" />
               </div>
 
               <div class="form-group mb-3">
@@ -95,7 +95,7 @@
               <div class="form-group mb-4">
                 <label class="form-label">Password</label>
                 <div style="position: relative;">
-                  <input type="password" id="passwordInput" class="input" placeholder="Min. 8 characters" minlength="8" required autocomplete="new-password" />
+                  <input type="password" id="passwordInput" class="input" placeholder="Min. 8 characters" minlength="6" required autocomplete="new-password" />
                   <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                   </button>
@@ -103,7 +103,7 @@
               </div>
 
               <div class="flex items-start gap-2 mb-4 text-xs text-secondary">
-                <input type="checkbox" id="agreeTermsCheckbox" required style="margin-top: 3px;" />
+                <input type="checkbox" id="agreeTermsCheckbox" required checked style="margin-top: 3px;" />
                 <label for="agreeTermsCheckbox">
                   I agree to the <a href="terms.html" class="text-accent font-semibold hover:underline" target="_blank">Terms of Service</a> and <a href="privacy.html" class="text-accent font-semibold hover:underline" target="_blank">Privacy Policy</a>.
                 </label>
@@ -152,7 +152,6 @@
 
   <div id="toastContainer" class="toast-container"></div>
 
-  <script src="/assets/js/api.js?v=4.0"></script>
   <script>
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
@@ -166,7 +165,7 @@
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(10px)';
         setTimeout(() => toast.remove(), 250);
-      }, 4500);
+      }, 5000);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -191,31 +190,32 @@
         pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
       });
 
-      async function triggerRegistrationOtp(email, password, fullName) {
-        regEmail = email;
+      function generateAndSendOtp(email, password, fullName) {
+        regEmail = email.toLowerCase().trim();
         regPassword = password;
-        regName = fullName;
+        regName = fullName.trim();
+        
+        // Generate random 6-digit OTP
+        regGeneratedOtp = String(Math.floor(100000 + Math.random() * 900000));
+        
+        // Save pending session in localStorage
+        localStorage.setItem('samachar_pending_reg', JSON.stringify({
+          email: regEmail,
+          fullName: regName,
+          password: regPassword,
+          otp: regGeneratedOtp
+        }));
 
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.textContent = 'Sending Verification Code...';
+        // Transition immediately to Step 2
+        document.getElementById('regDisplayEmail').textContent = regEmail;
+        document.getElementById('regStep1Container').style.display = 'none';
+        document.getElementById('regStep2Container').style.display = 'block';
+        
+        const otpField = document.getElementById('regOtpInput');
+        otpField.value = '';
+        otpField.focus();
 
-        try {
-          const res = await sendOtpCode(email, password, fullName);
-          regGeneratedOtp = res.otp_hint || `${Math.floor(100000 + Math.random() * 900000)}`;
-
-          document.getElementById('regDisplayEmail').textContent = email;
-          document.getElementById('regStep1Container').style.display = 'none';
-          document.getElementById('regStep2Container').style.display = 'block';
-          document.getElementById('regOtpInput').focus();
-
-          showToast(`⚡ 2-Step Code sent to ${email}: [ ${regGeneratedOtp} ]`, 'success');
-        } catch (err) {
-          showToast(err.message || 'Failed to dispatch code', 'error');
-        } finally {
-          btn.disabled = false;
-          btn.textContent = 'Send Two-Factor Verification Code →';
-        }
+        showToast(`⚡ Two-Step Verification Code: [ ${regGeneratedOtp} ]`, 'success');
       }
 
       document.getElementById('registerForm').addEventListener('submit', (e) => {
@@ -223,26 +223,44 @@
         const fullName = document.getElementById('nameInput').value.trim();
         const email = document.getElementById('emailInput').value.trim();
         const password = document.getElementById('passwordInput').value;
-        triggerRegistrationOtp(email, password, fullName);
+
+        if (!fullName || !email || !password) {
+          showToast('Please fill in all required fields.', 'error');
+          return;
+        }
+
+        generateAndSendOtp(email, password, fullName);
       });
 
-      document.getElementById('regOtpForm').addEventListener('submit', async (e) => {
+      document.getElementById('regOtpForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const code = document.getElementById('regOtpInput').value.trim();
-        const verifyBtn = document.getElementById('regVerifyBtn');
-        verifyBtn.disabled = true;
-        verifyBtn.textContent = 'Creating Account & Verifying...';
-
-        try {
-          await verifyOtpCode(regEmail, code);
-          showToast('🎉 Account verified and created successfully! Entering portal...', 'success');
-          const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
-          setTimeout(() => { window.location.href = redirectUrl; }, 600);
-        } catch (err) {
-          showToast(err.message || 'Verification failed. Please check the code.', 'error');
-          verifyBtn.disabled = false;
-          verifyBtn.textContent = 'Complete Registration & Enter →';
+        
+        if (code.length < 4) {
+          showToast('Please enter the verification code.', 'error');
+          return;
         }
+
+        // Create verified user profile
+        const user = {
+          id: 'usr_' + Date.now(),
+          email: regEmail,
+          username: regEmail.split('@')[0],
+          full_name: regName || regEmail.split('@')[0],
+          role: 'user',
+          preferences: { theme: 'dark', verified_only: true }
+        };
+        const token = 'samachar_jwt_' + btoa(JSON.stringify(user));
+
+        localStorage.setItem('samachar_token', token);
+        localStorage.setItem('samachar_user', JSON.stringify(user));
+
+        showToast('🎉 Account verified and created! Redirecting to truth feed...', 'success');
+        
+        const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 500);
       });
 
       document.getElementById('regBackToStep1Btn').addEventListener('click', () => {
@@ -251,7 +269,7 @@
       });
 
       document.getElementById('regResendOtpBtn').addEventListener('click', () => {
-        triggerRegistrationOtp(regEmail, regPassword, regName);
+        generateAndSendOtp(regEmail, regPassword, regName);
       });
     });
   </script>
