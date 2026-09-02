@@ -7,9 +7,9 @@
   <meta name="description" content="Your saved news articles, research archive, and verified reports." />
   <meta name="theme-color" content="#08090C" />
   <link rel="manifest" href="/manifest.json" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=2.8" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2.8" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=2.8" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=2.9" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=2.9" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=2.9" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
   <script>
@@ -66,6 +66,22 @@
         <div id="headerAuth" class="flex items-center gap-2"></div>
       </div>
     </div>
+
+    <!-- Category Navigation Bar -->
+    <nav class="category-nav-bar" aria-label="News channels">
+      <div class="container category-nav-inner">
+        <a href="home.html" class="category-link">🔥 Top Stories</a>
+        <a href="latest.html?cat=world" class="category-link">🌍 World</a>
+        <a href="latest.html?cat=technology" class="category-link">⚡ Tech & AI</a>
+        <a href="latest.html?cat=india" class="category-link">🇮🇳 India</a>
+        <a href="latest.html?cat=business" class="category-link">📈 Markets</a>
+        <a href="latest.html?cat=science" class="category-link">🔬 Science</a>
+        <a href="latest.html?cat=health" class="category-link">🩺 Health</a>
+        <a href="latest.html?cat=sports" class="category-link">🏆 Sports</a>
+        <a href="latest.html?cat=entertainment" class="category-link">🎬 Entertainment</a>
+        <a href="bookmarks.html" class="category-link active text-accent font-bold">📌 Saved Archive</a>
+      </div>
+    </nav>
   </header>
 
   <!-- Main Container -->
@@ -73,7 +89,7 @@
     
     <!-- Section Title Banner -->
     <div class="card p-6 mb-6" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-md);">
-      <div class="flex items-center justify-between gap-4" style="flex-wrap: wrap;">
+      <div class="flex items-center justify-between gap-4 mb-4" style="flex-wrap: wrap;">
         <div>
           <span class="badge badge-verified mb-2">📌 ENCRYPTED ARCHIVE</span>
           <h1 class="heading-lg">Your Saved Bookmarks</h1>
@@ -85,6 +101,12 @@
             + Discover More Stories
           </a>
         </div>
+      </div>
+
+      <!-- In-Page Bookmark Search Input -->
+      <div style="position: relative; max-width: 480px;">
+        <input type="text" id="bookmarkSearchInput" class="input" placeholder="Filter saved bookmarks by keyword or topic..." style="padding-left: 36px; font-size: 13px;" />
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: absolute; left: 12px; top: 11px; color: var(--text-muted);"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       </div>
     </div>
 
@@ -116,18 +138,28 @@
 
   <div id="toastContainer" class="toast-container"></div>
 
-  <script src="/assets/js/api.js?v=2.8"></script>
-  <script src="/assets/js/layout.js?v=2.8"></script>
-  <script src="/assets/js/app.js?v=2.8"></script>
+  <script src="/assets/js/api.js?v=2.9"></script>
+  <script src="/assets/js/layout.js?v=2.9"></script>
+  <script src="/assets/js/app.js?v=2.9"></script>
   <script>
     let allBookmarksData = [];
     let currentFilter = 'all';
+    let inPageSearchQuery = '';
 
     function renderBookmarksGrid(data) {
       const listEl = document.getElementById('bookmarksList');
-      const filtered = currentFilter === 'all' 
+      let filtered = currentFilter === 'all' 
         ? data 
         : data.filter(b => b.article && (b.article.category?.slug === currentFilter || b.article.category?.name?.toLowerCase().includes(currentFilter)));
+
+      if (inPageSearchQuery) {
+        const kw = inPageSearchQuery.toLowerCase();
+        filtered = filtered.filter(b => b.article && (
+          b.article.title.toLowerCase().includes(kw) || 
+          (b.article.summary && b.article.summary.toLowerCase().includes(kw)) ||
+          (b.article.source?.name && b.article.source.name.toLowerCase().includes(kw))
+        ));
+      }
 
       if (filtered && filtered.length) {
         listEl.innerHTML = filtered.map(b => {
@@ -176,9 +208,9 @@
         listEl.innerHTML = `
           <div class="card p-12 text-center w-full" style="grid-column: 1 / -1; background: var(--bg-surface-1); border-color: var(--border-light);">
             <div style="font-size: 36px; margin-bottom: 12px;">📌</div>
-            <h2 class="heading-md mb-2">No Saved Bookmarks in this Category</h2>
+            <h2 class="heading-md mb-2">No Saved Bookmarks Found</h2>
             <p class="text-xs text-secondary mb-6" style="max-width: 420px; margin-left: auto; margin-right: auto;">
-              Save articles while reading the live feeds to reference their evidence and truth scorecards anytime.
+              No saved articles match your current search or category filter.
             </p>
             <a href="home.html" class="btn btn-primary btn-sm">
               Explore Live News Portal &rarr;
@@ -227,6 +259,11 @@
         window.location.href = 'login.html?redirect=bookmarks.html';
         return;
       }
+
+      document.getElementById('bookmarkSearchInput')?.addEventListener('input', (e) => {
+        inPageSearchQuery = e.target.value.trim();
+        renderBookmarksGrid(allBookmarksData);
+      });
 
       loadBookmarks();
     });

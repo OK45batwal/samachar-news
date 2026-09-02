@@ -134,12 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function openSearch() {
     if (!searchOverlay) return;
     searchOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
     globalSearchInput?.focus();
   }
 
   function closeSearch() {
     if (!searchOverlay) return;
     searchOverlay.classList.remove('active');
+    document.body.style.overflow = '';
     if (globalSearchInput) globalSearchInput.value = '';
     if (resultsContainer) {
       resultsContainer.style.display = 'none';
@@ -167,7 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
-      openSearch();
+      if (searchOverlay?.classList.contains('active')) {
+        closeSearch();
+      } else {
+        openSearch();
+      }
     }
   });
 
