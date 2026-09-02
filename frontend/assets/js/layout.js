@@ -6,8 +6,7 @@ window.openDeleteAccountModal = function() {
   if (!modal) {
     modal = document.createElement('div');
     modal.id = 'globalDeleteAccountModal';
-    modal.className = 'search-overlay';
-    modal.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:9999999;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;";
+    modal.className = 'custom-modal-overlay';
     document.body.appendChild(modal);
   }
 
@@ -26,15 +25,15 @@ window.openDeleteAccountModal = function() {
         Are you sure you want to permanently erase your account? All saved bookmarks, reading history, and data will be permanently wiped.
       </p>
       <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
-        <button type="button" onclick="document.getElementById('globalDeleteAccountModal').style.display='none'" class="btn btn-secondary btn-sm" style="padding: 8px 16px;">Cancel</button>
+        <button type="button" onclick="document.getElementById('globalDeleteAccountModal').style.setProperty('display','none','important')" class="btn btn-secondary btn-sm" style="padding: 8px 16px;">Cancel</button>
         <button type="button" id="confirmGlobalDirectDeleteBtn" onclick="executeGlobalDirectDelete()" class="btn btn-sm" style="background:#FF4D4D;color:#fff;border:none;font-weight:700;padding:8px 18px;cursor:pointer;">Yes, Delete Account</button>
       </div>
     </div>
   `;
 
-  modal.style.display = 'flex';
+  modal.style.setProperty('display', 'flex', 'important');
   modal.onclick = (e) => {
-    if (e.target === modal) modal.style.display = 'none';
+    if (e.target === modal) modal.style.setProperty('display', 'none', 'important');
   };
 };
 

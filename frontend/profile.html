@@ -7,9 +7,9 @@
   <meta name="description" content="Manage your reading preferences, truth threshold filters, and account settings." />
   <meta name="theme-color" content="#08090C" />
   <link rel="manifest" href="/manifest.json" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=6.2" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=6.2" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=6.2" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=6.5" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=6.5" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=6.5" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
   <script>
@@ -23,7 +23,7 @@
     window.openProfileDeleteModal = function() {
       const modal = document.getElementById('profileDeleteModal');
       if (modal) {
-        modal.style.display = 'flex';
+        modal.style.setProperty('display', 'flex', 'important');
       } else {
         if (confirm('Are you sure you want to permanently delete your account and all data?')) {
           window.executeProfileDelete();
@@ -34,7 +34,7 @@
 
     window.closeProfileDeleteModal = function() {
       const modal = document.getElementById('profileDeleteModal');
-      if (modal) modal.style.display = 'none';
+      if (modal) modal.style.setProperty('display', 'none', 'important');
     };
 
     window.executeProfileDelete = async function() {
@@ -240,7 +240,7 @@
   </main>
 
   <!-- DIRECT CONFIRMATION MODAL -->
-  <div id="profileDeleteModal" class="search-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:9999999;display:none;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;">
+  <div id="profileDeleteModal" class="custom-modal-overlay" style="display:none !important;">
     <div class="card p-6" style="max-width: 480px; width: 100%; background: #121824; border: 1px solid rgba(255, 77, 77, 0.4); box-shadow: 0 25px 50px rgba(0,0,0,0.9); box-sizing: border-box; border-radius: 16px;">
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
         <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 77, 77, 0.15); display: flex; align-items: center; justify-content: center; color: #FF4D4D; flex-shrink: 0;">
@@ -273,9 +273,9 @@
 
   <div id="toastContainer" class="toast-container"></div>
 
-  <script src="/assets/js/api.js?v=6.2"></script>
-  <script src="/assets/js/layout.js?v=6.2"></script>
-  <script src="/assets/js/app.js?v=6.2"></script>
+  <script src="/assets/js/api.js?v=6.5"></script>
+  <script src="/assets/js/layout.js?v=6.5"></script>
+  <script src="/assets/js/app.js?v=6.5"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       let user = null;
