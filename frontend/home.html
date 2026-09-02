@@ -392,6 +392,14 @@
         toggleBtn.classList.toggle('active', isVerifiedOnly);
         loadNews();
       });
+
+      // Real-Time WebSocket Wire Listener
+      initNewsWebSocket((msg) => {
+        if (msg.type === 'new_article' || msg.type === 'breaking_news') {
+          showToast(`⚡ Breaking: ${msg.title || 'New Verified Story'} (${msg.credibility_score || 95}% Verified)`, 'success');
+          loadNews();
+        }
+      });
     });
   </script>
 </body>

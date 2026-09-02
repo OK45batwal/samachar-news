@@ -182,3 +182,41 @@ function getUser() {
 function isAuthenticated() {
   return !!localStorage.getItem('samachar_token');
 }
+
+// WebSocket Live News & Fact Stream
+function initNewsWebSocket(onMessageCallback) {
+  const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const wsHost = window.location.port === '5173' ? 'localhost:8000' : window.location.host;
+  const wsUrl = `${wsProtocol}//${wsHost}/api/ws`;
+
+  let socket;
+  try {
+    socket = new WebSocket(wsUrl);
+  } catch (e) {
+    console.warn('WebSocket init error:', e);
+    return null;
+  }
+
+  socket.onopen = () => {
+    const token = localStorage.getItem('samachar_token');
+    if (token && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: 'auth', token }));
+    }
+  };
+
+  socket.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      if (onMessageCallback) onMessageCallback(data);
+    } catch (err) {
+      console.warn('WebSocket message parse error:', err);
+    }
+  };
+
+  socket.onclose = () => {
+    setTimeout(() => initNewsWebSocket(onMessageCallback), 5000);
+  };
+
+  return socket;
+}
+
