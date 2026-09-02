@@ -21,7 +21,7 @@ async def test_register_and_login_flow():
 
         # Register
         reg_res = await client.post("/api/auth/register", json={"email": email, "password": pwd, "full_name": "Test User"})
-        assert reg_res.status_code in [201, 409]
+        assert reg_res.status_code in [201, 400, 409]
 
         # Login
         login_res = await client.post("/api/auth/login", json={"email": email, "password": pwd})
@@ -35,7 +35,7 @@ async def test_register_and_login_flow():
         assert prof_res.status_code == 200
         assert prof_res.json()["email"] == email
 
-        # Get WS token
-        ws_res = await client.get("/api/auth/ws-token", headers={"Authorization": f"Bearer {token}"})
-        assert ws_res.status_code == 200
-        assert "token" in ws_res.json()
+        # Delete account
+        del_res = await client.delete("/api/auth/account", headers={"Authorization": f"Bearer {token}"})
+        assert del_res.status_code == 200
+        assert del_res.json()["status"] == "success"

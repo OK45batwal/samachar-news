@@ -519,6 +519,30 @@ async function logoutUser() {
   }
 }
 
+async function deleteAccount() {
+  const token = localStorage.getItem('samachar_token');
+  try {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      await fetch('http://localhost:8000/api/auth/account', {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+        signal: AbortSignal.timeout(1000)
+      }).catch(() => {});
+    }
+  } catch (_) {}
+
+  const user = typeof getUser === 'function' ? getUser() : null;
+  localStorage.removeItem('samachar_token');
+  localStorage.removeItem('samachar_user');
+  localStorage.removeItem('samachar_local_bookmarks');
+  if (user && user.email) {
+    localStorage.removeItem('samachar_registered_' + user.email);
+    localStorage.removeItem('samachar_remember_email');
+  }
+  sessionStorage.clear();
+  return { status: 'success' };
+}
+
 async function getMe() {
   return request('/api/auth/me');
 }

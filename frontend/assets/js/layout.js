@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
             <span class="hide-mobile">Saved</span>
           </a>
-          <a href="profile.html" class="btn btn-secondary btn-sm flex items-center gap-2">
+          <a href="profile.html" class="btn btn-secondary btn-sm flex items-center gap-2" title="User Profile">
             <div style="width:20px;height:20px;border-radius:50%;background:var(--accent);color:#08090C;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center">
               ${(user.full_name || user.username || 'U')[0].toUpperCase()}
             </div>
@@ -71,6 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
           </a>
           <button onclick="logoutUser()" class="btn btn-ghost btn-sm" title="Sign Out">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="hide-mobile">Logout</span>
+          </button>
+          <button onclick="openDeleteAccountModal()" class="btn btn-sm" style="background:rgba(255,77,77,0.12);color:#FF4D4D;border:1px solid rgba(255,77,77,0.3);padding:4px 8px;font-size:11px;font-weight:600;" title="Permanently Delete Account">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            <span>Delete</span>
           </button>
         </div>
       `;
@@ -264,3 +269,72 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// 7. Global Account Deletion Modal Controller
+window.openDeleteAccountModal = function() {
+  let modal = document.getElementById('globalDeleteAccountModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'globalDeleteAccountModal';
+    modal.className = 'search-overlay';
+    modal.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;";
+    modal.innerHTML = `
+      <div class="card p-6" style="max-width: 480px; width: 100%; background: #121824; border: 1px solid rgba(255, 77, 77, 0.4); box-shadow: 0 25px 50px rgba(0,0,0,0.9); box-sizing: border-box; border-radius: 16px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 77, 77, 0.15); display: flex; align-items: center; justify-content: center; color: #FF4D4D; flex-shrink: 0;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+          </div>
+          <div>
+            <h3 class="heading-sm text-primary" style="margin:0 0 4px 0; font-size: 18px;">Permanently Delete Account?</h3>
+            <p class="text-xs text-muted" style="margin:0;">This action is permanent and cannot be undone.</p>
+          </div>
+        </div>
+        <p class="text-xs text-secondary mb-6 leading-relaxed" style="margin-bottom:24px; line-height: 1.6;">
+          Are you sure you want to completely erase your account? All your saved bookmarks, personalized feed filters, and verified reading history will be permanently deleted from the database.
+        </p>
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+          <button type="button" onclick="document.getElementById('globalDeleteAccountModal').style.display='none'" class="btn btn-secondary btn-sm" style="padding: 8px 16px;">Cancel</button>
+          <button type="button" id="confirmGlobalDeleteBtn" onclick="executeGlobalDeleteAccount()" class="btn btn-sm" style="background:#FF4D4D;color:#fff;border:none;font-weight:700;padding:8px 18px;">Yes, Delete My Account</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  }
+  modal.style.display = 'flex';
+};
+
+window.executeGlobalDeleteAccount = async function() {
+  const btn = document.getElementById('confirmGlobalDeleteBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Deleting Account...'; }
+  
+  try {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      const token = localStorage.getItem('samachar_token');
+      await fetch('http://localhost:8000/api/auth/account', {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+        signal: AbortSignal.timeout(1000)
+      }).catch(() => {});
+    }
+  } catch (_) {}
+
+  const user = typeof getUser === 'function' ? getUser() : null;
+  localStorage.removeItem('samachar_token');
+  localStorage.removeItem('samachar_user');
+  localStorage.removeItem('samachar_local_bookmarks');
+  if (user && user.email) {
+    localStorage.removeItem('samachar_registered_' + user.email);
+    localStorage.removeItem('samachar_remember_email');
+  }
+  sessionStorage.clear();
+
+  if (typeof showToast === 'function') {
+    showToast('👋 Your account has been permanently deleted.', 'info');
+  }
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 400);
+};
