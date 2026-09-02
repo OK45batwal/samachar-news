@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#08090C" />
   <title>Create Account — Samachar Truth Intelligence</title>
-  <meta name="description" content="Create your free Samachar account to access real-time fact-checked news." />
+  <meta name="description" content="One-time secure account registration for real-time verified news intelligence." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=4.5" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=4.5" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=4.5" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=5.0" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=5.0" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=5.0" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -29,7 +29,7 @@
         </a>
 
         <div style="margin-top: 48px; max-width: 480px;">
-          <span class="badge badge-verified mb-3">🟢 CITIZEN & RESEARCHER NETWORK</span>
+          <span class="badge badge-verified mb-3">🟢 ONE-TIME INSTANT REGISTRATION</span>
           <h2 class="heading-xl mb-4" style="line-height: 1.18;">
             Join the Verified Truth Intelligence Network.
           </h2>
@@ -76,7 +76,7 @@
           <div class="text-center mb-6">
             <span class="badge badge-verified mb-2">CREATE ACCOUNT</span>
             <h1 class="heading-lg mb-1">Create Free Account</h1>
-            <p class="text-xs text-secondary">Join verified readers and fact-checkers worldwide</p>
+            <p class="text-xs text-secondary">Instant single-step setup with permanent verified access</p>
           </div>
 
           <form id="registerForm">
@@ -140,7 +140,21 @@
       }, 4000);
     }
 
+    // Input Sanitizer to prevent XSS
+    function sanitize(str) {
+      return String(str || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      // Auto-redirect if already authenticated
+      if (localStorage.getItem('samachar_token') && localStorage.getItem('samachar_user')) {
+        const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
+        window.location.href = redirectUrl;
+        return;
+      }
+
       // Theme switcher
       const themeBtn = document.getElementById('authThemeToggle');
       themeBtn?.addEventListener('click', () => {
@@ -157,7 +171,7 @@
         pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
       });
 
-      // Direct Account Creation
+      // Direct One-Time Account Creation
       document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const fullName = document.getElementById('nameInput').value.trim();
@@ -170,11 +184,21 @@
           return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showToast('Please enter a valid email address.', 'error');
+          return;
+        }
+
+        if (password.length < 6) {
+          showToast('Password must be at least 6 characters.', 'error');
+          return;
+        }
+
         btn.disabled = true;
-        btn.textContent = 'Creating Account...';
+        btn.textContent = 'Creating Security Credentials...';
 
         try {
-          // Attempt backend registration if available
           if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             try {
               await fetch('http://localhost:8000/api/auth/register', {
@@ -186,13 +210,13 @@
             } catch (_) {}
           }
 
-          // Create authenticated session
           const user = {
             id: 'usr_' + Date.now(),
-            email: email,
-            username: email.split('@')[0],
-            full_name: fullName,
+            email: sanitize(email),
+            username: sanitize(email.split('@')[0]),
+            full_name: sanitize(fullName),
             role: 'user',
+            session_created: new Date().toISOString(),
             preferences: { theme: 'dark', verified_only: true }
           };
           const token = 'samachar_jwt_' + btoa(JSON.stringify(user));
@@ -200,13 +224,14 @@
           localStorage.setItem('samachar_token', token);
           localStorage.setItem('samachar_user', JSON.stringify(user));
           localStorage.setItem('samachar_registered_' + email, JSON.stringify(user));
+          localStorage.setItem('samachar_remember_email', email);
 
-          showToast('🎉 Account created successfully! Entering truth portal...', 'success');
+          showToast('🎉 Account created! Entering truth dashboard...', 'success');
           
           const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
           setTimeout(() => {
             window.location.href = redirectUrl;
-          }, 400);
+          }, 350);
 
         } catch (err) {
           showToast(err.message || 'Account creation error. Please try again.', 'error');
