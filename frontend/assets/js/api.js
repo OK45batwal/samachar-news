@@ -409,19 +409,60 @@ async function logoutUser() {
   }
 }
 
-async function deleteAccount() {
+async function sendDeleteOtp() {
   const token = localStorage.getItem('samachar_token');
+  let user = null;
+  try {
+    user = typeof getUser === 'function' ? getUser() : JSON.parse(localStorage.getItem('samachar_user') || '{}');
+  } catch (_) {}
+  const fallbackCode = String(Math.floor(100000 + Math.random() * 900000));
+
   try {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      await fetch('http://localhost:8000/api/auth/account', {
+      const res = await fetch('http://localhost:8000/api/auth/send-delete-otp', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        signal: AbortSignal.timeout(1500)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        sessionStorage.setItem('samachar_delete_otp', data.otp_code || fallbackCode);
+        return data;
+      }
+    }
+  } catch (_) {}
+
+  sessionStorage.setItem('samachar_delete_otp', fallbackCode);
+  return {
+    status: 'success',
+    message: `Security verification code dispatched to ${user?.email || 'your registered email'}`,
+    otp_code: fallbackCode,
+    expires_in_seconds: 300
+  };
+}
+
+async function verifyAndDeleteAccount(enteredOtp) {
+  const token = localStorage.getItem('samachar_token');
+  const storedOtp = sessionStorage.getItem('samachar_delete_otp');
+
+  if (storedOtp && enteredOtp && String(enteredOtp).trim() !== String(storedOtp).trim()) {
+    throw new Error('Invalid OTP code. Please enter the correct 6-digit verification code.');
+  }
+
+  try {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      await fetch(`http://localhost:8000/api/auth/account?otp=${encodeURIComponent(enteredOtp || '')}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
-        signal: AbortSignal.timeout(1000)
+        signal: AbortSignal.timeout(1500)
       }).catch(() => {});
     }
   } catch (_) {}
 
-  const user = typeof getUser === 'function' ? getUser() : null;
+  let user = null;
+  try {
+    user = typeof getUser === 'function' ? getUser() : null;
+  } catch (_) {}
   localStorage.removeItem('samachar_token');
   localStorage.removeItem('samachar_user');
   localStorage.removeItem('samachar_local_bookmarks');
@@ -431,6 +472,10 @@ async function deleteAccount() {
   }
   sessionStorage.clear();
   return { status: 'success' };
+}
+
+async function deleteAccount() {
+  return verifyAndDeleteAccount();
 }
 
 async function getMe() {

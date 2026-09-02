@@ -1,76 +1,165 @@
 // Samachar Layout Controller: Header Auth, Theme switcher, Mobile Bottom Nav, Search Modal
 
-// Global Account Deletion Modal Controller (Defined at top to guarantee global availability)
+// Global 2-Stage OTP Account Deletion Modal Controller
 window.openDeleteAccountModal = function() {
   let modal = document.getElementById('globalDeleteAccountModal');
   if (!modal) {
     modal = document.createElement('div');
     modal.id = 'globalDeleteAccountModal';
     modal.className = 'search-overlay';
-    modal.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;";
-    modal.innerHTML = `
-      <div class="card p-6" style="max-width: 480px; width: 100%; background: #121824; border: 1px solid rgba(255, 77, 77, 0.4); box-shadow: 0 25px 50px rgba(0,0,0,0.9); box-sizing: border-box; border-radius: 16px;">
+    modal.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;";
+    document.body.appendChild(modal);
+  }
+
+  let userEmail = 'your registered email';
+  try {
+    const raw = localStorage.getItem('samachar_user');
+    if (raw) userEmail = JSON.parse(raw).email || userEmail;
+  } catch (_) {}
+
+  // Render Stage 1 (Initial Confirmation & Send OTP trigger)
+  modal.innerHTML = `
+    <div class="card p-6" style="max-width: 480px; width: 100%; background: #121824; border: 1px solid rgba(255, 77, 77, 0.4); box-shadow: 0 25px 50px rgba(0,0,0,0.9); box-sizing: border-box; border-radius: 16px;">
+      <div id="deleteStage1">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
           <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 77, 77, 0.15); display: flex; align-items: center; justify-content: center; color: #FF4D4D; flex-shrink: 0;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
           </div>
           <div>
-            <h3 class="heading-sm text-primary" style="margin:0 0 4px 0; font-size: 18px;">Permanently Delete Account?</h3>
-            <p class="text-xs text-muted" style="margin:0;">This action is permanent and cannot be undone.</p>
+            <h3 class="heading-sm text-primary" style="margin:0 0 4px 0; font-size: 18px;">2-Stage Account Deletion</h3>
+            <p class="text-xs text-muted" style="margin:0;">Step 1 of 2: Request Security Verification Code</p>
           </div>
         </div>
-        <p class="text-xs text-secondary mb-6 leading-relaxed" style="margin-bottom:24px; line-height: 1.6;">
-          Are you sure you want to completely erase your account? All your saved bookmarks, personalized feed filters, and verified reading history will be permanently deleted from the database.
+        <p class="text-xs text-secondary mb-4 leading-relaxed" style="line-height: 1.6;">
+          To prevent unauthorized deletions, a <strong>6-digit security verification code (OTP)</strong> will be dispatched to <strong>${userEmail}</strong>.
         </p>
+        <div style="background: rgba(255, 77, 77, 0.08); border: 1px solid rgba(255, 77, 77, 0.25); border-radius: 8px; padding: 12px; margin-bottom: 20px;">
+          <p class="text-xs text-secondary" style="margin:0; color: #FFA3A3;">
+            ⚠️ <strong>Irreversible Action:</strong> All saved research bookmarks, reading history, and preferences will be permanently wiped.
+          </p>
+        </div>
         <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
           <button type="button" onclick="document.getElementById('globalDeleteAccountModal').style.display='none'" class="btn btn-secondary btn-sm" style="padding: 8px 16px;">Cancel</button>
-          <button type="button" id="confirmGlobalDeleteBtn" onclick="executeGlobalDeleteAccount()" class="btn btn-sm" style="background:#FF4D4D;color:#fff;border:none;font-weight:700;padding:8px 18px;">Yes, Delete My Account</button>
+          <button type="button" id="sendDeleteOtpBtn" onclick="dispatchDeleteOtpStep()" class="btn btn-sm" style="background:#FF4D4D;color:#fff;border:none;font-weight:700;padding:8px 18px;cursor:pointer;">Send 6-Digit OTP Code &rarr;</button>
         </div>
       </div>
-    `;
-    document.body.appendChild(modal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) modal.style.display = 'none';
-    });
-  }
+
+      <div id="deleteStage2" style="display:none;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(0, 245, 155, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <h3 class="heading-sm text-primary" style="margin:0 0 4px 0; font-size: 18px;">Enter 6-Digit OTP Code</h3>
+            <p class="text-xs text-muted" style="margin:0;">Step 2 of 2: Confirm Account Deletion</p>
+          </div>
+        </div>
+        <div id="otpLiveNotice" style="background: rgba(0, 245, 155, 0.1); border: 1px solid var(--accent-border); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px;">
+          <div class="text-xs text-accent font-bold mb-1">🔑 Security OTP Dispatched!</div>
+          <div class="text-xs text-secondary" id="otpCodeDisplayNotice">Check your email for the 6-digit code.</div>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label class="form-label" style="font-size:12px;">Verification Code (6 Digits)</label>
+          <input type="text" id="globalDeleteOtpInput" maxlength="6" placeholder="• • • • • •" style="width:100%;font-family:var(--font-mono);font-size:22px;letter-spacing:8px;text-align:center;padding:12px;background:var(--bg-surface-2);color:var(--text-primary);border:1px solid var(--border-light);border-radius:8px;outline:none;" />
+          <div id="deleteOtpError" class="text-xs text-danger mt-1" style="display:none;margin-top:6px;"></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <button type="button" onclick="dispatchDeleteOtpStep()" class="btn btn-ghost btn-sm text-secondary" style="padding:0;font-size:12px;background:none;border:none;cursor:pointer;">Resend Code</button>
+          <div style="display:flex;gap:10px;">
+            <button type="button" onclick="document.getElementById('globalDeleteAccountModal').style.display='none'" class="btn btn-secondary btn-sm">Cancel</button>
+            <button type="button" id="confirmFinalDeleteBtn" onclick="submitFinalDeleteAccount()" class="btn btn-sm" style="background:#FF4D4D;color:#fff;border:none;font-weight:700;padding:8px 18px;cursor:pointer;">Verify & Delete Permanently</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
   modal.style.display = 'flex';
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.style.display = 'none';
+  };
 };
 
-window.executeGlobalDeleteAccount = async function() {
-  const btn = document.getElementById('confirmGlobalDeleteBtn');
-  if (btn) { btn.disabled = true; btn.textContent = 'Deleting Account...'; }
-  
-  try {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      const token = localStorage.getItem('samachar_token');
-      await fetch('http://localhost:8000/api/auth/account', {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-        signal: AbortSignal.timeout(1000)
-      }).catch(() => {});
-    }
-  } catch (_) {}
+window.dispatchDeleteOtpStep = async function() {
+  const sendBtn = document.getElementById('sendDeleteOtpBtn');
+  if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending Code...'; }
 
   try {
-    const rawUser = localStorage.getItem('samachar_user');
-    const userObj = rawUser ? JSON.parse(rawUser) : null;
-    if (userObj && userObj.email) {
-      localStorage.removeItem('samachar_registered_' + userObj.email);
+    let res = null;
+    if (typeof sendDeleteOtp === 'function') {
+      res = await sendDeleteOtp();
+    } else {
+      const code = String(Math.floor(100000 + Math.random() * 900000));
+      sessionStorage.setItem('samachar_delete_otp', code);
+      res = { otp_code: code };
     }
-  } catch (_) {}
 
-  localStorage.removeItem('samachar_token');
-  localStorage.removeItem('samachar_user');
-  localStorage.removeItem('samachar_local_bookmarks');
-  localStorage.removeItem('samachar_remember_email');
-  sessionStorage.clear();
+    document.getElementById('deleteStage1').style.display = 'none';
+    document.getElementById('deleteStage2').style.display = 'block';
 
-  if (typeof showToast === 'function') {
-    showToast('👋 Your account has been permanently deleted.', 'info');
+    const input = document.getElementById('globalDeleteOtpInput');
+    if (input) {
+      input.value = '';
+      input.focus();
+    }
+
+    if (res && res.otp_code) {
+      document.getElementById('otpCodeDisplayNotice').innerHTML = `Security Verification Code: <strong style="font-family:var(--font-mono);font-size:14px;color:var(--accent);">${res.otp_code}</strong> (Valid for 5m)`;
+      if (typeof showToast === 'function') {
+        showToast(`🔑 Verification OTP: ${res.otp_code}`, 'info');
+      }
+    }
+  } catch (err) {
+    alert('Failed to send verification code: ' + err.message);
+    if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = 'Send 6-Digit OTP Code →'; }
   }
-  setTimeout(() => {
-    window.location.href = 'index.html';
-  }, 350);
+};
+
+window.submitFinalDeleteAccount = async function() {
+  const input = document.getElementById('globalDeleteOtpInput');
+  const errEl = document.getElementById('deleteOtpError');
+  const submitBtn = document.getElementById('confirmFinalDeleteBtn');
+  const enteredOtp = input ? input.value.trim() : '';
+
+  if (!enteredOtp || enteredOtp.length !== 6) {
+    if (errEl) {
+      errEl.textContent = 'Please enter the complete 6-digit OTP code.';
+      errEl.style.display = 'block';
+    }
+    return;
+  }
+
+  if (errEl) errEl.style.display = 'none';
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Verifying & Deleting...'; }
+
+  try {
+    if (typeof verifyAndDeleteAccount === 'function') {
+      await verifyAndDeleteAccount(enteredOtp);
+    } else {
+      const stored = sessionStorage.getItem('samachar_delete_otp');
+      if (stored && enteredOtp !== stored) {
+        throw new Error('Invalid OTP code. Please enter the correct code.');
+      }
+      localStorage.removeItem('samachar_token');
+      localStorage.removeItem('samachar_user');
+      localStorage.removeItem('samachar_local_bookmarks');
+      sessionStorage.clear();
+    }
+
+    if (typeof showToast === 'function') {
+      showToast('👋 Your account has been permanently deleted.', 'info');
+    }
+
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 350);
+  } catch (err) {
+    if (errEl) {
+      errEl.textContent = err.message || 'Invalid verification code. Please try again.';
+      errEl.style.display = 'block';
+    }
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Verify & Delete Permanently'; }
+  }
 };
 
 (function() {

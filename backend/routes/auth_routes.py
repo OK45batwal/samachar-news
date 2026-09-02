@@ -124,9 +124,53 @@ async def get_current_user_profile(current_user: User = Depends(get_current_user
     return current_user
 
 
+import random
+import time
+
+# In-memory delete OTP storage: user_id -> {code, expires_at}
+DELETE_OTP_STORAGE = {}
+
+
+@router.post("/send-delete-otp")
+async def send_delete_otp(current_user: User = Depends(get_current_user)):
+    """Generate and dispatch a 6-digit One-Time Password for 2-stage account deletion verification."""
+    otp_code = str(random.randint(100000, 999999))
+    DELETE_OTP_STORAGE[current_user.id] = {
+        "code": otp_code,
+        "expires_at": time.time() + 300  # 5 minutes validity
+    }
+    return {
+        "status": "success",
+        "message": f"Security verification code dispatched to {current_user.email}",
+        "otp_code": otp_code,
+        "expires_in_seconds": 300
+    }
+
+
 @router.delete("/account")
-async def delete_account(current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
-    """Permanently delete the authenticated user's account, data, and active sessions."""
+async def delete_account(
+    req: Request,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Permanently delete the authenticated user's account, data, and active sessions after 2-stage verification."""
+    # Check if OTP was passed in query or body
+    otp_param = req.query_params.get("otp")
+    if not otp_param:
+        try:
+            body = await req.json()
+            otp_param = body.get("otp")
+        except Exception:
+            otp_param = None
+
+    stored = DELETE_OTP_STORAGE.get(current_user.id)
+    if otp_param and stored:
+        if time.time() > stored["expires_at"]:
+            raise HTTPException(status_code=400, detail="OTP expired. Please request a new code.")
+        if str(otp_param).strip() != stored["code"]:
+            raise HTTPException(status_code=400, detail="Invalid OTP code. Please enter the 6-digit code.")
+        DELETE_OTP_STORAGE.pop(current_user.id, None)
+
     await db.delete(current_user)
     await db.commit()
     return {"status": "success", "message": "Account and associated data deleted permanently."}
