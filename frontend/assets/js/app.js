@@ -42,16 +42,33 @@ function showToast(message, type = 'info') {
   }, 3500);
 }
 
+const CATEGORY_PHOTOS = {
+  'technology': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+  'tech': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+  'world': 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80',
+  'india': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80',
+  'business': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
+  'science': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+  'health': 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80',
+  'sports': 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80',
+  'entertainment': 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
+};
+
+function getCategoryDefaultImage(catName) {
+  const slug = (catName || '').toLowerCase().trim();
+  return CATEGORY_PHOTOS[slug] || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+}
+
 // News Card Builder with precise alignment
 function renderNewsCard(article) {
   const safeTitle = sanitize(article.title);
   const safeSummary = sanitize(article.summary || '');
-  const safeSource = sanitize(article.source?.name || 'News Wire');
-  const safeCat = sanitize(article.category?.name || 'Top News');
+  const safeSource = sanitize(article.source?.name || article.source_name || 'News Wire');
+  const safeCat = sanitize(article.category?.name || article.category_name || 'Top News');
   const timeStr = timeAgo(article.published_at);
   const credScore = article.credibility_score || 88;
   const status = article.fact_check_status || 'verified';
-  const imgUrl = article.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+  const imgUrl = article.image_url || getCategoryDefaultImage(safeCat);
 
   let badgeClass = 'badge-verified';
   let badgeLabel = `🟢 ${credScore}% VERIFIED`;

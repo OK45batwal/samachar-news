@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trending News & High-Impact Stories — Samachar</title>
-  <meta name="description" content="Top trending stories ranked by global readership and credibility metrics." />
+  <title>Trending News & High-Impact Wire Stories — Samachar</title>
+  <meta name="description" content="Top trending real-world stories ranked by global readership and credibility metrics." />
   <meta name="theme-color" content="#08090C" />
   <link rel="stylesheet" href="/assets/css/variables.css?v=5.0" />
   <link rel="stylesheet" href="/assets/css/style.css?v=5.0" />
@@ -17,6 +17,24 @@
   </script>
 </head>
 <body>
+
+  <!-- Top Utilities Bar -->
+  <div class="header-topbar hide-mobile">
+    <div class="container flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <span id="currentDateDisplay">Tuesday, Sep 1, 2026</span>
+        <span>·</span>
+        <span class="text-accent flex items-center gap-1 font-semibold">
+          <span class="logo-dot"></span>
+          Real-Time Wire Intelligence Active
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="home.html" class="text-secondary hover:text-accent font-semibold">Live News Portal &rarr;</a>
+        <a href="factcheck.html" class="text-accent font-semibold flex items-center gap-1">⚡ Claim Verifier</a>
+      </div>
+    </div>
+  </div>
 
   <!-- Header -->
   <header class="header">
@@ -36,7 +54,7 @@
         </button>
 
         <a href="home.html" class="btn btn-ghost btn-sm">Home</a>
-        <a href="latest.html" class="btn btn-ghost btn-sm">All News</a>
+        <a href="latest.html" class="btn btn-ghost btn-sm">All Feeds</a>
         <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
@@ -63,11 +81,33 @@
 
   <!-- Main Container -->
   <main class="container py-8">
-    <div class="mb-6">
-      <span class="badge badge-verified mb-1">🔥 HIGH ENGAGEMENT</span>
-      <h1 class="heading-lg">Trending Verified Stories</h1>
-      <p class="text-xs text-secondary">The most read and analyzed stories across accredited wire networks</p>
+    <div class="flex items-center justify-between mb-6 pb-4 border-bottom" style="flex-wrap: wrap; gap: 12px;">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="badge" style="background: rgba(255, 77, 77, 0.15); color: #FF4D4D; border: 1px solid rgba(255, 77, 77, 0.35);">🔥 LIVE WIRE VELOCITY</span>
+          <span class="badge badge-verified">REAL-TIME DATASET</span>
+        </div>
+        <h1 class="heading-lg">Trending Verified Dispatches</h1>
+        <p class="text-xs text-secondary">Stories ranked by global wire corroboration, readership velocity, and credibility score.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="loadTrendingNews()" class="btn btn-secondary btn-sm flex items-center gap-1">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          Refresh Feed
+        </button>
+      </div>
     </div>
+
+    <!-- Trending Spotlight Hero -->
+    <div id="trendingSpotlight" class="mb-8" style="display: none;">
+      <!-- Injected dynamically -->
+    </div>
+
+    <!-- Trending Grid -->
+    <h2 class="heading-md mb-4 flex items-center gap-2">
+      <span>🔥 Ranked Stories</span>
+      <span class="text-xs text-muted" id="trendingCountBadge">(12 Dispatches)</span>
+    </h2>
 
     <div id="trendingGrid" class="news-grid">
       <!-- Injected dynamically -->
@@ -84,29 +124,80 @@
     </div>
   </footer>
 
+  <div id="toastContainer" class="toast-container"></div>
+
   <script src="/assets/js/api.js?v=5.0"></script>
   <script src="/assets/js/layout.js?v=5.0"></script>
   <script src="/assets/js/app.js?v=5.0"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      // Auth Guard: Require login to access trending feed
-      if (!isAuthenticated()) {
-        window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
-        return;
-      }
-
+    async function loadTrendingNews() {
       const grid = document.getElementById('trendingGrid');
+      const spotlight = document.getElementById('trendingSpotlight');
       grid.innerHTML = Array(6).fill('<div class="skeleton card" style="height:320px"></div>').join('');
+
       try {
-        const stories = await getTrending(12);
+        const stories = await getTrending(16);
         if (stories && stories.length) {
-          grid.innerHTML = stories.map(renderNewsCard).join('');
+          // Render #1 Spotlight Story
+          const lead = stories[0];
+          const leadImg = lead.image_url || getCategoryDefaultImage(lead.category_name || lead.category?.name);
+          const leadCat = sanitize(lead.category?.name || lead.category_name || 'Top Wire');
+          const leadSource = sanitize(lead.source?.name || lead.source_name || 'Reuters Wire');
+          const leadScore = lead.credibility_score || 95;
+
+          spotlight.style.display = 'block';
+          spotlight.innerHTML = `
+            <div class="card p-6" style="background: linear-gradient(135deg, var(--bg-surface-1) 0%, #161F30 100%); border: 1px solid var(--border-light); box-shadow: var(--shadow-lg);">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; align-items: center;">
+                <div style="height: 280px; border-radius: 12px; overflow: hidden; position: relative;">
+                  <img src="${leadImg}" style="width: 100%; height: 100%; object-fit: cover;" alt="${sanitize(lead.title)}" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'" />
+                  <div style="position: absolute; top: 12px; left: 12px; display: flex; gap: 6px;">
+                    <span class="badge" style="background: #FF4D4D; color: #fff; font-weight: 800;">🏆 #1 TRENDING SPOTLIGHT</span>
+                    <span class="badge badge-verified">🟢 ${leadScore}% VERIFIED</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="text-xs text-accent font-semibold mb-2">${leadCat} · ${timeAgo(lead.published_at)} · ${leadSource}</div>
+                  <h2 class="heading-lg mb-3">
+                    <a href="article.html?id=${lead.id}" style="color: var(--text-primary); text-decoration: none;">${sanitize(lead.title)}</a>
+                  </h2>
+                  <p class="text-sm text-secondary mb-4 leading-relaxed">${sanitize(lead.summary || '')}</p>
+                  <div class="flex items-center gap-3">
+                    <a href="article.html?id=${lead.id}" class="btn btn-primary btn-sm font-bold">Read Full Wire Story &rarr;</a>
+                    <button onclick="handleSaveBookmark(${lead.id})" class="btn btn-secondary btn-sm flex items-center gap-1">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                      Bookmark
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          // Render remaining trending ranked list
+          const rest = stories.slice(1);
+          grid.innerHTML = rest.map((art, idx) => {
+            const cardHtml = renderNewsCard(art);
+            // Prepend rank badge
+            return cardHtml.replace(
+              '<div class="card-img-wrapper">',
+              `<div class="card-img-wrapper"><div style="position:absolute;top:10px;right:10px;z-index:2;background:rgba(8,11,18,0.85);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:6px;padding:2px 8px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:var(--accent);">#${idx + 2}</div>`
+            );
+          }).join('');
+
+          document.getElementById('trendingCountBadge').textContent = `(${stories.length} Dispatches)`;
         } else {
-          grid.innerHTML = '<div class="p-8 text-center text-secondary w-full" style="grid-column:1/-1">No trending stories yet.</div>';
+          spotlight.style.display = 'none';
+          grid.innerHTML = '<div class="p-8 text-center text-secondary w-full" style="grid-column:1/-1">No trending stories found.</div>';
         }
       } catch (err) {
+        spotlight.style.display = 'none';
         grid.innerHTML = `<div class="p-4 text-danger w-full" style="grid-column:1/-1">Failed to load trending news: ${err.message}</div>`;
       }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTrendingNews();
     });
   </script>
 </body>
