@@ -127,26 +127,32 @@ async def get_current_user_profile(current_user: User = Depends(get_current_user
 import random
 import time
 
+from backend.services.email_service import send_verification_otp_email
+
 # Auth OTP storage: email -> {code, expires_at}
 AUTH_OTP_STORAGE = {}
 
 
 @router.post("/send-auth-otp")
 async def send_auth_otp(body: dict):
-    """Generate and dispatch a 6-digit One-Time Password for 2-stage login/registration verification."""
+    """Generate and dispatch a real 6-digit One-Time Password via email for account registration verification."""
     email = body.get("email", "").lower().strip()
+    name = body.get("name", "Reader").strip()
     if not email:
         raise HTTPException(status_code=400, detail="Email is required.")
     otp_code = str(random.randint(100000, 999999))
     AUTH_OTP_STORAGE[email] = {
         "code": otp_code,
-        "expires_at": time.time() + 300
+        "expires_at": time.time() + 600  # 10 minutes validity
     }
+
+    # Dispatch email asynchronously
+    await send_verification_otp_email(email, otp_code, name)
+
     return {
         "status": "success",
-        "message": f"2-Step verification code dispatched to {email}",
-        "otp_code": otp_code,
-        "expires_in_seconds": 300
+        "message": f"Security verification code dispatched to your email inbox: {email}",
+        "expires_in_seconds": 600
     }
 
 

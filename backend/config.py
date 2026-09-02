@@ -25,6 +25,14 @@ class Settings(BaseSettings):
     FEED_INGESTION_INTERVAL_MINUTES: int = 30
     MAX_ARTICLES_PER_FEED: int = 25
 
+    # Email / SMTP Configuration
+    SMTP_HOST: str = os.getenv("SMTP_HOST", "smtp.gmail.com")
+    SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
+    SMTP_USER: str = os.getenv("SMTP_USER", "")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
+    SMTP_FROM_EMAIL: str = os.getenv("SMTP_FROM_EMAIL", "no-reply@samachar.news")
+    SMTP_FROM_NAME: str = "Samachar Truth Intelligence"
+
     @property
     def cors_origins_list(self) -> List[str]:
         if self.CORS_ORIGINS == "*":
