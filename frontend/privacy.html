@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#08090C" />
+  <title>Privacy Policy — Samachar Truth Intelligence</title>
+  <meta name="description" content="Samachar Privacy Policy. Zero-tracking cookies, encrypted telemetry, and user privacy autonomy." />
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
+  <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=3.2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=3.2" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=3.2" />
+  <script>
+    const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</head>
+<body>
+
+  <!-- Top Utility Bar -->
+  <div class="header-topbar hide-mobile">
+    <div class="container flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <span>Tuesday, Sep 1, 2026</span>
+        <span>·</span>
+        <span class="text-accent flex items-center gap-1 font-semibold">
+          <span class="logo-dot"></span>
+          Truth Engine Active
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="about.html" class="text-secondary hover:text-accent">Methodology</a>
+        <a href="terms.html" class="text-secondary hover:text-accent">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header -->
+  <header class="header">
+    <div class="container header-main">
+      <div class="flex items-center gap-4">
+        <a href="home.html" class="logo">
+          <span>SAMACHAR</span><span class="logo-dot"></span>
+          <span class="logo-tag">TRUTH FIRST</span>
+        </a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button id="searchToggle" class="btn btn-secondary btn-sm flex items-center gap-2" style="color:var(--text-secondary);" title="Search news and claims (⌘K)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span class="hide-mobile">Search facts...</span>
+          <kbd class="hide-mobile" style="font-family:var(--font-mono);font-size:10px;padding:2px 6px;background:var(--bg-surface-2);border:1px solid var(--border);border-radius:4px">⌘K</kbd>
+        </button>
+        <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+        <div id="headerAuth" class="flex items-center gap-2"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container my-8" style="max-width: 860px;">
+    <div class="mb-8">
+      <span class="badge badge-verified mb-2">PRIVACY POLICY & DATA INTEGRITY</span>
+      <h1 class="heading-xl mb-2">Your Privacy Is Absolute</h1>
+      <p class="text-secondary text-sm">Last updated: September 1, 2026 · Effective across all Samachar News Intelligence portals.</p>
+    </div>
+
+    <div class="card p-8 mb-6" style="background: var(--bg-surface-1); line-height: 1.8;">
+      <h2 class="heading-md mb-3 text-accent">1. Core Privacy Manifesto</h2>
+      <p class="text-sm text-secondary mb-4">
+        Samachar News is an autonomous, truth-first news verification network. We reject ad-supported surveillance business models. We do not sell your personal data, construct behavioral ad profiles, or deploy invasive third-party cross-site trackers.
+      </p>
+
+      <h2 class="heading-md mb-3 text-accent">2. Information We Collect</h2>
+      <ul class="text-sm text-secondary mb-4" style="padding-left: 20px;">
+        <li class="mb-2"><strong>Account Information:</strong> When you register, we collect your email address, display name, and securely hashed passwords (Argon2 / BCrypt).</li>
+        <li class="mb-2"><strong>Two-Factor Authentication Telemetry:</strong> Email addresses provided for 2-step verification (OTP) are used strictly for cryptographic session tokens.</li>
+        <li class="mb-2"><strong>Reading Preferences & Saved Bookmarks:</strong> Your bookmarked stories and customized channel filters are stored encrypted in your private session account.</li>
+      </ul>
+
+      <h2 class="heading-md mb-3 text-accent">3. Zero-Tracking Cookies & Analytics</h2>
+      <p class="text-sm text-secondary mb-4">
+        We utilize strictly functional, HTTP-only authentication tokens (`access_token`) and local preferences (`samachar_theme`). We do not use third-party behavioral advertising cookies.
+      </p>
+
+      <h2 class="heading-md mb-3 text-accent">4. Security & Cryptographic Protection</h2>
+      <p class="text-sm text-secondary mb-4">
+        All network communications are enforced over TLS 1.3 encryption. Passwords undergo salt-hashing, and API endpoints are guarded with automated IP rate-limiting to prevent brute-force intrusion.
+      </p>
+
+      <h2 class="heading-md mb-3 text-accent">5. User Data Rights & Account Deletion</h2>
+      <p class="text-sm text-secondary mb-4">
+        You retain 100% ownership over your intelligence archive. You may export or permanently delete your account, bookmarks, and fact-check history at any time from your Profile settings.
+      </p>
+
+      <h2 class="heading-md mb-3 text-accent">6. Contact Our Data Protection Team</h2>
+      <p class="text-sm text-secondary">
+        For privacy questions, audits, or legal inquiries, contact our Privacy Officer at <a href="mailto:privacy@samachar.news" class="text-accent font-semibold hover:underline">privacy@samachar.news</a>.
+      </p>
+    </div>
+
+    <div class="flex items-center justify-between pt-4 text-xs text-muted">
+      <a href="home.html" class="btn btn-secondary btn-sm">&larr; Back to News Feed</a>
+      <a href="terms.html" class="btn btn-ghost btn-sm">Read Terms of Service &rarr;</a>
+    </div>
+  </main>
+
+  <footer class="footer mt-12">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>&copy; 2026 Samachar News Platform. All rights reserved.</span>
+        <div class="flex items-center gap-4">
+          <a href="privacy.html" class="text-accent font-semibold">Privacy Policy</a>
+          <span>·</span>
+          <a href="terms.html" class="text-secondary hover:text-primary">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/api.js?v=3.2"></script>
+  <script src="/assets/js/layout.js?v=3.2"></script>
+  <script src="/assets/js/app.js?v=3.2"></script>
+</body>
+</html>

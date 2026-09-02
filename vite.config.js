@@ -30,6 +30,8 @@ export default defineConfig({
         bookmarks: resolve(__dirname, 'frontend/bookmarks.html'),
         login: resolve(__dirname, 'frontend/login.html'),
         register: resolve(__dirname, 'frontend/register.html'),
+        privacy: resolve(__dirname, 'frontend/privacy.html'),
+        terms: resolve(__dirname, 'frontend/terms.html'),
         notfound: resolve(__dirname, 'frontend/404.html'),
       },
     },

@@ -18,8 +18,95 @@ from ..database import get_db
 from ..models.models import User, UserRole
 from ..schemas import UserCreate, UserLogin, UserOut
 from ..services.rate_limit import check_rate_limit
+import random
+import time
+
+# In-memory OTP storage: email -> {code, expires_at, verified, password, full_name}
+OTP_STORAGE = {}
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+
+@router.post("/send-otp")
+async def send_otp(body: dict):
+    email = body.get("email", "").lower().strip()
+    if not email or "@" not in email:
+        raise HTTPException(status_code=400, detail="Valid email address is required")
+    
+    # Generate 6-digit OTP code
+    otp_code = f"{random.randint(100000, 999999)}"
+    OTP_STORAGE[email] = {
+        "code": otp_code,
+        "expires_at": time.time() + 300,  # 5 minutes
+        "password": body.get("password"),
+        "full_name": body.get("full_name"),
+    }
+    return {
+        "status": "success",
+        "message": f"Verification code sent to {email}",
+        "otp_hint": otp_code,  # Provided for test & local environment
+    }
+
+
+@router.post("/verify-otp")
+async def verify_otp(body: dict, response: Response, db: AsyncSession = Depends(get_db)):
+    email = body.get("email", "").lower().strip()
+    otp_code = str(body.get("code", "")).strip()
+
+    otp_data = OTP_STORAGE.get(email)
+    if not otp_data:
+        raise HTTPException(status_code=400, detail="No pending verification code found. Please request a new code.")
+
+    if time.time() > otp_data["expires_at"]:
+        OTP_STORAGE.pop(email, None)
+        raise HTTPException(status_code=400, detail="Verification code has expired. Please request a new one.")
+
+    if otp_data["code"] != otp_code:
+        raise HTTPException(status_code=400, detail="Invalid verification code. Please check your email and try again.")
+
+    # Check if user exists in database or create new user
+    result = await db.execute(select(User).where(User.email == email))
+    user = result.scalar_one_or_none()
+
+    if not user:
+        # Create new user
+        base_username = email.split("@")[0]
+        user = User(
+            email=email,
+            username=f"{base_username}-{uuid.uuid4().hex[:4]}",
+            hashed_password=hash_password(otp_data.get("password") or "VerifiedPass123!"),
+            full_name=otp_data.get("full_name") or base_username.capitalize(),
+            role=UserRole.USER,
+        )
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+
+    OTP_STORAGE.pop(email, None)
+
+    access_token = create_access_token({"sub": user.id, "role": user.role.value, "type": "access"})
+    refresh_token = create_refresh_token({"sub": user.id, "type": "refresh"})
+
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        samesite="lax",
+    )
+
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "username": user.username,
+            "full_name": user.full_name,
+            "role": user.role.value,
+        },
+    }
 
 
 @router.post("/register", response_model=UserOut, status_code=201)

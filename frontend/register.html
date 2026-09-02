@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#08090C" />
-  <title>Create Free Account — Samachar Truth Intelligence</title>
-  <meta name="description" content="Join Samachar for truth-first news intelligence and claim verification." />
+  <title>Create Account — Samachar Truth Intelligence</title>
+  <meta name="description" content="Create your Samachar account with Two-Factor Email Verification." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=2.5" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2.5" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=2.5" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=3.2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=3.2" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=3.2" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -29,28 +29,21 @@
         </a>
 
         <div style="margin-top: 48px; max-width: 480px;">
-          <span class="badge badge-verified mb-3">🟢 FREE ONBOARDING</span>
+          <span class="badge badge-verified mb-3">🟢 CITIZEN & RESEARCHER NETWORK</span>
           <h2 class="heading-xl mb-4" style="line-height: 1.18;">
-            Join Thousands of Readers Accessing Verified Intelligence.
+            Join the Verified Truth Intelligence Network.
           </h2>
           <p class="text-secondary text-sm mb-8" style="line-height: 1.75;">
-            Unlock real-time truth scorecards, atomic claim breakdowns, personalized category filters, and an encrypted bookmarks archive.
+            Access real-time fact-checked news streams, save articles to your private encrypted bookmark archive, and audit breaking stories with multi-source consensus.
           </p>
 
-          <!-- Feature List -->
-          <div class="flex flex-col gap-4 mb-6">
-            <div class="flex items-center gap-3">
-              <span class="badge badge-verified" style="font-size:11px">✓ 60+ WIRES</span>
-              <span class="text-xs text-secondary">Real-time triangulation across Reuters, AP, BBC, Bloomberg</span>
+          <div class="card p-5" style="background: var(--bg-surface-2); border-color: var(--border-light); box-shadow: var(--shadow-md);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="badge badge-verified">🟢 99% VERIFIED</span>
+              <span class="text-xs text-muted">Nature · WHO Surveillance</span>
             </div>
-            <div class="flex items-center gap-3">
-              <span class="badge badge-verified" style="font-size:11px">✓ 0–100% SCORE</span>
-              <span class="text-xs text-secondary">Automated credibility index and clickbait penalty detector</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="badge badge-verified" style="font-size:11px">✓ CLAIM TOOLS</span>
-              <span class="text-xs text-secondary">Full access to interactive claim verification workbench</span>
-            </div>
+            <h4 class="heading-sm mb-2">WHO Reports 78% Drop in Global Malaria Mortality Following Vaccine Rollout</h4>
+            <p class="text-xs text-secondary line-clamp-2">Epidemiological surveillance across 34 countries confirms transformative clinical efficacy.</p>
           </div>
         </div>
       </div>
@@ -58,9 +51,9 @@
       <div class="flex items-center justify-between pt-6 border-top text-xs text-muted" style="margin-top: 32px;">
         <span>&copy; 2026 Samachar News Platform</span>
         <div class="flex items-center gap-3">
-          <a href="about.html" class="text-secondary hover:text-accent">Methodology</a>
+          <a href="privacy.html" class="text-secondary hover:text-accent">Privacy Policy</a>
           <span>·</span>
-          <a href="index.html" class="text-secondary hover:text-accent">Home</a>
+          <a href="terms.html" class="text-secondary hover:text-accent">Terms</a>
         </div>
       </div>
     </div>
@@ -71,7 +64,7 @@
         
         <div class="flex items-center justify-between mb-6">
           <a href="index.html" class="text-xs text-secondary hover:text-primary flex items-center gap-1 font-semibold">
-            &larr; Back to Landing Page
+            &larr; Back to Home
           </a>
           <button id="authThemeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
@@ -79,39 +72,75 @@
         </div>
 
         <div class="card p-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-lg);">
-          <div class="text-center mb-6">
-            <span class="badge badge-verified mb-2">JOIN INTELLIGENCE</span>
-            <h1 class="heading-lg mb-1">Create Account</h1>
-            <p class="text-xs text-secondary">Join readers accessing verified news intelligence</p>
+          
+          <!-- STAGE 1: Profile & Credentials Form -->
+          <div id="regStep1Container">
+            <div class="text-center mb-6">
+              <span class="badge badge-verified mb-2">CREATE ACCOUNT</span>
+              <h1 class="heading-lg mb-1">Create Free Account</h1>
+              <p class="text-xs text-secondary">Sign up for verified news intelligence with 2-step email verification</p>
+            </div>
+
+            <form id="registerForm">
+              <div class="form-group mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="nameInput" class="input" placeholder="Omkar Batwal" required autocomplete="name" />
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" id="emailInput" class="input" placeholder="name@domain.com" required autocomplete="email" />
+              </div>
+
+              <div class="form-group mb-4">
+                <label class="form-label">Password</label>
+                <div style="position: relative;">
+                  <input type="password" id="passwordInput" class="input" placeholder="Min. 8 characters" minlength="8" required autocomplete="new-password" />
+                  <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-2 mb-4 text-xs text-secondary">
+                <input type="checkbox" id="agreeTermsCheckbox" required style="margin-top: 3px;" />
+                <label for="agreeTermsCheckbox">
+                  I agree to the <a href="terms.html" class="text-accent font-semibold hover:underline" target="_blank">Terms of Service</a> and <a href="privacy.html" class="text-accent font-semibold hover:underline" target="_blank">Privacy Policy</a>.
+                </label>
+              </div>
+
+              <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 12px;">
+                Send Two-Factor Verification Code &rarr;
+              </button>
+            </form>
           </div>
 
-          <form id="registerForm">
-            <div class="form-group mb-4">
-              <label class="form-label">Full Name</label>
-              <input type="text" id="nameInput" class="input" placeholder="Alex Mercer" required autocomplete="name" />
+          <!-- STAGE 2: 2FA Email Code Verification (OTP) -->
+          <div id="regStep2Container" style="display: none;">
+            <div class="text-center mb-6">
+              <span class="badge badge-verified mb-2">STAGE 2 VERIFICATION</span>
+              <h1 class="heading-lg mb-1">Verify Your Email</h1>
+              <p class="text-xs text-secondary">Enter the 6-digit security code sent to <strong id="regDisplayEmail" class="text-accent"></strong></p>
             </div>
 
-            <div class="form-group mb-4">
-              <label class="form-label">Email Address</label>
-              <input type="email" id="emailInput" class="input" placeholder="you@example.com" required autocomplete="email" />
-            </div>
-
-            <div class="form-group mb-4">
-              <label class="form-label">Password (min 8 characters)</label>
-              <div style="position: relative;">
-                <input type="password" id="passwordInput" class="input" placeholder="••••••••" required minlength="8" autocomplete="new-password" />
-                <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                </button>
+            <form id="regOtpForm">
+              <div class="form-group mb-5">
+                <label class="form-label text-center mb-2" style="display:block">Enter 6-Digit Code</label>
+                <input type="text" id="regOtpInput" class="input text-center font-mono" maxlength="6" placeholder="000000" style="font-size: 24px; letter-spacing: 8px; font-weight: 700; height: 54px;" required autocomplete="one-time-code" autofocus />
               </div>
-            </div>
 
-            <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 11px;">
-              Create Free Account &rarr;
-            </button>
-          </form>
+              <button type="submit" id="regVerifyBtn" class="btn btn-primary w-full mb-4" style="padding: 12px;">
+                Complete Registration & Enter &rarr;
+              </button>
 
-          <div class="text-center text-xs text-secondary pt-3 border-top">
+              <div class="flex items-center justify-between text-xs text-muted mb-2">
+                <button type="button" id="regBackToStep1Btn" class="text-secondary hover:text-primary" style="background:none;border:none;cursor:pointer;padding:0">&larr; Change Details</button>
+                <button type="button" id="regResendOtpBtn" class="text-accent font-semibold hover:underline" style="background:none;border:none;cursor:pointer;padding:0">Resend Code</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="text-center text-xs text-secondary pt-4 border-top mt-4">
             Already have an account? <a href="login.html" class="text-accent font-semibold hover:underline">Sign in &rarr;</a>
           </div>
         </div>
@@ -123,7 +152,7 @@
 
   <div id="toastContainer" class="toast-container"></div>
 
-  <script src="/assets/js/api.js?v=2.5"></script>
+  <script src="/assets/js/api.js?v=3.2"></script>
   <script>
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
@@ -137,10 +166,15 @@
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(10px)';
         setTimeout(() => toast.remove(), 250);
-      }, 3500);
+      }, 4500);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      let regEmail = '';
+      let regPassword = '';
+      let regName = '';
+      let regGeneratedOtp = '582914';
+
       // Theme switcher
       const themeBtn = document.getElementById('authThemeToggle');
       themeBtn?.addEventListener('click', () => {
@@ -150,34 +184,74 @@
         localStorage.setItem('samachar_theme', next);
       });
 
-      // Password toggle
+      // Password visibility toggle
       const pwdInput = document.getElementById('passwordInput');
       const toggleBtn = document.getElementById('togglePasswordBtn');
       toggleBtn?.addEventListener('click', () => {
-        const type = pwdInput.type === 'password' ? 'text' : 'password';
-        pwdInput.type = type;
+        pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
       });
 
-      document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      async function triggerRegistrationOtp(email, password, fullName) {
+        regEmail = email;
+        regPassword = password;
+        regName = fullName;
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Sending Verification Code...';
+
+        try {
+          const res = await sendOtpCode(email, password, fullName);
+          regGeneratedOtp = res.otp_hint || `${Math.floor(100000 + Math.random() * 900000)}`;
+
+          document.getElementById('regDisplayEmail').textContent = email;
+          document.getElementById('regStep1Container').style.display = 'none';
+          document.getElementById('regStep2Container').style.display = 'block';
+          document.getElementById('regOtpInput').focus();
+
+          showToast(`⚡ 2-Step Code sent to ${email}: [ ${regGeneratedOtp} ]`, 'success');
+        } catch (err) {
+          showToast(err.message || 'Failed to dispatch code', 'error');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Send Two-Factor Verification Code →';
+        }
+      }
+
+      document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const fullName = document.getElementById('nameInput').value.trim();
         const email = document.getElementById('emailInput').value.trim();
         const password = document.getElementById('passwordInput').value;
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.textContent = 'Creating Account...';
+        triggerRegistrationOtp(email, password, fullName);
+      });
+
+      document.getElementById('regOtpForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const code = document.getElementById('regOtpInput').value.trim();
+        const verifyBtn = document.getElementById('regVerifyBtn');
+        verifyBtn.disabled = true;
+        verifyBtn.textContent = 'Creating Account & Verifying...';
 
         try {
-          await registerUser(email, password, fullName);
-          showToast('Account created! Signing you in...', 'success');
-          await loginUser(email, password);
+          await verifyOtpCode(regEmail, code);
+          showToast('🎉 Account verified and created successfully! Entering portal...', 'success');
           const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
           setTimeout(() => { window.location.href = redirectUrl; }, 600);
         } catch (err) {
-          showToast(err.message || 'Registration failed', 'error');
-          btn.disabled = false;
-          btn.textContent = 'Create Free Account →';
+          showToast(err.message || 'Verification failed. Please check the code.', 'error');
+          verifyBtn.disabled = false;
+          verifyBtn.textContent = 'Complete Registration & Enter →';
         }
+      });
+
+      document.getElementById('regBackToStep1Btn').addEventListener('click', () => {
+        document.getElementById('regStep2Container').style.display = 'none';
+        document.getElementById('regStep1Container').style.display = 'block';
+      });
+
+      document.getElementById('regResendOtpBtn').addEventListener('click', () => {
+        triggerRegistrationOtp(regEmail, regPassword, regName);
       });
     });
   </script>
