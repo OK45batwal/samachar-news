@@ -8,9 +8,9 @@
   <meta name="description" content="Secure 2-stage OTP account registration for verified news intelligence." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=6.5" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=6.5" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=6.5" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=7.0" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=7.0" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=7.0" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -127,19 +127,26 @@
               <p class="text-xs text-secondary" id="registerOtpTargetText">Enter the verification code sent to your email</p>
             </div>
 
-            <div id="registerOtpBanner" style="background: rgba(0, 245, 155, 0.1); border: 1px solid var(--accent-border); border-radius: 8px; padding: 12px; margin-bottom: 20px; text-align: center;">
-              <div class="text-xs text-accent font-bold mb-1">🔑 2-Stage Verification Code</div>
-              <div class="text-sm text-primary font-mono" id="registerOtpCodeDisplay">Generating code...</div>
+            <!-- OTP Code Banner with Instant Auto-Fill -->
+            <div id="registerOtpBanner" style="background: rgba(0, 245, 155, 0.08); border: 1px solid var(--accent-border); border-radius: 12px; padding: 14px; margin-bottom: 20px; text-align: center;">
+              <div class="text-xs text-accent font-bold mb-1">🔑 2-Stage Registration Code</div>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin: 6px 0;">
+                <span id="registerOtpCodeDisplay" style="font-family: var(--font-mono); font-size: 24px; font-weight: 800; color: var(--accent); letter-spacing: 4px;">••••••</span>
+                <button type="button" id="autoFillRegisterBtn" onclick="autoFillRegisterOtp()" class="btn btn-sm btn-secondary" style="font-size: 11px; padding: 4px 10px; border-radius: 6px; cursor: pointer;">
+                  ⚡ Auto-Fill
+                </button>
+              </div>
+              <div class="text-xs text-muted">Valid for 5 minutes</div>
             </div>
 
             <form id="registerOtpForm">
               <div class="form-group mb-4 text-center">
-                <label class="form-label" style="text-align: center; font-size: 12px;">Enter 6-Digit Code</label>
-                <input type="text" id="registerOtpInput" maxlength="6" placeholder="• • • • • •" style="width: 100%; font-family: var(--font-mono); font-size: 24px; letter-spacing: 8px; text-align: center; padding: 12px; background: var(--bg-surface-2); color: var(--text-primary); border: 1px solid var(--border-light); border-radius: 8px; outline: none;" required autocomplete="one-time-code" />
-                <div id="registerOtpError" class="text-xs text-danger mt-2" style="display: none;"></div>
+                <label class="form-label" style="text-align: center; font-size: 12px; margin-bottom: 8px;">Type 6-Digit Verification PIN</label>
+                <input type="text" id="registerOtpInput" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="1 2 3 4 5 6" style="width: 100%; font-family: var(--font-mono); font-size: 24px; font-weight: 700; letter-spacing: 8px; text-align: center; padding: 14px; background: var(--bg-surface-2); color: var(--text-primary); border: 1.5px solid var(--border-light); border-radius: 10px; outline: none; box-sizing: border-box;" required autocomplete="one-time-code" />
+                <div id="registerOtpError" class="text-xs text-danger mt-2" style="display: none; font-weight: 600;"></div>
               </div>
 
-              <button type="submit" id="verifyRegisterBtn" class="btn btn-primary w-full mb-3" style="padding: 12px; font-weight: 700;">
+              <button type="submit" id="verifyRegisterBtn" class="btn btn-primary w-full mb-3" style="padding: 14px; font-weight: 700; font-size: 15px; cursor: pointer;">
                 Verify Code & Activate Account &rarr;
               </button>
 
@@ -189,6 +196,15 @@
       document.getElementById('registerStage1').style.display = 'block';
     }
 
+    function autoFillRegisterOtp() {
+      const input = document.getElementById('registerOtpInput');
+      if (input && currentOtp) {
+        input.value = currentOtp;
+        input.focus();
+        showToast('⚡ OTP filled into input!', 'info');
+      }
+    }
+
     async function generateAndSendOtp(email) {
       currentOtp = String(Math.floor(100000 + Math.random() * 900000));
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -206,7 +222,7 @@
         } catch (_) {}
       }
 
-      document.getElementById('registerOtpCodeDisplay').innerHTML = `Verification Code: <strong style="color:var(--accent);font-size:18px;">${currentOtp}</strong> (Valid for 5m)`;
+      document.getElementById('registerOtpCodeDisplay').textContent = currentOtp;
       showToast(`🔑 Verification OTP: ${currentOtp}`, 'info');
     }
 
@@ -239,6 +255,14 @@
       const toggleBtn = document.getElementById('togglePasswordBtn');
       toggleBtn?.addEventListener('click', () => {
         pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
+      });
+
+      // Auto-focus and clean input listener
+      const otpInput = document.getElementById('registerOtpInput');
+      otpInput?.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
+        const errEl = document.getElementById('registerOtpError');
+        if (errEl) errEl.style.display = 'none';
       });
 
       // STAGE 1: Submit Details & Trigger 2-Stage OTP
@@ -297,7 +321,7 @@
         }
 
         if (currentOtp && enteredOtp !== currentOtp) {
-          errEl.textContent = 'Invalid OTP code. Please enter the 6-digit code shown.';
+          errEl.textContent = 'Invalid OTP code. Please enter the 6-digit code shown above.';
           errEl.style.display = 'block';
           return;
         }
@@ -341,7 +365,7 @@
           const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
           setTimeout(() => {
             window.location.href = redirectUrl;
-          }, 400);
+          }, 350);
 
         } catch (err) {
           errEl.textContent = err.message || 'Registration error. Please try again.';
