@@ -181,6 +181,18 @@ async def ingest_all_feeds() -> Dict[str, Any]:
                 continue
             seen_urls.add(item["source_url"])
 
+            src_name = item.get("source_name", "News Wire")
+            if src_name not in sources:
+                new_src = Source(
+                    name=src_name,
+                    country=item.get("country", "Global"),
+                    reliability_score=90,
+                    bias_rating="center"
+                )
+                db.add(new_src)
+                await db.flush()
+                sources[src_name] = new_src.id
+
             # Check for duplicate URL in DB
             existing = await db.execute(select(Article).where(Article.source_url == item["source_url"]))
             if existing.scalar_one_or_none():
@@ -191,7 +203,7 @@ async def ingest_all_feeds() -> Dict[str, Any]:
                 title=item["title"],
                 summary=item["summary"],
                 content=item["content"],
-                source_name=item["source_name"],
+                source_name=src_name,
                 corroborating_count=2,
             )
 
@@ -213,10 +225,10 @@ async def ingest_all_feeds() -> Dict[str, Any]:
                 credibility_score=fact_metrics["credibility_score"],
                 sensationalism_score=fact_metrics["sensationalism_score"],
                 key_claims=fact_metrics["key_claims"],
-                corroborating_sources=[item["source_name"], "Reuters Wire", "Associated Press"],
+                corroborating_sources=[src_name, "Reuters Wire", "Associated Press"],
                 bias_spectrum=fact_metrics["bias_spectrum"],
                 category_id=categories.get(item["category_slug"], list(categories.values())[0] if categories else None),
-                source_id=sources.get(item["source_name"], list(sources.values())[0] if sources else None),
+                source_id=sources.get(src_name),
                 published_at=item["published_at"],
             )
             try:

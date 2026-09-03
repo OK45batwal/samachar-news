@@ -8,15 +8,20 @@ function sanitize(str) {
 }
 
 function timeAgo(dateString) {
-  if (!dateString) return 'Recent';
+  if (!dateString) return 'Just now';
+  let dateStr = dateString;
+  if (typeof dateStr === 'string' && !dateStr.endsWith('Z') && !dateStr.includes('+') && !dateStr.includes('GMT')) {
+    dateStr += 'Z';
+  }
   const now = new Date();
-  const past = new Date(dateString);
+  const past = new Date(dateStr);
   const diffSec = Math.floor((now - past) / 1000);
 
-  if (diffSec < 60) return 'Just now';
+  if (isNaN(diffSec) || diffSec <= 60) return 'Just now';
   if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
   if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
-  return `${Math.floor(diffSec / 86400)}d ago`;
+  const days = Math.floor(diffSec / 86400);
+  return days === 1 ? 'Yesterday' : `${days}d ago`;
 }
 
 function showToast(message, type = 'info') {

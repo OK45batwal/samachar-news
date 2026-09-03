@@ -290,7 +290,7 @@ async function getArticles(params = {}) {
 
 async function getArticleById(id) {
   try {
-    const dataRes = await fetch('/assets/data/news.json?v=5.0');
+    const dataRes = await fetch('/assets/data/news.json?t=' + Date.now(), { cache: 'no-store' });
     if (dataRes.ok) {
       const list = await dataRes.json();
       const found = list.find(a => String(a.id) === String(id) || a.slug === id);
@@ -311,9 +311,10 @@ async function getArticleById(id) {
 
 async function getTrending(limit = 6) {
   try {
-    const dataRes = await fetch('/assets/data/news.json?v=5.0');
+    const dataRes = await fetch('/assets/data/news.json?t=' + Date.now(), { cache: 'no-store' });
     if (dataRes.ok) {
-      const list = await dataRes.json();
+      let list = await dataRes.json();
+      list.sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
       return list.slice(0, limit).map(a => ({
         ...a,
         category: { name: a.category_name, slug: (a.category_name || '').toLowerCase() },
@@ -326,9 +327,10 @@ async function getTrending(limit = 6) {
 
 async function getVerifiedArticles(limit = 6) {
   try {
-    const dataRes = await fetch('/assets/data/news.json?v=5.0');
+    const dataRes = await fetch('/assets/data/news.json?t=' + Date.now(), { cache: 'no-store' });
     if (dataRes.ok) {
-      const list = await dataRes.json();
+      let list = await dataRes.json();
+      list.sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
       return list.filter(a => (a.credibility_score || 0) >= 80).slice(0, limit).map(a => ({
         ...a,
         category: { name: a.category_name, slug: (a.category_name || '').toLowerCase() },

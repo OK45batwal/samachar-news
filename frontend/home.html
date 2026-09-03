@@ -269,13 +269,29 @@
         const res = await getArticles({
           category: currentCategory,
           verified_only: isVerifiedOnly,
-          limit: 12
+          limit: 20
         });
 
         if (res.articles && res.articles.length) {
+          // Dynamically populate Breaking Fact Ticker with the latest live wire headlines
+          const tickerTrack = document.getElementById('tickerTrack');
+          if (tickerTrack) {
+            tickerTrack.innerHTML = res.articles.slice(0, 6).map(a => `
+              <div class="ticker-item">
+                <span class="badge badge-verified" style="font-size:10px;padding:2px 6px;">🟢 ${a.credibility_score || 95}% VERIFIED</span>
+                <a href="article.html?id=${a.id}">${sanitize(a.title)}</a>
+                <span class="text-xs text-muted font-mono" style="margin-left:4px;">· ${timeAgo(a.published_at)}</span>
+              </div>
+            `).join('');
+          }
+
           if (!currentCategory) {
-            renderBento(res.articles.slice(0, 3));
-            grid.innerHTML = res.articles.slice(3).map(renderNewsCard).join('');
+            // Prioritize major verified World, Tech, India, Business, or Science stories for hero spotlight
+            const majorStories = res.articles.filter(a => ['world', 'technology', 'india', 'business', 'science'].includes((a.category?.slug || a.category_name || '').toLowerCase()));
+            const topHero = majorStories.length >= 3 ? majorStories.slice(0, 3) : res.articles.slice(0, 3);
+            const feedArticles = res.articles.filter(a => !topHero.some(h => h.id === a.id));
+            renderBento(topHero);
+            grid.innerHTML = feedArticles.map(renderNewsCard).join('');
           } else {
             grid.innerHTML = res.articles.map(renderNewsCard).join('');
           }
