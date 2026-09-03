@@ -143,6 +143,95 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 5. Header Live Search Bar Controller
+  const headerSearchInput = document.getElementById('headerSearchInput');
+  const headerSearchDropdown = document.getElementById('headerSearchDropdown');
+  const headerSearchClearBtn = document.getElementById('headerSearchClearBtn');
+
+  if (headerSearchInput && headerSearchDropdown) {
+    let headerDebounce = null;
+
+    headerSearchInput.addEventListener('input', (e) => {
+      const q = e.target.value.trim();
+      clearTimeout(headerDebounce);
+      if (headerSearchClearBtn) headerSearchClearBtn.style.display = q ? 'block' : 'none';
+
+      if (!q) {
+        headerSearchDropdown.style.display = 'none';
+        headerSearchDropdown.innerHTML = '';
+        return;
+      }
+
+      headerDebounce = setTimeout(async () => {
+        headerSearchDropdown.style.display = 'block';
+        headerSearchDropdown.innerHTML = '<div style="padding:14px;text-align:center;font-size:12px;color:var(--text-muted);">Searching verified wire network...</div>';
+
+        try {
+          const res = await getArticles({ q, limit: 5 });
+          const items = res?.articles || [];
+
+          if (!items.length) {
+            headerSearchDropdown.innerHTML = `
+              <div style="padding:16px;text-align:center;">
+                <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:6px;">No matching articles found for "${q}"</div>
+                <a href="latest.html?q=${encodeURIComponent(q)}" style="font-size:11.5px;color:var(--accent);font-weight:700;text-decoration:none;">Search entire archive &rarr;</a>
+              </div>
+            `;
+            return;
+          }
+
+          headerSearchDropdown.innerHTML = items.map(a => `
+            <a href="article.html?id=${a.id}" class="search-dropdown-item">
+              <div class="search-dropdown-thumb">
+                <img src="${a.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=100&q=80'}" alt="${sanitize(a.title)}" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=100&q=80'" />
+              </div>
+              <div class="search-dropdown-info">
+                <div class="search-dropdown-title">${sanitize(a.title)}</div>
+                <div class="search-dropdown-meta">
+                  <span style="color:var(--accent);font-weight:700;">🟢 ${a.credibility_score || 95}% Verified</span>
+                  <span>·</span>
+                  <span>${sanitize(a.source?.name || a.source_name || 'Wire')}</span>
+                </div>
+              </div>
+            </a>
+          `).join('') + `
+            <div class="search-dropdown-footer">
+              <a href="latest.html?q=${encodeURIComponent(q)}">View all results for "${q}" &rarr;</a>
+            </div>
+          `;
+        } catch (err) {
+          headerSearchDropdown.innerHTML = '<div style="padding:12px;text-align:center;font-size:12px;color:var(--danger);">Error searching database.</div>';
+        }
+      }, 180);
+    });
+
+    headerSearchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const q = headerSearchInput.value.trim();
+        if (q) {
+          window.location.href = `latest.html?q=${encodeURIComponent(q)}`;
+        }
+      }
+      if (e.key === 'Escape') {
+        headerSearchDropdown.style.display = 'none';
+      }
+    });
+
+    headerSearchClearBtn?.addEventListener('click', () => {
+      headerSearchInput.value = '';
+      headerSearchClearBtn.style.display = 'none';
+      headerSearchDropdown.style.display = 'none';
+      headerSearchDropdown.innerHTML = '';
+      headerSearchInput.focus();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!headerSearchInput.contains(e.target) && !headerSearchDropdown.contains(e.target)) {
+        headerSearchDropdown.style.display = 'none';
+      }
+    });
+  }
+
   const searchToggle = document.getElementById('searchToggle');
   const globalSearchInput = document.getElementById('globalSearch');
   const globalSearchResults = document.getElementById('globalSearchResults');
@@ -171,13 +260,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchToggle?.addEventListener('click', (e) => {
     e.preventDefault();
-    openSearch();
+    if (headerSearchInput) {
+      headerSearchInput.focus();
+    } else {
+      openSearch();
+    }
   });
 
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
-      openSearch();
+      if (headerSearchInput) {
+        headerSearchInput.focus();
+        headerSearchInput.select();
+      } else {
+        openSearch();
+      }
     }
     if (e.key === 'Escape' && searchOverlay && searchOverlay.style.display === 'flex') {
       closeSearch();
