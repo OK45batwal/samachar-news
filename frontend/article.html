@@ -158,6 +158,13 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           <span id="audioPlayText">Listen to Story</span>
         </button>
+        <div id="audioVisualizerBars" class="soundwave-visualizer" style="display: none;">
+          <span class="soundwave-bar"></span>
+          <span class="soundwave-bar"></span>
+          <span class="soundwave-bar"></span>
+          <span class="soundwave-bar"></span>
+          <span class="soundwave-bar"></span>
+        </div>
         <span class="text-xs text-secondary font-mono" id="audioStatusText">AI Voice Synthesis</span>
       </div>
       <div class="flex items-center gap-2">
@@ -371,7 +378,7 @@
         chipsContainer.innerHTML = sources.map(s => `<span class="badge badge-corroborated">✓ ${sanitize(s)}</span>`).join('');
         document.getElementById('scorecardSourcesCount').textContent = `${sources.length} Wires`;
 
-        // Audio Briefing Player
+        // Audio Briefing Player with Dynamic Soundwave Visualizer
         const playBtn = document.getElementById('audioPlayBtn');
         const speedBtn = document.getElementById('audioSpeedBtn');
         const playText = document.getElementById('audioPlayText');
@@ -388,6 +395,8 @@
             playText.textContent = 'Listen to Story';
             playBtn.classList.remove('btn-secondary');
             playBtn.classList.add('btn-primary');
+            const visualizer = document.getElementById('audioVisualizerBars');
+            if (visualizer) visualizer.style.display = 'none';
           } else {
             const textToRead = `${article.title}. Summary: ${article.summary || ''}`;
             currentSpeech = new SpeechSynthesisUtterance(textToRead);
@@ -395,12 +404,16 @@
             currentSpeech.onend = () => {
               isPlayingAudio = false;
               playText.textContent = 'Listen to Story';
+              const visualizer = document.getElementById('audioVisualizerBars');
+              if (visualizer) visualizer.style.display = 'none';
             };
             window.speechSynthesis.speak(currentSpeech);
             isPlayingAudio = true;
             playText.textContent = 'Pause Briefing';
             playBtn.classList.remove('btn-primary');
             playBtn.classList.add('btn-secondary');
+            const visualizer = document.getElementById('audioVisualizerBars');
+            if (visualizer) visualizer.style.display = 'inline-flex';
           }
         });
 

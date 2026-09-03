@@ -466,7 +466,7 @@ img {
   box-shadow: 0 0 0 3px var(--accent-dim);
 }
 
-/* Skeletons */
+/* Skeletons & Shimmer Loading */
 .skeleton {
   background: linear-gradient(90deg, var(--bg-surface-2) 25%, var(--bg-surface-3) 50%, var(--bg-surface-2) 75%);
   background-size: 200% 100%;
@@ -478,6 +478,116 @@ img {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+/* Keyframe Animations Engine */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 245, 155, 0.25), 0 0 2px var(--accent);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(0, 245, 155, 0.6), 0 0 8px var(--accent);
+  }
+}
+
+@keyframes liveDotPulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.35); opacity: 1; filter: drop-shadow(0 0 6px var(--accent)); }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+@keyframes soundWaveBar {
+  0%, 100% { height: 4px; }
+  50% { height: 18px; }
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Animation Utility Classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.45s var(--ease-spring) backwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s ease backwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.35s var(--ease-spring) backwards;
+}
+
+.animate-glow-pulse {
+  animation: pulseGlow 2.5s infinite;
+}
+
+.live-indicator-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: liveDotPulse 1.8s infinite ease-in-out;
+  margin-right: 6px;
+}
+
+/* Soundwave Audio Visualizer */
+.soundwave-visualizer {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 20px;
+  padding: 0 4px;
+}
+
+.soundwave-bar {
+  width: 3px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+  animation: soundWaveBar 1.2s ease-in-out infinite;
+}
+.soundwave-bar:nth-child(1) { animation-delay: 0.0s; }
+.soundwave-bar:nth-child(2) { animation-delay: 0.2s; }
+.soundwave-bar:nth-child(3) { animation-delay: 0.4s; }
+.soundwave-bar:nth-child(4) { animation-delay: 0.1s; }
+.soundwave-bar:nth-child(5) { animation-delay: 0.3s; }
+
+/* Staggered Card Entrances */
+.news-grid > *:nth-child(1) { animation-delay: 0.05s; }
+.news-grid > *:nth-child(2) { animation-delay: 0.10s; }
+.news-grid > *:nth-child(3) { animation-delay: 0.15s; }
+.news-grid > *:nth-child(4) { animation-delay: 0.20s; }
+.news-grid > *:nth-child(5) { animation-delay: 0.25s; }
+.news-grid > *:nth-child(6) { animation-delay: 0.30s; }
 
 /* Toast Notification */
 .toast-container {
@@ -499,10 +609,11 @@ img {
   padding: 12px 18px;
   font-size: 13.5px;
   font-weight: 600;
+  animation: fadeInUp 0.3s var(--ease-spring);
   transition: all 0.25s var(--ease-spring);
 }
 
-/* Spacers */
+/* Spacers & Utilities */
 .p-2 { padding: 8px; }
 .p-3 { padding: 12px; }
 .p-4 { padding: 16px; }

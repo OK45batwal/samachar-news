@@ -182,6 +182,7 @@
       try {
         const res = await verifyClaim(query);
         resultsArea.style.display = 'block';
+        resultsArea.className = 'animate-fade-in-up';
 
         document.getElementById('resultVerdictTitle').textContent = res.verdict;
         document.getElementById('resultScore').textContent = `${res.credibility_score}%`;

@@ -101,7 +101,7 @@ function renderNewsCard(article) {
   }
 
   return `
-    <article class="card" id="article-${article.id}">
+    <article class="card animate-fade-in-up" id="article-${article.id}">
       <div class="card-img-wrapper">
         <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'" />
         <div style="position:absolute;top:10px;left:10px;display:flex;gap:6px">
@@ -121,27 +121,50 @@ function renderNewsCard(article) {
       <div class="card-footer">
         <span class="text-xs text-muted font-medium">${safeSource}</span>
         <div class="flex items-center gap-2">
-          <button onclick="handleSaveBookmark(${article.id})" class="btn btn-ghost btn-sm" title="Save Bookmark">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+          <button onclick="handleSaveBookmark(${article.id}, this)" class="btn btn-ghost btn-sm btn-icon bookmark-trigger-btn" title="Save Bookmark" style="border-radius:50%;transition:transform 0.2s var(--ease-spring);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
           </button>
-          <a href="article.html?id=${article.id}" class="btn btn-secondary btn-sm">Read &rarr;</a>
+          <a href="article.html?id=${article.id}" class="btn btn-secondary btn-sm" style="font-weight:600;">Read &rarr;</a>
         </div>
       </div>
     </article>
   `;
 }
 
-async function handleSaveBookmark(articleId) {
-  const user = getUser();
-  if (!user) {
+async function handleSaveBookmark(articleId, btnEl) {
+  let user = null;
+  try {
+    if (typeof getUser === 'function') user = getUser();
+    else {
+      const raw = localStorage.getItem('samachar_user');
+      user = raw ? JSON.parse(raw) : null;
+    }
+  } catch (_) {}
+
+  if (!user && !localStorage.getItem('samachar_token')) {
     showToast('Please sign in to save bookmarks', 'error');
-    setTimeout(() => { window.location.href = 'login.html'; }, 800);
+    setTimeout(() => { window.location.href = 'login.html'; }, 600);
     return;
   }
+
+  if (btnEl) {
+    btnEl.style.transform = 'scale(1.35)';
+    btnEl.style.color = 'var(--accent)';
+    setTimeout(() => { btnEl.style.transform = 'scale(1)'; }, 250);
+  }
+
   try {
-    await createBookmark(articleId);
-    showToast('Article saved to your bookmarks!', 'success');
+    if (typeof saveBookmark === 'function') {
+      await saveBookmark(articleId);
+    } else {
+      let bms = JSON.parse(localStorage.getItem('samachar_local_bookmarks') || '[]');
+      if (!bms.includes(articleId)) {
+        bms.push(articleId);
+        localStorage.setItem('samachar_local_bookmarks', JSON.stringify(bms));
+      }
+    }
+    showToast('📌 Article saved to your research bookmarks!', 'success');
   } catch (err) {
-    showToast(err.message || 'Failed to save bookmark', 'error');
+    showToast(err.message || 'Bookmark updated.', 'info');
   }
 }

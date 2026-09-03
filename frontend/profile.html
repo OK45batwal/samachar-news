@@ -3,160 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Profile & Truth Intelligence Hub — Samachar</title>
-  <meta name="description" content="Manage your reading preferences, wire corroboration strictness, audio briefing speed, and account security." />
+  <title>User Profile & Account Settings — Samachar</title>
+  <meta name="description" content="Manage your reading preferences, truth threshold filters, and account settings." />
   <meta name="theme-color" content="#08090C" />
   <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=7.0" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=7.0" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=7.0" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=8.0" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=8.0" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=8.0" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
     if (!localStorage.getItem('samachar_token')) {
-      window.location.replace('login.html?redirect=profile.html');
+      window.location.replace('index.html');
     }
   </script>
-  <style>
-    /* Profile Command Center Aesthetics */
-    .profile-hero {
-      background: radial-gradient(circle at top right, rgba(0, 245, 155, 0.12), transparent 50%),
-                  radial-gradient(circle at bottom left, rgba(0, 210, 255, 0.08), transparent 50%),
-                  var(--bg-surface-1);
-      border: 1px solid var(--border-light);
-      border-radius: 20px;
-      padding: 32px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 16px 36px rgba(0,0,0,0.3);
-    }
-    .profile-avatar-ring {
-      width: 76px;
-      height: 76px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent) 0%, #00D2FF 100%);
-      padding: 3px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 20px rgba(0, 245, 155, 0.35);
-      flex-shrink: 0;
-    }
-    .profile-avatar-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: #0D121D;
-      color: var(--accent);
-      font-family: var(--font-brand);
-      font-size: 30px;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .profile-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 12px;
-      overflow-x: auto;
-    }
-    .profile-tab-btn {
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--text-secondary);
-      padding: 8px 18px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-    .profile-tab-btn:hover {
-      color: var(--text-primary);
-      background: var(--bg-surface-2);
-    }
-    .profile-tab-btn.active {
-      color: var(--accent);
-      background: rgba(0, 245, 155, 0.1);
-      border-color: rgba(0, 245, 155, 0.3);
-    }
-    .stat-metric-card {
-      background: var(--bg-surface-1);
-      border: 1px solid var(--border-light);
-      border-radius: 16px;
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-    .stat-metric-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--accent);
-    }
-    .pref-toggle-card {
-      background: var(--bg-surface-2);
-      border: 1px solid var(--border-light);
-      border-radius: 14px;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      transition: border-color 0.2s ease;
-    }
-    .pref-toggle-card:hover {
-      border-color: rgba(0, 245, 155, 0.3);
-    }
-    .switch-toggle {
-      position: relative;
-      display: inline-block;
-      width: 44px;
-      height: 24px;
-    }
-    .switch-toggle input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .switch-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: var(--border-light);
-      transition: .3s;
-      border-radius: 24px;
-    }
-    .switch-slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .3s;
-      border-radius: 50%;
-    }
-    input:checked + .switch-slider {
-      background-color: var(--accent);
-    }
-    input:checked + .switch-slider:before {
-      transform: translateX(20px);
-      background-color: #08090C;
-    }
-  </style>
 </head>
-<body style="min-height: 100vh; background: var(--bg-base); margin: 0; padding: 0;">
+<body>
 
-  <!-- Header Navigation -->
+  <!-- App Header & Navigation -->
   <header class="header">
     <div class="container header-inner">
       <a href="index.html" class="logo">
@@ -242,230 +108,83 @@
     </a>
   </nav>
 
-  <!-- Main Container -->
-  <main class="container" style="padding-top: 36px; padding-bottom: 80px; max-width: 860px;">
-
-    <!-- Editorial Hero Profile Banner -->
-    <div class="profile-hero mb-6">
-      <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 20px;">
-        <div class="flex items-center gap-5">
-          <div class="profile-avatar-ring">
-            <div id="profileAvatar" class="profile-avatar-inner">U</div>
+  <!-- Main Profile Container -->
+  <main class="container" style="padding-top: 32px; padding-bottom: 64px; max-width: 800px;">
+    
+    <!-- User Hero Card -->
+    <div class="card p-6 mb-6" style="background: linear-gradient(135deg, var(--bg-surface-1) 0%, var(--bg-surface-2) 100%);">
+      <div class="flex items-center justify-between" style="flex-wrap:wrap; gap:16px;">
+        <div class="flex items-center gap-4">
+          <div id="profileAvatar" style="width: 68px; height: 68px; border-radius: 50%; background: var(--accent); color: #08090C; font-family: var(--font-brand); font-size: 28px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px var(--accent-glow);">
+            U
           </div>
           <div>
-            <div class="flex items-center gap-3 mb-1.5" style="flex-wrap:wrap">
-              <h1 id="profileName" class="heading-lg" style="margin:0; font-size: 26px;">Verified Reader</h1>
-              <span id="profileRoleBadge" class="badge badge-verified" style="padding: 4px 10px; font-size: 11px;">🟢 OBSIDIAN VERIFIED</span>
+            <div class="flex items-center gap-2 mb-1">
+              <h1 id="profileName" class="heading-lg" style="margin:0;">Verified Reader</h1>
+              <span id="profileRole" class="badge badge-verified">🟢 ACTIVE READER</span>
             </div>
-            <div id="profileEmail" class="text-xs text-secondary font-mono mb-2">reader@samachar.news</div>
-            <div class="flex items-center gap-3 text-xs text-muted" style="flex-wrap: wrap;">
-              <span>📅 Joined 2026</span>
-              <span>•</span>
-              <span class="text-accent font-semibold">🔒 TLS 1.3 Encrypted</span>
-              <span>•</span>
-              <span>⚡ Wire Priority: Tier 1</span>
-            </div>
+            <div id="profileEmail" class="text-xs text-secondary font-mono">reader@samachar.news</div>
           </div>
         </div>
-
-        <div class="flex items-center gap-3">
-          <a href="bookmarks.html" class="btn btn-secondary btn-sm flex items-center gap-2" style="padding: 10px 18px; border-radius: 10px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-            Saved Stories
+        
+        <div class="flex items-center gap-2">
+          <a href="bookmarks.html" class="btn btn-secondary btn-sm flex items-center gap-1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+            Bookmarks
           </a>
-          <button type="button" onclick="logoutUser()" class="btn btn-ghost btn-sm text-secondary hover:text-danger flex items-center gap-2" style="padding: 10px 16px; border-radius: 10px;" title="Sign Out">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Sign Out
-          </button>
         </div>
       </div>
     </div>
 
-    <!-- Navigation Tabs -->
-    <div class="profile-tabs">
-      <button class="profile-tab-btn active" onclick="switchProfileTab('analytics', this)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
-        Reading Analytics & Truth Metrics
-      </button>
-      <button class="profile-tab-btn" onclick="switchProfileTab('preferences', this)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        Feed & Intelligence Controls
-      </button>
-      <button class="profile-tab-btn" onclick="switchProfileTab('security', this)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Security & Session
-      </button>
-    </div>
-
-    <!-- TAB 1: Analytics & Metrics -->
-    <div id="tabAnalytics" class="tab-content">
-      <div class="grid mb-6" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
-        <div class="stat-metric-card">
-          <div class="text-xs text-muted mb-1 font-mono uppercase">Saved Briefs</div>
-          <div id="statsSavedCount" class="heading-xl text-accent font-mono" style="font-size: 32px; font-weight: 800;">0</div>
-          <div class="text-xs text-secondary">Encrypted In Archive</div>
-        </div>
-        <div class="stat-metric-card">
-          <div class="text-xs text-muted mb-1 font-mono uppercase">Truth Strictness</div>
-          <div id="statTruthScore" class="heading-xl text-primary font-mono" style="font-size: 32px; font-weight: 800;">92%</div>
-          <div class="text-xs text-secondary">Corroboration Threshold</div>
-        </div>
-        <div class="stat-metric-card">
-          <div class="text-xs text-muted mb-1 font-mono uppercase">Fact Audits Run</div>
-          <div class="heading-xl text-accent font-mono" style="font-size: 32px; font-weight: 800;">28</div>
-          <div class="text-xs text-secondary">Claims Investigated</div>
-        </div>
-        <div class="stat-metric-card">
-          <div class="text-xs text-muted mb-1 font-mono uppercase">Reading Time Saved</div>
-          <div class="heading-xl text-primary font-mono" style="font-size: 32px; font-weight: 800;">4.2h</div>
-          <div class="text-xs text-secondary">Via AI Consensus Briefs</div>
-        </div>
+    <!-- Reading Statistics -->
+    <div class="grid mb-6" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+      <div class="card p-4 text-center">
+        <div class="text-xs text-muted mb-1 font-mono uppercase">Saved Stories</div>
+        <div id="statsSavedCount" class="heading-xl text-accent font-mono">0</div>
+        <div class="text-xs text-secondary">In Research Archive</div>
       </div>
-
-      <!-- Corroboration Wire Feed Coverage Card -->
-      <div class="card p-6 mb-6">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <h3 class="heading-sm mb-1">Global Wire Corroboration Grid</h3>
-            <p class="text-xs text-secondary">Active independent newsfeeds feeding your customized truth algorithm</p>
-          </div>
-          <span class="badge badge-verified">25+ WIRES CONNECTED</span>
-        </div>
-
-        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-          <span class="badge" style="background: var(--bg-surface-2); border-color: var(--border-light); font-family: var(--font-mono); font-size: 11px;">Reuters Wire</span>
-          <span class="badge" style="background: var(--bg-surface-2); border-color: var(--border-light); font-family: var(--font-mono); font-size: 11px;">Associated Press</span>
-          <span class="badge" style="background: var(--bg-surface-2); border-color: var(--border-light); font-family: var(--font-mono); font-size: 11px;">Agence France-Presse</span>
-          <span class="badge" style="background: var(--bg-surface-2); border-color: var(--border-light); font-family: var(--font-mono); font-size: 11px;">BBC News Wire</span>
-          <span class="badge" style="background: var(--bg-surface-2); border-color: var(--border-light); font-family: var(--font-mono); font-size: 11px;">Press Trust of India (PTI)</span>
-          <span class="badge" style="background: var(--bg-surface-2); border-color: var(--border-light); font-family: var(--font-mono); font-size: 11px;">The Hindu Archives</span>
-          <span class="badge" style="background: var(--bg-surface-2); border-color: var(--border-light); font-family: var(--font-mono); font-size: 11px;">Nature Research Feed</span>
-          <span class="badge" style="background: var(--bg-surface-2); border-color: var(--border-light); font-family: var(--font-mono); font-size: 11px;">Bloomberg Global Markets</span>
-        </div>
+      <div class="card p-4 text-center">
+        <div class="text-xs text-muted mb-1 font-mono uppercase">Truth Strictness</div>
+        <div class="heading-xl text-primary font-mono">90%</div>
+        <div class="text-xs text-secondary">Minimum Wire Filter</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-xs text-muted mb-1 font-mono uppercase">Active Edition</div>
+        <div class="heading-xl text-accent font-mono">GLOBAL</div>
+        <div class="text-xs text-secondary">25+ Wire Services</div>
       </div>
     </div>
 
-    <!-- TAB 2: Feed & Intelligence Preferences -->
-    <div id="tabPreferences" class="tab-content" style="display: none;">
-      <div class="card p-6 mb-6">
-        <h2 class="heading-md mb-2 flex items-center gap-2">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          Editorial Feed & AI Briefing Preferences
-        </h2>
-        <p class="text-xs text-secondary mb-6">Tune how news stories are ranked, summarized, and narrated to your dashboard.</p>
-
-        <div class="form-group mb-5">
-          <label class="form-label" style="font-weight: 700; font-size: 13px;">Default Edition & Regional Priority</label>
-          <select class="input" id="editionSelect" style="padding: 12px; font-size: 13px; border-radius: 10px;">
-            <option value="global" selected>🌐 Global Multi-Wire Edition (25+ International Outlets)</option>
-            <option value="india">🇮🇳 India National & Regional Wires (PTI, The Hindu, ANI)</option>
-            <option value="tech">⚡ Science, AI & Deep Tech Intelligence (ArXiv, Nature, TechCrunch)</option>
-            <option value="finance">📈 Markets, Economy & Global Macro Trade (Bloomberg, FT, Reuters)</option>
-          </select>
-        </div>
-
-        <div class="form-group mb-5">
-          <div class="flex items-center justify-between mb-2">
-            <label class="form-label" style="margin-bottom:0; font-weight: 700; font-size: 13px;">AI Audio Reader Briefing Speed</label>
-            <span id="speechRateLabel" class="text-xs text-accent font-mono font-bold">1.0x Normal Speed</span>
-          </div>
-          <input type="range" id="speechRateSlider" min="0.75" max="2.0" step="0.25" value="1.0" style="width: 100%; accent-color: var(--accent); cursor: pointer;" />
-          <div class="flex items-center justify-between text-xs text-muted mt-1 font-mono">
-            <span>0.75x Deep Dive</span>
-            <span>1.0x Standard</span>
-            <span>1.5x Rapid Brief</span>
-            <span>2.0x Blitz</span>
-          </div>
-        </div>
-
-        <div class="pref-toggle-card">
-          <div>
-            <div class="text-sm font-semibold text-primary">Strict Fact-Check Corroboration</div>
-            <div class="text-xs text-secondary">Only display articles confirmed by 2 or more tier-1 international wires</div>
-          </div>
-          <label class="switch-toggle">
-            <input type="checkbox" id="strictFilterToggle" checked />
-            <span class="switch-slider"></span>
-          </label>
-        </div>
-
-        <div class="pref-toggle-card">
-          <div>
-            <div class="text-sm font-semibold text-primary">Sensationalism & Clickbait AI Shield</div>
-            <div class="text-xs text-secondary">Rewrites sensationalized headlines into objective neutral statements</div>
-          </div>
-          <label class="switch-toggle">
-            <input type="checkbox" id="sensationalismToggle" checked />
-            <span class="switch-slider"></span>
-          </label>
-        </div>
-
-        <div class="pref-toggle-card">
-          <div>
-            <div class="text-sm font-semibold text-primary">Live Breaking News Stream via WebSockets</div>
-            <div class="text-xs text-secondary">Automatically ingest breaking wire feeds without manual page reloads</div>
-          </div>
-          <label class="switch-toggle">
-            <input type="checkbox" id="liveStreamToggle" checked />
-            <span class="switch-slider"></span>
-          </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-6 pt-4 border-top">
-          <button type="button" class="btn btn-primary" onclick="saveAllPreferences()" style="padding: 12px 28px; font-weight: 700; border-radius: 10px;">
-            Save & Synchronize Preferences &rarr;
-          </button>
-        </div>
+    <!-- Preferences Settings Form -->
+    <div class="card p-6 mb-6">
+      <h2 class="heading-md mb-4 flex items-center gap-2">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        Feed & Truth Settings
+      </h2>
+      
+      <div class="form-group">
+        <label class="form-label">Global Edition Region</label>
+        <select class="input" id="editionSelect">
+          <option value="global" selected>Global Multi-Wire Edition (25+ International Outlets)</option>
+          <option value="india">India National & Regional Wires (PTI, The Hindu, ANI)</option>
+          <option value="tech">Science, Tech & AI Specialty Intelligence</option>
+          <option value="finance">Markets, Economy & Global Trade Focus</option>
+        </select>
       </div>
-    </div>
 
-    <!-- TAB 3: Security & Session -->
-    <div id="tabSecurity" class="tab-content" style="display: none;">
-      <div class="card p-6 mb-6">
-        <h2 class="heading-md mb-2 flex items-center gap-2">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Active Authentication & Session Security
-        </h2>
-        <p class="text-xs text-secondary mb-6">Your session is protected with 6-digit OTP email authentication and JWT bearer encryption.</p>
+      <div class="form-group">
+        <label class="form-label">Default Audio Reader Speech Rate</label>
+        <select class="input" id="speechRateSelect">
+          <option value="1.0" selected>Normal Speed (1.0x)</option>
+          <option value="1.25">Fast Speed (1.25x)</option>
+          <option value="1.5">Rapid Briefing (1.5x)</option>
+        </select>
+      </div>
 
-        <div class="card p-4 mb-4" style="background: var(--bg-surface-2); border-color: var(--border-light);">
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-3">
-              <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(0, 245, 155, 0.12); color: var(--accent); display: flex; align-items: center; justify-content: center;">
-                💻
-              </div>
-              <div>
-                <div class="text-sm font-bold text-primary">Current Active Device Session</div>
-                <div class="text-xs text-secondary" id="deviceSessionInfo">macOS · Chrome / Brave Browser</div>
-              </div>
-            </div>
-            <span class="badge badge-verified">🟢 CURRENT ACTIVE SESSION</span>
-          </div>
-          <div class="text-xs text-muted flex items-center gap-4 pt-2 border-top">
-            <span>Session Protocol: JWT Bearer</span>
-            <span>Encryption: AES-GCM 256</span>
-            <span>Status: Verified & Valid</span>
-          </div>
-        </div>
-
-        <div class="card p-4 mb-6" style="background: var(--bg-surface-2); border-color: var(--border-light);">
-          <div class="flex items-center justify-between">
-            <div>
-              <div class="text-sm font-bold text-primary">Export Research Archive</div>
-              <div class="text-xs text-secondary">Download all your saved bookmarks, reading notes, and fact-checks as JSON</div>
-            </div>
-            <button type="button" onclick="exportUserArchive()" class="btn btn-secondary btn-sm" style="padding: 8px 16px;">
-              📥 Export JSON
-            </button>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-4 border-top">
-          <span class="text-xs text-muted">Need to switch accounts?</span>
-          <button type="button" onclick="logoutUser()" class="btn btn-secondary btn-sm" style="padding: 8px 18px;">
-            Sign Out of All Sessions
-          </button>
-        </div>
+      <div class="flex items-center justify-end">
+        <button type="button" class="btn btn-primary btn-sm" onclick="if(typeof showToast==='function')showToast('Preferences updated successfully!', 'success')">
+          Save Preferences
+        </button>
       </div>
     </div>
 
@@ -476,7 +195,7 @@
     <div class="container">
       <div class="footer-bottom" style="border-top:none;padding-top:0">
         <span>&copy; 2026 Samachar News Platform. All rights reserved.</span>
-        <span>Obsidian Truth Engine 2.0 · Ultra Fast News Intelligence</span>
+        <span>Obsidian Truth Engine 2.0</span>
       </div>
     </div>
   </footer>
@@ -487,66 +206,15 @@
   <script src="/assets/js/layout.js?v=6.5"></script>
   <script src="/assets/js/app.js?v=6.5"></script>
   <script>
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      if (type === 'success') toast.style.borderLeft = '4px solid var(--accent)';
-      if (type === 'error') toast.style.borderLeft = '4px solid var(--disputed)';
-      toast.textContent = message;
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        setTimeout(() => toast.remove(), 250);
-      }, 4000);
-    }
-
-    function switchProfileTab(tabName, btn) {
-      document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-
-      document.getElementById('tabAnalytics').style.display = tabName === 'analytics' ? 'block' : 'none';
-      document.getElementById('tabPreferences').style.display = tabName === 'preferences' ? 'block' : 'none';
-      document.getElementById('tabSecurity').style.display = tabName === 'security' ? 'block' : 'none';
-    }
-
-    function saveAllPreferences() {
-      const edition = document.getElementById('editionSelect').value;
-      const speechRate = document.getElementById('speechRateSlider').value;
-      const strict = document.getElementById('strictFilterToggle').checked;
-      const sensationalism = document.getElementById('sensationalismToggle').checked;
-      const liveStream = document.getElementById('liveStreamToggle').checked;
-
-      const prefs = { edition, speechRate, strict, sensationalism, liveStream };
-      localStorage.setItem('samachar_reader_prefs', JSON.stringify(prefs));
-      showToast('✨ Intelligence preferences synchronized successfully!', 'success');
-    }
-
-    function exportUserArchive() {
-      const rawUser = localStorage.getItem('samachar_user') || '{}';
-      const bookmarks = localStorage.getItem('samachar_local_bookmarks') || '[]';
-      const data = {
-        user: JSON.parse(rawUser),
-        bookmarks: JSON.parse(bookmarks),
-        exported_at: new Date().toISOString(),
-        platform: 'Samachar Truth Intelligence 2.0'
-      };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `samachar-archive-${Date.now()}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast('📥 Archive exported successfully!', 'success');
-    }
-
     document.addEventListener('DOMContentLoaded', async () => {
       let user = null;
       try {
-        const raw = localStorage.getItem('samachar_user');
-        user = raw ? JSON.parse(raw) : null;
+        if (typeof getUser === 'function') {
+          user = getUser();
+        } else {
+          const raw = localStorage.getItem('samachar_user');
+          user = raw ? JSON.parse(raw) : null;
+        }
       } catch (_) {}
       
       if (user) {
@@ -554,48 +222,18 @@
         document.getElementById('profileEmail').textContent = user.email || 'reader@samachar.news';
         const initial = (user.full_name || user.username || 'U')[0].toUpperCase();
         document.getElementById('profileAvatar').textContent = initial;
-        document.getElementById('profileRoleBadge').textContent = (user.role === 'admin' ? '👑 CHIEF EDITOR' : '🟢 VERIFIED READER');
+        document.getElementById('profileRole').textContent = (user.role === 'admin' ? '👑 CHIEF EDITOR' : '🟢 VERIFIED READER');
       }
 
-      // Load Saved Bookmarks Count
+      // Count bookmarks
       try {
-        const saved = JSON.parse(localStorage.getItem('samachar_local_bookmarks') || '[]');
-        document.getElementById('statsSavedCount').textContent = saved.length;
-      } catch (_) {}
-
-      // Slider listener
-      const slider = document.getElementById('speechRateSlider');
-      const rateLabel = document.getElementById('speechRateLabel');
-      slider?.addEventListener('input', (e) => {
-        rateLabel.textContent = `${e.target.value}x Speed`;
-      });
-
-      // Load saved preferences
-      try {
-        const savedPrefs = JSON.parse(localStorage.getItem('samachar_reader_prefs') || '{}');
-        if (savedPrefs.edition) document.getElementById('editionSelect').value = savedPrefs.edition;
-        if (savedPrefs.speechRate) {
-          slider.value = savedPrefs.speechRate;
-          rateLabel.textContent = `${savedPrefs.speechRate}x Speed`;
+        if (typeof getBookmarks === 'function') {
+          const bookmarks = await getBookmarks();
+          if (bookmarks && bookmarks.length !== undefined) {
+            document.getElementById('statsSavedCount').textContent = bookmarks.length;
+          }
         }
-        if (savedPrefs.strict !== undefined) document.getElementById('strictFilterToggle').checked = savedPrefs.strict;
-        if (savedPrefs.sensationalism !== undefined) document.getElementById('sensationalismToggle').checked = savedPrefs.sensationalism;
-        if (savedPrefs.liveStream !== undefined) document.getElementById('liveStreamToggle').checked = savedPrefs.liveStream;
-      } catch (_) {}
-
-      // Detect Device info
-      const ua = navigator.userAgent;
-      let os = 'Desktop';
-      if (ua.includes('Mac')) os = 'macOS';
-      else if (ua.includes('Win')) os = 'Windows';
-      else if (ua.includes('Linux')) os = 'Linux';
-      else if (ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS';
-      else if (ua.includes('Android')) os = 'Android';
-
-      const devEl = document.getElementById('deviceSessionInfo');
-      if (devEl) {
-        devEl.textContent = `${os} · Active Browser Session`;
-      }
+      } catch (err) {}
     });
   </script>
 </body>

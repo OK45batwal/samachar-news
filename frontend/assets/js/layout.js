@@ -64,19 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (user) {
       authContainer.innerHTML = `
         <div class="flex items-center gap-2">
-          <a href="bookmarks.html" class="btn btn-ghost btn-sm" title="Saved Bookmarks">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-            <span class="hide-mobile">Saved</span>
-          </a>
-          <a href="profile.html" class="btn btn-secondary btn-sm flex items-center gap-2" title="User Profile">
-            <div style="width:20px;height:20px;border-radius:50%;background:var(--accent);color:#08090C;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center">
+          <a href="profile.html" class="btn btn-secondary btn-sm flex items-center gap-2" style="padding: 5px 12px; border-radius: var(--radius-full); transition: all 0.2s var(--ease-spring);" title="My Profile & Settings">
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--accent);color:#08090C;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 8px var(--accent-glow)">
               ${(user.full_name || user.username || 'U')[0].toUpperCase()}
             </div>
-            <span class="hide-mobile">${user.username || 'Profile'}</span>
+            <span style="font-size: 13px; font-weight: 600;">${user.username || 'Profile'}</span>
           </a>
-          <button onclick="logoutUser()" class="btn btn-ghost btn-sm" title="Sign Out">
+          <button onclick="logoutUser()" class="btn btn-ghost btn-sm btn-icon" title="Sign Out" style="color: var(--text-muted); padding: 7px; border-radius: 50%;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            <span class="hide-mobile">Logout</span>
           </button>
         </div>
       `;
