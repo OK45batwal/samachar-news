@@ -204,11 +204,11 @@
 
   <script>
     // ==========================================
-    // EmailJS Configuration
+    // EmailJS Configuration (Live Production Keys)
     // ==========================================
-    const EMAILJS_PUBLIC_KEY = localStorage.getItem('samachar_emailjs_pubkey') || 'LkI4WzLWHIEsvYG_Z';
-    const EMAILJS_SERVICE_ID = localStorage.getItem('samachar_emailjs_service') || 'service_samachar';
-    const EMAILJS_TEMPLATE_ID = localStorage.getItem('samachar_emailjs_template') || 'template_9lhli7i';
+    const EMAILJS_PUBLIC_KEY = 'LkI4WzLWHIEsvYG_Z';
+    const EMAILJS_SERVICE_ID = 'service_uu7rg9e';
+    const EMAILJS_TEMPLATE_ID = 'template_9lhli7i';
 
     let pendingRegistration = null;
     let generatedOtpSecret = '';
@@ -258,20 +258,30 @@
 
       let emailSent = false;
 
-      // 1. Dispatch via EmailJS (Direct from browser to user's real email)
-      if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+      // 1. Dispatch via EmailJS directly to recipient inbox
+      if (typeof emailjs !== 'undefined') {
         try {
           emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          const templateParams = {
             to_email: email,
+            email: email,
+            user_email: email,
+            recipient_email: email,
             to_name: name,
+            name: name,
+            user_name: name,
             otp_code: generatedOtpSecret,
+            otp: generatedOtpSecret,
+            code: generatedOtpSecret,
+            passcode: generatedOtpSecret,
+            message: `Your Samachar 6-digit verification code is: ${generatedOtpSecret}`,
             time: new Date().toLocaleTimeString()
-          });
+          };
+          const res = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+          console.log('✅ EmailJS OTP successfully dispatched:', res.status, res.text);
           emailSent = true;
-          console.log('✅ EmailJS delivered OTP email to:', email);
         } catch (err) {
-          console.warn('EmailJS delivery note:', err);
+          console.error('EmailJS delivery error:', err);
         }
       }
 
