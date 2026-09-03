@@ -8,7 +8,7 @@ function sanitize(str) {
 }
 
 function timeAgo(dateString) {
-  if (!dateString) return 'Just now';
+  if (!dateString) return 'Today';
   let dateStr = dateString;
   if (typeof dateStr === 'string' && !dateStr.endsWith('Z') && !dateStr.includes('+') && !dateStr.includes('GMT')) {
     dateStr += 'Z';
@@ -20,6 +20,7 @@ function timeAgo(dateString) {
   if (isNaN(diffSec) || diffSec <= 60) return 'Just now';
   if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
   if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+  if (now.toDateString() === past.toDateString()) return 'Today';
   const days = Math.floor(diffSec / 86400);
   return days === 1 ? 'Yesterday' : `${days}d ago`;
 }

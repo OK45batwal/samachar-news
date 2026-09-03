@@ -7,9 +7,9 @@
   <meta name="description" content="Verified news analysis, audio briefing, and fact-checking scorecard on Samachar." />
   <meta name="theme-color" content="#08090C" />
   <link rel="manifest" href="/manifest.json" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=6.5" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=6.5" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=6.5" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=9.0" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=9.0" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=9.0" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
   <script>
@@ -292,9 +292,9 @@
 
   <div id="toastContainer" class="toast-container"></div>
 
-  <script src="/assets/js/api.js?v=6.5"></script>
-  <script src="/assets/js/layout.js?v=6.5"></script>
-  <script src="/assets/js/app.js?v=6.5"></script>
+  <script src="/assets/js/api.js?v=9.0"></script>
+  <script src="/assets/js/layout.js?v=9.0"></script>
+  <script src="/assets/js/app.js?v=9.0"></script>
   <script>
     let currentSpeech = null;
     let isPlayingAudio = false;
@@ -312,11 +312,6 @@
     });
 
     document.addEventListener('DOMContentLoaded', async () => {
-      // Register Service Worker for PWA
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      }
-
       // Reading Progress Handler
       window.addEventListener('scroll', () => {
         const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;

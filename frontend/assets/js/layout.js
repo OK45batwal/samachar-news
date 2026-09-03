@@ -83,11 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 0. Auto-Flush Stale Service Worker Cache
+  // 0. Auto-Flush Stale Service Worker Cache & Browser CacheStorage
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations().then(regs => {
       for (let reg of regs) reg.unregister();
     });
+  }
+  if ('caches' in window) {
+    caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
   }
 
   // 5. Universal Search Command Palette & Modal

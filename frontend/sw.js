@@ -1,20 +1,11 @@
-// Samachar Service Worker — Auto Flush Cache for Development
-const CACHE_NAME = 'samachar-cache-v3.0';
-
-self.addEventListener('install', (event) => {
+// Samachar Service Worker Self-Purge
+self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.map((k) => caches.delete(k)))
-    )
+    caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+      .then(() => self.registration.unregister())
   );
-  self.clients.claim();
-});
-
-// Network-only fetch during active development
-self.addEventListener('fetch', (event) => {
-  return;
 });
