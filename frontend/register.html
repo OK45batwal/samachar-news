@@ -8,9 +8,9 @@
   <meta name="description" content="Secure one-time email OTP verification for new reader account registration." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=7.2" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=7.2" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=7.2" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=8.0" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=8.0" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=8.0" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -127,19 +127,19 @@
               <p class="text-xs text-secondary">Enter the 6-digit code sent to your inbox</p>
             </div>
 
-            <!-- Email Dispatched Notification Box (Clean, No code exposed on screen) -->
+            <!-- Email Dispatched Notification Box (Clean, Never displays code) -->
             <div style="background: rgba(0, 245, 155, 0.08); border: 1px solid var(--accent-border); border-radius: 12px; padding: 18px; margin-bottom: 20px; text-align: center;">
-              <div style="font-size: 32px; margin-bottom: 6px;">📬</div>
+              <div style="font-size: 36px; margin-bottom: 8px;">📬</div>
               <div class="text-sm text-primary font-bold mb-1">Verification Code Dispatched!</div>
-              <div class="text-xs text-secondary" id="registerOtpTargetText" style="line-height: 1.5;">
-                We sent a 6-digit security code to your registered email address. Please check your inbox (and spam folder).
+              <div class="text-xs text-secondary" id="registerOtpTargetText" style="line-height: 1.6;">
+                We sent a 6-digit confirmation code to your email. Please check your inbox and spam folder.
               </div>
             </div>
 
             <form id="registerOtpForm">
               <div class="form-group mb-4 text-center">
-                <label class="form-label" style="text-align: center; font-size: 12px; margin-bottom: 8px;">Enter 6-Digit Email OTP</label>
-                <input type="text" id="registerOtpInput" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="• • • • • •" style="width: 100%; font-family: var(--font-mono); font-size: 26px; font-weight: 700; letter-spacing: 8px; text-align: center; padding: 14px; background: var(--bg-surface-2); color: var(--text-primary); border: 1.5px solid var(--border-light); border-radius: 10px; outline: none; box-sizing: border-box;" required autocomplete="one-time-code" />
+                <label class="form-label" style="text-align: center; font-size: 12px; margin-bottom: 8px;">Type 6-Digit Email OTP</label>
+                <input type="text" id="registerOtpInput" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="1 2 3 4 5 6" style="width: 100%; font-family: var(--font-mono); font-size: 26px; font-weight: 700; letter-spacing: 8px; text-align: center; padding: 14px; background: var(--bg-surface-2); color: var(--text-primary); border: 1.5px solid var(--border-light); border-radius: 10px; outline: none; box-sizing: border-box;" required autocomplete="one-time-code" />
                 <div id="registerOtpError" class="text-xs text-danger mt-2" style="display: none; font-weight: 600;"></div>
               </div>
 
@@ -148,15 +148,8 @@
               </button>
 
               <div class="flex items-center justify-between text-xs text-secondary">
-                <button type="button" onclick="resendRegisterOtp()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer; color: var(--accent);">Resend Email</button>
+                <button type="button" id="resendBtn" onclick="resendRegisterOtp()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer; color: var(--accent);">Resend Email</button>
                 <button type="button" onclick="backToRegisterStage1()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer;">&larr; Change Email</button>
-              </div>
-
-              <!-- Subtle Developer / Demo Helper for local testing -->
-              <div id="devOtpHelper" style="margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--border); text-align: center; display: none;">
-                <button type="button" onclick="fillDevOtp()" class="text-xs text-muted hover:text-accent" style="background: none; border: none; cursor: pointer; font-size: 11px;">
-                  🛠️ Demo/Dev: Auto-fill Code (<span id="devOtpValue"></span>)
-                </button>
               </div>
             </form>
           </div>
@@ -200,51 +193,39 @@
       document.getElementById('registerStage1').style.display = 'block';
     }
 
-    function fillDevOtp() {
-      const input = document.getElementById('registerOtpInput');
-      if (input && expectedOtp) {
-        input.value = expectedOtp;
-        input.focus();
-        showToast('Dev OTP auto-filled', 'info');
-      }
-    }
-
     async function generateAndSendOtpEmail(email, name) {
       expectedOtp = String(Math.floor(100000 + Math.random() * 900000));
-      let dispatched = false;
+      sessionStorage.setItem('samachar_reg_otp_' + email, expectedOtp);
 
+      // 1. Dispatch through Python FastAPI Backend (when running locally)
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         try {
-          const res = await fetch('http://localhost:8000/api/auth/send-auth-otp', {
+          await fetch('http://localhost:8000/api/auth/send-auth-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, name }),
             signal: AbortSignal.timeout(3000)
           });
-          if (res.ok) {
-            dispatched = true;
-          }
         } catch (_) {}
       }
 
-      sessionStorage.setItem('samachar_reg_otp_' + email, expectedOtp);
-      showToast(`📧 Verification code sent to ${email}`, 'success');
-
-      // If running on localhost or demo, enable subtle dev link
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        const helper = document.getElementById('devOtpHelper');
-        const valSpan = document.getElementById('devOtpValue');
-        if (helper && valSpan) {
-          valSpan.textContent = expectedOtp;
-          helper.style.display = 'block';
-        }
-      }
+      showToast(`📧 Verification email dispatched to ${email}. Check your inbox!`, 'success');
     }
 
     async function resendRegisterOtp() {
       if (pendingRegistration && pendingRegistration.email) {
+        const resendBtn = document.getElementById('resendBtn');
+        if (resendBtn) {
+          resendBtn.disabled = true;
+          resendBtn.textContent = 'Sending...';
+        }
         await generateAndSendOtpEmail(pendingRegistration.email, pendingRegistration.fullName);
-        showToast('A new verification code has been dispatched to your email.', 'info');
+        setTimeout(() => {
+          if (resendBtn) {
+            resendBtn.disabled = false;
+            resendBtn.textContent = 'Resend Email';
+          }
+        }, 5000);
       }
     }
 
