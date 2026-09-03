@@ -819,3 +819,255 @@ img {
     font-size: 12.5px;
   }
 }
+
+/* =========================================================
+   Landing Page Dynamic Aesthetics & Animation Suite
+   ========================================================= */
+
+/* Hero Ambient Aurora Mesh */
+.landing-hero-wrapper {
+  position: relative;
+  overflow: hidden;
+  padding: 84px 0 60px;
+  background: radial-gradient(circle at 50% -20%, rgba(0, 245, 155, 0.14) 0%, rgba(56, 189, 248, 0.06) 35%, transparent 70%),
+              radial-gradient(circle at 85% 30%, rgba(0, 245, 155, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 15% 30%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
+}
+
+.landing-hero-grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 40%, transparent 80%);
+}
+
+/* Dynamic Live Wire Marquee Ticker */
+.landing-ticker-bar {
+  background: var(--bg-surface-1);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+.landing-ticker-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface-2);
+  border-right: 1px solid var(--border);
+  padding: 0 16px;
+  height: 100%;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent);
+  white-space: nowrap;
+  z-index: 2;
+  letter-spacing: 0.5px;
+}
+
+.landing-ticker-track {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  white-space: nowrap;
+  animation: landingTickerScroll 45s linear infinite;
+  padding-left: 20px;
+}
+
+.landing-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes landingTickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.landing-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.landing-ticker-item:hover {
+  color: var(--text-primary);
+}
+
+.landing-ticker-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+/* Glowing Pulsing Status Pill */
+.status-pill-pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(0, 245, 155, 0.08);
+  border: 1px solid rgba(0, 245, 155, 0.3);
+  box-shadow: 0 0 20px rgba(0, 245, 155, 0.15);
+  animation: glowPulse 3s infinite ease-in-out;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(0, 245, 155, 0.15), 0 0 0 1px rgba(0, 245, 155, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(0, 245, 155, 0.35), 0 0 0 1px rgba(0, 245, 155, 0.6);
+  }
+}
+
+/* Live Fact-Checking Interactive Workbench Card */
+.hero-workbench-card {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 245, 155, 0.15);
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease-spring);
+}
+
+.hero-workbench-card:hover {
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 245, 155, 0.3);
+}
+
+/* Side-by-Side Comparison Grid */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+@media (max-width: 860px) {
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.comparison-card-false {
+  background: linear-gradient(180deg, rgba(239, 68, 68, 0.06) 0%, var(--bg-surface-1) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.comparison-card-false::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #EF4444;
+}
+
+.comparison-card-true {
+  background: linear-gradient(180deg, rgba(0, 245, 155, 0.06) 0%, var(--bg-surface-1) 100%);
+  border: 1px solid rgba(0, 245, 155, 0.3);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.comparison-card-true::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+}
+
+/* Feature Architectural Pillars */
+.pillar-card {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  transition: all 0.25s var(--ease-spring);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.pillar-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 245, 155, 0.4);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 245, 155, 0.1);
+}
+
+.pillar-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+/* Animated Counters */
+.counter-box {
+  padding: 20px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.counter-box:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-border);
+}
+
+.counter-val {
+  font-family: var(--font-brand);
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  color: var(--accent);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+/* Live Verified Stories Showcase Carousel */
+.live-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
