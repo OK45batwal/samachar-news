@@ -258,7 +258,7 @@ async function getArticles(params = {}) {
 
   // Load from live real-world news dataset
   try {
-    const dataRes = await fetch('/assets/data/news.json?v=6.0');
+    const dataRes = await fetch(`/assets/data/news.json?t=${Date.now()}`, { cache: 'no-store' });
     if (dataRes.ok) {
       let list = await dataRes.json();
       list = list.map(a => ({
@@ -275,13 +275,22 @@ async function getArticles(params = {}) {
         list = list.filter(a => a.category_name?.toLowerCase().includes(cat) || a.category.slug.includes(cat));
       }
       if (params.q) {
-        const q = params.q.toLowerCase();
-        list = list.filter(a => (a.title || '').toLowerCase().includes(q) || (a.summary || '').toLowerCase().includes(q));
+        const q = params.q.toLowerCase().trim();
+        const tokens = q.split(/\s+/).filter(Boolean);
+        list = list.filter(a => {
+          const haystack = `${a.title || ''} ${a.summary || ''} ${a.category_name || ''} ${a.source_name || ''} ${a.author || ''}`.toLowerCase();
+          return tokens.every(t => haystack.includes(t)) || haystack.includes(q);
+        });
       }
       if (params.verified_only) {
         list = list.filter(a => (a.credibility_score || 0) >= 80);
       }
-      return { articles: list, total: list.length, page: 1, limit: params.limit || 12 };
+      
+      const total = list.length;
+      const page = Math.max(1, parseInt(params.page) || 1);
+      const limit = Math.max(1, parseInt(params.limit) || 12);
+      const paged = list.slice((page - 1) * limit, page * limit);
+      return { articles: paged, total, page, limit };
     }
   } catch (_) {}
 
