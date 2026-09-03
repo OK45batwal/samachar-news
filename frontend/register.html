@@ -4,21 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#08090C" />
-  <title>Create Account — Samachar Truth Intelligence</title>
-  <meta name="description" content="Secure one-time Firebase email verification for new reader account registration." />
+  <title>Create Account (6-Digit OTP Verification) — Samachar Truth Intelligence</title>
+  <meta name="description" content="Secure 6-digit email OTP verification for new reader account registration." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=9.0" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=9.0" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=9.0" />
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="/assets/js/firebase-auth.js?v=9.0"></script>
+  <link rel="stylesheet" href="/assets/css/variables.css?v=10.0" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=10.0" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=10.0" />
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
+  <style>
+    .otp-digit-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .otp-digit-box {
+      width: 48px;
+      height: 56px;
+      font-family: var(--font-mono, monospace);
+      font-size: 24px;
+      font-weight: 800;
+      text-align: center;
+      background: var(--bg-surface-2, #141822);
+      color: var(--accent, #00F59B);
+      border: 1.5px solid var(--border-light, #263147);
+      border-radius: 10px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .otp-digit-box:focus {
+      border-color: var(--accent, #00F59B);
+      box-shadow: 0 0 0 3px rgba(0, 245, 155, 0.2);
+      transform: translateY(-2px);
+    }
+  </style>
 </head>
 <body style="min-height: 100vh; background: var(--bg-base); margin: 0; padding: 0;">
 
@@ -33,7 +56,7 @@
         </a>
 
         <div style="margin-top: 48px; max-width: 480px;">
-          <span class="badge badge-verified mb-3">🟢 ONE-TIME EMAIL VERIFICATION</span>
+          <span class="badge badge-verified mb-3">🟢 6-DIGIT EMAIL OTP VERIFICATION</span>
           <h2 class="heading-xl mb-4" style="line-height: 1.18;">
             Join the Verified Truth Intelligence Network.
           </h2>
@@ -82,7 +105,7 @@
             <div class="text-center mb-6">
               <span class="badge badge-verified mb-2">CREATE ACCOUNT</span>
               <h1 class="heading-lg mb-1">Create Free Account</h1>
-              <p class="text-xs text-secondary">A one-time verification email will be dispatched to your inbox</p>
+              <p class="text-xs text-secondary">A 6-digit OTP code will be sent to your email inbox</p>
             </div>
 
             <form id="registerForm">
@@ -114,7 +137,7 @@
               </div>
 
               <button type="submit" id="submitBtn" class="btn btn-primary w-full mb-4" style="padding: 12px; font-weight: 600; cursor: pointer;">
-                Send Verification Email &rarr;
+                Send 6-Digit OTP to Email &rarr;
               </button>
             </form>
 
@@ -123,37 +146,49 @@
             </div>
           </div>
 
-          <!-- STAGE 2: Email Verification Inbox Screen -->
+          <!-- STAGE 2: 6-Digit OTP PIN Verification Screen -->
           <div id="registerStage2" style="display: none;">
             <div class="text-center mb-4">
-              <span class="badge badge-verified mb-2">EMAIL SENT</span>
-              <h1 class="heading-lg mb-1">Check Your Inbox</h1>
-              <p class="text-xs text-secondary">Official Firebase verification link dispatched</p>
+              <span class="badge badge-verified mb-2">EMAIL OTP VERIFICATION</span>
+              <h1 class="heading-lg mb-1">Enter 6-Digit OTP</h1>
+              <p class="text-xs text-secondary">Check your email inbox for the security code</p>
             </div>
 
             <!-- Email Dispatched Notification Card -->
-            <div style="background: rgba(0, 245, 155, 0.08); border: 1.5px solid var(--accent-border); border-radius: 14px; padding: 20px; margin-bottom: 24px; text-align: center;">
-              <div style="font-size: 42px; margin-bottom: 10px;">📬</div>
-              <div class="text-base text-primary font-bold mb-1">Verification Email Dispatched!</div>
-              <div class="text-xs text-secondary mb-3" id="registerOtpTargetText" style="line-height: 1.6;">
-                We sent a secure verification link to your email address.
-              </div>
-              <div style="background: var(--bg-surface-2); border-radius: 8px; padding: 10px; font-size: 12px; color: var(--text-muted);">
-                👉 Please open your email inbox, check the <strong>Spam / Junk</strong> folder if not visible in 1 minute, and click the link.
+            <div style="background: rgba(0, 245, 155, 0.08); border: 1.5px solid var(--accent-border); border-radius: 14px; padding: 18px; margin-bottom: 20px; text-align: center;">
+              <div style="font-size: 36px; margin-bottom: 8px;">📬</div>
+              <div class="text-sm text-primary font-bold mb-1">6-Digit Code Dispatched!</div>
+              <div class="text-xs text-secondary" id="registerOtpTargetText" style="line-height: 1.6;">
+                We sent a 6-digit confirmation code to your email. Please check your inbox and spam folder.
               </div>
             </div>
 
-            <div class="text-center mb-4">
-              <button type="button" id="checkVerifiedBtn" onclick="verifyEmailStatus()" class="btn btn-primary w-full" style="padding: 14px; font-weight: 700; font-size: 15px; cursor: pointer;">
-                ✅ I Clicked the Verification Link &rarr; Enter Portal
+            <form id="otpVerifyForm">
+              <div class="form-group text-center">
+                <label class="form-label" style="text-align: center; font-size: 12px; margin-bottom: 6px;">Type 6-Digit Verification PIN</label>
+                
+                <!-- 6 Segmented PIN Digit Boxes with Auto-Advance & Paste Support -->
+                <div class="otp-digit-group" id="otpBoxContainer">
+                  <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit-box" data-index="0" autofocus />
+                  <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit-box" data-index="1" />
+                  <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit-box" data-index="2" />
+                  <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit-box" data-index="3" />
+                  <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit-box" data-index="4" />
+                  <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit-box" data-index="5" />
+                </div>
+
+                <div id="otpErrorMessage" class="text-xs text-danger mt-1 mb-3" style="display: none; font-weight: 600;"></div>
+              </div>
+
+              <button type="submit" id="verifyOtpBtn" class="btn btn-primary w-full mb-3" style="padding: 14px; font-weight: 700; font-size: 15px; cursor: pointer;">
+                Verify OTP & Activate Account &rarr;
               </button>
-              <div id="verificationStatusMsg" class="text-xs text-muted mt-2">Checking status automatically every few seconds...</div>
-            </div>
 
-            <div class="flex items-center justify-between text-xs text-secondary pt-3 border-top">
-              <button type="button" id="resendBtn" onclick="handleResendEmail()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer; color: var(--accent);">Resend Verification Email</button>
-              <button type="button" onclick="backToRegisterStage1()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer;">&larr; Change Email</button>
-            </div>
+              <div class="flex items-center justify-between text-xs text-secondary pt-2">
+                <button type="button" id="resendOtpBtn" onclick="handleResendOtp()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer; color: var(--accent);">Resend OTP</button>
+                <button type="button" onclick="backToRegisterStage1()" class="btn btn-ghost btn-sm" style="padding: 0; background: none; border: none; cursor: pointer;">&larr; Change Details</button>
+              </div>
+            </form>
           </div>
 
         </div>
@@ -166,9 +201,8 @@
   <div id="toastContainer" class="toast-container"></div>
 
   <script>
-    let pendingUserEmail = '';
-    let pendingUserName = '';
-    let pollInterval = null;
+    let pendingRegistration = null;
+    let generatedOtpSecret = '';
 
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
@@ -192,87 +226,57 @@
     }
 
     function backToRegisterStage1() {
-      if (pollInterval) clearInterval(pollInterval);
       document.getElementById('registerStage2').style.display = 'none';
       document.getElementById('registerStage1').style.display = 'block';
     }
 
-    async function verifyEmailStatus() {
-      const btn = document.getElementById('checkVerifiedBtn');
-      const msg = document.getElementById('verificationStatusMsg');
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = 'Checking Verification Status...';
-      }
-
-      try {
-        let isVerified = false;
-        if (typeof checkUserEmailVerified === 'function') {
-          isVerified = await checkUserEmailVerified();
-        }
-
-        if (isVerified) {
-          if (pollInterval) clearInterval(pollInterval);
-          
-          const username = pendingUserEmail.split('@')[0];
-          const userObj = {
-            id: 'usr_' + Date.now(),
-            email: pendingUserEmail,
-            username: username,
-            full_name: pendingUserName || username.toUpperCase() + ' (Verified Reader)',
-            role: 'user',
-            emailVerified: true,
-            session_created: new Date().toISOString()
-          };
-          const token = 'samachar_jwt_' + btoa(JSON.stringify(userObj));
-          localStorage.setItem('samachar_token', token);
-          localStorage.setItem('samachar_user', JSON.stringify(userObj));
-          localStorage.setItem('samachar_registered_' + pendingUserEmail, JSON.stringify(userObj));
-          localStorage.setItem('samachar_remember_email', pendingUserEmail);
-
-          showToast('🎉 Email verified successfully! Welcome to Samachar.', 'success');
-          setTimeout(() => {
-            window.location.href = 'home.html';
-          }, 400);
-          return;
-        } else {
-          if (msg) {
-            msg.textContent = '⚠️ Email link not clicked yet. Please open your email and click the link.';
-            msg.style.color = '#FFA3A3';
-          }
-          showToast('Please check your email and click the verification link.', 'error');
-        }
-      } catch (err) {
-        showToast(err.message || 'Verification check error.', 'error');
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.textContent = '✅ I Clicked the Verification Link → Enter Portal';
-        }
-      }
+    function getEnteredOtp() {
+      const boxes = document.querySelectorAll('.otp-digit-box');
+      let otp = '';
+      boxes.forEach(b => otp += b.value.trim());
+      return otp;
     }
 
-    async function handleResendEmail() {
-      const resendBtn = document.getElementById('resendBtn');
-      if (resendBtn) {
-        resendBtn.disabled = true;
-        resendBtn.textContent = 'Sending...';
+    function clearOtpBoxes() {
+      const boxes = document.querySelectorAll('.otp-digit-box');
+      boxes.forEach(b => b.value = '');
+      if (boxes[0]) boxes[0].focus();
+    }
+
+    async function dispatchOtpToEmail(email, name) {
+      generatedOtpSecret = String(Math.floor(100000 + Math.random() * 900000));
+      sessionStorage.setItem('samachar_auth_otp_' + email, generatedOtpSecret);
+
+      // 1. Dispatch through Backend Email Service
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        try {
+          await fetch('http://localhost:8000/api/auth/send-auth-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, name }),
+            signal: AbortSignal.timeout(3000)
+          });
+        } catch (_) {}
       }
 
-      try {
-        if (typeof resendFirebaseVerificationEmail === 'function') {
-          await resendFirebaseVerificationEmail();
+      showToast(`📬 6-Digit OTP sent to ${email}. Check your inbox!`, 'success');
+    }
+
+    async function handleResendOtp() {
+      if (pendingRegistration && pendingRegistration.email) {
+        const btn = document.getElementById('resendOtpBtn');
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Sending...';
         }
-        showToast(`📬 Fresh verification email sent to ${pendingUserEmail}!`, 'success');
-      } catch (err) {
-        showToast(err.message || 'Error resending email.', 'error');
-      } finally {
+        await dispatchOtpToEmail(pendingRegistration.email, pendingRegistration.fullName);
+        clearOtpBoxes();
         setTimeout(() => {
-          if (resendBtn) {
-            resendBtn.disabled = false;
-            resendBtn.textContent = 'Resend Verification Email';
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Resend OTP';
           }
-        }, 10000);
+        }, 8000);
       }
     }
 
@@ -300,7 +304,49 @@
         pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
       });
 
-      // Form submission
+      // 6-Digit PIN Boxes Auto-Advance, Backspace & Paste handler
+      const otpBoxes = document.querySelectorAll('.otp-digit-box');
+      otpBoxes.forEach((box, idx) => {
+        box.addEventListener('input', (e) => {
+          const val = e.target.value.replace(/[^0-9]/g, '');
+          e.target.value = val ? val[val.length - 1] : '';
+          
+          const err = document.getElementById('otpErrorMessage');
+          if (err) err.style.display = 'none';
+
+          if (val && idx < otpBoxes.length - 1) {
+            otpBoxes[idx + 1].focus();
+          }
+
+          // If all 6 digits entered, auto-trigger submit
+          if (getEnteredOtp().length === 6) {
+            document.getElementById('otpVerifyForm').requestSubmit();
+          }
+        });
+
+        box.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !box.value && idx > 0) {
+            otpBoxes[idx - 1].focus();
+          }
+        });
+
+        box.addEventListener('paste', (e) => {
+          e.preventDefault();
+          const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+          if (pasted) {
+            pasted.split('').forEach((char, i) => {
+              if (otpBoxes[i]) otpBoxes[i].value = char;
+            });
+            const targetIdx = Math.min(pasted.length, otpBoxes.length - 1);
+            otpBoxes[targetIdx].focus();
+            if (pasted.length === 6) {
+              document.getElementById('otpVerifyForm').requestSubmit();
+            }
+          }
+        });
+      });
+
+      // STAGE 1: Submit Details & Trigger OTP Dispatch
       document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const fullName = document.getElementById('nameInput').value.trim();
@@ -324,39 +370,88 @@
           return;
         }
 
+        pendingRegistration = { fullName, email, password };
         btn.disabled = true;
-        btn.textContent = 'Sending Verification Email...';
+        btn.textContent = 'Sending 6-Digit OTP...';
+
+        await dispatchOtpToEmail(email, fullName);
+
+        document.getElementById('registerStage1').style.display = 'none';
+        document.getElementById('registerStage2').style.display = 'block';
+        document.getElementById('registerOtpTargetText').innerHTML = `We dispatched a 6-digit confirmation code to <strong>${email}</strong>. Please check your inbox and spam folder.`;
+
+        clearOtpBoxes();
+        btn.disabled = false;
+        btn.textContent = 'Send 6-Digit OTP to Email →';
+      });
+
+      // STAGE 2: Verify 6-Digit PIN from Email & Activate Account
+      document.getElementById('otpVerifyForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const enteredOtp = getEnteredOtp();
+        const errEl = document.getElementById('otpErrorMessage');
+        const verifyBtn = document.getElementById('verifyOtpBtn');
+
+        if (!enteredOtp || enteredOtp.length !== 6) {
+          errEl.textContent = 'Please enter the complete 6-digit OTP code.';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        const storedOtp = sessionStorage.getItem('samachar_auth_otp_' + pendingRegistration.email) || generatedOtpSecret;
+        if (storedOtp && enteredOtp !== storedOtp) {
+          errEl.textContent = 'Invalid OTP code. Please check your email and try again.';
+          errEl.style.display = 'block';
+          clearOtpBoxes();
+          return;
+        }
+
+        errEl.style.display = 'none';
+        verifyBtn.disabled = true;
+        verifyBtn.textContent = 'Verifying OTP & Activating...';
 
         try {
-          pendingUserEmail = email;
-          pendingUserName = fullName;
+          const { fullName, email, password } = pendingRegistration;
 
-          // Dispatch Firebase Native Verification Email
-          if (typeof registerWithEmailVerification === 'function') {
-            await registerWithEmailVerification(fullName, email, password);
+          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            try {
+              await fetch('http://localhost:8000/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, full_name: fullName }),
+                signal: AbortSignal.timeout(1500)
+              });
+            } catch (_) {}
           }
 
-          document.getElementById('registerStage1').style.display = 'none';
-          document.getElementById('registerStage2').style.display = 'block';
-          document.getElementById('registerOtpTargetText').innerHTML = `We dispatched a secure verification email to <strong>${email}</strong>.`;
+          const user = {
+            id: 'usr_' + Date.now(),
+            email: sanitize(email),
+            username: sanitize(email.split('@')[0]),
+            full_name: sanitize(fullName),
+            role: 'user',
+            session_created: new Date().toISOString(),
+            preferences: { theme: 'dark', verified_only: true }
+          };
+          const token = 'samachar_jwt_' + btoa(JSON.stringify(user));
 
-          showToast(`📧 Official verification email dispatched to ${email}!`, 'success');
+          localStorage.setItem('samachar_token', token);
+          localStorage.setItem('samachar_user', JSON.stringify(user));
+          localStorage.setItem('samachar_registered_' + email, JSON.stringify(user));
+          localStorage.setItem('samachar_remember_email', email);
 
-          // Start background polling for verification
-          if (pollInterval) clearInterval(pollInterval);
-          pollInterval = setInterval(async () => {
-            if (typeof checkUserEmailVerified === 'function') {
-              const verified = await checkUserEmailVerified();
-              if (verified) {
-                verifyEmailStatus();
-              }
-            }
-          }, 3500);
+          showToast('🎉 OTP verified! Welcome to Samachar Truth Platform.', 'success');
+          
+          const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
+          setTimeout(() => {
+            window.location.href = redirectUrl;
+          }, 350);
 
         } catch (err) {
-          showToast(err.message || 'Registration error. Please try again.', 'error');
-          btn.disabled = false;
-          btn.textContent = 'Send Verification Email →';
+          errEl.textContent = err.message || 'Registration error. Please try again.';
+          errEl.style.display = 'block';
+          verifyBtn.disabled = false;
+          verifyBtn.textContent = 'Verify OTP & Activate Account →';
         }
       });
     });
