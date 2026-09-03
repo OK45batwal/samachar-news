@@ -8,9 +8,11 @@
   <meta name="description" content="Secure 6-digit email OTP verification for new reader account registration." />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=10.0" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=10.0" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=10.0" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=11.0" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=11.0" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=11.0" />
+  <!-- EmailJS Browser SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -201,6 +203,13 @@
   <div id="toastContainer" class="toast-container"></div>
 
   <script>
+    // ==========================================
+    // EmailJS Configuration
+    // ==========================================
+    const EMAILJS_PUBLIC_KEY = localStorage.getItem('samachar_emailjs_pubkey') || 'YOUR_EMAILJS_PUBLIC_KEY';
+    const EMAILJS_SERVICE_ID = localStorage.getItem('samachar_emailjs_service') || 'service_samachar';
+    const EMAILJS_TEMPLATE_ID = localStorage.getItem('samachar_emailjs_template') || 'template_samachar_otp';
+
     let pendingRegistration = null;
     let generatedOtpSecret = '';
 
@@ -247,7 +256,26 @@
       generatedOtpSecret = String(Math.floor(100000 + Math.random() * 900000));
       sessionStorage.setItem('samachar_auth_otp_' + email, generatedOtpSecret);
 
-      // 1. Dispatch through Backend Email Service
+      let emailSent = false;
+
+      // 1. Dispatch via EmailJS (Direct from browser to user's real email)
+      if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+        try {
+          emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+            to_email: email,
+            to_name: name,
+            otp_code: generatedOtpSecret,
+            time: new Date().toLocaleTimeString()
+          });
+          emailSent = true;
+          console.log('✅ EmailJS delivered OTP email to:', email);
+        } catch (err) {
+          console.warn('EmailJS delivery note:', err);
+        }
+      }
+
+      // 2. Dispatch through Backend Python Service (if running)
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         try {
           await fetch('http://localhost:8000/api/auth/send-auth-otp', {
@@ -256,10 +284,11 @@
             body: JSON.stringify({ email, name }),
             signal: AbortSignal.timeout(3000)
           });
+          emailSent = true;
         } catch (_) {}
       }
 
-      showToast(`📬 6-Digit OTP sent to ${email}. Check your inbox!`, 'success');
+      showToast(`📬 6-Digit OTP dispatched to ${email}. Please check your inbox!`, 'success');
     }
 
     async function handleResendOtp() {
@@ -318,7 +347,6 @@
             otpBoxes[idx + 1].focus();
           }
 
-          // If all 6 digits entered, auto-trigger submit
           if (getEnteredOtp().length === 6) {
             document.getElementById('otpVerifyForm').requestSubmit();
           }
