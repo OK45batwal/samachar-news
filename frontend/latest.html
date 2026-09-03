@@ -86,7 +86,7 @@
   <!-- Main Container -->
   <main class="container py-8">
     
-    <!-- Channel Header Banner with Live Search Input -->
+    <!-- Channel / Search Intelligence Banner -->
     <div class="card p-6 mb-6" style="background:linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-elevated) 100%);border-color:var(--border-light)">
       <div class="flex items-center justify-between gap-4" style="flex-wrap: wrap;">
         <div>
@@ -95,14 +95,13 @@
           <p class="text-xs text-secondary mt-1" id="channelDesc">Monitoring 60+ global news wires with real-time claim extraction and truth scoring</p>
         </div>
         <div class="flex items-center gap-3" style="flex-wrap: wrap;">
-          <div style="position:relative;min-width:220px;max-width:320px;flex:1;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" id="onPageSearchInput" class="input" placeholder="Search keywords, topics..." style="padding-left:34px;padding-right:28px;height:38px;font-size:13px;width:100%;" />
-            <button id="clearSearchBtn" type="button" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;padding:4px;font-size:14px;line-height:1;" title="Clear search">✕</button>
-          </div>
+          <button type="button" id="clearSearchBtn" class="btn btn-secondary btn-sm flex items-center gap-2" style="display:none;border-radius:9999px;padding:6px 14px;font-size:12px;font-weight:600;" title="Clear search query">
+            <span>Clear Search</span>
+            <span style="font-size:14px;line-height:1;opacity:0.8;">✕</span>
+          </button>
           <button type="button" id="verifiedToggleBtn" class="toggle-filter-btn" title="Toggle verified stories filter">
             <span class="toggle-switch-indicator"></span>
-            <span>🟢 Verified Only (85%+)</span>
+            <span>Verified Only (85%+)</span>
           </button>
         </div>
       </div>
@@ -117,8 +116,6 @@
     <div class="text-center py-6">
       <button id="loadMoreBtn" class="btn btn-secondary">Load More Stories</button>
     </div>
-
-  </main>
 
   </main>
 
@@ -159,20 +156,25 @@
       const badgeEl = document.getElementById('channelBadge');
       const tagEl = document.getElementById('channelHeadingTag');
 
+      const clearSearchBtn = document.getElementById('clearSearchBtn');
       if (meta) {
         titleEl.textContent = meta.title;
         descEl.textContent = meta.desc;
         badgeEl.textContent = meta.badge;
         if (tagEl) tagEl.textContent = meta.badge;
+        if (clearSearchBtn) clearSearchBtn.style.display = 'none';
       } else if (searchQuery) {
-        titleEl.textContent = `Search Results: "${searchQuery}"`;
+        titleEl.innerHTML = `Search Results: "<span style="color:var(--accent);">${sanitize(searchQuery)}</span>"`;
         descEl.textContent = 'Verified stories and claims matching your search query.';
         badgeEl.textContent = 'SEARCH INTELLIGENCE';
+        if (tagEl) tagEl.textContent = 'Search Results';
+        if (clearSearchBtn) clearSearchBtn.style.display = 'inline-flex';
       } else {
         titleEl.textContent = 'All News & Verified Stories';
         descEl.textContent = 'Monitoring 60+ global news wires with real-time claim extraction and truth scoring.';
         badgeEl.textContent = 'GLOBAL NEWS INTELLIGENCE';
         if (tagEl) tagEl.textContent = 'All Categories';
+        if (clearSearchBtn) clearSearchBtn.style.display = 'none';
       }
 
       document.querySelectorAll('.category-link').forEach(link => {
@@ -210,7 +212,14 @@
           document.getElementById('loadMoreBtn').style.display = res.articles.length < 12 ? 'none' : 'inline-flex';
         } else {
           if (!append) {
-            grid.innerHTML = '<div class="text-center p-8 text-secondary w-full" style="grid-column: 1 / -1">No articles found in this channel.</div>';
+            grid.innerHTML = `
+              <div class="card p-8 text-center w-full" style="grid-column: 1 / -1; max-width: 480px; margin: 32px auto; background: var(--bg-surface-1);">
+                <div style="font-size: 36px; margin-bottom: 12px;">🔍</div>
+                <h3 class="heading-sm mb-2">No Matching Stories Found</h3>
+                <p class="text-xs text-secondary mb-4">We couldn't find any verified reports matching "${sanitize(searchQuery || '')}".</p>
+                <a href="latest.html" class="btn btn-secondary btn-sm" style="display:inline-flex;margin: 0 auto;text-decoration:none;">View All Stories</a>
+              </div>
+            `;
           }
           document.getElementById('loadMoreBtn').style.display = 'none';
         }
@@ -235,40 +244,22 @@
         toggleBtn?.classList.add('active');
       }
 
-      const onPageSearch = document.getElementById('onPageSearchInput');
+      const headerInput = document.getElementById('headerSearchInput');
+      const headerClear = document.getElementById('headerSearchClearBtn');
       const clearSearchBtn = document.getElementById('clearSearchBtn');
 
-      if (searchQuery && onPageSearch) {
-        onPageSearch.value = searchQuery;
-        if (clearSearchBtn) clearSearchBtn.style.display = 'block';
+      if (searchQuery && headerInput) {
+        headerInput.value = searchQuery;
+        if (headerClear) headerClear.style.display = 'block';
       }
 
-      let searchDebounce = null;
-      onPageSearch?.addEventListener('input', (e) => {
-        const val = e.target.value.trim();
-        clearTimeout(searchDebounce);
-        if (clearSearchBtn) clearSearchBtn.style.display = val ? 'block' : 'none';
-
-        searchDebounce = setTimeout(() => {
-          searchQuery = val;
-          page = 1;
-          const newUrl = new URL(window.location.href);
-          if (searchQuery) {
-            newUrl.searchParams.set('q', searchQuery);
-          } else {
-            newUrl.searchParams.delete('q');
-          }
-          window.history.replaceState({}, '', newUrl.toString());
-          updateChannelHeader();
-          fetchStories(false);
-        }, 250);
-      });
-
       clearSearchBtn?.addEventListener('click', () => {
-        if (onPageSearch) onPageSearch.value = '';
-        clearSearchBtn.style.display = 'none';
         searchQuery = '';
         page = 1;
+        if (headerInput) {
+          headerInput.value = '';
+          if (headerClear) headerClear.style.display = 'none';
+        }
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.delete('q');
         window.history.replaceState({}, '', newUrl.toString());
