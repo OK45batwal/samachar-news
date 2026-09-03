@@ -15,8 +15,8 @@ from ..models.models import Article, ArticleStatus, Category, Source
 
 FEEDS_REGISTRY = [
     # World News
-    {"name": "BBC World", "feed": "http://feeds.bbci.co.uk/news/world/rss.xml", "cat": "world", "country": "UK", "rel": 96},
-    {"name": "Reuters World", "feed": "https://www.reutersagency.com/feed/?best-topics=world&post_type=best", "cat": "world", "country": "US", "rel": 98},
+    {"name": "BBC World", "feed": "https://feeds.bbci.co.uk/news/world/rss.xml", "cat": "world", "country": "UK", "rel": 96},
+    {"name": "Reuters World", "feed": "https://news.google.com/rss/search?q=source:Reuters+when:2d&hl=en-US&gl=US&ceid=US:en", "cat": "world", "country": "US", "rel": 98},
     {"name": "AP World", "feed": "https://feedx.net/rss/ap.xml", "cat": "world", "country": "US", "rel": 98},
     {"name": "The Guardian World", "feed": "https://www.theguardian.com/world/rss", "cat": "world", "country": "UK", "rel": 92},
     {"name": "Al Jazeera", "feed": "https://www.aljazeera.com/xml/rss/all.xml", "cat": "world", "country": "Qatar", "rel": 90},
@@ -48,7 +48,7 @@ FEEDS_REGISTRY = [
     # Health & Medicine
     {"name": "WHO News", "feed": "https://www.who.int/rss-feeds/news-english.xml", "cat": "health", "country": "Switzerland", "rel": 99},
     {"name": "Medical News Today", "feed": "https://rss.medicalnewstoday.com/featurednews.xml", "cat": "health", "country": "UK", "rel": 90},
-    {"name": "Harvard Health", "feed": "https://www.health.harvard.edu/rss/health-beat", "cat": "health", "country": "US", "rel": 96},
+    {"name": "STAT News", "feed": "https://www.statnews.com/feed/", "cat": "health", "country": "US", "rel": 95},
 
     # India & Regional
     {"name": "The Hindu", "feed": "https://www.thehindu.com/news/national/feeder/default.rss", "cat": "india", "country": "India", "rel": 93},
@@ -103,10 +103,15 @@ def _extract_image_url(entry: Any) -> Optional[str]:
 async def ingest_single_feed(feed_info: Dict[str, Any], client: httpx.AsyncClient) -> List[Dict[str, Any]]:
     articles = []
     try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+            "Accept": "application/rss+xml, application/xml, text/xml, application/atom+xml, */*",
+            "Accept-Language": "en-US,en;q=0.9",
+        }
         response = await client.get(
             feed_info["feed"],
-            headers={"User-Agent": "SamacharNewsFactBot/2.0 (+https://samachar.news)"},
-            timeout=8.0,
+            headers=headers,
+            timeout=10.0,
             follow_redirects=True,
         )
         if response.status_code != 200:

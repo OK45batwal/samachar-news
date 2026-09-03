@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && cp -r frontend/assets frontend/dist/ && cp frontend/manifest.json frontend/sw.js frontend/_redirects frontend/_headers frontend/dist/ 2>/dev/null || true",
+    "ingest:rss": ".venv/bin/python -m scripts.cron_ingest",
     "audit:ui": ".venv/bin/python -m scripts.ui_audit",
     "test:backend": ".venv/bin/pytest tests/ -v",
     "test": "npm run audit:ui && npm run test:backend && npm run build"
