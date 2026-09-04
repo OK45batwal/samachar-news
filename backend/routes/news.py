@@ -4,8 +4,9 @@ from sqlalchemy import desc, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from ..auth.auth import require_admin
 from ..database import get_db
-from ..models.models import Article, ArticleStatus, Category, Source
+from ..models.models import Article, ArticleStatus, Category, Source, User
 from ..schemas import ArticleListOut, ArticleOut, CategoryOut, SourceOut
 
 router = APIRouter(prefix="/api/news", tags=["News"])
@@ -117,19 +118,23 @@ async def get_platform_stats(db: AsyncSession = Depends(get_db)):
     art_count = (await db.execute(select(func.count(Article.id)))).scalar() or 0
     verified_count = (await db.execute(select(func.count(Article.id)).where(Article.credibility_score >= 85))).scalar() or 0
     src_count = (await db.execute(select(func.count(Source.id)))).scalar() or 0
+    avg_cred = (await db.execute(select(func.avg(Article.credibility_score)))).scalar()
+    credibility_avg = round(float(avg_cred), 1) if avg_cred is not None else 92.0
 
     return {
         "total_articles": art_count,
         "verified_articles": verified_count,
+        "verified_count": verified_count,
         "active_sources": src_count,
-        "truth_index_avg": 91,
+        "truth_index_avg": credibility_avg,
+        "credibility_avg": credibility_avg,
         "countries_covered": 150,
     }
 
 
 @router.post("/sync")
-async def trigger_news_sync():
-    """Trigger on-demand live RSS feed ingestion and truth evaluation."""
+async def trigger_news_sync(admin_user: User = Depends(require_admin)):
+    """Trigger on-demand live RSS feed ingestion and truth evaluation (admin only)."""
     from ..services.news_service import ingest_all_feeds
     result = await ingest_all_feeds()
     return {"status": "success", "data": result}

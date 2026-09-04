@@ -8,12 +8,12 @@ class Settings(BaseSettings):
 
     APP_NAME: str = "Samachar"
     APP_VERSION: str = "2.0.0"
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "samachar-fact-intelligence-super-secret-key-2026-xyz-abc")
+    SECRET_KEY: str = os.getenv("SECRET_KEY") or os.getenv("SAMACHAR_JWT_SECRET") or "samachar-fact-intelligence-super-secret-key-2026-xyz-abc"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./samachar.db")
+    DATABASE_URL: str = os.getenv("DATABASE_URL") or os.getenv("SAMACHAR_DATABASE_URL") or "sqlite+aiosqlite:///./samachar.db"
     REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
     RATE_LIMIT_PER_MINUTE: int = 120
 

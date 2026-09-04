@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..auth.auth import get_current_user
+from ..auth.auth import get_current_user, require_admin
 from ..database import get_db
 from ..models.models import Article, Category, Source, User, UserRole
 from ..services.news_service import ingest_all_feeds
@@ -10,10 +10,7 @@ from ..services.news_service import ingest_all_feeds
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 
 
-def _require_admin(user: User = Depends(get_current_user)):
-    if user.role != UserRole.ADMIN:
-        raise HTTPException(status_code=403, detail="Admin authorization required")
-    return user
+_require_admin = require_admin
 
 
 @router.get("/overview")

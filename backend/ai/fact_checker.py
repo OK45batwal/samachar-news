@@ -280,5 +280,5 @@ def verify_custom_claim(query_text: str) -> Dict[str, Any]:
         "sensationalism_score": sensationalism,
         "analysis": analysis,
         "claims_breakdown": claims,
-        "corroborated_sources": ["Reuters Wire", "Associated Press", "BBC News Network"] if not disinfo_found else ["Independent Fact-Checking Network (IFCN)"]
+        "corroborated_sources": ["Cross-Referenced Editorial Reporting", "Open-Source Verification Database"] if not disinfo_found else ["Flagged by Disinformation Pattern Database"]
     }

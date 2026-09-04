@@ -1,13 +1,14 @@
 import asyncio
 import os
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from .config import settings
-from .database import init_db
+from .database import get_db, init_db
 from .routes.admin_routes import router as admin_router
 from .routes.auth_routes import router as auth_router
 from .routes.bookmarks import router as bookmarks_router
@@ -97,11 +98,9 @@ async def health_check():
 
 
 @app.get("/api/stats")
-async def get_stats_alias():
+async def get_stats_alias(db: AsyncSession = Depends(get_db)):
     from .routes.news import get_platform_stats
-    from .database import get_db
-    # Return quick health & stats summary
-    return {"total_articles": 60, "verified_count": 52, "active_sources": 8, "credibility_avg": 94}
+    return await get_platform_stats(db)
 
 
 @app.get("/")

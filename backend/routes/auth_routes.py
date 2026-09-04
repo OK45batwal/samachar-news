@@ -163,11 +163,9 @@ async def verify_auth_otp(body: dict):
     otp = str(body.get("otp", "")).strip()
     stored = AUTH_OTP_STORAGE.get(email)
     if not stored:
-        # Development fallback
-        if len(otp) == 6:
-            return {"status": "success", "message": "OTP verified successfully."}
         raise HTTPException(status_code=400, detail="No OTP found. Please request a new code.")
     if time.time() > stored["expires_at"]:
+        AUTH_OTP_STORAGE.pop(email, None)
         raise HTTPException(status_code=400, detail="OTP expired. Please request a new code.")
     if otp != stored["code"]:
         raise HTTPException(status_code=400, detail="Invalid OTP code. Please enter the 6-digit code.")
@@ -200,8 +198,7 @@ async def forgot_password(req: Request, body: dict, db: AsyncSession = Depends(g
     result = await db.execute(select(User).where(User.email == email))
     user = result.scalar_one_or_none()
     if user:
-        reset_tok = create_access_token({"sub": user.id, "type": "reset"}, expires_delta=timedelta(hours=1))
-        return {"message": "If that email exists, a reset link has been dispatched.", "reset_token_dev": reset_tok}
+        create_access_token({"sub": user.id, "type": "reset"}, expires_delta=timedelta(hours=1))
     return {"message": "If that email exists, a reset link has been dispatched."}
 
 

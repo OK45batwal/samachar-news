@@ -39,3 +39,41 @@ async def test_register_and_login_flow():
         del_res = await client.delete("/api/auth/account", headers={"Authorization": f"Bearer {token}"})
         assert del_res.status_code == 200
         assert del_res.json()["status"] == "success"
+
+
+@pytest.mark.asyncio
+async def test_forgot_password_no_token_leak():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        res = await client.post("/api/auth/forgot-password", json={"email": "nonexistent@samachar.news"})
+        assert res.status_code == 200
+        data = res.json()
+        assert "reset_token_dev" not in data
+
+
+@pytest.mark.asyncio
+async def test_otp_verification_rejects_unrequested_code():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        res = await client.post("/api/auth/verify-auth-otp", json={"email": "nobody@example.com", "otp": "123456"})
+        assert res.status_code == 400
+
+
+@pytest.mark.asyncio
+async def test_news_sync_requires_admin():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        res = await client.post("/api/news/sync")
+        assert res.status_code in [401, 403]
+
+
+@pytest.mark.asyncio
+async def test_stats_alias_endpoint():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        res = await client.get("/api/stats")
+        assert res.status_code == 200
+        data = res.json()
+        assert "total_articles" in data
+        assert "credibility_avg" in data
+

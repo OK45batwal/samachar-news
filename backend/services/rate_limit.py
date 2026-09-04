@@ -15,21 +15,26 @@ async def check_rate_limit(key: str, db: AsyncSession) -> None:
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     cutoff = now - timedelta(seconds=WINDOW_SECONDS)
 
-    await db.execute(delete(RateLimitEntry).where(RateLimitEntry.timestamp < cutoff))
+    try:
+        await db.execute(delete(RateLimitEntry).where(RateLimitEntry.timestamp < cutoff))
 
-    result = await db.execute(
-        select(RateLimitEntry).where(
-            RateLimitEntry.key == key,
-            RateLimitEntry.timestamp >= cutoff,
+        result = await db.execute(
+            select(RateLimitEntry).where(
+                RateLimitEntry.key == key,
+                RateLimitEntry.timestamp >= cutoff,
+            )
         )
-    )
-    recent = result.scalars().all()
+        recent = result.scalars().all()
 
-    if len(recent) >= limit:
-        raise HTTPException(status_code=429, detail="Rate limit exceeded. Please try again later.")
+        if len(recent) >= limit:
+            raise HTTPException(status_code=429, detail="Rate limit exceeded. Please try again later.")
 
-    db.add(RateLimitEntry(key=key, timestamp=now))
-    await db.commit()
+        db.add(RateLimitEntry(key=key, timestamp=now))
+        await db.commit()
+    except HTTPException:
+        raise
+    except Exception:
+        await db.rollback()
 
 
 async def rate_limit(request: Request, db: AsyncSession) -> None:

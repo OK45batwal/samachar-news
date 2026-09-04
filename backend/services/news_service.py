@@ -225,7 +225,7 @@ async def ingest_all_feeds() -> Dict[str, Any]:
                 credibility_score=fact_metrics["credibility_score"],
                 sensationalism_score=fact_metrics["sensationalism_score"],
                 key_claims=fact_metrics["key_claims"],
-                corroborating_sources=[src_name, "Reuters Wire", "Associated Press"],
+                corroborating_sources=[src_name] if src_name else [],
                 bias_spectrum=fact_metrics["bias_spectrum"],
                 category_id=categories.get(item["category_slug"], list(categories.values())[0] if categories else None),
                 source_id=sources.get(src_name),
@@ -237,6 +237,25 @@ async def ingest_all_feeds() -> Dict[str, Any]:
                 created_count += 1
                 if fact_metrics["credibility_score"] >= 80:
                     verified_count += 1
+                try:
+                    from ..websocket.ws import manager
+                    status_str = article.fact_check_status.value if hasattr(article.fact_check_status, 'value') else str(article.fact_check_status)
+                    await manager.broadcast({
+                        "type": "new_article",
+                        "article": {
+                            "id": article.id,
+                            "title": article.title,
+                            "slug": article.slug,
+                            "summary": article.summary,
+                            "credibility_score": article.credibility_score,
+                            "fact_check_status": status_str,
+                            "source": src_name,
+                            "image_url": article.image_url,
+                            "published_at": article.published_at.isoformat() if article.published_at else None,
+                        }
+                    })
+                except Exception:
+                    pass
             except Exception:
                 await db.rollback()
 

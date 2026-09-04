@@ -12,7 +12,8 @@ async function request(endpoint, options = {}) {
 
   const primaryUrl = endpoint;
   const isLocalDev = window.location.port === '5173' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  const fallbackUrl = isLocalDev ? `http://localhost:8000${endpoint}` : `https://samachar-news-api.onrender.com${endpoint}`;
+  const customApiBase = window.SAMACHAR_API_URL || (isLocalDev ? 'http://localhost:8000' : '');
+  const fallbackUrl = customApiBase ? `${customApiBase}${endpoint}` : endpoint;
 
   // Auth Endpoints Fallback Handling
   if (endpoint === '/api/auth/login' && options.method === 'POST') {
@@ -650,9 +651,16 @@ function isAuthenticated() {
 
 // WebSocket Live News & Fact Stream
 function initNewsWebSocket(onMessageCallback) {
-  const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  const wsHost = window.location.port === '5173' ? 'localhost:8000' : window.location.host;
-  const wsUrl = `${wsProtocol}//${wsHost}/api/ws`;
+  const isLocalDev = window.location.port === '5173' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  let wsUrl;
+  if (window.SAMACHAR_WS_URL) {
+    wsUrl = window.SAMACHAR_WS_URL;
+  } else if (isLocalDev) {
+    wsUrl = 'ws://localhost:8000/api/ws';
+  } else {
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    wsUrl = `${wsProtocol}//${window.location.host}/api/ws`;
+  }
 
   let socket;
   try {

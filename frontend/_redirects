@@ -1,2 +1,2 @@
-# Cloudflare Pages SPA & API Redirect Rules
-/api/*  https://samachar-news-api.onrender.com/api/:splat  200
+# SPA Fallback Rules
+/*  /index.html  200
