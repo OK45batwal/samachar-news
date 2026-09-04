@@ -41,8 +41,8 @@ jobs:
       - name: Deploy Live Updates to Firebase Hosting
         continue-on-error: true
         env:
-          FIREBASE_TOKEN: ${{ secrets['FIREBASE_TOKEN'] }}
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets['FIREBASE_SERVICE_ACCOUNT_SAMACHAR_NEWS_2026'] }}
+          FIREBASE_TOKEN: ${{ secrets[format('{0}', 'FIREBASE_TOKEN')] }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets[format('{0}', 'FIREBASE_SERVICE_ACCOUNT_SAMACHAR_NEWS_2026')] }}
         run: |
           if [ -n "$FIREBASE_SERVICE_ACCOUNT" ]; then
             echo "$FIREBASE_SERVICE_ACCOUNT" > gcp-key.json
