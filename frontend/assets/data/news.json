@@ -1,5 +1,51 @@
 [
   {
+    "id": 1285,
+    "title": "‘Fauda’ Creator Calls Mark Ruffalo a ‘Rare Combination’ of ‘Stupid’ and ‘Ignorant’ After His Viral Statement on Paramount: ‘Do You Understand What It Means, “Genocide”?’",
+    "slug": "fauda-creator-calls-mark-ruffalo-a-rare-combination-of-stupid-and-ignorant-after-his-viral-statement-on-paramount-do-you-1788536927-937",
+    "summary": "“Fauda” creator Avi Issacharoff has criticized Mark Ruffalo’s interpretation of the Israel-Hamas conflict, including his repeated claims of “genocide” in Gaza. “Mark Ruffalo saying ‘Genocide, genocide.’ Then you know that there&#8217;s a kind of people that are ignorant, there are some people that are stupid. He’s a rare combination of those two,” Issacharoff said during [&#8230;]",
+    "content": "“Fauda” creator Avi Issacharoff has criticized Mark Ruffalo’s interpretation of the Israel-Hamas conflict, including his repeated claims of “genocide” in Gaza. “Mark Ruffalo saying ‘Genocide, genocide.’ Then you know that there&#8217;s a kind of people that are ignorant, there are some people that are stupid. He’s a rare combination of those two,” Issacharoff said during [&#8230;]",
+    "image_url": "https://variety.com/wp-content/uploads/2026/09/MixCollage-04-Sep-2026-02-27-PM-9664.jpg",
+    "source_url": "https://variety.com/2026/politics/global/fauda-creator-mark-ruffalo-genocide-remarks-1236851588/",
+    "author": "K.J. Yossman",
+    "source_name": "Variety",
+    "category_name": "Entertainment",
+    "published_at": "2026-09-04T15:44:53",
+    "credibility_score": 78,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "‘Fauda’ Creator Calls Mark Ruffalo a ‘Rare Combination’ of ‘Stupid’ and ‘Ignorant’ After His Viral Statement on Paramount: ‘Do You Understand What It Means, “Genocide”?’.",
+        "status": "Official Statement",
+        "evidence": "Direct on-record attribution from primary source spokesperson",
+        "confidence_score": 95
+      },
+      {
+        "claim": "“Fauda” creator Avi Issacharoff has criticized Mark Ruffalo’s interpretation of the Israel-Hamas conflict, including his repeated claims of “genocide” in Gaza.",
+        "status": "Official Statement",
+        "evidence": "Direct on-record attribution from primary source spokesperson",
+        "confidence_score": 95
+      },
+      {
+        "claim": "“Mark Ruffalo saying ‘Genocide, genocide.’ Then you know that there&#8217;s a kind of people that are ignorant, there are some people that are stupid.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      },
+      {
+        "claim": "He’s a rare combination of those two,” Issacharoff said during [&#8230;] “Fauda” creator Avi Issacharoff has criticized Mark Ruffalo’s interpretation of the Israel-Hamas conflic...",
+        "status": "Official Statement",
+        "evidence": "Direct on-record attribution from primary source spokesperson",
+        "confidence_score": 95
+      }
+    ],
+    "corroborating_sources": [
+      "Variety"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
     "id": 1106,
     "title": "Daily briefing: GLP-1 obesity drugs slow signs of ageing in mice",
     "slug": "daily-briefing-glp-1-obesity-drugs-slow-signs-of-ageing-in-mice-1788536508-160",
@@ -1000,6 +1046,146 @@
     "bias_spectrum": "Center-Editorial Reporting"
   },
   {
+    "id": 1279,
+    "title": "Dry spell leaves Chittoor farmers staring at crop loss",
+    "slug": "dry-spell-leaves-chittoor-farmers-staring-at-crop-loss-1788536927-307",
+    "summary": "64.5% rainfall deficit hits kharif crops; western mandals record over 78% shortfall, with groundwater, drinking water and fodder sources under strain",
+    "content": "64.5% rainfall deficit hits kharif crops; western mandals record over 78% shortfall, with groundwater, drinking water and fodder sources under strain",
+    "image_url": "https://th-i.thgim.com/public/incoming/edtye7/article71429363.ece/alternates/LANDSCAPE_1200/10215_1_7_2024_13_4_32_1_IMG_20240701_WA0104.JPG",
+    "source_url": "https://www.thehindu.com/news/national/andhra-pradesh/dry-spell-leaves-chittoor-farmers-staring-at-crop-loss/article71428146.ece",
+    "author": "The Hindu",
+    "source_name": "The Hindu",
+    "category_name": "India",
+    "published_at": "2026-09-04T15:39:54",
+    "credibility_score": 80,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "64.5% rainfall deficit hits kharif crops; western mandals record over 78% shortfall, with groundwater, drinking water and fodder sources under strain 64.5% rainfall deficit hits...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      }
+    ],
+    "corroborating_sources": [
+      "The Hindu"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 1277,
+    "title": "Netflix Just Added One Of The Best Horror Movies Of The Decade",
+    "slug": "netflix-just-added-one-of-the-best-horror-movies-of-the-decade-1788536927-800",
+    "summary": "Netflix has added what could be considered one of the best horror films of the 2020s, and its lead gives an all-timer performance.",
+    "content": "Netflix has added what could be considered one of the best horror films of the 2020s, and its lead gives an all-timer performance.",
+    "image_url": "https://imageio.forbes.com/specials-images/imageserve/6a9ae526f8783b136d559080/0x0.jpg?width=960&precrop=900%2C506%2Cx0%2Cy0",
+    "source_url": "https://www.forbes.com/sites/paultassi/2026/09/04/netflix-just-added-one-of-the-best-horror-movies-of-the-decade/",
+    "author": "Paul Tassi, Senior Contributor",
+    "source_name": "Forbes",
+    "category_name": "Business",
+    "published_at": "2026-09-04T15:39:21",
+    "credibility_score": 78,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Netflix has added what could be considered one of the best horror films of the 2020s, and its lead gives an all-timer performance.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      }
+    ],
+    "corroborating_sources": [
+      "Forbes"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 1280,
+    "title": "Air India sacks Delhi-Phuket flight pilot who tested positive for drugs",
+    "slug": "air-india-sacks-delhi-phuket-flight-pilot-who-tested-positive-for-drugs-1788536927-975",
+    "summary": "Aircraft Accident Investigation Bureau’s report had flagged the pilot-in-command’s substance use as a serious concern and recommended appropriate action by DGCA",
+    "content": "Aircraft Accident Investigation Bureau’s report had flagged the pilot-in-command’s substance use as a serious concern and recommended appropriate action by DGCA",
+    "image_url": "https://th-i.thgim.com/public/incoming/gktvq7/article71428847.ece/alternates/LANDSCAPE_1200/2026-08-05T130201Z_911165123_RC2DK5ASTM2P_RTRMADP_3_AIR-INDIA-CEO.jpg",
+    "source_url": "https://www.thehindu.com/news/national/air-india-sacks-pilot-who-tested-positive-for-psychoactive-substance-after-phuket-delhi-flight-scare/article71428735.ece",
+    "author": "The Hindu",
+    "source_name": "The Hindu",
+    "category_name": "India",
+    "published_at": "2026-09-04T15:39:06",
+    "credibility_score": 83,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Aircraft Accident Investigation Bureau’s report had flagged the pilot-in-command’s substance use as a serious concern and recommended appropriate action by DGCA Aircraft Acciden...",
+        "status": "Verified Reporting",
+        "evidence": "Cross-corroborated by journalistic wire network",
+        "confidence_score": 88
+      }
+    ],
+    "corroborating_sources": [
+      "The Hindu"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 1281,
+    "title": "AP-Transco mulls drone patrolling to assess health of transmission assets",
+    "slug": "ap-transco-mulls-drone-patrolling-to-assess-health-of-transmission-assets-1788536927-251",
+    "summary": "It invites tenders from the DGCA-compliant drone service providers to deploy unmanned aerial vehicles for preventive maintenance on a pilot basis",
+    "content": "It invites tenders from the DGCA-compliant drone service providers to deploy unmanned aerial vehicles for preventive maintenance on a pilot basis",
+    "image_url": "https://th-i.thgim.com/public/incoming/sw77se/article71429331.ece/alternates/LANDSCAPE_1200/02Drone.jpg",
+    "source_url": "https://www.thehindu.com/news/national/andhra-pradesh/ap-transco-mulls-drone-patrolling-to-assess-health-of-transmission-assets/article71428413.ece",
+    "author": "The Hindu",
+    "source_name": "The Hindu",
+    "category_name": "India",
+    "published_at": "2026-09-04T15:38:49",
+    "credibility_score": 80,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "AP-Transco mulls drone patrolling to assess health of transmission assets",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network",
+        "confidence_score": 85
+      }
+    ],
+    "corroborating_sources": [
+      "The Hindu"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 1282,
+    "title": "People have given me the authority to take an S-turn, says Chief Minister D.K. Shivakumar",
+    "slug": "people-have-given-me-the-authority-to-take-an-s-turn-says-chief-minister-d-k-shivakumar-1788536927-839",
+    "summary": "People have given me the authority to take an S-turn, says Chief Minister D.K. Shivakumar",
+    "content": "",
+    "image_url": "https://th-i.thgim.com/public/incoming/85x6d/article71429212.ece/alternates/LANDSCAPE_1200/_JAI0659.JPG",
+    "source_url": "https://www.thehindu.com/news/national/karnataka/people-have-given-me-the-authority-to-take-an-s-turn-says-chief-minister-dk-shivakumar/article71428795.ece",
+    "author": "The Hindu",
+    "source_name": "The Hindu",
+    "category_name": "India",
+    "published_at": "2026-09-04T15:38:19",
+    "credibility_score": 77,
+    "sensationalism_score": 16,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "People have given me the authority to take an S-turn, says Chief Minister D.K. Shivakumar",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network",
+        "confidence_score": 85
+      }
+    ],
+    "corroborating_sources": [
+      "The Hindu"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
     "id": 1253,
     "title": "‘Mayday’ Review: Ryan Reynolds and Kenneth Branagh Are Unlikely Cold War Buddies in a Pleasing Eighties Throwback",
     "slug": "mayday-review-ryan-reynolds-and-kenneth-branagh-are-unlikely-cold-war-buddies-in-a-pleasing-eighties-throwback-1788536508-519",
@@ -1154,6 +1340,34 @@
     ],
     "corroborating_sources": [
       "The Hindu"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 1284,
+    "title": "Somerset make their title statement with innings win over Glamorgan",
+    "slug": "somerset-make-their-title-statement-with-innings-win-over-glamorgan-1788536927-420",
+    "summary": "Leach, Overton, Gregory claim three wickets each to heap pressure on rivals",
+    "content": "Leach, Overton, Gregory claim three wickets each to heap pressure on rivals",
+    "image_url": "http://p.imgci.com/db/PICTURES/CMS/421500/421527.jpg",
+    "source_url": "https://www.cricinfo.com/ci/content/story/1552827.html?ex_cid=OTC-RSS",
+    "author": "Cricinfo",
+    "source_name": "Cricinfo",
+    "category_name": "Sports",
+    "published_at": "2026-09-04T15:34:47",
+    "credibility_score": 80,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Somerset make their title statement with innings win over Glamorgan",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network",
+        "confidence_score": 85
+      }
+    ],
+    "corroborating_sources": [
+      "Cricinfo"
     ],
     "bias_spectrum": "Center-Editorial Reporting"
   },
@@ -3086,6 +3300,34 @@
     "bias_spectrum": "Center-Editorial Reporting"
   },
   {
+    "id": 1278,
+    "title": "Pentagon pauses controversial testosterone policy guidelines",
+    "slug": "pentagon-pauses-controversial-testosterone-policy-guidelines-1788536927-462",
+    "summary": "Experts say there is not enough evidence to support broadly screening men for testosterone without any symptoms",
+    "content": "Experts say there is not enough evidence to support broadly screening men for testosterone without any symptoms",
+    "image_url": null,
+    "source_url": "https://www.scientificamerican.com/article/pentagon-pauses-controversial-testosterone-policy-guidelines/",
+    "author": "Scientific American",
+    "source_name": "Scientific American",
+    "category_name": "Science",
+    "published_at": "2026-09-04T15:05:00",
+    "credibility_score": 78,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Pentagon pauses controversial testosterone policy guidelines",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network",
+        "confidence_score": 85
+      }
+    ],
+    "corroborating_sources": [
+      "Scientific American"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
     "id": 962,
     "title": "Strengthening Africa is an investment in Europe's future: EU Commissioner Jozef Sikela",
     "slug": "strengthening-africa-is-an-investment-in-europe-s-future-eu-commissioner-jozef-sikela-1788536508-908",
@@ -3770,6 +4012,52 @@
     "bias_spectrum": "Center-Editorial Reporting"
   },
   {
+    "id": 1273,
+    "title": "Alienware’s refurbished 16 Aurora is almost $200 off at Woot",
+    "slug": "alienware-s-refurbished-16-aurora-is-almost-200-off-at-woot-1788536926-764",
+    "summary": "Gaming laptop deals aren’t what they used to be (stares daggers at RAMageddon), which is why I consider Woot’s deal on a refurbished Alienware 16 Aurora gaming laptop with Nvidia’s RTX 5050 a pretty good deal at $927 for new Woot customers (with code WOOTALIEN used at checkout). It costs $1,029 for returning Woot shoppers, [&#8230;]",
+    "content": "Gaming laptop deals aren’t what they used to be (stares daggers at RAMageddon), which is why I consider Woot’s deal on a refurbished Alienware 16 Aurora gaming laptop with Nvidia’s RTX 5050 a pretty good deal at $927 for new Woot customers (with code WOOTALIEN used at checkout). It costs $1,029 for returning Woot shoppers, which is a decent discount off the new $1,099.99 price at Alienware’s site. Notably, this refurb unit includes a one-year Alienware warranty. Alienware 16 Aurora Where to Buy: $1099.99 $927.99 at Woot (refurbished, with code WOOTALIEN) These days, most configurations with Nvidia’s RTX 5060 GPU sail well over the $1,200 mark, which is just too much if you ask me. If you’re in the market for a relatively speedy and well-designed machine, perhaps this one will be a good fit for your needs and budget. The Aurora has a 1600p 120Hz 16-inch screen, Intel’s capable Core 7 240H processor, 16GB of DDR5 RAM, and a 512GB SSD. Its RTX 5050 GPU likely won’t be able to play most games at max settings, especially at its native 1600p resolution, but you should be able to get respectable frame rates and visual fidelity with some tweaking. As for its condition, the company says “it’s as close to new as you can get without technically being “new.” The 16 Aurora features two M.2 slots, letting you greatly boost its included 512GB SSD with other drives. It also has two SO-DIMM slots, so you can upgrade the 8GB x 2 (DDR5 5,600MHz) down the line to 16GB x 2 (it tops out at 32GB RAM). If you have other specs you want to dig into, check out Dell’s comprehensive spec sheet within its support site. Other great Verge-approved deals Live in a really small space? Perhaps, an RV or a van equipped with power to run appliances? The Loch Capsule dishwasher that my colleague Thomas Ricker tested is 20 percent off for a limited time through Labor Day. Normally $459.99 for the skinny dishwasher, it’s down to $367.99 with free shipping at Loch’s site . Now, folks with setups large enough to accommodate a bigger dishwasher shouldn’t consider the Loch Capsule. But it might be just what some are looking for. It can clean and dry (even sanitize) dishes and pans in a 20-minute cycle. It doesn’t require plumbing, and its design isn’t an eye sore. If you can look past its flaws (mainly that it’s sort of loud), it’s worth considering during the sale. There are no other speakers that look like the Bowers &amp; Wilkin’s Zeppelin. Not only is its design striking, appearing to levitate, but it boasts a powerful sound (ask me how I know — it was the sole speaker used during my wedding’s afterparty). Its Zeppelin Pro is 29 percent off at Amazon in the black color option, costing $639 (originally $899). We haven’t tested this particular model, but it seems impressive, featuring five drivers (one being a six-inch subwoofer), plus Bluetooth, AirPlay 2 and Spotify Connect. It also has an optional downward-firing light that gives it a unique presence in the room. You can tell that Samsung is trying to get rid of monitors when it’s selling a whopping 49-inch OLED gaming monitor for $999.99 (originally $1,699.99). That’s how much its ultrawide Odyssey OLED G93SD costs now at Best Buy . Its width is roughly equivalent to sticking two 25-inch 1440p monitors next to other, then curving them inward slightly for a more immersive viewing experience. The full resolution is 5,210 x 1,440 and it features a 240Hz refresh rate. The screen has a 110 pixels per inch density, which isn’t great, though it’s the standard for most QHD OLED gaming monitors. The monitor includes a three-year warranty protecting against defects, however, Samsung’s warranty page doesn’t explicitly mention burn-in.",
+    "image_url": null,
+    "source_url": "https://www.theverge.com/gadgets/989407/alienware-gaming-laptop-capsule-dishwasher-samsung-oled-deal-sale",
+    "author": "Cameron Faulkner",
+    "source_name": "The Verge",
+    "category_name": "Technology",
+    "published_at": "2026-09-04T14:55:40",
+    "credibility_score": 81,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "Alienware’s refurbished 16 Aurora is almost $200 off at Woot.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      },
+      {
+        "claim": "Gaming laptop deals aren’t what they used to be (stares daggers at RAMageddon), which is why I consider Woot’s deal on a refurbished Alienware 16 Aurora gaming laptop with Nvidi...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      },
+      {
+        "claim": "It costs $1,029 for returning Woot shoppers, [&#8230;] Gaming laptop deals aren’t what they used to be (stares daggers at RAMageddon), which is why I consider Woot’s deal on a r...",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      },
+      {
+        "claim": "It costs $1,029 for returning Woot shoppers, which is a decent discount off the new $1,099.99 price at Alienware’s site.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      }
+    ],
+    "corroborating_sources": [
+      "The Verge"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
     "id": 1167,
     "title": "One terrorist killed, 1-2 others trapped after gunfight in central Kashmir forests",
     "slug": "one-terrorist-killed-1-2-others-trapped-after-gunfight-in-central-kashmir-forests-1788536508-425",
@@ -3828,6 +4116,52 @@
     ],
     "corroborating_sources": [
       "Phys.org"
+    ],
+    "bias_spectrum": "Center-Editorial Reporting"
+  },
+  {
+    "id": 1274,
+    "title": "What to expect at Apple’s September 9th launch event",
+    "slug": "what-to-expect-at-apple-s-september-9th-launch-event-1788536927-859",
+    "summary": "Apple's September 9th launch event could be one of its biggest in years. It will be Apple's first event since John Ternus took over as CEO on September 1st, stepping in for Tim Cook, and will likely feature the first models in Apple's iPhone 18 lineup. That could include the long-rumored foldable \"iPhone Ultra,\" coming [&#8230;]",
+    "content": "Apple's September 9th launch event could be one of its biggest in years. It will be Apple's first event since John Ternus took over as CEO on September 1st, stepping in for Tim Cook, and will likely feature the first models in Apple's iPhone 18 lineup. That could include the long-rumored foldable \"iPhone Ultra,\" coming just a couple months after Samsung debuted its own passport-style foldable, the Galaxy Z Fold 8. Here's how you can watch the event live, and a few possible highlights to keep an eye out for. How to watch Apple's September launch event Apple's \"Surprise and shine\" event kicks off on Wednesday, September 9th, at 1PM ET / 1 … Read the full story at The Verge.",
+    "image_url": null,
+    "source_url": "https://www.theverge.com/tech/989692/apple-iphone-launch-event-september-2026-how-to-watch",
+    "author": "Stevie Bonifield",
+    "source_name": "The Verge",
+    "category_name": "Technology",
+    "published_at": "2026-09-04T14:52:00",
+    "credibility_score": 78,
+    "sensationalism_score": 4,
+    "fact_check_status": "corroborated",
+    "key_claims": [
+      {
+        "claim": "What to expect at Apple’s September 9th launch event.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      },
+      {
+        "claim": "Apple's September 9th launch event could be one of its biggest in years.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      },
+      {
+        "claim": "It will be Apple's first event since John Ternus took over as CEO on September 1st, stepping in for Tim Cook, and will likely feature the first models in Apple's iPhone 18 lineup.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      },
+      {
+        "claim": "That could include the long-rumored foldable iPhone Ultra, coming [&#8230;] Apple's September 9th launch event could be one of its biggest in years.",
+        "status": "Official Statement",
+        "evidence": "Direct on-record attribution from primary source spokesperson",
+        "confidence_score": 95
+      }
+    ],
+    "corroborating_sources": [
+      "The Verge"
     ],
     "bias_spectrum": "Center-Editorial Reporting"
   },
@@ -4408,316 +4742,6 @@
     ],
     "corroborating_sources": [
       "Bloomberg Markets"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 1231,
-    "title": "Gasly loses Monaco podium after McLaren and Red Bull win appeals",
-    "slug": "gasly-loses-monaco-podium-after-mclaren-and-red-bull-win-appeals-1788536508-490",
-    "summary": "McLaren and Red Bull win their appeals against the result of the Monaco Grand Prix after a controversy over multiple incorrect pit-lane speeding penalties.",
-    "content": "McLaren and Red Bull win their appeals against the result of the Monaco Grand Prix after a controversy over multiple incorrect pit-lane speeding penalties.",
-    "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/7d7f/live/c9ff38c0-a851-11f1-80f8-c33181935c5a.jpg",
-    "source_url": "https://www.bbc.co.uk/sport/formula1/articles/c4gq26zglpzo?at_medium=RSS&at_campaign=rss",
-    "author": "BBC Sport",
-    "source_name": "BBC Sport",
-    "category_name": "Sports",
-    "published_at": "2026-09-04T14:38:11",
-    "credibility_score": 81,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Gasly loses Monaco podium after McLaren and Red Bull win appeals",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "BBC Sport"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 1198,
-    "title": "Harano Sur: Uttam Kumar at 100",
-    "slug": "harano-sur-uttam-kumar-at-100-1788536508-591",
-    "summary": "Harano Sur: Uttam Kumar at 100",
-    "content": "",
-    "image_url": "https://static.toiimg.com/photo/msid-133767136,imgsize-499031.cms",
-    "source_url": "https://timesofindia.indiatimes.com/entertainment/bengali/movies/news/harano-sur-uttam-kumar-at-100/articleshow/133766933.cms",
-    "author": "PRASAD SANYAL",
-    "source_name": "Times of India",
-    "category_name": "India",
-    "published_at": "2026-09-04T14:38:06",
-    "credibility_score": 76,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Harano Sur: Uttam Kumar at 100.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "Harano Sur: Uttam Kumar at 100",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Times of India"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 1269,
-    "title": "Why Cate Blanchett Went All In on the Absurd, Sincere Alien Comedy ‘Alpha Gang’",
-    "slug": "why-cate-blanchett-went-all-in-on-the-absurd-sincere-alien-comedy-alpha-gang-1788536508-813",
-    "summary": "Starring opposite a wild cast including Dave Bautista, Lily-Rose Depp and Riley Keough, the actress and producer embraced the zany tone of filmmakers David and Nathan Zellner: “It's alien Chekhovian.”",
-    "content": "Starring opposite a wild cast including Dave Bautista, Lily-Rose Depp and Riley Keough, the actress and producer embraced the zany tone of filmmakers David and Nathan Zellner: “It's alien Chekhovian.”",
-    "image_url": null,
-    "source_url": "https://www.hollywoodreporter.com/movies/movie-features/alpha-gang-cate-blanchett-david-nathan-zellner-1236689640/",
-    "author": "David Canfield",
-    "source_name": "Hollywood Reporter",
-    "category_name": "Entertainment",
-    "published_at": "2026-09-04T14:34:08",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Starring opposite a wild cast including Dave Bautista, Lily-Rose Depp and Riley Keough, the actress and producer embraced the zany tone of filmmakers David and Nathan Zellner: “...",
-        "status": "Official Statement",
-        "evidence": "Direct on-record attribution from primary source spokesperson",
-        "confidence_score": 95
-      }
-    ],
-    "corroborating_sources": [
-      "Hollywood Reporter"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 964,
-    "title": "Himalayan hydropower buildout: Expert says risk management is key",
-    "slug": "himalayan-hydropower-buildout-expert-says-risk-management-is-key-1788536508-541",
-    "summary": "Following devastating floods in Nepal and Tibet, Access Asia takes a closer look at the fragile state of the Himalayan mountains. Dr Arun Bhakta Shrestha, an expert on the environment and risk management in the Himalayas, explains why it's so difficult to detect glacier movements in advance and says that the tragedy could serve as an opportunity to improve the way nations develop infrastructure in",
-    "content": "Following devastating floods in Nepal and Tibet, Access Asia takes a closer look at the fragile state of the Himalayan mountains. Dr Arun Bhakta Shrestha, an expert on the environment and risk management in the Himalayas, explains why it's so difficult to detect glacier movements in advance and says that the tragedy could serve as an opportunity to improve the way nations develop infrastructure in the resource-rich region.",
-    "image_url": "https://s.france24.com/media/display/6fb9cb7c-a866-11f1-947a-005056bf30b7/w:1024/p:16x9/nepal-flooding.jpg",
-    "source_url": "https://www.france24.com/en/tv-shows/access-asia/20260904-rebuilding-after-nepal-flash-floods-expert-says-risk-management-is-key-in-himalayas",
-    "author": "Yuka ROYER",
-    "source_name": "France 24",
-    "category_name": "World",
-    "published_at": "2026-09-04T14:34:07",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Himalayan hydropower buildout: Expert says risk management is key",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "France 24"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 1270,
-    "title": "Richard O’Sullivan, British Sitcom Star Who Inspired John Ritter’s ‘Three’s Company’ Character, Dies at 82",
-    "slug": "richard-o-sullivan-british-sitcom-star-who-inspired-john-ritter-s-three-s-company-character-dies-at-82-1788536508-424",
-    "summary": "He led 'Man About the House' and 'Robin's Nest,' comedies that would serve as the basis for the beloved ABC show 'Three's Company' and the sequel 'Three's a Crowd.'",
-    "content": "He led 'Man About the House' and 'Robin's Nest,' comedies that would serve as the basis for the beloved ABC show 'Three's Company' and the sequel 'Three's a Crowd.'",
-    "image_url": null,
-    "source_url": "https://www.hollywoodreporter.com/tv/tv-news/richard-o-sullivan-dead-threes-company-actor-1236690725/",
-    "author": "Lily Ford",
-    "source_name": "Hollywood Reporter",
-    "category_name": "Entertainment",
-    "published_at": "2026-09-04T14:32:00",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Richard O’Sullivan, British Sitcom Star Who Inspired John Ritter’s ‘Three’s Company’ Character, Dies at 82.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Hollywood Reporter"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 1134,
-    "title": "Critically endangered pygmy raccoons observed making their own paper toys",
-    "slug": "critically-endangered-pygmy-raccoons-observed-making-their-own-paper-toys-1788536508-105",
-    "summary": "Some of the most intriguing scientific breakthroughs happen when researchers aren't explicitly looking for them. Take, for example, the pygmy raccoon (Procyon pygmaeus), a critically endangered species that lives only on Cozumel Island, Mexico. Scientists were observing them for a study on the impact of tourism on their populations when they made an accidental discovery.",
-    "content": "Some of the most intriguing scientific breakthroughs happen when researchers aren't explicitly looking for them. Take, for example, the pygmy raccoon (Procyon pygmaeus), a critically endangered species that lives only on Cozumel Island, Mexico. Scientists were observing them for a study on the impact of tourism on their populations when they made an accidental discovery.",
-    "image_url": "https://scx1.b-cdn.net/csz/news/tmb/2026/critically-endangered-11.jpg",
-    "source_url": "https://phys.org/news/2026-09-critically-endangered-pygmy-raccoons-paper.html",
-    "author": "Phys.org",
-    "source_name": "Phys.org",
-    "category_name": "Science",
-    "published_at": "2026-09-04T14:30:02",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Critically endangered pygmy raccoons observed making their own paper toys",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "Phys.org"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 1091,
-    "title": "Meet LNGSHOT: K-Pop's 5th Gen 'Shot Callers'",
-    "slug": "meet-lngshot-k-pop-s-5th-gen-shot-callers-1788536508-355",
-    "summary": "The 5th Gen K-pop boy group were named after having low chances of success, but the quartet have been proving their namesake wrong — and having fun while at it.",
-    "content": "The 5th Gen K-pop boy group were named after having low chances of success, but the quartet have been proving their namesake wrong — and having fun while at it.",
-    "image_url": "https://imageio.forbes.com/specials-images/imageserve/6a9a40f94229a3b7dc41d3bb/0x0.jpg",
-    "source_url": "https://www.forbes.com/sites/laurasirikul/2026/09/04/meet-lngshot-k-pops-5th-gen-shot-callers/",
-    "author": "Laura Sirikul, Contributor",
-    "source_name": "Forbes",
-    "category_name": "Business",
-    "published_at": "2026-09-04T14:30:00",
-    "credibility_score": 74,
-    "sensationalism_score": 16,
-    "fact_check_status": "developing",
-    "key_claims": [
-      {
-        "claim": "Meet LNGSHOT: K-Pop's 5th Gen 'Shot Callers'.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "The 5th Gen K-pop boy group were named after having low chances of success, but the quartet have been proving their namesake wrong — and having fun while at it.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Forbes"
-    ],
-    "bias_spectrum": "Developing / Uncorroborated"
-  },
-  {
-    "id": 999,
-    "title": "Nintendo&#8217;s next two Direct events are both happening next week",
-    "slug": "nintendo-8217-s-next-two-direct-events-are-both-happening-next-week-1788536508-858",
-    "summary": "Nintendo just announced two Direct events for next week, scheduled back to back. First up is the Legend of Zelda 40th Anniversary Direct on September 8th at 10AM ET / 7AM PT. It's set to last around 30 minutes, streaming live on Nintendo's YouTube channel or the Nintendo Today app. Images recently leaked showing a [&#8230;]",
-    "content": "Nintendo just announced two Direct events for next week, scheduled back to back. First up is the Legend of Zelda 40th Anniversary Direct on September 8th at 10AM ET / 7AM PT. It's set to last around 30 minutes, streaming live on Nintendo's YouTube channel or the Nintendo Today app. Images recently leaked showing a special-edition 40th anniversary Zelda Switch 2 console and controller, plus there's the Ocarina of Time remake that's on the way, as well as the live-action Zelda movie expected to hit theaters sometime next year. The next day, Nintendo is also running a regular Direct showcase at 10AM ET / 7AM PT that will run for around 45 mi … Read the full story at The Verge.",
-    "image_url": null,
-    "source_url": "https://www.theverge.com/games/990207/nintendo-direct-zelda-40th",
-    "author": "Stevie Bonifield",
-    "source_name": "The Verge",
-    "category_name": "Technology",
-    "published_at": "2026-09-04T14:29:44",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nintendo&#8217;s next two Direct events are both happening next week.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "First up is the Legend of Zelda 40th Anniversary Direct on September 8th at 10AM ET / 7AM PT.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "It's set to last around 30 minutes, streaming live on Nintendo's YouTube channel or the Nintendo Today app.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "Images recently leaked showing a [&#8230;] Nintendo just announced two Direct events for next week, scheduled back to back.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "The Verge"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 1063,
-    "title": "US Sanctions Small Turkish Investment Bank Over Iran Links",
-    "slug": "us-sanctions-small-turkish-investment-bank-over-iran-links-1788536508-236",
-    "summary": "The United States sanctioned Golden Global Investment Bank, a relatively small Turkish firm, as Treasury Secretary Scott Bessent continues his efforts to isolate Iran’s economy after a muted start to a new sanctions effort.",
-    "content": "The United States sanctioned Golden Global Investment Bank, a relatively small Turkish firm, as Treasury Secretary Scott Bessent continues his efforts to isolate Iran’s economy after a muted start to a new sanctions effort.",
-    "image_url": null,
-    "source_url": "https://www.bloomberg.com/news/articles/2026-09-04/us-sanctions-small-turkish-investment-bank-over-iran-links",
-    "author": "Yash Roy and Beril Akman",
-    "source_name": "Bloomberg Markets",
-    "category_name": "Business",
-    "published_at": "2026-09-04T14:28:50",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "US Sanctions Small Turkish Investment Bank Over Iran Links",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "Bloomberg Markets"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 899,
-    "title": "Trump's peace envoys to visit Moscow and Kyiv over weekend, reports say",
-    "slug": "trump-s-peace-envoys-to-visit-moscow-and-kyiv-over-weekend-reports-say-1788536508-265",
-    "summary": "Steve Witkoff and Jared Kushner have led President Donald Trump's efforts to end the Russia-Ukraine war - but talks have stalled.",
-    "content": "Steve Witkoff and Jared Kushner have led President Donald Trump's efforts to end the Russia-Ukraine war - but talks have stalled.",
-    "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/0e39/live/bcf0df00-a86d-11f1-bbad-43eaf67b94b6.jpg",
-    "source_url": "https://www.bbc.co.uk/news/articles/c23x0z48x0no?at_medium=RSS&at_campaign=rss",
-    "author": "BBC World",
-    "source_name": "BBC World",
-    "category_name": "World",
-    "published_at": "2026-09-04T14:27:10",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Trump's peace envoys to visit Moscow and Kyiv over weekend, reports say.",
-        "status": "Verified Reporting",
-        "evidence": "Cross-corroborated by journalistic wire network",
-        "confidence_score": 88
-      }
-    ],
-    "corroborating_sources": [
-      "BBC World"
     ],
     "bias_spectrum": "Center-Editorial Reporting"
   }

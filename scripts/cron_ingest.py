@@ -13,8 +13,9 @@ from datetime import datetime, timezone
 # Ensure project root is in sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from backend.database import async_session
+from backend.database import async_session, init_db
 from backend.models.models import Article, Category, Source
+from backend.seed import seed_database
 from backend.services.news_service import ingest_all_feeds
 from sqlalchemy import select
 
@@ -24,6 +25,10 @@ logger = logging.getLogger("24x7_news_updater")
 
 async def update_live_news_dataset(limit: int = 150):
     """Fetch live news from feeds and export updated dataset to frontend/assets/data/news.json."""
+    logger.info("🔧 Ensuring database schema and base tables exist...")
+    await init_db()
+    await seed_database()
+
     logger.info("📡 Starting 24x7 Global News Wire Ingestion...")
     ingest_result = await ingest_all_feeds()
     logger.info(f"✅ Ingestion Complete: Fetched {ingest_result.get('fetched', 0)} stories, Created {ingest_result.get('created', 0)} new articles.")
