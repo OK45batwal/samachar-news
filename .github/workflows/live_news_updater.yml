@@ -38,6 +38,20 @@ jobs:
           npm ci || npm install
           npm run build
 
+      - name: Deploy Live Updates to Firebase Hosting
+        if: env.FIREBASE_TOKEN != '' || env.FIREBASE_SERVICE_ACCOUNT != ''
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SAMACHAR_NEWS_2026 }}
+        run: |
+          if [ -n "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "$FIREBASE_SERVICE_ACCOUNT" > gcp-key.json
+            GOOGLE_APPLICATION_CREDENTIALS=gcp-key.json npx --yes firebase-tools deploy --only hosting --project samachar-news-2026
+            rm -f gcp-key.json
+          elif [ -n "$FIREBASE_TOKEN" ]; then
+            npx --yes firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN" --project samachar-news-2026
+          fi
+
       - name: Commit & Push Updated Dataset
         run: |
           git config --global user.name "Samachar News Bot"

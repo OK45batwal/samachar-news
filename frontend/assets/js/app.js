@@ -174,3 +174,115 @@ async function handleSaveBookmark(articleId, btnEl) {
     showToast(err.message || 'Bookmark updated.', 'info');
   }
 }
+
+// Real-Time Live Wire & Firestore Sync Controller
+let _latestStoryTracker = { id: null, publishedAt: null, pendingCount: 0 };
+let _liveStoryPillEl = null;
+
+function setLatestStoryTracker(articles) {
+  if (!articles || !articles.length) return;
+  const first = articles[0];
+  _latestStoryTracker.id = first.id;
+  _latestStoryTracker.publishedAt = new Date(first.published_at || Date.now()).getTime();
+  _latestStoryTracker.pendingCount = 0;
+  hideLiveStoriesPill();
+}
+window.setLatestStoryTracker = setLatestStoryTracker;
+
+function showLiveStoriesPill(count, onRefreshCallback) {
+  if (!_liveStoryPillEl) {
+    _liveStoryPillEl = document.createElement('div');
+    _liveStoryPillEl.id = 'liveNewStoriesPill';
+    _liveStoryPillEl.className = 'live-stories-pill';
+    _liveStoryPillEl.innerHTML = `
+      <span class="live-pulse-dot"></span>
+      <span id="livePillText">⚡ 1 new verified story available</span>
+      <span class="live-pill-action">Show Updates ↑</span>
+    `;
+    document.body.appendChild(_liveStoryPillEl);
+  }
+
+  const label = count > 1 ? `⚡ ${count} new verified stories available` : `⚡ 1 new breaking story available`;
+  const textEl = _liveStoryPillEl.querySelector('#livePillText');
+  if (textEl) textEl.textContent = label;
+
+  _liveStoryPillEl.onclick = () => {
+    hideLiveStoriesPill();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof onRefreshCallback === 'function') {
+      onRefreshCallback();
+    }
+  };
+
+  _liveStoryPillEl.classList.add('visible');
+}
+
+function hideLiveStoriesPill() {
+  if (_liveStoryPillEl) {
+    _liveStoryPillEl.classList.remove('visible');
+  }
+}
+
+function initLiveStoryListener(onRefreshCallback) {
+  // 1. WebSocket Live Wire Push
+  if (typeof initNewsWebSocket === 'function') {
+    initNewsWebSocket((msg) => {
+      if (msg && (msg.type === 'new_article' || msg.type === 'breaking_news')) {
+        _latestStoryTracker.pendingCount += 1;
+        showLiveStoriesPill(_latestStoryTracker.pendingCount, onRefreshCallback);
+      }
+    });
+  }
+
+  // 2. Cloud Firestore Real-Time Listener (if Firebase SDK is loaded)
+  try {
+    if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length && firebase.firestore) {
+      const db = firebase.firestore();
+      db.collection('articles')
+        .orderBy('published_at', 'desc')
+        .limit(5)
+        .onSnapshot((snapshot) => {
+          let newDocs = 0;
+          snapshot.docChanges().forEach((change) => {
+            if (change.type === 'added') {
+              const data = change.doc.data();
+              const pubTime = new Date(data.published_at || 0).getTime();
+              if (_latestStoryTracker.publishedAt && pubTime > _latestStoryTracker.publishedAt) {
+                newDocs++;
+              }
+            }
+          });
+          if (newDocs > 0) {
+            _latestStoryTracker.pendingCount += newDocs;
+            showLiveStoriesPill(_latestStoryTracker.pendingCount, onRefreshCallback);
+          }
+        }, () => {});
+    }
+  } catch (_) {}
+
+  // 3. Resilient Background Dataset Check (every 60s)
+  setInterval(async () => {
+    try {
+      const res = await fetch(`/assets/data/news.json?t=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) return;
+      const latestDataset = await res.json();
+      if (!latestDataset || !latestDataset.length) return;
+
+      if (_latestStoryTracker.publishedAt) {
+        let count = 0;
+        for (const item of latestDataset) {
+          const itemTime = new Date(item.published_at || 0).getTime();
+          if (itemTime > _latestStoryTracker.publishedAt && item.id !== _latestStoryTracker.id) {
+            count++;
+          }
+        }
+        if (count > 0 && count !== _latestStoryTracker.pendingCount) {
+          _latestStoryTracker.pendingCount = count;
+          showLiveStoriesPill(count, onRefreshCallback);
+        }
+      }
+    } catch (_) {}
+  }, 60000);
+}
+window.initLiveStoryListener = initLiveStoryListener;
+

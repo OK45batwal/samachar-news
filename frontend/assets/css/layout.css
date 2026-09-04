@@ -622,3 +622,73 @@
   .hide-desktop { display: none !important; }
   .mobile-bottom-nav { display: none !important; }
 }
+
+/* Live Stories Floating Notification Pill */
+.live-stories-pill {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-24px) scale(0.95);
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--accent);
+  padding: 8px 18px 8px 14px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 245, 155, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 1200;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.live-stories-pill.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.live-stories-pill:hover {
+  transform: translateX(-50%) translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 245, 155, 0.5);
+  background: var(--bg-surface-1);
+}
+
+.live-pulse-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+  box-shadow: 0 0 0 rgba(0, 245, 155, 0.7);
+  animation: livePillPulse 1.8s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes livePillPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 245, 155, 0.8);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 245, 155, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 245, 155, 0);
+  }
+}
+
+.live-pill-action {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  margin-left: 4px;
+}
+

@@ -10,3 +10,4 @@ dist/
 samachar.db
 .env
 .pytest_cache/
+.firebase/

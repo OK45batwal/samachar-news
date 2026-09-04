@@ -208,6 +208,7 @@
             grid.insertAdjacentHTML('beforeend', cardsHtml);
           } else {
             grid.innerHTML = cardsHtml;
+            setLatestStoryTracker(res.articles);
           }
           document.getElementById('loadMoreBtn').style.display = res.articles.length < 12 ? 'none' : 'inline-flex';
         } else {
@@ -280,6 +281,11 @@
       document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
         page += 1;
         fetchStories(true);
+      });
+
+      initLiveStoryListener(() => {
+        page = 1;
+        fetchStories(false);
       });
     });
   </script>

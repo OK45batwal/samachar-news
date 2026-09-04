@@ -300,6 +300,7 @@
           } else {
             grid.innerHTML = res.articles.map(renderNewsCard).join('');
           }
+          setLatestStoryTracker(res.articles);
         } else {
           grid.innerHTML = '<div class="text-center p-8 text-secondary w-full" style="grid-column: 1 / -1">No articles found in this category.</div>';
         }
@@ -398,12 +399,9 @@
         loadNews();
       });
 
-      // Real-Time WebSocket Wire Listener
-      initNewsWebSocket((msg) => {
-        if (msg.type === 'new_article' || msg.type === 'breaking_news') {
-          showToast(`⚡ Breaking: ${msg.title || 'New Verified Story'} (${msg.credibility_score || 95}% Verified)`, 'success');
-          loadNews();
-        }
+      // Real-Time Live Wire & Background Sync Listener
+      initLiveStoryListener(() => {
+        loadNews();
       });
     });
   </script>
