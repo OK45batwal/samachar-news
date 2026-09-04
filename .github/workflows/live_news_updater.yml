@@ -39,7 +39,7 @@ jobs:
           npm run build
 
       - name: Deploy Live Updates to Firebase Hosting
-        if: env.FIREBASE_TOKEN != '' || env.FIREBASE_SERVICE_ACCOUNT != ''
+        continue-on-error: true
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SAMACHAR_NEWS_2026 }}
@@ -50,6 +50,8 @@ jobs:
             rm -f gcp-key.json
           elif [ -n "$FIREBASE_TOKEN" ]; then
             npx --yes firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN" --project samachar-news-2026
+          else
+            echo "Skipping deploy: Add FIREBASE_TOKEN or FIREBASE_SERVICE_ACCOUNT_SAMACHAR_NEWS_2026 to GitHub Secrets to enable automatic publishing."
           fi
 
       - name: Commit & Push Updated Dataset
