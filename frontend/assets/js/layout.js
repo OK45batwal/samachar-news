@@ -407,4 +407,78 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   } catch (_) {}
+
+  // 8. Mobile Header Search Trigger Injection
+  const headerActions = document.querySelector('.header-main > .flex:last-child');
+  if (headerActions && !document.getElementById('mobileSearchTrigger')) {
+    const mobSearch = document.createElement('button');
+    mobSearch.id = 'mobileSearchTrigger';
+    mobSearch.className = 'btn btn-icon btn-ghost hide-desktop';
+    mobSearch.setAttribute('aria-label', 'Search verified news');
+    mobSearch.setAttribute('title', 'Search (⌘K)');
+    mobSearch.style.cssText = 'padding: 8px; border-radius: 50%; color: var(--text-secondary);';
+    mobSearch.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+    `;
+    mobSearch.addEventListener('click', openSearch);
+    headerActions.insertBefore(mobSearch, headerActions.firstChild);
+  }
+
+  // 9. Mobile Bottom Tab Bar (Native Editorial Standard)
+  (function injectMobileBottomNav() {
+    const path = window.location.pathname;
+    if (path.includes('login') || path.includes('register')) return;
+    if (document.querySelector('.mobile-bottom-nav')) return;
+
+    const rawPath = path.split('/').pop() || 'home.html';
+    const activePage = (rawPath === '' || rawPath === 'index.html') ? 'home.html' : rawPath;
+
+    const nav = document.createElement('nav');
+    nav.className = 'mobile-bottom-nav';
+    nav.setAttribute('aria-label', 'Mobile Navigation');
+    nav.innerHTML = `
+      <a href="home.html" class="mobile-nav-item ${activePage === 'home.html' ? 'active' : ''}">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+          <path d="M6 6h10M6 10h10M6 14h6"/>
+        </svg>
+        <span>Stories</span>
+        <div class="nav-indicator"></div>
+      </a>
+      <a href="latest.html" class="mobile-nav-item ${(activePage === 'latest.html' || activePage === 'trending.html') ? 'active' : ''}">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        <span>Wire</span>
+        <div class="nav-indicator"></div>
+      </a>
+      <a href="factcheck.html" class="mobile-nav-item ${activePage === 'factcheck.html' ? 'active' : ''}">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span>Truth</span>
+        <div class="nav-indicator"></div>
+      </a>
+      <a href="bookmarks.html" class="mobile-nav-item ${activePage === 'bookmarks.html' ? 'active' : ''}">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+        </svg>
+        <span>Saved</span>
+        <div class="nav-indicator"></div>
+      </a>
+      <a href="profile.html" class="mobile-nav-item ${activePage === 'profile.html' ? 'active' : ''}">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>Profile</span>
+        <div class="nav-indicator"></div>
+      </a>
+    `;
+    document.body.appendChild(nav);
+  })();
 });
