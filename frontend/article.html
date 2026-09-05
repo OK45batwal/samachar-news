@@ -144,13 +144,18 @@
     <h1 class="heading-xl mb-4" id="articleTitle">Loading Article...</h1>
 
     <!-- Author, Source & Action Buttons -->
+    <!-- Author, Source & Action Buttons -->
     <div class="flex items-center justify-between gap-4 mb-6 pb-4 border-bottom" style="flex-wrap: wrap;">
       <div class="flex items-center gap-2 text-xs text-secondary">
         <span>Reporting by <strong id="articleAuthor" style="color:var(--text-primary)">Editorial Wire</strong></span>
         <span>·</span>
-        <span>Primary Wire: <strong id="articleSource" style="color:var(--text-primary)">Reuters</strong></span>
+        <span>Primary Wire: <a id="articleSourceLink" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Open primary wire dispatch"><span id="articleSource">Reuters</span> <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></span>
       </div>
       <div class="flex items-center gap-2">
+        <a id="headerSourceBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm flex items-center gap-1" title="Read original wire source dispatch">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Source ↗
+        </a>
         <button id="bookmarkBtn" class="btn btn-secondary btn-sm flex items-center gap-1">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
           Save Bookmark
@@ -183,8 +188,26 @@
       </div>
     </div>
 
-    <!-- Lead Editorial Image -->
-    <img id="articleImage" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="News Image" class="article-hero-img" />
+    <!-- Lead Editorial Cover Image & Wire Attribution -->
+    <div class="article-hero-wrapper mb-6">
+      <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;">
+        <img id="articleImage" src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80" alt="News Cover Photo" class="article-hero-img" style="margin-bottom:0;" />
+        <div style="position:absolute;bottom:12px;left:12px;background:rgba(0,0,0,0.65);backdrop-filter:blur(8px);padding:4px 10px;border-radius:var(--radius-sm);color:#fff;font-size:11px;display:flex;align-items:center;gap:6px;">
+          <span>📷 Cover Photograph</span>
+          <span>·</span>
+          <span id="articleCoverCredit" style="font-weight:600">Editorial Wire Archive</span>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs text-muted mt-2 px-1">
+        <span id="articleImageCaption" class="flex items-center gap-1">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Corroborated Editorial Media Dispatch
+        </span>
+        <a id="articleImageSourceLink" href="#" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;">
+          <span id="articleImageSourceLabel">View Source Wire</span> ↗
+        </a>
+      </div>
+    </div>
 
     <!-- Executive Takeaways Box -->
     <div class="card p-5 mb-6" style="background:var(--bg-surface-2);border-left:4px solid var(--accent)">
@@ -261,6 +284,28 @@
     <!-- Article Content -->
     <div class="article-body-text mb-8" id="articleBody">
       <p>Loading full story content...</p>
+    </div>
+
+    <!-- Original Publisher Wire Dispatch Card -->
+    <div class="card p-6 mb-8" style="background:var(--bg-surface-2);border-left:4px solid var(--accent);border-color:var(--border-light);">
+      <div class="flex items-center justify-between gap-4" style="flex-wrap: wrap;">
+        <div style="flex:1;min-width:240px;">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="badge badge-verified" style="font-size:10px;padding:2px 8px;">ORIGINAL WIRE DISPATCH</span>
+            <span class="text-xs text-muted font-mono" id="sourceDomainText">source.com</span>
+          </div>
+          <h4 class="heading-sm mb-1">Full Source Coverage on <span id="sourcePublisherName" style="color:var(--accent)">Reuters</span></h4>
+          <p class="text-xs text-secondary mb-0" style="line-height:1.6">
+            Samachar has verified and cross-referenced this reporting across global bureaus. Read the full unabridged report, multimedia, and original citations on the publisher's portal:
+          </p>
+        </div>
+        <div>
+          <a id="originalSourceBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary flex items-center gap-2" style="white-space:nowrap;padding:10px 18px;font-weight:600;">
+            <span>Read Original Wire</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
 
     <!-- Corroborating Sources -->
@@ -341,16 +386,87 @@
         const article = await getArticleById(id);
         document.title = `${article.title} — Samachar`;
 
+        const sourceName = article.source?.name || article.source_name || 'News Wire';
+        const sourceUrl = article.source_url || '';
+
         document.getElementById('articleTitle').textContent = article.title;
         document.getElementById('articleCategory').textContent = article.category?.name || 'General';
         document.getElementById('articleAuthor').textContent = article.author || 'Wire Service';
-        document.getElementById('articleSource').textContent = article.source?.name || 'Reuters';
+        document.getElementById('articleSource').textContent = sourceName;
         document.getElementById('articleDate').textContent = timeAgo(article.published_at);
         document.getElementById('articleSummaryText').textContent = article.summary || article.title;
 
-        if (article.image_url) {
-          document.getElementById('articleImage').src = article.image_url;
+        // Wire Source Links & Outbound Dispatches
+        const sourceLink = document.getElementById('articleSourceLink');
+        if (sourceLink) {
+          if (sourceUrl) {
+            sourceLink.href = sourceUrl;
+          } else {
+            sourceLink.removeAttribute('href');
+            sourceLink.style.cursor = 'default';
+          }
         }
+
+        const hdrSourceBtn = document.getElementById('headerSourceBtn');
+        if (hdrSourceBtn) {
+          if (sourceUrl) {
+            hdrSourceBtn.href = sourceUrl;
+          } else {
+            hdrSourceBtn.style.display = 'none';
+          }
+        }
+
+        const origBtn = document.getElementById('originalSourceBtn');
+        if (origBtn) {
+          if (sourceUrl) {
+            origBtn.href = sourceUrl;
+          } else {
+            origBtn.style.display = 'none';
+          }
+        }
+
+        const pubEl = document.getElementById('sourcePublisherName');
+        if (pubEl) pubEl.textContent = sourceName;
+
+        const domEl = document.getElementById('sourceDomainText');
+        if (domEl) {
+          if (sourceUrl) {
+            try {
+              const u = new URL(sourceUrl);
+              domEl.textContent = u.hostname.replace(/^www\./, '');
+            } catch (_) {
+              domEl.textContent = sourceName;
+            }
+          } else {
+            domEl.textContent = sourceName;
+          }
+        }
+
+        const coverCredit = document.getElementById('articleCoverCredit');
+        if (coverCredit) coverCredit.textContent = `${sourceName} / Bureau Archive`;
+
+        const imgSourceLabel = document.getElementById('articleImageSourceLabel');
+        if (imgSourceLabel) imgSourceLabel.textContent = `Wire Dispatch (${sourceName})`;
+
+        const imgSourceLink = document.getElementById('articleImageSourceLink');
+        if (imgSourceLink) {
+          if (sourceUrl) {
+            imgSourceLink.href = sourceUrl;
+          } else {
+            imgSourceLink.style.display = 'none';
+          }
+        }
+
+        // Cover Image with Intelligent Topic Fallback
+        const heroImg = document.getElementById('articleImage');
+        const fallbackCover = (typeof getCategoryDefaultImage === 'function')
+          ? getCategoryDefaultImage(article.category?.name || article.category_name, article.title)
+          : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80';
+
+        heroImg.src = article.image_url || fallbackCover;
+        heroImg.onerror = () => {
+          heroImg.src = fallbackCover;
+        };
 
         const cred = article.credibility_score || 88;
         const sens = article.sensationalism_score || 10;

@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from backend.database import async_session, init_db
 from backend.models.models import Article, Category, Source
 from backend.seed import seed_database
-from backend.services.news_service import ingest_all_feeds
+from backend.services.news_service import ingest_all_feeds, pick_topic_fallback_image
 from sqlalchemy import select
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -45,18 +45,26 @@ async def update_live_news_dataset(limit: int = 150):
         sources = {s.id: s.name for s in src_res.scalars().all()}
 
         dataset = []
+        modified = False
         for a in articles:
+            cat_name = categories.get(a.category_id, "General")
+            img = a.image_url
+            if not img:
+                img = pick_topic_fallback_image(a.title, a.summary or "", cat_name)
+                a.image_url = img
+                modified = True
+
             dataset.append({
                 "id": a.id,
                 "title": a.title,
                 "slug": a.slug,
                 "summary": a.summary,
                 "content": a.content,
-                "image_url": a.image_url,
+                "image_url": img,
                 "source_url": a.source_url,
                 "author": a.author,
                 "source_name": sources.get(a.source_id, "Wire Feed"),
-                "category_name": categories.get(a.category_id, "General"),
+                "category_name": cat_name,
                 "published_at": a.published_at.isoformat() if a.published_at else "",
                 "credibility_score": a.credibility_score,
                 "sensationalism_score": a.sensationalism_score,
@@ -65,6 +73,8 @@ async def update_live_news_dataset(limit: int = 150):
                 "corroborating_sources": a.corroborating_sources,
                 "bias_spectrum": a.bias_spectrum,
             })
+        if modified:
+            await db.commit()
 
         output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "assets", "data", "news.json"))
         os.makedirs(os.path.dirname(output_path), exist_ok=True)

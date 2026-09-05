@@ -48,21 +48,104 @@ function showToast(message, type = 'info') {
   }, 3500);
 }
 
-const CATEGORY_PHOTOS = {
-  'technology': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
-  'tech': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
-  'world': 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80',
-  'india': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80',
-  'business': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
-  'science': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
-  'health': 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80',
-  'sports': 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80',
-  'entertainment': 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
+const TOPIC_PHOTO_POOLS = {
+  'oil_energy': [
+    'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=800&q=80',
+  ],
+  'politics_diplomacy': [
+    'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=800&q=80',
+  ],
+  'crime_justice': [
+    'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1453873531674-2151101a6648?auto=format&fit=crop&w=800&q=80',
+  ],
+  'technology': [
+    'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
+  ],
+  'business': [
+    'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
+  ],
+  'science': [
+    'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80',
+  ],
+  'health': [
+    'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80',
+  ],
+  'sports': [
+    'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=800&q=80',
+  ],
+  'india': [
+    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1532375810709-75b1da00537c?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1567157577867-05ccb1388e66?auto=format&fit=crop&w=800&q=80',
+  ],
+  'entertainment': [
+    'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+  ],
+  'world': [
+    'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=800&q=80',
+  ],
 };
 
-function getCategoryDefaultImage(catName) {
-  const slug = (catName || '').toLowerCase().trim();
-  return CATEGORY_PHOTOS[slug] || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+function getCategoryDefaultImage(catName, articleTitle = '') {
+  const text = `${articleTitle} ${catName || ''}`.toLowerCase();
+  let pool = null;
+
+  if (/\b(oil|crude|petroleum|pipeline|gas|fumes|fuel|refinery)\b/.test(text)) {
+    pool = TOPIC_PHOTO_POOLS['oil_energy'];
+  } else if (/\b(election|parliament|vote|voter|far right|afd|coalition|politics|minister|diplomat|treaty|summit|senate|congress)\b/.test(text)) {
+    pool = TOPIC_PHOTO_POOLS['politics_diplomacy'];
+  } else if (/\b(court|police|investigat|thief|thieves|arrest|crime|trial|judge|illegal|prosecut)\b/.test(text)) {
+    pool = TOPIC_PHOTO_POOLS['crime_justice'];
+  } else if (/\b(space|nasa|planet|astronomy|physics|telescope|quantum|lab|dna)\b/.test(text)) {
+    pool = TOPIC_PHOTO_POOLS['science'];
+  } else if (/\b(ai|artificial intelligence|chip|semiconductor|cyber|software|robot|nvidia|apple|google|meta)\b/.test(text)) {
+    pool = TOPIC_PHOTO_POOLS['technology'];
+  } else if (/\b(market|stock|inflation|economy|bank|gdp|trade|fed|tariff|invest)\b/.test(text)) {
+    pool = TOPIC_PHOTO_POOLS['business'];
+  } else if (/\b(health|cancer|hospital|virus|vaccine|disease|medical|doctor|clinical)\b/.test(text)) {
+    pool = TOPIC_PHOTO_POOLS['health'];
+  } else if (/\b(cricket|football|soccer|olympic|fifa|tennis|match|championship|tournament)\b/.test(text)) {
+    pool = TOPIC_PHOTO_POOLS['sports'];
+  } else if (/\b(india|delhi|mumbai|modi|bengaluru|isro)\b/.test(text)) {
+    pool = TOPIC_PHOTO_POOLS['india'];
+  } else if (/\b(movie|film|cinema|hollywood|bollywood|music|oscar|concert|actor)\b/.test(text)) {
+    pool = TOPIC_PHOTO_POOLS['entertainment'];
+  }
+
+  if (!pool) {
+    const slug = (catName || 'world').toLowerCase().trim();
+    pool = TOPIC_PHOTO_POOLS[slug] || TOPIC_PHOTO_POOLS['world'];
+  }
+
+  const hashSeed = articleTitle || catName || 'news';
+  let hash = 0;
+  for (let i = 0; i < hashSeed.length; i++) {
+    hash = (hash + hashSeed.charCodeAt(i)) % pool.length;
+  }
+  return pool[hash];
 }
 window.getCategoryDefaultImage = getCategoryDefaultImage;
 
@@ -87,7 +170,7 @@ function renderNewsCard(article) {
   const timeStr = timeAgo(article.published_at);
   const credScore = article.credibility_score || 88;
   const status = article.fact_check_status || 'verified';
-  const imgUrl = article.image_url || getCategoryDefaultImage(safeCat);
+  const imgUrl = article.image_url || getCategoryDefaultImage(safeCat, safeTitle);
   const catBadgeClass = getCategoryBadgeClass(safeCat);
   const wordCount = (article.content || article.summary || '').split(/\s+/).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 180));
@@ -106,10 +189,14 @@ function renderNewsCard(article) {
     badgeLabel = `🔴 ${credScore}% UNVERIFIED`;
   }
 
+  const sourceLinkHtml = article.source_url
+    ? `<a href="${article.source_url}" target="_blank" rel="noopener noreferrer" class="card-source-link hover-accent" title="Open source wire article: ${safeSource}"><span>${safeSource}</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
+    : `<span class="text-xs text-muted font-medium">${safeSource}</span>`;
+
   return `
     <article class="card animate-fade-in-up" id="article-${article.id}">
       <div class="card-img-wrapper">
-        <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'" />
+        <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.src=getCategoryDefaultImage('${safeCat}', '${safeTitle.replace(/'/g, "\\'")}')" />
         <div style="position:absolute;top:10px;left:10px;display:flex;gap:6px">
           <span class="badge ${badgeClass}">${badgeLabel}</span>
         </div>
@@ -125,7 +212,7 @@ function renderNewsCard(article) {
         <p class="text-xs text-secondary line-clamp-3">${safeSummary}</p>
       </div>
       <div class="card-footer">
-        <span class="text-xs text-muted font-medium">${safeSource}</span>
+        ${sourceLinkHtml}
         <div class="flex items-center gap-2">
           <button onclick="handleSaveBookmark(${article.id}, this)" class="btn btn-ghost btn-sm btn-icon bookmark-trigger-btn" title="Save Bookmark" style="border-radius:50%;transition:transform 0.2s var(--ease-spring);">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>

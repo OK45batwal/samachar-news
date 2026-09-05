@@ -318,15 +318,34 @@
       const side1 = top3[1] || top3[0];
       const side2 = top3[2] || top3[0];
 
+      const mainImg = main.image_url || getCategoryDefaultImage(main.category?.name, main.title);
+      const mainSource = sanitize(main.source?.name || main.source_name || 'Wire Feed');
+      const mainSourceLink = main.source_url
+        ? `<a href="${main.source_url}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${mainSource}">${mainSource} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
+        : `<span>${mainSource}</span>`;
+
+      const side1Source = sanitize(side1.source?.name || side1.source_name || 'Wire');
+      const side1SourceLink = side1.source_url
+        ? `<a href="${side1.source_url}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${side1Source}">${side1Source} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
+        : `<span>${side1Source}</span>`;
+
+      const side2Source = sanitize(side2.source?.name || side2.source_name || 'Wire');
+      const side2SourceLink = side2.source_url
+        ? `<a href="${side2.source_url}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${side2Source}">${side2Source} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
+        : `<span>${side2Source}</span>`;
+
       heroMain.innerHTML = `
         <div class="card-img-wrapper" style="height:380px">
-          <img src="${main.image_url || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80'}" class="bento-main-img" alt="${sanitize(main.title)}" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80'" />
+          <img src="${mainImg}" class="bento-main-img" alt="${sanitize(main.title)}" onerror="this.src=getCategoryDefaultImage('${main.category?.name || 'world'}', '${sanitize(main.title).replace(/'/g, "\\'")}')" />
           <div style="position:absolute;top:16px;left:16px">
             <span class="badge badge-verified">🟢 ${main.credibility_score || 96}% VERIFIED SPOTLIGHT</span>
           </div>
         </div>
         <div class="bento-main-content">
-          <span class="text-xs text-accent font-semibold">${sanitize(main.category?.name || 'Top Story')} · ${timeAgo(main.published_at)}</span>
+          <div class="flex items-center justify-between text-xs text-muted mb-2">
+            <span class="text-accent font-semibold">${sanitize(main.category?.name || 'Top Story')} · ${timeAgo(main.published_at)}</span>
+            ${mainSourceLink}
+          </div>
           <h2 class="heading-lg my-2"><a href="article.html?id=${main.id}">${sanitize(main.title)}</a></h2>
           <p class="text-sm text-secondary line-clamp-2">${sanitize(main.summary || '')}</p>
         </div>
@@ -340,7 +359,7 @@
             <p class="text-xs text-secondary line-clamp-2">${sanitize(side1.summary || '')}</p>
           </div>
           <div class="flex items-center justify-between text-xs text-muted mt-3">
-            <span>${sanitize(side1.source?.name || 'Wire')}</span>
+            ${side1SourceLink}
             <span>${timeAgo(side1.published_at)}</span>
           </div>
         </div>
@@ -351,7 +370,7 @@
             <p class="text-xs text-secondary line-clamp-2">${sanitize(side2.summary || '')}</p>
           </div>
           <div class="flex items-center justify-between text-xs text-muted mt-3">
-            <span>${sanitize(side2.source?.name || 'Wire')}</span>
+            ${side2SourceLink}
             <span>${timeAgo(side2.published_at)}</span>
           </div>
         </div>

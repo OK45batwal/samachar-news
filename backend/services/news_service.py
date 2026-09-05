@@ -76,27 +76,155 @@ def _clean_html(html_text: str) -> str:
     return clean
 
 
+TOPIC_IMAGE_POOLS: Dict[str, List[str]] = {
+    "oil_energy": [
+        "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "politics_diplomacy": [
+        "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "crime_justice": [
+        "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1453873531674-2151101a6648?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "technology": [
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "business": [
+        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "science": [
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "health": [
+        "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "sports": [
+        "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "india": [
+        "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1532375810709-75b1da00537c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "entertainment": [
+        "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "world": [
+        "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80",
+    ],
+}
+
+
+def pick_topic_fallback_image(title: str, summary: str = "", category_slug: str = "world") -> str:
+    """Deterministically select a topic-relevant high-res editorial image based on article keywords."""
+    text = f"{title} {summary}".lower()
+
+    target_pool = None
+    if any(k in text for k in ("oil", "crude", "petroleum", "pipeline", "gas", "fumes", "fuel", "refinery")):
+        target_pool = TOPIC_IMAGE_POOLS["oil_energy"]
+    elif any(k in text for k in ("election", "parliament", "vote", "voter", "far right", "afd", "coalition", "politics", "minister", "diplomat", "treaty", "summit", "senate", "congress")):
+        target_pool = TOPIC_IMAGE_POOLS["politics_diplomacy"]
+    elif any(k in text for k in ("court", "police", "investigat", "thief", "thieves", "arrest", "crime", "trial", "judge", "illegal", "prosecut")):
+        target_pool = TOPIC_IMAGE_POOLS["crime_justice"]
+    elif any(k in text for k in ("space", "nasa", "planet", "astronomy", "physics", "telescope", "quantum", "lab", "dna")):
+        target_pool = TOPIC_IMAGE_POOLS["science"]
+    elif any(k in text for k in ("ai", "artificial intelligence", "chip", "semiconductor", "cyber", "software", "robot", "nvidia", "apple", "google", "meta")):
+        target_pool = TOPIC_IMAGE_POOLS["technology"]
+    elif any(k in text for k in ("market", "stock", "inflation", "economy", "bank", "gdp", "trade", "fed", "tariff", "invest")):
+        target_pool = TOPIC_IMAGE_POOLS["business"]
+    elif any(k in text for k in ("health", "cancer", "hospital", "virus", "vaccine", "disease", "medical", "doctor", "clinical")):
+        target_pool = TOPIC_IMAGE_POOLS["health"]
+    elif any(k in text for k in ("cricket", "football", "soccer", "olympic", "fifa", "tennis", "match", "championship", "tournament")):
+        target_pool = TOPIC_IMAGE_POOLS["sports"]
+    elif any(k in text for k in ("india", "delhi", "mumbai", "modi", "bengaluru", "isro")):
+        target_pool = TOPIC_IMAGE_POOLS["india"]
+    elif any(k in text for k in ("movie", "film", "cinema", "hollywood", "bollywood", "music", "oscar", "concert", "actor")):
+        target_pool = TOPIC_IMAGE_POOLS["entertainment"]
+
+    if not target_pool:
+        cat = (category_slug or "world").lower().strip()
+        target_pool = TOPIC_IMAGE_POOLS.get(cat, TOPIC_IMAGE_POOLS["world"])
+
+    # Deterministic selection based on title character codes
+    title_hash = sum(ord(c) for c in (title or "news"))
+    return target_pool[title_hash % len(target_pool)]
+
+
 def _extract_image_url(entry: Any) -> Optional[str]:
-    # Media enclosure
+    # 1. Media enclosure
     if hasattr(entry, 'enclosures') and entry.enclosures:
         for enc in entry.enclosures:
-            if enc.get('type', '').startswith('image/') or enc.get('href', '').endswith(('.jpg', '.jpeg', '.png', '.webp')):
-                return enc.get('href')
-    # Media content
+            if isinstance(enc, dict):
+                href = enc.get('href', '')
+                enc_type = enc.get('type', '')
+                if enc_type.startswith('image/') or any(href.lower().endswith(ext) for ext in ('.jpg', '.jpeg', '.png', '.webp', '.avif')):
+                    return href
+
+    # 2. Links array (common in Atom/RSS feeds)
+    if hasattr(entry, 'links') and entry.links:
+        for link in entry.links:
+            if isinstance(link, dict):
+                href = link.get('href', '')
+                ltype = link.get('type', '')
+                rel = link.get('rel', '')
+                if ltype.startswith('image/') or rel in ('enclosure', 'image') or any(href.lower().endswith(ext) for ext in ('.jpg', '.jpeg', '.png', '.webp', '.avif')):
+                    return href
+
+    # 3. Media content
     if hasattr(entry, 'media_content') and entry.media_content:
         for m in entry.media_content:
-            if m.get('url'):
+            if isinstance(m, dict) and m.get('url'):
                 return m.get('url')
-    # Media thumbnail
+
+    # 4. Media thumbnail
     if hasattr(entry, 'media_thumbnail') and entry.media_thumbnail:
         for t in entry.media_thumbnail:
-            if t.get('url'):
+            if isinstance(t, dict) and t.get('url'):
                 return t.get('url')
-    # Extract from summary HTML img tag
-    summary = entry.get('summary', '') or entry.get('description', '')
-    img_match = re.search(r'<img[^>]+src=["\'](https?://[^"\']+)["\']', summary)
-    if img_match:
-        return img_match.group(1)
+
+    # 5. Extract from summary / description / content HTML img tags
+    candidates = [
+        entry.get('summary', ''),
+        entry.get('description', ''),
+    ]
+    if hasattr(entry, 'content') and entry.content:
+        for c in entry.content:
+            if isinstance(c, dict):
+                candidates.append(c.get('value', ''))
+            else:
+                candidates.append(str(c))
+
+    for html_chunk in candidates:
+        if html_chunk:
+            img_match = re.search(r'<img[^>]+src=["\'](https?://[^"\']+)["\']', html_chunk, re.IGNORECASE)
+            if img_match:
+                url = img_match.group(1)
+                # Filter out tracking pixels / tiny icons
+                if not any(bad in url.lower() for bad in ('1x1', 'pixel', 'tracker', 'spacer')):
+                    return url
     return None
 
 
@@ -130,6 +258,8 @@ async def ingest_single_feed(feed_info: Dict[str, Any], client: httpx.AsyncClien
                 content = _clean_html(" ".join(c.get("value", "") for c in entry.content))
 
             image_url = _extract_image_url(entry)
+            if not image_url:
+                image_url = pick_topic_fallback_image(title, summary, feed_info["cat"])
             pub_date = None
             if hasattr(entry, "published_parsed") and entry.published_parsed:
                 pub_date = datetime(*entry.published_parsed[:6])
