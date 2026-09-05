@@ -68,9 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <div style="width:22px;height:22px;border-radius:50%;background:var(--accent);color:#08090C;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 8px var(--accent-glow)">
               ${(user.full_name || user.username || 'U')[0].toUpperCase()}
             </div>
-            <span style="font-size: 13px; font-weight: 600;">${user.username || 'Profile'}</span>
+            <span class="header-user-name" style="font-size: 13px; font-weight: 600;">${user.username || 'Profile'}</span>
           </a>
-          <button onclick="logoutUser()" class="btn btn-ghost btn-sm btn-icon" title="Sign Out" style="color: var(--text-muted); padding: 7px; border-radius: 50%;">
+          <button onclick="logoutUser()" class="btn btn-ghost btn-sm btn-icon header-logout-btn" title="Sign Out" style="color: var(--text-muted); padding: 7px; border-radius: 50%;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           </button>
         </div>
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       authContainer.innerHTML = `
         <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
-        <a href="register.html" class="btn btn-primary btn-sm">Get Started</a>
+        <a href="register.html" class="btn btn-primary btn-sm hide-mobile-sm">Get Started</a>
       `;
     }
   }
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchOverlay = document.createElement('div');
     searchOverlay.id = 'searchOverlay';
     searchOverlay.className = 'search-overlay';
-    searchOverlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(8,11,18,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:99999;display:none;align-items:flex-start;justify-content:center;padding-top:10vh;";
+    searchOverlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(8,11,18,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:3000;display:none;align-items:flex-start;justify-content:center;padding-top:10vh;";
     searchOverlay.innerHTML = `
       <div class="search-modal" style="width:100%;max-width:640px;background:#101625;border:1px solid #222D42;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,0.9),0 0 0 1px rgba(0,245,155,0.3);overflow:hidden;margin:0 16px;display:flex;flex-direction:column;box-sizing:border-box;">
         
@@ -364,22 +364,169 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 6. Sidebar Drawer (Mobile)
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const sidebar = document.getElementById('sidebar');
-  const sidebarOverlay = document.getElementById('sidebarOverlay');
+  // 6. Universal Mobile Sidebar Drawer (Ensures hamburger menu functions across all pages)
+  (function initUniversalSidebar() {
+    let sidebar = document.getElementById('sidebar');
+    let sidebarOverlay = document.getElementById('sidebarOverlay');
 
-  if (sidebarToggle && sidebar && sidebarOverlay) {
-    sidebarToggle.addEventListener('click', () => {
+    if (!sidebar) {
+      sidebarOverlay = document.createElement('div');
+      sidebarOverlay.id = 'sidebarOverlay';
+      sidebarOverlay.className = 'sidebar-overlay';
+      document.body.appendChild(sidebarOverlay);
+
+      sidebar = document.createElement('aside');
+      sidebar.id = 'sidebar';
+      sidebar.className = 'sidebar';
+
+      const rawPath = window.location.pathname.split('/').pop() || 'home.html';
+      const curPage = (rawPath === '' || rawPath === 'index.html') ? 'home.html' : rawPath;
+      const urlParams = new URLSearchParams(window.location.search);
+      const curCat = urlParams.get('cat') || '';
+
+      const userRaw = localStorage.getItem('samachar_user');
+      let curUser = null;
+      try { curUser = userRaw ? JSON.parse(userRaw) : null; } catch(_) {}
+
+      sidebar.innerHTML = `
+        <div class="flex items-center justify-between mb-4 pb-3" style="border-bottom: 1px solid var(--border);">
+          <a href="home.html" class="logo" style="text-decoration:none;">
+            <span>SAMACHAR</span><span class="logo-dot"></span>
+          </a>
+          <button id="closeSidebarBtn" class="btn btn-icon btn-ghost" style="padding:6px;border-radius:50%;" title="Close Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        ${curUser ? `
+          <div class="card p-3 mb-4 flex items-center gap-3" style="background:var(--bg-surface-2);border-color:var(--border);">
+            <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:#08090C;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px var(--accent-glow);flex-shrink:0;">
+              ${(curUser.full_name || curUser.username || 'U')[0].toUpperCase()}
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:700;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${curUser.username || 'Reader'}</div>
+              <a href="profile.html" style="font-size:11px;color:var(--accent);text-decoration:none;font-weight:600;">View Profile & Settings &rarr;</a>
+            </div>
+          </div>
+        ` : `
+          <div class="card p-3 mb-4" style="background:var(--bg-surface-2);border-color:var(--border);">
+            <div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Truth-First Journalism</div>
+            <p style="font-size:11px;color:var(--text-secondary);margin-bottom:8px;line-height:1.5;">Sign in to save bookmarks and unlock customized wire feeds.</p>
+            <div class="flex items-center gap-2">
+              <a href="login.html" class="btn btn-primary btn-sm" style="flex:1;text-align:center;justify-content:center;padding:5px 8px;font-size:12px;">Sign In</a>
+              <a href="register.html" class="btn btn-secondary btn-sm" style="flex:1;text-align:center;justify-content:center;padding:5px 8px;font-size:12px;">Register</a>
+            </div>
+          </div>
+        `}
+
+        <div style="font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;padding:0 4px;">Main Feeds</div>
+        <div class="flex flex-col gap-1 mb-4" id="sidebarLinks">
+          <a href="home.html" class="sidebar-nav-item ${(curPage === 'home.html' && !curCat) ? 'active' : ''}">
+            <span>🏠</span>
+            <span>Top Stories</span>
+          </a>
+          <a href="latest.html" class="sidebar-nav-item ${(curPage === 'latest.html' && !curCat) ? 'active' : ''}">
+            <span>⚡</span>
+            <span>All News & Wire Feed</span>
+          </a>
+          <a href="factcheck.html" class="sidebar-nav-item ${curPage === 'factcheck.html' ? 'active' : ''}">
+            <span>🛡️</span>
+            <span>Fact Check Workbench</span>
+          </a>
+          <a href="trending.html" class="sidebar-nav-item ${curPage === 'trending.html' ? 'active' : ''}">
+            <span>🔥</span>
+            <span>Trending Wire Stories</span>
+          </a>
+          <a href="bookmarks.html" class="sidebar-nav-item ${curPage === 'bookmarks.html' ? 'active' : ''}">
+            <span>📌</span>
+            <span>Saved Bookmarks</span>
+          </a>
+        </div>
+
+        <div style="font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;padding:0 4px;">News Desks & Channels</div>
+        <div class="flex flex-col gap-1 mb-4">
+          <a href="latest.html?cat=world" class="sidebar-nav-item ${curCat === 'world' ? 'active' : ''}">
+            <span>🌍</span>
+            <span>World Affairs</span>
+          </a>
+          <a href="latest.html?cat=technology" class="sidebar-nav-item ${curCat === 'technology' ? 'active' : ''}">
+            <span>⚡</span>
+            <span>Tech & AI</span>
+          </a>
+          <a href="latest.html?cat=india" class="sidebar-nav-item ${curCat === 'india' ? 'active' : ''}">
+            <span>🇮🇳</span>
+            <span>India & Regional</span>
+          </a>
+          <a href="latest.html?cat=business" class="sidebar-nav-item ${curCat === 'business' ? 'active' : ''}">
+            <span>📈</span>
+            <span>Markets & Economy</span>
+          </a>
+          <a href="latest.html?cat=science" class="sidebar-nav-item ${curCat === 'science' ? 'active' : ''}">
+            <span>🔬</span>
+            <span>Science & Space</span>
+          </a>
+          <a href="latest.html?cat=health" class="sidebar-nav-item ${curCat === 'health' ? 'active' : ''}">
+            <span>🩺</span>
+            <span>Health & Medicine</span>
+          </a>
+          <a href="latest.html?cat=sports" class="sidebar-nav-item ${curCat === 'sports' ? 'active' : ''}">
+            <span>🏆</span>
+            <span>Sports</span>
+          </a>
+          <a href="latest.html?cat=entertainment" class="sidebar-nav-item ${curCat === 'entertainment' ? 'active' : ''}">
+            <span>🎬</span>
+            <span>Entertainment</span>
+          </a>
+        </div>
+
+        <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--border);">
+          <div class="flex items-center justify-between text-xs text-secondary mb-3">
+            <a href="about.html" class="hover-accent" style="color:var(--text-secondary);text-decoration:none;">About</a>
+            <span>·</span>
+            <a href="privacy.html" class="hover-accent" style="color:var(--text-secondary);text-decoration:none;">Privacy</a>
+            <span>·</span>
+            <a href="terms.html" class="hover-accent" style="color:var(--text-secondary);text-decoration:none;">Terms</a>
+          </div>
+          ${curUser ? `
+            <button onclick="logoutUser()" class="btn btn-secondary btn-sm w-full" style="justify-content:center;gap:6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          ` : ''}
+        </div>
+      `;
+      document.body.appendChild(sidebar);
+    }
+
+    const openSidebar = (e) => {
+      if (e) e.preventDefault();
       sidebar.classList.add('active');
       sidebarOverlay.classList.add('active');
-    });
+      document.body.style.overflow = 'hidden';
+    };
 
-    sidebarOverlay.addEventListener('click', () => {
+    const closeSidebar = () => {
       sidebar.classList.remove('active');
       sidebarOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    document.querySelectorAll('#sidebarToggle').forEach(btn => {
+      btn.addEventListener('click', openSidebar);
     });
-  }
+
+    sidebarOverlay?.addEventListener('click', closeSidebar);
+    document.getElementById('closeSidebarBtn')?.addEventListener('click', closeSidebar);
+    sidebar.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', closeSidebar);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+        closeSidebar();
+      }
+    });
+  })();
 
   // 7. Universal Active Navigation & Category Highlight
   try {

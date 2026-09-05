@@ -127,6 +127,8 @@
   background: var(--bg-surface-2);
   border-bottom: 1px solid var(--border);
   height: 36px;
+  width: 100%;
+  max-width: 100%;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -148,12 +150,15 @@
   white-space: nowrap;
   z-index: 2;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
 }
 
 .ticker-track {
   display: flex;
   white-space: nowrap;
   animation: tickerScroll 48s linear infinite;
+  min-width: 0;
+  flex: 1;
 }
 
 .ticker-track:hover {
@@ -493,8 +498,9 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
-  z-index: 1500;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2000;
   display: none;
 }
 .sidebar-overlay.active { display: block; }
@@ -504,18 +510,48 @@
   top: 0;
   bottom: 0;
   left: 0;
-  width: 280px;
+  width: 290px;
+  max-width: 85vw;
   background: var(--bg-surface-1);
   border-right: 1px solid var(--border);
-  z-index: 1600;
-  padding: 24px;
+  z-index: 2100;
+  padding: 20px 18px 24px;
   transform: translateX(-100%);
-  transition: transform 0.3s var(--ease-spring);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  box-shadow: 10px 0 40px rgba(0, 0, 0, 0.5);
 }
 .sidebar.active { transform: translateX(0); }
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.sidebar-nav-item:hover, .sidebar-nav-item:active {
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+}
+.sidebar-nav-item.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-weight: 700;
+}
 
 /* Footer */
 .footer {
@@ -633,10 +669,10 @@
    ========================================================= */
 @media (max-width: 1024px) {
   .auth-split-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
   .auth-sidebar-promo {
-    display: none;
+    display: none !important;
   }
   .bento-hero {
     grid-template-columns: 1fr;
@@ -652,6 +688,10 @@
     padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
   }
 
+  .container {
+    padding: 0 16px;
+  }
+
   /* Compact Native App Header Bar */
   .header {
     position: sticky;
@@ -663,11 +703,13 @@
 
   .header-main {
     height: 56px;
-    padding: 0 14px;
+    padding: 0 12px;
+    gap: 8px;
   }
 
   .logo {
-    font-size: 18px;
+    font-size: 17px;
+    font-weight: 800;
     letter-spacing: 0.5px;
   }
 
@@ -676,6 +718,24 @@
   }
 
   .header-search-bar {
+    display: none !important;
+  }
+
+  /* Header Auth Mobile Compactness */
+  #headerAuth .btn-primary {
+    display: none !important;
+  }
+
+  #headerAuth a.btn {
+    padding: 5px 11px;
+    font-size: 12px;
+  }
+
+  .header-user-name {
+    display: none !important;
+  }
+
+  .header-logout-btn {
     display: none !important;
   }
 
@@ -697,17 +757,19 @@
   }
 
   .category-nav-inner {
-    padding: 6px 16px;
+    padding: 6px 12px;
     gap: 6px;
     min-height: 42px;
   }
 
-  .category-link {
+  .category-nav-inner .category-link {
     font-size: 12px;
     padding: 5px 12px;
     border-radius: 9999px;
     background: var(--bg-surface-2);
     border: 1px solid var(--border);
+    margin-left: 0 !important;
+    flex-shrink: 0;
   }
 
   .category-link.active {
@@ -738,7 +800,7 @@
   .bento-hero {
     grid-template-columns: 1fr;
     gap: 14px;
-    margin: 16px 0 24px;
+    margin: 14px 0 20px;
   }
 
   .bento-main {
@@ -746,17 +808,18 @@
   }
 
   .bento-main-img {
-    height: 200px;
+    height: 190px;
   }
 
   .bento-main-content {
     padding: 16px;
-    margin-top: -50px;
+    margin-top: 0;
+    background: var(--bg-surface-1);
   }
 
   .bento-main-content .heading-lg {
-    font-size: 19px;
-    line-height: 1.28;
+    font-size: 18px;
+    line-height: 1.3;
     margin-bottom: 6px;
   }
 
@@ -809,22 +872,47 @@
 
   /* Full-Screen Search Modal for Mobile */
   .search-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     padding-top: 0 !important;
     align-items: stretch !important;
+    z-index: 3000 !important;
   }
 
   .search-modal {
     margin: 0 !important;
-    border-radius: 0 0 16px 16px !important;
+    border-radius: 0 !important;
     max-height: 100vh !important;
+    max-height: 100dvh !important;
     height: 100vh !important;
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;
+    height: 100dvh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border: none !important;
   }
 
   #globalSearchResults {
-    max-height: calc(100vh - 160px) !important;
+    max-height: calc(100dvh - 140px) !important;
+  }
+
+  /* Audio player & actions on mobile */
+  .audio-player-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+  }
+
+  .audio-player-bar > .flex {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* Auth forms on mobile */
+  .auth-form-container {
+    padding: 24px 16px !important;
   }
 
   /* Footer on mobile */
@@ -835,6 +923,52 @@
 
   .footer {
     padding: 40px 0 calc(80px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 14px;
+  }
+
+  .auth-card-inner .card {
+    padding: 22px 16px !important;
+  }
+
+  .otp-digit-box {
+    width: 38px !important;
+    height: 48px !important;
+    font-size: 19px !important;
+  }
+
+  .otp-digit-group {
+    gap: 6px !important;
+  }
+
+  .heading-xl {
+    font-size: clamp(22px, 6vw, 30px) !important;
+  }
+
+  .heading-lg {
+    font-size: clamp(18px, 5.2vw, 24px) !important;
+  }
+
+  #verifySubmitBtn {
+    width: 100% !important;
+    justify-content: center;
+  }
+
+  .scorecard-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .scorecard-stat {
+    padding: 10px 4px !important;
+  }
+
+  .scorecard-stat .val {
+    font-size: 18px !important;
   }
 }
 

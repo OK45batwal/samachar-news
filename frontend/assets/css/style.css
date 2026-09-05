@@ -15,6 +15,9 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 body {
@@ -23,6 +26,9 @@ body {
   flex-direction: column;
   background-color: var(--bg-base);
   color: var(--text-primary);
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
   transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
@@ -636,6 +642,15 @@ img {
   gap: 8px;
 }
 
+@media (max-width: 768px) {
+  .toast-container {
+    bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+    left: 16px;
+    right: 16px;
+    align-items: center;
+  }
+}
+
 .toast {
   background: var(--bg-surface-1);
   color: var(--text-primary);
@@ -647,6 +662,15 @@ img {
   font-weight: 600;
   animation: fadeInUp 0.3s var(--ease-spring);
   transition: all 0.25s var(--ease-spring);
+}
+
+@media (max-width: 768px) {
+  .toast {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    font-size: 13px;
+  }
 }
 
 /* Spacers & Utilities */
@@ -846,16 +870,6 @@ img {
   text-decoration: underline;
 }
 
-@media (max-width: 768px) {
-  .header-search-bar {
-    max-width: 100%;
-    margin: 0 8px;
-  }
-  .header-search-input {
-    font-size: 12.5px;
-  }
-}
-
 /* =========================================================
    Landing Page Dynamic Aesthetics & Animation Suite
    ========================================================= */
@@ -892,6 +906,8 @@ img {
   overflow: hidden;
   position: relative;
   height: 38px;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   align-items: center;
 }
@@ -911,6 +927,7 @@ img {
   white-space: nowrap;
   z-index: 2;
   letter-spacing: 0.5px;
+  flex-shrink: 0;
 }
 
 .landing-ticker-track {
@@ -920,6 +937,8 @@ img {
   white-space: nowrap;
   animation: landingTickerScroll 45s linear infinite;
   padding-left: 20px;
+  min-width: 0;
+  flex: 1;
 }
 
 .landing-ticker-track:hover {

@@ -116,33 +116,6 @@
     </nav>
   </header>
 
-  <!-- Mobile Sidebar Drawer -->
-  <div id="sidebarOverlay" class="sidebar-overlay"></div>
-  <aside id="sidebar" class="sidebar">
-    <div class="flex items-center justify-between mb-6">
-      <a href="home.html" class="logo"><span>SAMACHAR</span><span class="logo-dot"></span></a>
-      <button class="btn btn-icon btn-ghost" onclick="document.getElementById('sidebarOverlay').click()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
-    </div>
-    <div class="flex flex-col gap-3" id="sidebarLinks">
-      <button class="text-accent font-semibold text-left p-2" data-cat="" style="background:none;border:none;cursor:pointer">🏠 Top Stories</button>
-      <a href="latest.html" class="p-2 text-secondary">📰 All News Feed</a>
-      <button class="text-secondary text-left p-2" data-cat="world" style="background:none;border:none;cursor:pointer">🌍 World</button>
-      <button class="text-secondary text-left p-2" data-cat="technology" style="background:none;border:none;cursor:pointer">⚡ Tech & AI</button>
-      <button class="text-secondary text-left p-2" data-cat="india" style="background:none;border:none;cursor:pointer">🇮🇳 India</button>
-      <button class="text-secondary text-left p-2" data-cat="business" style="background:none;border:none;cursor:pointer">📈 Business & Markets</button>
-      <button class="text-secondary text-left p-2" data-cat="science" style="background:none;border:none;cursor:pointer">🔬 Science & Space</button>
-      <button class="text-secondary text-left p-2" data-cat="health" style="background:none;border:none;cursor:pointer">🩺 Health</button>
-      <button class="text-secondary text-left p-2" data-cat="sports" style="background:none;border:none;cursor:pointer">🏆 Sports</button>
-      <button class="text-secondary text-left p-2" data-cat="entertainment" style="background:none;border:none;cursor:pointer">🎬 Entertainment</button>
-      <a href="trending.html" class="p-2 text-secondary">🔥 Trending Stories</a>
-      <a href="factcheck.html" class="p-2 text-accent font-bold">⚡ Fact Check Tool</a>
-      <hr style="border-color:var(--border);margin:12px 0;" />
-      <a href="bookmarks.html" class="p-2 text-secondary">📌 Saved Bookmarks</a>
-      <a href="profile.html" class="p-2 text-secondary">👤 Account Profile</a>
-      <a href="about.html" class="p-2 text-secondary">ℹ️ Fact Methodology</a>
-    </div>
-  </aside>
-
   <!-- Main Container -->
   <main class="container py-8">
 
@@ -416,6 +389,7 @@
         window.history.pushState({ cat }, '', newUrl);
         loadNews();
       }
+      window.switchCategory = switchCategory;
 
       document.querySelectorAll('#mainChannelBar .category-link').forEach(btn => {
         if (btn.tagName === 'BUTTON') {
@@ -423,13 +397,6 @@
             switchCategory(btn.getAttribute('data-cat') || '');
           });
         }
-      });
-
-      document.querySelectorAll('#sidebarLinks button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.getElementById('sidebarOverlay').click();
-          switchCategory(btn.getAttribute('data-cat') || '');
-        });
       });
 
       const toggleBtn = document.getElementById('verifiedOnlyToggleBtn');
