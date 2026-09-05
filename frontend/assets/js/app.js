@@ -207,7 +207,7 @@ function renderNewsCard(article) {
           <span class="flex items-center gap-1"><span>⏱️ ${readMins}m read</span> · <span>${timeStr}</span></span>
         </div>
         <h3 class="heading-sm mb-2 line-clamp-2">
-          <a href="article.html?id=${article.id}" style="color:var(--text-primary)">${safeTitle}</a>
+          <a href="article.html?id=${article.id}" class="card-headline-link">${safeTitle}</a>
         </h3>
         <p class="text-xs text-secondary line-clamp-3">${safeSummary}</p>
       </div>

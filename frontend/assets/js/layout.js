@@ -380,4 +380,31 @@ document.addEventListener('DOMContentLoaded', () => {
       sidebarOverlay.classList.remove('active');
     });
   }
+
+  // 7. Universal Active Navigation & Category Highlight
+  try {
+    const rawPath = window.location.pathname.split('/').pop() || 'home.html';
+    const activePage = (rawPath === '' || rawPath === 'index.html') ? 'home.html' : rawPath;
+    document.querySelectorAll('.header nav a, .header-main nav a').forEach(link => {
+      const href = link.getAttribute('href') || '';
+      if (href === activePage) {
+        link.classList.add('text-accent');
+        link.classList.remove('text-secondary');
+        link.style.color = 'var(--accent)';
+      }
+    });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const curCat = urlParams.get('cat') || '';
+    document.querySelectorAll('#mainChannelBar .category-link').forEach(link => {
+      const dataCat = link.getAttribute('data-cat');
+      if (dataCat !== null) {
+        if (dataCat === curCat) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      }
+    });
+  } catch (_) {}
 });

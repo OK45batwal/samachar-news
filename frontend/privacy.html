@@ -39,25 +39,56 @@
   <!-- Main Header -->
   <header class="header">
     <div class="container header-main">
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-6">
         <a href="home.html" class="logo">
           <span>SAMACHAR</span><span class="logo-dot"></span>
           <span class="logo-tag">TRUTH FIRST</span>
         </a>
+        <nav class="hide-mobile flex items-center gap-5 text-xs font-semibold uppercase tracking-wider text-muted">
+          <a href="home.html" class="top-nav-link">Top Stories</a>
+          <a href="latest.html" class="top-nav-link">All Feeds</a>
+          <a href="factcheck.html" class="top-nav-link">Fact Check</a>
+          <a href="bookmarks.html" class="top-nav-link">Bookmarks</a>
+          <a href="about.html" class="top-nav-link">About</a>
+        </nav>
+      </div>
+
+      <!-- Interactive Header Search Bar -->
+      <div class="header-search-bar" id="headerSearchBarContainer">
+        <div class="search-box-inner">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="search-box-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search verified news, facts, topics..." autocomplete="off" />
+          <button type="button" id="headerSearchClearBtn" class="search-box-clear" style="display:none;" title="Clear">✕</button>
+          <kbd class="search-box-kbd hide-mobile">⌘K</kbd>
+        </div>
+        <div id="headerSearchDropdown" class="header-search-dropdown" style="display:none;"></div>
       </div>
 
       <div class="flex items-center gap-3">
-        <button id="searchToggle" class="btn btn-secondary btn-sm flex items-center gap-2" style="color:var(--text-secondary);" title="Search news and claims (⌘K)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <span class="hide-mobile">Search facts...</span>
-          <kbd class="hide-mobile" style="font-family:var(--font-mono);font-size:10px;padding:2px 6px;background:var(--bg-surface-2);border:1px solid var(--border);border-radius:4px">⌘K</kbd>
-        </button>
         <button id="themeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
         <div id="headerAuth" class="flex items-center gap-2"></div>
       </div>
     </div>
+
+    <!-- Category Navigation Bar -->
+    <nav class="category-nav-bar" aria-label="News channels">
+      <div class="container category-nav-inner">
+        <a href="home.html" class="category-link">🔥 Top Stories</a>
+        <a href="latest.html?cat=world" class="category-link">World</a>
+        <a href="latest.html?cat=technology" class="category-link">Technology</a>
+        <a href="latest.html?cat=india" class="category-link">India</a>
+        <a href="latest.html?cat=business" class="category-link">Business</a>
+        <a href="latest.html?cat=science" class="category-link">Science</a>
+        <a href="latest.html?cat=health" class="category-link">Health</a>
+        <a href="latest.html?cat=sports" class="category-link">Sports</a>
+        <a href="latest.html?cat=entertainment" class="category-link">Entertainment</a>
+        <a href="trending.html" class="category-link">⚡ Trending</a>
+        <a href="factcheck.html" class="category-link">🛡️ Fact Check</a>
+        <a href="bookmarks.html" class="category-link">🔖 Bookmarks</a>
+      </div>
+    </nav>
   </header>
 
   <main class="container my-8" style="max-width: 860px;">
@@ -107,15 +138,57 @@
     </div>
   </main>
 
+  <!-- Universal Footer -->
   <footer class="footer mt-12">
     <div class="container">
-      <div class="footer-bottom">
-        <span>&copy; 2026 Samachar News Platform. All rights reserved.</span>
-        <div class="flex items-center gap-4">
-          <a href="privacy.html" class="text-accent font-semibold">Privacy Policy</a>
-          <span>·</span>
-          <a href="terms.html" class="text-secondary hover:text-primary">Terms of Service</a>
+      <div class="footer-grid">
+        <div>
+          <a href="home.html" class="logo mb-3" style="display:inline-flex;">
+            <span>SAMACHAR</span><span class="logo-dot"></span>
+            <span class="logo-tag">TRUTH FIRST</span>
+          </a>
+          <p class="text-xs text-muted" style="max-width:320px;line-height:1.7;">
+            Next-generation real-time news intelligence platform. Triangulating breaking dispatches across 25+ accredited global wire bureaus with automated claim verification and truth indexing.
+          </p>
+          <div class="flex items-center gap-2 text-xs text-muted mt-3">
+            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">🟢 LIVE 24x7 INGESTION</span>
+            <span>·</span>
+            <span>Obsidian Truth Engine 2.0</span>
+          </div>
         </div>
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">News Desks</h4>
+          <div class="footer-links">
+            <a href="latest.html?cat=world">World Affairs</a>
+            <a href="latest.html?cat=technology">Technology & AI</a>
+            <a href="latest.html?cat=business">Business & Markets</a>
+            <a href="latest.html?cat=science">Science & Space</a>
+            <a href="latest.html?cat=india">India & Regional</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">Verification</h4>
+          <div class="footer-links">
+            <a href="factcheck.html">Claim Workbench</a>
+            <a href="latest.html">All Wire Feeds</a>
+            <a href="trending.html">Trending Stories</a>
+            <a href="bookmarks.html">Saved Archive</a>
+            <a href="about.html">Fact Methodology</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">Platform</h4>
+          <div class="footer-links">
+            <a href="profile.html">Account Profile</a>
+            <a href="about.html">About Samachar</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Samachar News Intelligence. All rights reserved.</span>
+        <span class="hide-mobile text-muted">Accredited Wires: Reuters · AP · BBC · Bloomberg · Nature · DW · The Hindu</span>
       </div>
     </div>
   </footer>

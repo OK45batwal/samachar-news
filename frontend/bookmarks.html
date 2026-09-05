@@ -41,18 +41,23 @@
   </div>
 
   <!-- Header -->
+  <!-- Header -->
   <header class="header">
     <div class="container header-main">
       <div class="flex items-center gap-6">
+        <button id="sidebarToggle" class="btn btn-icon btn-ghost hide-desktop" aria-label="Toggle menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
         <a href="home.html" class="logo">
           <span>SAMACHAR</span><span class="logo-dot"></span>
           <span class="logo-tag">TRUTH FIRST</span>
         </a>
-        <nav class="hide-mobile flex items-center gap-4 text-sm font-semibold text-secondary">
-          <a href="home.html" class="hover:text-primary">News Portal</a>
-          <a href="latest.html" class="hover:text-primary">All Feeds</a>
-          <a href="factcheck.html" class="hover:text-primary">Fact Check Tool</a>
-          <a href="bookmarks.html" class="text-accent font-bold">Bookmarks</a>
+        <nav class="hide-mobile flex items-center gap-5 text-sm font-semibold text-secondary">
+          <a href="home.html" class="nav-link hover:text-primary">Top Stories</a>
+          <a href="latest.html" class="nav-link hover:text-primary">All Feeds</a>
+          <a href="factcheck.html" class="nav-link hover:text-primary">Fact Check</a>
+          <a href="bookmarks.html" class="nav-link hover:text-primary">Bookmarks</a>
+          <a href="about.html" class="nav-link hover:text-primary">About</a>
         </nav>
       </div>
 
@@ -75,19 +80,19 @@
       </div>
     </div>
 
-    <!-- Category Navigation Bar -->
+    <!-- Category Channels Navigation Bar -->
     <nav class="category-nav-bar" aria-label="News channels">
-      <div class="container category-nav-inner">
-        <a href="home.html" class="category-link">🔥 Top Stories</a>
-        <a href="latest.html?cat=world" class="category-link">🌍 World</a>
-        <a href="latest.html?cat=technology" class="category-link">⚡ Tech & AI</a>
-        <a href="latest.html?cat=india" class="category-link">🇮🇳 India</a>
-        <a href="latest.html?cat=business" class="category-link">📈 Markets</a>
-        <a href="latest.html?cat=science" class="category-link">🔬 Science</a>
-        <a href="latest.html?cat=health" class="category-link">🩺 Health</a>
-        <a href="latest.html?cat=sports" class="category-link">🏆 Sports</a>
-        <a href="latest.html?cat=entertainment" class="category-link">🎬 Entertainment</a>
-        <a href="bookmarks.html" class="category-link active text-accent font-bold">📌 Saved Archive</a>
+      <div class="container category-nav-inner" id="mainChannelBar">
+        <a href="home.html" class="category-link" data-cat="">Top Stories</a>
+        <a href="latest.html?cat=world" class="category-link" data-cat="world">World</a>
+        <a href="latest.html?cat=technology" class="category-link" data-cat="technology">Tech & AI</a>
+        <a href="latest.html?cat=india" class="category-link" data-cat="india">India</a>
+        <a href="latest.html?cat=business" class="category-link" data-cat="business">Markets</a>
+        <a href="latest.html?cat=science" class="category-link" data-cat="science">Science</a>
+        <a href="latest.html?cat=health" class="category-link" data-cat="health">Health</a>
+        <a href="latest.html?cat=sports" class="category-link" data-cat="sports">Sports</a>
+        <a href="latest.html?cat=entertainment" class="category-link" data-cat="entertainment">Entertainment</a>
+        <a href="factcheck.html" class="category-link text-accent font-semibold" style="margin-left:auto;">⚡ Fact Check Workbench</a>
       </div>
     </nav>
   </header>
@@ -134,12 +139,57 @@
 
   </main>
 
-  <!-- Footer -->
+  <!-- Universal Footer -->
   <footer class="footer">
     <div class="container">
-      <div class="footer-bottom" style="border-top:none;padding-top:0">
-        <span>&copy; 2026 Samachar News Platform. All rights reserved.</span>
-        <span>Obsidian Truth Engine 2.0</span>
+      <div class="footer-grid">
+        <div>
+          <a href="home.html" class="logo mb-3" style="display:inline-flex;">
+            <span>SAMACHAR</span><span class="logo-dot"></span>
+            <span class="logo-tag">TRUTH FIRST</span>
+          </a>
+          <p class="text-xs text-muted" style="max-width:320px;line-height:1.7;">
+            Next-generation real-time news intelligence platform. Triangulating breaking dispatches across 25+ accredited global wire bureaus with automated claim verification and truth indexing.
+          </p>
+          <div class="flex items-center gap-2 text-xs text-muted mt-3">
+            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">🟢 LIVE 24x7 INGESTION</span>
+            <span>·</span>
+            <span>Obsidian Truth Engine 2.0</span>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">News Desks</h4>
+          <div class="footer-links">
+            <a href="latest.html?cat=world">World Affairs</a>
+            <a href="latest.html?cat=technology">Technology & AI</a>
+            <a href="latest.html?cat=business">Business & Markets</a>
+            <a href="latest.html?cat=science">Science & Space</a>
+            <a href="latest.html?cat=india">India & Regional</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">Verification</h4>
+          <div class="footer-links">
+            <a href="factcheck.html">Claim Workbench</a>
+            <a href="latest.html">All Wire Feeds</a>
+            <a href="trending.html">Trending Stories</a>
+            <a href="bookmarks.html">Saved Archive</a>
+            <a href="about.html">Fact Methodology</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">Platform</h4>
+          <div class="footer-links">
+            <a href="profile.html">Account Profile</a>
+            <a href="about.html">About Samachar</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Samachar News Intelligence. All rights reserved.</span>
+        <span class="hide-mobile text-muted">Accredited Wires: Reuters · AP · BBC · Bloomberg · Nature · DW · The Hindu</span>
       </div>
     </div>
   </footer>

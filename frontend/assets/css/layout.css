@@ -96,15 +96,15 @@
 .category-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  font-size: 13px;
+  gap: 5px;
+  padding: 5px 12px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--text-secondary);
   white-space: nowrap;
-  border-radius: var(--radius-sm);
-  background: var(--bg-surface-2);
-  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: 1px solid transparent;
   cursor: pointer;
   outline: none;
   text-decoration: none;
@@ -113,15 +113,13 @@
 
 .category-link:hover {
   color: var(--text-primary);
-  background: var(--bg-surface-3);
-  border-color: var(--border-light);
+  background: var(--bg-surface-2);
 }
 
 .category-link.active {
   color: var(--accent);
   background: var(--accent-dim);
-  border: 1px solid var(--accent-border);
-  box-shadow: 0 0 12px var(--accent-glow);
+  border-color: var(--accent-border);
 }
 
 /* Ticker Bar */
