@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timedelta, timezone
 from fastapi import HTTPException, Request
 from sqlalchemy import delete, select
@@ -7,16 +8,21 @@ from ..config import settings
 from ..models.models import RateLimitEntry
 
 WINDOW_SECONDS = 60
+_LAST_CLEANUP_TS: float = 0.0
 
 
 async def check_rate_limit(key: str, db: AsyncSession) -> None:
-    """DB-backed sliding window rate limiter."""
+    """DB-backed sliding window rate limiter with throttled background cleanup."""
+    global _LAST_CLEANUP_TS
     limit = settings.RATE_LIMIT_PER_MINUTE
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     cutoff = now - timedelta(seconds=WINDOW_SECONDS)
 
     try:
-        await db.execute(delete(RateLimitEntry).where(RateLimitEntry.timestamp < cutoff))
+        current_time = time.time()
+        if current_time - _LAST_CLEANUP_TS > 60:
+            await db.execute(delete(RateLimitEntry).where(RateLimitEntry.timestamp < cutoff))
+            _LAST_CLEANUP_TS = current_time
 
         result = await db.execute(
             select(RateLimitEntry).where(

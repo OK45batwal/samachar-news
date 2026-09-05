@@ -103,7 +103,7 @@ class Article(Base):
         default=FactCheckStatus.VERIFIED,
         nullable=False,
     )
-    credibility_score = Column(Integer, default=88)      # 0 to 100%
+    credibility_score = Column(Integer, default=88, index=True)      # 0 to 100%
     sensationalism_score = Column(Integer, default=12)   # 0 to 100% (clickbait penalty)
     key_claims = Column(JSON, default=list)              # [{"claim": "...", "status": "verified", "evidence": "..."}]
     corroborating_sources = Column(JSON, default=list)   # ["Reuters", "BBC News", "AP"]
@@ -111,7 +111,7 @@ class Article(Base):
 
     category_id = Column(Integer, ForeignKey("categories.id"))
     source_id = Column(Integer, ForeignKey("sources.id"))
-    published_at = Column(DateTime)
+    published_at = Column(DateTime, index=True)
     created_at = Column(DateTime, default=_utc_now)
     updated_at = Column(DateTime, default=_utc_now, onupdate=_utc_now)
 
@@ -155,6 +155,23 @@ class RateLimitEntry(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     key = Column(String(255), nullable=False, index=True)
     timestamp = Column(DateTime, nullable=False)
+
+
+class RevokedToken(Base):
+    __tablename__ = "revoked_tokens"
+
+    token = Column(String(500), primary_key=True)
+    revoked_at = Column(DateTime, default=_utc_now)
+    expires_at = Column(DateTime, nullable=True)
+
+
+class EmailOtp(Base):
+    __tablename__ = "email_otps"
+
+    email = Column(String(255), primary_key=True)
+    otp_code = Column(String(10), nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, default=_utc_now)
 
 
 class IngestionRun(Base):

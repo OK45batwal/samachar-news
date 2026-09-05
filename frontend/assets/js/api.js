@@ -2,6 +2,28 @@
 
 const FALLBACK_ARTICLES = [];
 
+let _newsCache = null;
+let _newsCacheTs = 0;
+const NEWS_CACHE_TTL = 3 * 60 * 1000; // 3 minutes cache window
+
+async function fetchNewsData(forceRefresh = false) {
+  const now = Date.now();
+  if (!forceRefresh && _newsCache && (now - _newsCacheTs < NEWS_CACHE_TTL)) {
+    return _newsCache;
+  }
+  try {
+    const res = await fetch(`/assets/data/news.json?t=${now}`, { cache: 'no-store' });
+    if (res.ok) {
+      _newsCache = await res.json();
+      _newsCacheTs = now;
+      return _newsCache;
+    }
+  } catch (err) {
+    console.warn("Could not load live news dataset:", err);
+  }
+  return _newsCache || [];
+}
+
 async function request(endpoint, options = {}) {
   const token = localStorage.getItem('samachar_token');
   const headers = {
@@ -29,14 +51,19 @@ async function request(endpoint, options = {}) {
       } catch (_) {}
     }
 
-    // Client-side authentication fallback for instant login
+    // Disallow mock auth token forgery in production deployments
+    if (!isLocalDev) {
+      throw new Error('Authentication service is currently unreachable. Please check backend connection.');
+    }
+
+    // Local developer fallback for rapid offline UI testing
     const body = JSON.parse(options.body || '{}');
     const email = body.email || 'reader@samachar.news';
     const mockUser = {
       id: 'usr_' + btoa(email).replace(/[^a-zA-Z0-9]/g, '').slice(0, 12),
       email: email,
       username: email.split('@')[0],
-      full_name: email.split('@')[0].toUpperCase() + ' (Verified Reader)',
+      full_name: email.split('@')[0].toUpperCase() + ' (Local Dev Reader)',
       role: 'user',
       preferences: { theme: 'dark', verified_only: true }
     };
@@ -59,6 +86,10 @@ async function request(endpoint, options = {}) {
         const fallbackRes = await fetch(fallbackUrl, { ...options, headers });
         if (fallbackRes.ok) return await fallbackRes.json();
       } catch (_) {}
+    }
+
+    if (!isLocalDev) {
+      throw new Error('Registration service is currently unreachable. Please check backend connection.');
     }
 
     const body = JSON.parse(options.body || '{}');
@@ -94,10 +125,13 @@ async function request(endpoint, options = {}) {
       } catch (_) {}
     }
 
+    if (!isLocalDev) {
+      throw new Error('OTP verification service is unreachable.');
+    }
+
     return {
       status: "success",
-      message: `Verification code sent to ${email}`,
-      otp_hint: clientOtp
+      message: `Verification code sent to ${email}`
     };
   }
 
@@ -166,9 +200,8 @@ async function request(endpoint, options = {}) {
   // Real-Time Live News Data Provider
   if (endpoint.startsWith('/api/news/')) {
     try {
-      const dataRes = await fetch('/assets/data/news.json');
-      if (dataRes.ok) {
-        const liveArticles = await dataRes.json();
+      const liveArticles = await fetchNewsData();
+      if (liveArticles && liveArticles.length) {
         const url = new URL('http://localhost' + endpoint);
         const cat = (url.searchParams.get('category') || '').toLowerCase();
         const q = (url.searchParams.get('q') || '').toLowerCase();
@@ -259,10 +292,9 @@ async function getArticles(params = {}) {
 
   // Load from live real-world news dataset
   try {
-    const dataRes = await fetch(`/assets/data/news.json?t=${Date.now()}`, { cache: 'no-store' });
-    if (dataRes.ok) {
-      let list = await dataRes.json();
-      list = list.map(a => ({
+    const rawList = await fetchNewsData();
+    if (rawList && rawList.length) {
+      let list = rawList.map(a => ({
         ...a,
         category: { name: a.category_name, slug: (a.category_name || '').toLowerCase() },
         source: { name: a.source_name, reliability_score: a.credibility_score || 95 }
@@ -300,9 +332,8 @@ async function getArticles(params = {}) {
 
 async function getArticleById(id) {
   try {
-    const dataRes = await fetch('/assets/data/news.json?t=' + Date.now(), { cache: 'no-store' });
-    if (dataRes.ok) {
-      const list = await dataRes.json();
+    const list = await fetchNewsData();
+    if (list && list.length) {
       const found = list.find(a => String(a.id) === String(id) || a.slug === id);
       if (found) {
         return {
@@ -321,9 +352,9 @@ async function getArticleById(id) {
 
 async function getTrending(limit = 6) {
   try {
-    const dataRes = await fetch('/assets/data/news.json?t=' + Date.now(), { cache: 'no-store' });
-    if (dataRes.ok) {
-      let list = await dataRes.json();
+    const rawList = await fetchNewsData();
+    if (rawList && rawList.length) {
+      let list = [...rawList];
       list.sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
       return list.slice(0, limit).map(a => ({
         ...a,
@@ -337,9 +368,9 @@ async function getTrending(limit = 6) {
 
 async function getVerifiedArticles(limit = 6) {
   try {
-    const dataRes = await fetch('/assets/data/news.json?t=' + Date.now(), { cache: 'no-store' });
-    if (dataRes.ok) {
-      let list = await dataRes.json();
+    const rawList = await fetchNewsData();
+    if (rawList && rawList.length) {
+      let list = [...rawList];
       list.sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
       return list.filter(a => (a.credibility_score || 0) >= 80).slice(0, limit).map(a => ({
         ...a,

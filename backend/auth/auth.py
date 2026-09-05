@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..config import settings
 from ..database import get_db
-from ..models.models import User, UserRole
+from ..models.models import RevokedToken, User, UserRole
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)
 
@@ -45,13 +45,32 @@ def decode_token(token: str) -> dict:
     return jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
 
 
-def revoke_token(token: str) -> None:
-    if token:
-        REVOKED_TOKENS.add(token)
+async def revoke_token(token: str, db: Optional[AsyncSession] = None) -> None:
+    if not token:
+        return
+    REVOKED_TOKENS.add(token)
+    if db is not None:
+        try:
+            db.add(RevokedToken(token=token))
+            await db.commit()
+        except Exception:
+            await db.rollback()
 
 
-def is_token_revoked(token: str) -> bool:
-    return token in REVOKED_TOKENS
+async def is_token_revoked(token: str, db: Optional[AsyncSession] = None) -> bool:
+    if not token:
+        return False
+    if token in REVOKED_TOKENS:
+        return True
+    if db is not None:
+        try:
+            result = await db.execute(select(RevokedToken).where(RevokedToken.token == token))
+            if result.scalar_one_or_none() is not None:
+                REVOKED_TOKENS.add(token)
+                return True
+        except Exception:
+            pass
+    return False
 
 
 async def get_current_user(
@@ -63,7 +82,7 @@ async def get_current_user(
         token = request.cookies.get("access_token")
     if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
-    if is_token_revoked(token):
+    if await is_token_revoked(token, db):
         raise HTTPException(status_code=401, detail="Token has been revoked")
 
     try:

@@ -1,3 +1,4 @@
+import logging
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import desc, func, or_, select
@@ -9,7 +10,13 @@ from ..database import get_db
 from ..models.models import Article, ArticleStatus, Category, Source, User
 from ..schemas import ArticleListOut, ArticleOut, CategoryOut, SourceOut
 
+logger = logging.getLogger("samachar.news")
 router = APIRouter(prefix="/api/news", tags=["News"])
+
+
+def _escape_like(text: str) -> str:
+    """Escape SQL LIKE wildcards (%, _) and backslash to prevent wildcard injection."""
+    return text.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
 
 
 @router.get("/", response_model=ArticleListOut)
@@ -33,11 +40,19 @@ async def list_news(
         query = query.join(Article.category).where(Category.slug == category.lower())
 
     if source:
-        query = query.join(Article.source).where(Source.name.ilike(f"%{source}%"))
+        safe_source = _escape_like(source)
+        query = query.join(Article.source).where(Source.name.ilike(f"%{safe_source}%", escape="\\"))
 
     if q:
-        kw = f"%{q}%"
-        query = query.where(or_(Article.title.ilike(kw), Article.summary.ilike(kw), Article.content.ilike(kw)))
+        safe_q = _escape_like(q)
+        kw = f"%{safe_q}%"
+        query = query.where(
+            or_(
+                Article.title.ilike(kw, escape="\\"),
+                Article.summary.ilike(kw, escape="\\"),
+                Article.content.ilike(kw, escape="\\"),
+            )
+        )
 
     if verified_only:
         query = query.where(Article.credibility_score >= 85)
@@ -118,6 +133,7 @@ async def get_platform_stats(db: AsyncSession = Depends(get_db)):
     art_count = (await db.execute(select(func.count(Article.id)))).scalar() or 0
     verified_count = (await db.execute(select(func.count(Article.id)).where(Article.credibility_score >= 85))).scalar() or 0
     src_count = (await db.execute(select(func.count(Source.id)))).scalar() or 0
+    distinct_countries = (await db.execute(select(func.count(func.distinct(Source.country))))).scalar() or 1
     avg_cred = (await db.execute(select(func.avg(Article.credibility_score)))).scalar()
     credibility_avg = round(float(avg_cred), 1) if avg_cred is not None else 92.0
 
@@ -128,7 +144,7 @@ async def get_platform_stats(db: AsyncSession = Depends(get_db)):
         "active_sources": src_count,
         "truth_index_avg": credibility_avg,
         "credibility_avg": credibility_avg,
-        "countries_covered": 150,
+        "countries_covered": max(distinct_countries, 1),
     }
 
 
@@ -156,7 +172,8 @@ async def get_article(id: int, db: AsyncSession = Depends(get_db)):
     try:
         article.view_count = (article.view_count or 0) + 1
         await db.commit()
-    except Exception:
+    except Exception as e:
+        logger.warning("Failed to update view_count for article %s: %s", id, e)
         await db.rollback()
 
     return article

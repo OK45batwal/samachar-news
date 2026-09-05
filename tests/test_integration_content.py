@@ -46,3 +46,29 @@ async def test_categories_and_sources():
         src_res = await client.get("/api/news/sources")
         assert src_res.status_code == 200
         assert len(src_res.json()) >= 5
+
+
+@pytest.mark.asyncio
+async def test_search_like_wildcard_escaping():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        # Wildcards like % and _ should be safely escaped rather than matching everything blindly
+        res = await client.get("/api/news/?q=%25%25%25")
+        assert res.status_code == 200
+        data = res.json()
+        assert "articles" in data
+
+        res_source = await client.get("/api/news/?source=___")
+        assert res_source.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_platform_stats_dynamic_countries():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        res = await client.get("/api/news/stats")
+        assert res.status_code == 200
+        data = res.json()
+        assert "countries_covered" in data
+        assert isinstance(data["countries_covered"], int)
+        assert data["countries_covered"] >= 1

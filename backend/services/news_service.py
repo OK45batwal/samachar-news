@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import re
 import random
 from datetime import datetime, timezone
@@ -12,6 +13,8 @@ from ..ai.fact_checker import evaluate_article_credibility
 from ..ai.processor import analyze_sentiment
 from ..database import async_session
 from ..models.models import Article, ArticleStatus, Category, Source
+
+logger = logging.getLogger("samachar.news_service")
 
 FEEDS_REGISTRY = [
     # World News
@@ -277,8 +280,8 @@ async def ingest_single_feed(feed_info: Dict[str, Any], client: httpx.AsyncClien
                 "category_slug": feed_info["cat"],
                 "published_at": pub_date,
             })
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning("Feed ingestion error for %s (%s): %s", feed_info.get("name"), feed_info.get("feed"), e)
     return articles
 
 
@@ -384,9 +387,10 @@ async def ingest_all_feeds() -> Dict[str, Any]:
                             "published_at": article.published_at.isoformat() if article.published_at else None,
                         }
                     })
-                except Exception:
-                    pass
-            except Exception:
+                except Exception as ws_err:
+                    logger.debug("Live websocket broadcast skipped: %s", ws_err)
+            except Exception as e:
+                logger.warning("Failed to persist article '%s': %s", item.get("title", "")[:50], e)
                 await db.rollback()
 
     return {

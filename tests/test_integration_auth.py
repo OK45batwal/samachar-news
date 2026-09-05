@@ -42,6 +42,29 @@ async def test_register_and_login_flow():
 
 
 @pytest.mark.asyncio
+async def test_logout_revokes_token():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        email = "revoketest@samachar.news"
+        pwd = "RevokePassword123!"
+        await client.post("/api/auth/register", json={"email": email, "password": pwd, "full_name": "Revoke Tester"})
+        login_res = await client.post("/api/auth/login", json={"email": email, "password": pwd})
+        token = login_res.json()["access_token"]
+
+        # Verify valid before logout
+        me_res = await client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"})
+        assert me_res.status_code == 200
+
+        # Logout
+        logout_res = await client.post("/api/auth/logout", headers={"Authorization": f"Bearer {token}"})
+        assert logout_res.status_code == 200
+
+        # Verify token is now rejected as revoked
+        me_after = await client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"})
+        assert me_after.status_code == 401
+
+
+@pytest.mark.asyncio
 async def test_forgot_password_no_token_leak():
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:

@@ -1,11 +1,13 @@
 import asyncio
 import json
+import logging
 from typing import Dict, List, Set
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from jose import JWTError, jwt
 
 from ..config import settings
 
+logger = logging.getLogger("samachar.websocket")
 router = APIRouter()
 
 
@@ -81,9 +83,10 @@ async def websocket_endpoint(websocket: WebSocket):
                             }))
                 elif msg.get("type") == "ping":
                     await websocket.send_text(json.dumps({"type": "pong"}))
-            except Exception:
-                pass
+            except Exception as msg_err:
+                logger.debug("Malformed websocket message received: %s", msg_err)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-    except Exception:
+    except Exception as conn_err:
+        logger.warning("WebSocket connection encountered an error: %s", conn_err)
         manager.disconnect(websocket)

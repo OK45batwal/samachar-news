@@ -8,10 +8,20 @@ class Settings(BaseSettings):
 
     APP_NAME: str = "Samachar"
     APP_VERSION: str = "2.0.0"
-    SECRET_KEY: str = os.getenv("SECRET_KEY") or os.getenv("SAMACHAR_JWT_SECRET") or "samachar-fact-intelligence-super-secret-key-2026-xyz-abc"
+    ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
+    SECRET_KEY: str = os.getenv("SECRET_KEY") or os.getenv("SAMACHAR_JWT_SECRET") or ""
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+
+    def model_post_init(self, __context):
+        if not self.SECRET_KEY:
+            if self.ENVIRONMENT.lower() == "production":
+                raise ValueError("FATAL SECURITY ERROR: SECRET_KEY must be set via environment variable in production!")
+            # Safe localized developer fallback for local test/dev suites
+            self.SECRET_KEY = "samachar-dev-secret-key-local-only-never-use-in-production-789"
+        elif self.ENVIRONMENT.lower() == "production" and "samachar-fact-intelligence" in self.SECRET_KEY:
+            raise ValueError("FATAL SECURITY ERROR: Default example SECRET_KEY cannot be used in production!")
 
     DATABASE_URL: str = os.getenv("DATABASE_URL") or os.getenv("SAMACHAR_DATABASE_URL") or "sqlite+aiosqlite:///./samachar.db"
     REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
