@@ -83,14 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 0. Auto-Flush Stale Service Worker Cache & Browser CacheStorage
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      for (let reg of regs) reg.unregister();
+  // 0. Service Worker Registration for PWA caching
+  if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
     });
-  }
-  if ('caches' in window) {
-    caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
   }
 
   // 5. Universal Search Command Palette & Modal
@@ -258,9 +255,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const isHeaderSearchVisible = () => {
+    return headerSearchInput && headerSearchInput.offsetParent !== null && window.innerWidth > 768;
+  };
+
   searchToggle?.addEventListener('click', (e) => {
     e.preventDefault();
-    if (headerSearchInput) {
+    if (isHeaderSearchVisible()) {
       headerSearchInput.focus();
     } else {
       openSearch();
@@ -270,15 +271,20 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
-      if (headerSearchInput) {
+      if (isHeaderSearchVisible()) {
         headerSearchInput.focus();
         headerSearchInput.select();
       } else {
         openSearch();
       }
     }
-    if (e.key === 'Escape' && searchOverlay && searchOverlay.style.display === 'flex') {
-      closeSearch();
+    if (e.key === 'Escape') {
+      if (searchOverlay && searchOverlay.style.display === 'flex') {
+        closeSearch();
+      }
+      if (headerSearchDropdown) {
+        headerSearchDropdown.style.display = 'none';
+      }
     }
   });
 
