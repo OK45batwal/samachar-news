@@ -3,6 +3,21 @@
     "public": "frontend/dist",
     "cleanUrls": false,
     "trailingSlash": false,
+    "rewrites": [
+      { "source": "/home", "destination": "/home.html" },
+      { "source": "/latest", "destination": "/latest.html" },
+      { "source": "/trending", "destination": "/trending.html" },
+      { "source": "/factcheck", "destination": "/factcheck.html" },
+      { "source": "/article", "destination": "/article.html" },
+      { "source": "/bookmarks", "destination": "/bookmarks.html" },
+      { "source": "/profile", "destination": "/profile.html" },
+      { "source": "/login", "destination": "/login.html" },
+      { "source": "/register", "destination": "/register.html" },
+      { "source": "/about", "destination": "/about.html" },
+      { "source": "/privacy", "destination": "/privacy.html" },
+      { "source": "/terms", "destination": "/terms.html" },
+      { "source": "/google37ad5f54b5d08314", "destination": "/google37ad5f54b5d08314.html" }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",
