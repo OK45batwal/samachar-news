@@ -1,20 +1,10 @@
 # https://www.robotstxt.org/robotstxt.html
-# Google Search Console & Search Engine Crawlers
+# Google Search Console, Googlebot-News & Search Crawlers
 
-User-agent: *
+User-agent: Googlebot
 Allow: /
-Allow: /index.html
-Allow: /home.html
-Allow: /latest.html
-Allow: /trending.html
-Allow: /article.html
-Allow: /factcheck.html
-Allow: /about.html
-Allow: /privacy.html
-Allow: /terms.html
+Allow: /google*.html
 Allow: /assets/
-
-# Disallow private user states and authenticated endpoints
 Disallow: /profile.html
 Disallow: /bookmarks.html
 Disallow: /login.html
@@ -22,5 +12,30 @@ Disallow: /register.html
 Disallow: /api/auth/
 Disallow: /api/admin/
 
-# Google Search Console Sitemap Location
+User-agent: Googlebot-News
+Allow: /
+Allow: /article.html
+Allow: /latest.html
+Allow: /trending.html
+
+User-agent: Google-InspectionTool
+Allow: /
+
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: *
+Allow: /
+Allow: /assets/
+Disallow: /profile.html
+Disallow: /bookmarks.html
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /api/auth/
+Disallow: /api/admin/
+
+# Google Search Console Sitemaps & Feeds
 Sitemap: https://samachar-news-2026.web.app/sitemap.xml
+Sitemap: https://samachar-news-2026.web.app/sitemap-news.xml
+Sitemap: https://samachar-news-2026.web.app/rss.xml
+

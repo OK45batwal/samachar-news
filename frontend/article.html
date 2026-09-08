@@ -7,7 +7,11 @@
   <meta name="description" content="Verified news analysis, audio briefing, and fact-checking scorecard on Samachar." />
   <meta name="theme-color" content="#08090C" />
   <meta name="google-site-verification" content="google37ad5f54b5d08314" />
-  <link rel="canonical" href="https://samachar-news-2026.web.app/article.html" />
+  <link rel="canonical" id="canonicalLink" href="https://samachar-news-2026.web.app/article.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Samachar News Intelligence" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="stylesheet" href="/assets/css/variables.css?v=9.0" />
   <link rel="stylesheet" href="/assets/css/style.css?v=9.0" />
@@ -546,33 +550,75 @@
         const paragraphs = (article.content || article.summary || '').split('\n').filter(p => p.trim());
         bodyEl.innerHTML = paragraphs.map(p => `<p>${sanitize(p)}</p>`).join('');
 
-        // Dynamic Google Search Console / Google News JSON-LD
+        // Dynamic Google Search Console / Google News JSON-LD & BreadcrumbList
         try {
+          const canonicalHref = `https://samachar-news-2026.web.app/article.html?id=${encodeURIComponent(id)}`;
+          const canonicalEl = document.getElementById('canonicalLink');
+          if (canonicalEl) canonicalEl.href = canonicalHref;
+
           const oldLd = document.getElementById('jsonLdArticle');
           if (oldLd) oldLd.remove();
           const ldScript = document.createElement('script');
           ldScript.id = 'jsonLdArticle';
           ldScript.type = 'application/ld+json';
+          const catName = article.category?.name || article.category_name || 'News';
           ldScript.textContent = JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "NewsArticle",
-            "headline": article.title,
-            "image": [heroImg.src],
-            "datePublished": article.published_at || new Date().toISOString(),
-            "dateModified": article.published_at || new Date().toISOString(),
-            "author": [{
-              "@type": "Person",
-              "name": article.author || sourceName || "Editorial Bureau"
-            }],
-            "publisher": {
-              "@type": "NewsMediaOrganization",
-              "name": "Samachar News Intelligence",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://samachar-news-2026.web.app/assets/icons/favicon.svg"
+            "@graph": [
+              {
+                "@type": "NewsArticle",
+                "@id": `${canonicalHref}#article`,
+                "isPartOf": {
+                  "@type": "WebSite",
+                  "@id": "https://samachar-news-2026.web.app/#website",
+                  "name": "Samachar"
+                },
+                "headline": article.title,
+                "description": article.summary || article.title,
+                "image": [heroImg.src],
+                "datePublished": article.published_at || new Date().toISOString(),
+                "dateModified": article.updated_at || article.published_at || new Date().toISOString(),
+                "mainEntityOfPage": canonicalHref,
+                "articleSection": catName,
+                "author": [{
+                  "@type": "Person",
+                  "name": article.author || sourceName || "Editorial Bureau"
+                }],
+                "publisher": {
+                  "@type": "NewsMediaOrganization",
+                  "name": "Samachar News Intelligence",
+                  "url": "https://samachar-news-2026.web.app/",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://samachar-news-2026.web.app/assets/icons/favicon.svg"
+                  }
+                }
+              },
+              {
+                "@type": "BreadcrumbList",
+                "@id": `${canonicalHref}#breadcrumb`,
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://samachar-news-2026.web.app/"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": catName,
+                    "item": `https://samachar-news-2026.web.app/latest.html?category=${encodeURIComponent(catName.toLowerCase())}`
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": article.title,
+                    "item": canonicalHref
+                  }
+                ]
               }
-            },
-            "description": article.summary || article.title
+            ]
           });
           document.head.appendChild(ldScript);
         } catch (_) {}

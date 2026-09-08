@@ -10,6 +10,8 @@
   <meta name="google-site-verification" content="google37ad5f54b5d08314.html" />
   <link rel="canonical" href="https://samachar-news-2026.web.app/" />
   
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  
   <!-- Open Graph & Social Cards -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Samachar News Intelligence" />
@@ -23,16 +25,39 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "NewsMediaOrganization",
-    "name": "Samachar News Intelligence",
-    "url": "https://samachar-news-2026.web.app/",
-    "logo": "https://samachar-news-2026.web.app/assets/icons/favicon.svg",
-    "sameAs": [
-      "https://github.com/OK45batwal/samachar-news"
-    ],
-    "publishingPrinciples": "https://samachar-news-2026.web.app/about.html",
-    "correctionsPolicy": "https://samachar-news-2026.web.app/about.html",
-    "diversityPolicy": "https://samachar-news-2026.web.app/about.html"
+    "@graph": [
+      {
+        "@type": "NewsMediaOrganization",
+        "@id": "https://samachar-news-2026.web.app/#organization",
+        "name": "Samachar News Intelligence",
+        "url": "https://samachar-news-2026.web.app/",
+        "logo": "https://samachar-news-2026.web.app/assets/icons/favicon.svg",
+        "sameAs": [
+          "https://github.com/OK45batwal/samachar-news"
+        ],
+        "publishingPrinciples": "https://samachar-news-2026.web.app/about.html",
+        "correctionsPolicy": "https://samachar-news-2026.web.app/about.html",
+        "diversityPolicy": "https://samachar-news-2026.web.app/about.html"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://samachar-news-2026.web.app/#website",
+        "url": "https://samachar-news-2026.web.app/",
+        "name": "Samachar",
+        "description": "Autonomous truth-first news intelligence platform",
+        "publisher": {
+          "@id": "https://samachar-news-2026.web.app/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://samachar-news-2026.web.app/latest.html?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
   }
   </script>
 

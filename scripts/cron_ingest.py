@@ -91,9 +91,14 @@ async def update_live_news_dataset(limit: int = 150):
 
 
 def update_sitemap_xml(top_articles: list):
-    """Generate dynamic XML sitemap with Google News schema for GSC."""
-    sitemap_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "sitemap.xml"))
-    today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    """Generate dynamic XML sitemaps and RSS feed strictly adhering to Google Search Console & Google News guidelines."""
+    import html
+    from datetime import datetime, timezone, timedelta
+
+    frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
+    today_dt = datetime.now(timezone.utc)
+    today_str = today_dt.strftime("%Y-%m-%d")
+    cutoff_48h = today_dt - timedelta(hours=48)
 
     static_urls = [
         ("https://samachar-news-2026.web.app/", "always", "1.0"),
@@ -114,16 +119,15 @@ def update_sitemap_xml(top_articles: list):
         ("https://samachar-news-2026.web.app/terms.html", "monthly", "0.50"),
     ]
 
-    xml_lines = [
+    # -------------------------------------------------------------
+    # 1. Generate Master sitemap.xml
+    # -------------------------------------------------------------
+    sitemap_lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
-        '        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">',
-        '',
-        '  <!-- Core Static & Pillar Pages -->',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     ]
-
     for loc, freq, priority in static_urls:
-        xml_lines.extend([
+        sitemap_lines.extend([
             '  <url>',
             f'    <loc>{loc}</loc>',
             f'    <lastmod>{today_str}</lastmod>',
@@ -131,29 +135,56 @@ def update_sitemap_xml(top_articles: list):
             f'    <priority>{priority}</priority>',
             '  </url>',
         ])
+    for art in top_articles:
+        art_id = art.get("id")
+        pub_date = (art.get("published_at") or today_str)[:10]
+        sitemap_lines.extend([
+            '  <url>',
+            f'    <loc>https://samachar-news-2026.web.app/article.html?id={art_id}</loc>',
+            f'    <lastmod>{pub_date}</lastmod>',
+            '    <changefreq>daily</changefreq>',
+            '    <priority>0.75</priority>',
+            '  </url>',
+        ])
+    sitemap_lines.append('</urlset>')
 
-    if top_articles:
-        xml_lines.append('')
-        xml_lines.append('  <!-- Dynamic Articles with Google News Schemas -->')
-        import html
-        for art in top_articles:
+    sitemap_path = os.path.join(frontend_dir, "sitemap.xml")
+    with open(sitemap_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(sitemap_lines) + "\n")
+    logger.info(f"🗺️  Generated Master XML Sitemap at {sitemap_path}")
+
+    # -------------------------------------------------------------
+    # 2. Generate Google News Dedicated sitemap-news.xml (Last 48 Hours)
+    # -------------------------------------------------------------
+    news_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+        '        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">',
+    ]
+    recent_count = 0
+    for art in top_articles:
+        raw_pub = art.get("published_at")
+        pub_dt = today_dt
+        if raw_pub:
+            try:
+                pub_dt = datetime.fromisoformat(raw_pub.replace("Z", "+00:00"))
+                if pub_dt.tzinfo is None:
+                    pub_dt = pub_dt.replace(tzinfo=timezone.utc)
+            except Exception:
+                pub_dt = today_dt
+
+        # Strict Google News rule: Only include stories from the last 48 hours
+        if pub_dt >= cutoff_48h:
+            recent_count += 1
             art_id = art.get("id")
             title = html.escape(art.get("title") or "News Article")
-            pub_date = art.get("published_at") or today_str
-            # Shorten pub date to ISO format if needed
-            if len(pub_date) > 10:
-                pub_date_tag = pub_date[:19] + "Z" if not pub_date.endswith("Z") else pub_date
-            else:
-                pub_date_tag = f"{pub_date}T00:00:00Z"
-            xml_lines.extend([
+            pub_date_tag = pub_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+            news_lines.extend([
                 '  <url>',
                 f'    <loc>https://samachar-news-2026.web.app/article.html?id={art_id}</loc>',
-                f'    <lastmod>{today_str}</lastmod>',
-                '    <changefreq>daily</changefreq>',
-                '    <priority>0.75</priority>',
                 '    <news:news>',
                 '      <news:publication>',
-                '        <news:name>Samachar Truth First</news:name>',
+                '        <news:name>Samachar News Intelligence</news:name>',
                 '        <news:language>en</news:language>',
                 '      </news:publication>',
                 f'      <news:publication_date>{pub_date_tag}</news:publication_date>',
@@ -162,15 +193,48 @@ def update_sitemap_xml(top_articles: list):
                 '  </url>',
             ])
 
-    xml_lines.append('')
-    xml_lines.append('</urlset>')
+    news_lines.append('</urlset>')
+    news_sitemap_path = os.path.join(frontend_dir, "sitemap-news.xml")
+    with open(news_sitemap_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(news_lines) + "\n")
+    logger.info(f"📰 Generated Google News Sitemap ({recent_count} stories within 48h) at {news_sitemap_path}")
 
-    try:
-        with open(sitemap_path, "w", encoding="utf-8") as sf:
-            sf.write("\n".join(xml_lines) + "\n")
-        logger.info(f"🗺️  Updated XML Sitemap with {len(top_articles)} dynamic stories at {sitemap_path}")
-    except Exception as e:
-        logger.error(f"Failed to write sitemap.xml: {e}")
+    # -------------------------------------------------------------
+    # 3. Generate Valid RSS 2.0 Feed for Google News Publisher Center
+    # -------------------------------------------------------------
+    rss_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+        '  <channel>',
+        '    <title>Samachar — Truth-First Real-Time News Wire</title>',
+        '    <link>https://samachar-news-2026.web.app/</link>',
+        '    <description>Autonomous real-time news intelligence and fact verification network.</description>',
+        '    <language>en</language>',
+        '    <atom:link href="https://samachar-news-2026.web.app/rss.xml" rel="self" type="application/rss+xml"/>',
+        f'    <lastBuildDate>{today_dt.strftime("%a, %d %b %Y %H:%M:%S GMT")}</lastBuildDate>',
+    ]
+    for art in top_articles[:30]:
+        art_id = art.get("id")
+        title = html.escape(art.get("title") or "")
+        summary = html.escape(art.get("summary") or "")
+        link = f"https://samachar-news-2026.web.app/article.html?id={art_id}"
+        rss_lines.extend([
+            '    <item>',
+            f'      <title>{title}</title>',
+            f'      <link>{link}</link>',
+            f'      <guid isPermaLink="true">{link}</guid>',
+            f'      <description>{summary}</description>',
+            f'      <pubDate>{today_dt.strftime("%a, %d %b %Y %H:%M:%S GMT")}</pubDate>',
+            '    </item>',
+        ])
+    rss_lines.extend([
+        '  </channel>',
+        '</rss>',
+    ])
+    rss_path = os.path.join(frontend_dir, "rss.xml")
+    with open(rss_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(rss_lines) + "\n")
+    logger.info(f"📡 Generated Google Publisher RSS Feed at {rss_path}")
 
 
 
