@@ -45,11 +45,15 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
-          npx --yes firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN" --project samachar-news-2026
+          if [ -n "$FIREBASE_TOKEN" ]; then
+            npx --yes firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN" --project samachar-news-2026 || echo "⚠️ Firebase deploy warning"
+          else
+            echo "ℹ️ No FIREBASE_TOKEN secret configured; skipping direct hosting deploy step."
+          fi
 
-      - name: Commit & Push Updated Dataset
+      - name: Commit & Push Updated Dataset & Sitemap
         run: |
           git config --global user.name "Samachar News Bot"
           git config --global user.email "bot@samachar.news"
-          git add frontend/assets/data/news.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(data): auto-update 24x7 real-world news dataset [skip ci]" && git push origin main)
+          git add frontend/assets/data/news.json frontend/sitemap.xml
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(data): auto-update 24x7 real-world news dataset and sitemap [skip ci]" && git push origin main)

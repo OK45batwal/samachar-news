@@ -1,0 +1,14 @@
+[Unit]
+Description=Samachar Daily Automated News Ingestion Service
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/samachar-news
+ExecStart=/bin/bash /opt/samachar-news/scripts/auto_daily_sync.sh
+StandardOutput=append:/opt/samachar-news/logs/systemd_sync.log
+StandardError=append:/opt/samachar-news/logs/systemd_sync.log
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target

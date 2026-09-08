@@ -1,20 +1,23 @@
 import asyncio
 import structlog
-from .news_service import ingest_all_feeds
 
 logger = structlog.get_logger(__name__)
 
 
 async def background_ingestion_loop(interval_minutes: int = 30):
-    """Periodically ingest and fact-check feeds in the background."""
+    """Periodically ingest and fact-check feeds in the background, updating DB, JSON dataset, and sitemap."""
+    # Brief delay on startup to allow server to bind ports cleanly
+    await asyncio.sleep(10)
     while True:
         try:
-            await asyncio.sleep(interval_minutes * 60)
-            logger.info("Starting scheduled feed ingestion...")
-            result = await ingest_all_feeds()
-            logger.info("Scheduled ingestion complete", result=result)
+            logger.info("Starting scheduled feed ingestion and dataset update...")
+            from scripts.cron_ingest import update_live_news_dataset
+            count = await update_live_news_dataset()
+            logger.info("Scheduled ingestion complete", verified_articles=count)
         except asyncio.CancelledError:
             break
         except Exception as e:
-            logger.warning("Scheduled ingestion failed", error=str(e))
-            await asyncio.sleep(60)
+            logger.warning("Scheduled ingestion encountered error", error=str(e))
+        
+        await asyncio.sleep(interval_minutes * 60)
+

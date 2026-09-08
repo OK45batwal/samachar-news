@@ -1,0 +1,10 @@
+# ==============================================================================
+# SAMACHAR NEWS PLATFORM: AUTOMATED CRONTAB CONFIGURATION
+# To install: crontab -e
+# ==============================================================================
+
+# Option A: Run every day at 04:00 AM UTC
+0 4 * * * /bin/bash /Users/omkar/samachar-news/scripts/auto_daily_sync.sh >> /Users/omkar/samachar-news/logs/cron.log 2>&1
+
+# Option B: Run every 6 hours (00:00, 06:00, 12:00, 18:00 UTC) for real-time freshness
+0 */6 * * * /bin/bash /Users/omkar/samachar-news/scripts/auto_daily_sync.sh >> /Users/omkar/samachar-news/logs/cron.log 2>&1

@@ -1,0 +1,12 @@
+[Unit]
+Description=Timer for Samachar Daily News Ingestion
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+# Run daily at midnight and every 6 hours
+OnCalendar=*-*-* 00,06,12,18:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
