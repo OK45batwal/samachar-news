@@ -6,6 +6,8 @@
   <title>Article Intelligence — Samachar</title>
   <meta name="description" content="Verified news analysis, audio briefing, and fact-checking scorecard on Samachar." />
   <meta name="theme-color" content="#08090C" />
+  <meta name="google-site-verification" content="GOOGLE_SEARCH_CONSOLE_VERIFICATION_KEY" />
+  <link rel="canonical" href="https://samachar-news-2026.web.app/article.html" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="stylesheet" href="/assets/css/variables.css?v=9.0" />
   <link rel="stylesheet" href="/assets/css/style.css?v=9.0" />
@@ -543,6 +545,37 @@
         const bodyEl = document.getElementById('articleBody');
         const paragraphs = (article.content || article.summary || '').split('\n').filter(p => p.trim());
         bodyEl.innerHTML = paragraphs.map(p => `<p>${sanitize(p)}</p>`).join('');
+
+        // Dynamic Google Search Console / Google News JSON-LD
+        try {
+          const oldLd = document.getElementById('jsonLdArticle');
+          if (oldLd) oldLd.remove();
+          const ldScript = document.createElement('script');
+          ldScript.id = 'jsonLdArticle';
+          ldScript.type = 'application/ld+json';
+          ldScript.textContent = JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            "headline": article.title,
+            "image": [heroImg.src],
+            "datePublished": article.published_at || new Date().toISOString(),
+            "dateModified": article.published_at || new Date().toISOString(),
+            "author": [{
+              "@type": "Person",
+              "name": article.author || sourceName || "Editorial Bureau"
+            }],
+            "publisher": {
+              "@type": "NewsMediaOrganization",
+              "name": "Samachar News Intelligence",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://samachar-news-2026.web.app/assets/icons/favicon.svg"
+              }
+            },
+            "description": article.summary || article.title
+          });
+          document.head.appendChild(ldScript);
+        } catch (_) {}
 
         const claimsList = document.getElementById('articleClaimsList');
         if (article.key_claims && article.key_claims.length) {

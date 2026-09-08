@@ -45,7 +45,9 @@ for file_path in HTML_FILES:
     # 5. Check internal href links
     hrefs = re.findall(r'href=["\']([^"\']+\.html)(\?[^"\']*)?["\']', content)
     for href_file, _ in hrefs:
-        target_path = os.path.join(FRONTEND_DIR, href_file)
+        if href_file.startswith(("http://", "https://", "//")):
+            continue
+        target_path = os.path.join(FRONTEND_DIR, href_file.lstrip("/"))
         if not os.path.exists(target_path):
             ERRORS.append(f"[{rel_name}] Broken navigation link to: {href_file}")
 

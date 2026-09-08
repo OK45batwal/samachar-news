@@ -31,3 +31,10 @@ async def get_db():
 async def init_db():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # Safe schema migration for added columns
+        try:
+            from sqlalchemy import text
+            await conn.execute(text("ALTER TABLE email_otps ADD COLUMN attempts INTEGER DEFAULT 0"))
+        except Exception:
+            pass
+

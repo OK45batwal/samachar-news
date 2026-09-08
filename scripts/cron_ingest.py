@@ -83,7 +83,95 @@ async def update_live_news_dataset(limit: int = 150):
             json.dump(dataset, f, indent=2, ensure_ascii=False)
 
         logger.info(f"🚀 Successfully written {len(dataset)} verified live news articles to {output_path}")
+
+        # Update sitemap.xml for Google Search Console & Google News indexing
+        update_sitemap_xml(dataset[:50])
+
         return len(dataset)
+
+
+def update_sitemap_xml(top_articles: list):
+    """Generate dynamic XML sitemap with Google News schema for GSC."""
+    sitemap_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "sitemap.xml"))
+    today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    static_urls = [
+        ("https://samachar-news-2026.web.app/", "always", "1.0"),
+        ("https://samachar-news-2026.web.app/home.html", "always", "0.95"),
+        ("https://samachar-news-2026.web.app/latest.html", "hourly", "0.90"),
+        ("https://samachar-news-2026.web.app/trending.html", "hourly", "0.85"),
+        ("https://samachar-news-2026.web.app/factcheck.html", "daily", "0.85"),
+        ("https://samachar-news-2026.web.app/latest.html?cat=world", "hourly", "0.80"),
+        ("https://samachar-news-2026.web.app/latest.html?cat=technology", "hourly", "0.80"),
+        ("https://samachar-news-2026.web.app/latest.html?cat=india", "hourly", "0.80"),
+        ("https://samachar-news-2026.web.app/latest.html?cat=business", "hourly", "0.80"),
+        ("https://samachar-news-2026.web.app/latest.html?cat=science", "hourly", "0.80"),
+        ("https://samachar-news-2026.web.app/latest.html?cat=health", "hourly", "0.80"),
+        ("https://samachar-news-2026.web.app/latest.html?cat=sports", "hourly", "0.75"),
+        ("https://samachar-news-2026.web.app/latest.html?cat=entertainment", "hourly", "0.75"),
+        ("https://samachar-news-2026.web.app/about.html", "monthly", "0.60"),
+        ("https://samachar-news-2026.web.app/privacy.html", "monthly", "0.50"),
+        ("https://samachar-news-2026.web.app/terms.html", "monthly", "0.50"),
+    ]
+
+    xml_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+        '        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">',
+        '',
+        '  <!-- Core Static & Pillar Pages -->',
+    ]
+
+    for loc, freq, priority in static_urls:
+        xml_lines.extend([
+            '  <url>',
+            f'    <loc>{loc}</loc>',
+            f'    <lastmod>{today_str}</lastmod>',
+            f'    <changefreq>{freq}</changefreq>',
+            f'    <priority>{priority}</priority>',
+            '  </url>',
+        ])
+
+    if top_articles:
+        xml_lines.append('')
+        xml_lines.append('  <!-- Dynamic Articles with Google News Schemas -->')
+        import html
+        for art in top_articles:
+            art_id = art.get("id")
+            title = html.escape(art.get("title") or "News Article")
+            pub_date = art.get("published_at") or today_str
+            # Shorten pub date to ISO format if needed
+            if len(pub_date) > 10:
+                pub_date_tag = pub_date[:19] + "Z" if not pub_date.endswith("Z") else pub_date
+            else:
+                pub_date_tag = f"{pub_date}T00:00:00Z"
+            xml_lines.extend([
+                '  <url>',
+                f'    <loc>https://samachar-news-2026.web.app/article.html?id={art_id}</loc>',
+                f'    <lastmod>{today_str}</lastmod>',
+                '    <changefreq>daily</changefreq>',
+                '    <priority>0.75</priority>',
+                '    <news:news>',
+                '      <news:publication>',
+                '        <news:name>Samachar Truth First</news:name>',
+                '        <news:language>en</news:language>',
+                '      </news:publication>',
+                f'      <news:publication_date>{pub_date_tag}</news:publication_date>',
+                f'      <news:title>{title}</news:title>',
+                '    </news:news>',
+                '  </url>',
+            ])
+
+    xml_lines.append('')
+    xml_lines.append('</urlset>')
+
+    try:
+        with open(sitemap_path, "w", encoding="utf-8") as sf:
+            sf.write("\n".join(xml_lines) + "\n")
+        logger.info(f"🗺️  Updated XML Sitemap with {len(top_articles)} dynamic stories at {sitemap_path}")
+    except Exception as e:
+        logger.error(f"Failed to write sitemap.xml: {e}")
+
 
 
 async def run_continuous_loop(interval_minutes: int = 15):

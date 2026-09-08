@@ -5,6 +5,7 @@ from typing import Dict, List, Set
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from jose import JWTError, jwt
 
+from ..auth.auth import is_token_revoked
 from ..config import settings
 
 logger = logging.getLogger("samachar.websocket")
@@ -71,11 +72,17 @@ async def websocket_endpoint(websocket: WebSocket):
                             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
                             user_id = payload.get("sub")
                             if user_id:
-                                manager.authenticate_user(user_id, websocket)
-                                await websocket.send_text(json.dumps({
-                                    "type": "auth_success",
-                                    "user_id": user_id
-                                }))
+                                if await is_token_revoked(token):
+                                    await websocket.send_text(json.dumps({
+                                        "type": "auth_error",
+                                        "message": "Token has been revoked"
+                                    }))
+                                else:
+                                    manager.authenticate_user(user_id, websocket)
+                                    await websocket.send_text(json.dumps({
+                                        "type": "auth_success",
+                                        "user_id": user_id
+                                    }))
                         except JWTError:
                             await websocket.send_text(json.dumps({
                                 "type": "auth_error",

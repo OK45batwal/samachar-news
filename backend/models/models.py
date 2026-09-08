@@ -171,6 +171,7 @@ class EmailOtp(Base):
     email = Column(String(255), primary_key=True)
     otp_code = Column(String(10), nullable=False)
     expires_at = Column(DateTime, nullable=False)
+    attempts = Column(Integer, default=0)
     created_at = Column(DateTime, default=_utc_now)
 
 

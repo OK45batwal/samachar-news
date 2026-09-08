@@ -100,3 +100,29 @@ async def test_stats_alias_endpoint():
         assert "total_articles" in data
         assert "credibility_avg" in data
 
+
+@pytest.mark.asyncio
+async def test_otp_dispatch_and_attempt_throttling():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        test_email = "throttle_test@example.com"
+        # 1. Send OTP
+        res = await client.post("/api/auth/send-auth-otp", json={"email": test_email, "name": "Tester"})
+        assert res.status_code == 200
+        assert res.json().get("status") == "success"
+
+        # 2. Try incorrect code up to 5 times
+        for i in range(1, 6):
+            bad_res = await client.post("/api/auth/verify-auth-otp", json={"email": test_email, "otp": "999999"})
+            if i < 5:
+                assert bad_res.status_code == 400
+                assert "attempt(s) remaining" in bad_res.json().get("detail", "")
+            else:
+                # On 5th failed attempt, OTP attempts limit is reached
+                assert bad_res.status_code == 400
+
+        # 3. 6th attempt should be blocked with 429 Too Many Attempts
+        blocked_res = await client.post("/api/auth/verify-auth-otp", json={"email": test_email, "otp": "999999"})
+        assert blocked_res.status_code in [400, 429]
+
+

@@ -1,5 +1,6 @@
 import logging
 import random
+import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
@@ -24,6 +25,15 @@ from ..services.rate_limit import check_rate_limit
 
 logger = logging.getLogger("samachar.auth")
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+
+def _is_request_secure(req: Request) -> bool:
+    """Check if request was transported via HTTPS or deployed in production."""
+    if settings.ENVIRONMENT.lower() == "production":
+        return True
+    scheme = req.headers.get("x-forwarded-proto", req.url.scheme)
+    return scheme.lower() == "https"
+
 
 
 @router.post("/register", response_model=UserOut, status_code=201)
@@ -76,7 +86,7 @@ async def login(req: Request, body: UserLogin, response: Response, db: AsyncSess
         httponly=True,
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         samesite="lax",
-        secure=False,
+        secure=_is_request_secure(req),
     )
 
     return {
@@ -121,7 +131,7 @@ async def refresh_token(request: Request, response: Response, db: AsyncSession =
         httponly=True,
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         samesite="lax",
-        secure=False,
+        secure=_is_request_secure(request),
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
@@ -132,24 +142,30 @@ async def get_current_user_profile(current_user: User = Depends(get_current_user
 
 
 @router.post("/send-auth-otp")
-async def send_auth_otp(body: dict, db: AsyncSession = Depends(get_db)):
-    """Generate and dispatch a real 6-digit One-Time Password via email for account registration verification."""
+async def send_auth_otp(req: Request, body: dict, db: AsyncSession = Depends(get_db)):
+    """Generate and dispatch a cryptographically secure 6-digit OTP code via email."""
+    client_ip = req.client.host if req.client else "127.0.0.1"
+    await check_rate_limit(f"send_otp:{client_ip}", db)
+
     email = body.get("email", "").lower().strip()
     name = body.get("name", "Reader").strip()
     if not email:
         raise HTTPException(status_code=400, detail="Email is required.")
-    otp_code = str(random.randint(100000, 999999))
+
+    # Cryptographically secure 6-digit OTP code
+    otp_code = f"{secrets.randbelow(900000) + 100000:06d}"
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     expires_at = now + timedelta(minutes=10)
 
-    # Persist in DB
+    # Persist in DB with reset attempt counter
     existing = await db.get(EmailOtp, email)
     if existing:
         existing.otp_code = otp_code
         existing.expires_at = expires_at
+        existing.attempts = 0
         existing.created_at = now
     else:
-        db.add(EmailOtp(email=email, otp_code=otp_code, expires_at=expires_at, created_at=now))
+        db.add(EmailOtp(email=email, otp_code=otp_code, expires_at=expires_at, attempts=0, created_at=now))
     await db.commit()
 
     # Dispatch email asynchronously
@@ -163,8 +179,11 @@ async def send_auth_otp(body: dict, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/verify-auth-otp")
-async def verify_auth_otp(body: dict, db: AsyncSession = Depends(get_db)):
-    """Verify the 6-digit OTP code for 2-stage authentication."""
+async def verify_auth_otp(req: Request, body: dict, db: AsyncSession = Depends(get_db)):
+    """Verify 6-digit OTP code with attempts throttling and constant-time comparison."""
+    client_ip = req.client.host if req.client else "127.0.0.1"
+    await check_rate_limit(f"verify_otp:{client_ip}", db)
+
     email = body.get("email", "").lower().strip()
     otp = str(body.get("otp", "")).strip()
     now = datetime.now(timezone.utc).replace(tzinfo=None)
@@ -172,12 +191,33 @@ async def verify_auth_otp(body: dict, db: AsyncSession = Depends(get_db)):
     stored = await db.get(EmailOtp, email)
     if not stored:
         raise HTTPException(status_code=400, detail="No OTP found. Please request a new code.")
+
     if now > stored.expires_at:
         await db.delete(stored)
         await db.commit()
         raise HTTPException(status_code=400, detail="OTP expired. Please request a new code.")
-    if otp != stored.otp_code:
-        raise HTTPException(status_code=400, detail="Invalid OTP code. Please enter the 6-digit code.")
+
+    # Brute-force throttling: max 5 failed attempts allowed
+    if stored.attempts >= 5:
+        await db.delete(stored)
+        await db.commit()
+        raise HTTPException(
+            status_code=429,
+            detail="Too many incorrect OTP attempts. For security, please request a new verification code."
+        )
+
+    stored.attempts += 1
+
+    # Constant-time comparison protects against timing side-channel attacks
+    if not secrets.compare_digest(otp, stored.otp_code):
+        await db.commit()
+        remaining = max(0, 5 - stored.attempts)
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid OTP code. {remaining} attempt(s) remaining."
+        )
+
+    # Validated successfully - purge the OTP token
     await db.delete(stored)
     await db.commit()
     return {"status": "success", "message": "OTP verified successfully."}

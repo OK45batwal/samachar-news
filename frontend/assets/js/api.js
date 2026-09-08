@@ -34,7 +34,9 @@ async function request(endpoint, options = {}) {
 
   const primaryUrl = endpoint;
   const isLocalDev = window.location.port === '5173' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  const customApiBase = window.SAMACHAR_API_URL || (isLocalDev ? 'http://localhost:8000' : '');
+  const customApiBase = window.SAMACHAR_API_URL || localStorage.getItem('samachar_api_url') || (isLocalDev ? 'http://localhost:8000' : '');
+  const hasCustomApi = Boolean(window.SAMACHAR_API_URL || localStorage.getItem('samachar_api_url'));
+  const allowNetworkFallback = isLocalDev || hasCustomApi;
   const fallbackUrl = customApiBase ? `${customApiBase}${endpoint}` : endpoint;
 
   // Auth Endpoints Fallback Handling
@@ -44,7 +46,7 @@ async function request(endpoint, options = {}) {
       if (res.ok) return await res.json();
     } catch (_) {}
 
-    if (isLocalDev) {
+    if (allowNetworkFallback && fallbackUrl !== primaryUrl) {
       try {
         const fallbackRes = await fetch(fallbackUrl, { ...options, headers });
         if (fallbackRes.ok) return await fallbackRes.json();

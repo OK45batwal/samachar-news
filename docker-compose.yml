@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: samachar-truth-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=sqlite+aiosqlite:////data/samachar.db
+      - SECRET_KEY=${SECRET_KEY:-samachar-fact-intelligence-key-prod-super-secure-replace-me}
+      - RATE_LIMIT_PER_MINUTE=120
+      - CORS_ORIGINS=https://samachar-news-2026.web.app,https://samachar-news-2026.firebaseapp.com,http://localhost:5173
+      - FEED_INGESTION_INTERVAL_MINUTES=30
+    volumes:
+      - samachar_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  samachar_data:
+    driver: local

@@ -308,11 +308,25 @@ async def ingest_all_feeds() -> Dict[str, Any]:
         src_result = await db.execute(select(Source))
         sources = {s.name: s.id for s in src_result.scalars().all()}
 
+        # High-performance batch check for existing URLs to eliminate hundreds of DB round-trips
+        raw_urls = [item["source_url"] for item in all_fetched if item.get("source_url")]
+        existing_urls = set()
+        for i in range(0, len(raw_urls), 400):
+            chunk = raw_urls[i : i + 400]
+            if chunk:
+                url_res = await db.execute(select(Article.source_url).where(Article.source_url.in_(chunk)))
+                existing_urls.update(url_res.scalars().all())
+
         seen_urls = set()
+        pending_broadcasts = []
+        batch_pending_count = 0
+
         for item in all_fetched:
-            if not item.get("source_url") or item["source_url"] in seen_urls:
+            s_url = item.get("source_url")
+            if not s_url or s_url in seen_urls or s_url in existing_urls:
                 continue
-            seen_urls.add(item["source_url"])
+            seen_urls.add(s_url)
+            existing_urls.add(s_url)
 
             src_name = item.get("source_name", "News Wire")
             if src_name not in sources:
@@ -325,11 +339,6 @@ async def ingest_all_feeds() -> Dict[str, Any]:
                 db.add(new_src)
                 await db.flush()
                 sources[src_name] = new_src.id
-
-            # Check for duplicate URL in DB
-            existing = await db.execute(select(Article).where(Article.source_url == item["source_url"]))
-            if existing.scalar_one_or_none():
-                continue
 
             # Run Fact-Checking Engine
             fact_metrics = evaluate_article_credibility(
@@ -364,34 +373,55 @@ async def ingest_all_feeds() -> Dict[str, Any]:
                 source_id=sources.get(src_name),
                 published_at=item["published_at"],
             )
+
             try:
                 db.add(article)
-                await db.commit()
                 created_count += 1
+                batch_pending_count += 1
                 if fact_metrics["credibility_score"] >= 80:
                     verified_count += 1
-                try:
-                    from ..websocket.ws import manager
-                    status_str = article.fact_check_status.value if hasattr(article.fact_check_status, 'value') else str(article.fact_check_status)
+
+                status_str = article.fact_check_status.value if hasattr(article.fact_check_status, 'value') else str(article.fact_check_status)
+                pending_broadcasts.append({
+                    "id": article.id,
+                    "title": article.title,
+                    "slug": article.slug,
+                    "summary": article.summary,
+                    "credibility_score": article.credibility_score,
+                    "fact_check_status": status_str,
+                    "source": src_name,
+                    "image_url": article.image_url,
+                    "published_at": article.published_at.isoformat() if article.published_at else None,
+                })
+
+                # Commit in chunks of 20 to balance memory and disk fsync
+                if batch_pending_count >= 20:
+                    await db.commit()
+                    batch_pending_count = 0
+            except Exception as e:
+                logger.warning("Failed to stage article '%s': %s", item.get("title", "")[:50], e)
+                await db.rollback()
+                batch_pending_count = 0
+
+        # Commit any remaining uncommitted articles
+        if batch_pending_count > 0:
+            try:
+                await db.commit()
+            except Exception as commit_err:
+                logger.warning("Final batch commit encountered error: %s", commit_err)
+                await db.rollback()
+
+        # Broadcast live updates to connected WebSocket clients
+        if pending_broadcasts:
+            try:
+                from ..websocket.ws import manager
+                for msg in pending_broadcasts[:30]:  # Cap broadcast burst
                     await manager.broadcast({
                         "type": "new_article",
-                        "article": {
-                            "id": article.id,
-                            "title": article.title,
-                            "slug": article.slug,
-                            "summary": article.summary,
-                            "credibility_score": article.credibility_score,
-                            "fact_check_status": status_str,
-                            "source": src_name,
-                            "image_url": article.image_url,
-                            "published_at": article.published_at.isoformat() if article.published_at else None,
-                        }
+                        "article": msg
                     })
-                except Exception as ws_err:
-                    logger.debug("Live websocket broadcast skipped: %s", ws_err)
-            except Exception as e:
-                logger.warning("Failed to persist article '%s': %s", item.get("title", "")[:50], e)
-                await db.rollback()
+            except Exception as ws_err:
+                logger.debug("Live websocket broadcast skipped: %s", ws_err)
 
     return {
         "fetched": len(all_fetched),

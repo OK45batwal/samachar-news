@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#08090C" />
   <title>Create Account (6-Digit OTP Verification) — Samachar Truth Intelligence</title>
   <meta name="description" content="Secure 6-digit email OTP verification for new reader account registration." />
+  <meta name="google-site-verification" content="GSC_VERIFICATION_TOKEN_PLACEHOLDER" />
+  <link rel="canonical" href="https://samachar-news-2026.web.app/register.html" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
   <link rel="stylesheet" href="/assets/css/variables.css?v=11.0" />
@@ -252,50 +254,66 @@
       if (boxes[0]) boxes[0].focus();
     }
 
-    async function dispatchOtpToEmail(email, name) {
-      generatedOtpSecret = String(Math.floor(100000 + Math.random() * 900000));
-      sessionStorage.setItem('samachar_auth_otp_' + email, generatedOtpSecret);
-
-      let emailSent = false;
-
-      // 1. Dispatch via EmailJS directly to recipient inbox
-      if (typeof emailjs !== 'undefined') {
-        try {
-          emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-          const templateParams = {
-            to_email: email,
-            email: email,
-            user_email: email,
-            recipient_email: email,
-            to_name: name,
-            name: name,
-            user_name: name,
-            otp_code: generatedOtpSecret,
-            otp: generatedOtpSecret,
-            code: generatedOtpSecret,
-            passcode: generatedOtpSecret,
-            message: `Your Samachar 6-digit verification code is: ${generatedOtpSecret}`,
-            time: new Date().toLocaleTimeString()
-          };
-          const res = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-          console.log('✅ EmailJS OTP successfully dispatched:', res.status, res.text);
-          emailSent = true;
-        } catch (err) {
-          console.error('EmailJS delivery error:', err);
-        }
-      }
-
-      // 2. Dispatch through Backend Python Service (if running)
+    function getApiBase() {
+      if (window.SAMACHAR_API_URL) return window.SAMACHAR_API_URL;
+      const stored = localStorage.getItem('samachar_api_url');
+      if (stored) return stored;
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:8000';
+      }
+      return '';
+    }
+
+    async function dispatchOtpToEmail(email, name) {
+      const apiBase = getApiBase();
+      let sentViaBackend = false;
+
+      // 1. Dispatch through Backend Python Service
+      if (apiBase || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        const url = (apiBase || 'http://localhost:8000') + '/api/auth/send-auth-otp';
         try {
-          await fetch('http://localhost:8000/api/auth/send-auth-otp', {
+          const resp = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, name }),
-            signal: AbortSignal.timeout(3000)
+            signal: AbortSignal.timeout(4000)
           });
-          emailSent = true;
+          if (resp.ok) {
+            sentViaBackend = true;
+            console.log('✅ Backend OTP service successfully dispatched code to inbox');
+          }
         } catch (_) {}
+      }
+
+      // 2. Client-side fallback if backend unavailable
+      if (!sentViaBackend) {
+        generatedOtpSecret = String(Math.floor(100000 + Math.random() * 900000));
+        sessionStorage.setItem('samachar_auth_otp_' + email, generatedOtpSecret);
+
+        if (typeof emailjs !== 'undefined') {
+          try {
+            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+            const templateParams = {
+              to_email: email,
+              email: email,
+              user_email: email,
+              recipient_email: email,
+              to_name: name,
+              name: name,
+              user_name: name,
+              otp_code: generatedOtpSecret,
+              otp: generatedOtpSecret,
+              code: generatedOtpSecret,
+              passcode: generatedOtpSecret,
+              message: `Your Samachar 6-digit verification code is: ${generatedOtpSecret}`,
+              time: new Date().toLocaleTimeString()
+            };
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+            console.log('✅ EmailJS fallback OTP successfully dispatched');
+          } catch (err) {
+            console.error('EmailJS delivery error:', err);
+          }
+        }
       }
 
       showToast(`📬 6-Digit OTP dispatched to ${email}. Please check your inbox!`, 'success');
@@ -436,28 +454,67 @@
           return;
         }
 
-        const storedOtp = sessionStorage.getItem('samachar_auth_otp_' + pendingRegistration.email) || generatedOtpSecret;
-        if (storedOtp && enteredOtp !== storedOtp) {
-          errEl.textContent = 'Invalid OTP code. Please check your email and try again.';
-          errEl.style.display = 'block';
-          clearOtpBoxes();
-          return;
-        }
-
         errEl.style.display = 'none';
         verifyBtn.disabled = true;
         verifyBtn.textContent = 'Verifying OTP & Activating...';
 
+        const apiBase = getApiBase();
+        let backendVerified = false;
+        let backendError = null;
+
+        // Try backend verification first
+        if (apiBase || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          const url = (apiBase || 'http://localhost:8000') + '/api/auth/verify-auth-otp';
+          try {
+            const resp = await fetch(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: pendingRegistration.email, otp: enteredOtp }),
+              signal: AbortSignal.timeout(5000)
+            });
+            const data = await resp.json().catch(() => ({}));
+            if (resp.ok) {
+              backendVerified = true;
+            } else {
+              backendError = data.detail || 'Invalid OTP code. Please check your email.';
+            }
+          } catch (netErr) {
+            console.warn('Backend verification unreachable, fallback to local validation:', netErr);
+          }
+        }
+
+        if (backendError) {
+          errEl.textContent = backendError;
+          errEl.style.display = 'block';
+          verifyBtn.disabled = false;
+          verifyBtn.textContent = 'Verify OTP & Activate Account →';
+          clearOtpBoxes();
+          return;
+        }
+
+        if (!backendVerified) {
+          // Client fallback check
+          const storedOtp = sessionStorage.getItem('samachar_auth_otp_' + pendingRegistration.email) || generatedOtpSecret;
+          if (storedOtp && enteredOtp !== storedOtp) {
+            errEl.textContent = 'Invalid OTP code. Please check your email and try again.';
+            errEl.style.display = 'block';
+            verifyBtn.disabled = false;
+            verifyBtn.textContent = 'Verify OTP & Activate Account →';
+            clearOtpBoxes();
+            return;
+          }
+        }
+
         try {
           const { fullName, email, password } = pendingRegistration;
-
-          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          const regBase = apiBase || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:8000' : '');
+          if (regBase) {
             try {
-              await fetch('http://localhost:8000/api/auth/register', {
+              await fetch(regBase + '/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, full_name: fullName }),
-                signal: AbortSignal.timeout(1500)
+                signal: AbortSignal.timeout(2000)
               });
             } catch (_) {}
           }
@@ -477,6 +534,7 @@
           localStorage.setItem('samachar_user', JSON.stringify(user));
           localStorage.setItem('samachar_registered_' + email, JSON.stringify(user));
           localStorage.setItem('samachar_remember_email', email);
+          sessionStorage.removeItem('samachar_auth_otp_' + email);
 
           showToast('🎉 OTP verified! Welcome to Samachar Truth Platform.', 'success');
           

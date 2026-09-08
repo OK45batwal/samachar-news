@@ -45,16 +45,27 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS Middleware with explicit localhost and port matching
+# Dynamic CORS configuration supporting local dev and production hosting
+cors_origins = set(settings.cors_origins_list)
+cors_origins.update([
+    "http://localhost:5173",
+    "http://localhost:8000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:8000",
+    "https://samachar-news-2026.web.app",
+    "https://samachar-news-2026.firebaseapp.com",
+])
+if "*" in cors_origins:
+    allowed_origins = ["*"]
+    origin_regex = None
+else:
+    allowed_origins = list(cors_origins)
+    origin_regex = r"https?://(localhost|127\.0\.0\.1)(:\d+)?"
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:8000",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:8000",
-    ],
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
+    allow_origins=allowed_origins,
+    allow_origin_regex=origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
