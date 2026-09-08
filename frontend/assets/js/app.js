@@ -43,8 +43,8 @@ function showToast(message, type = 'info') {
   container.appendChild(toast);
   setTimeout(() => {
     toast.style.opacity = '0';
-    toast.style.transform = 'translateY(10px)';
-    setTimeout(() => toast.remove(), 250);
+    toast.style.transform = 'translate3d(0, 12px, 0) scale(0.96)';
+    setTimeout(() => toast.remove(), 300);
   }, 3500);
 }
 
@@ -241,9 +241,9 @@ async function handleSaveBookmark(articleId, btnEl) {
   }
 
   if (btnEl) {
-    btnEl.style.transform = 'scale(1.35)';
+    btnEl.classList.add('bookmarked');
     btnEl.style.color = 'var(--accent)';
-    setTimeout(() => { btnEl.style.transform = 'scale(1)'; }, 250);
+    setTimeout(() => { btnEl.classList.remove('bookmarked'); }, 400);
   }
 
   try {
