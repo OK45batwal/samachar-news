@@ -21,6 +21,8 @@ print(f"🔍 Starting UI/UX Development Audit on {len(HTML_FILES)} HTML files...
 
 for file_path in HTML_FILES:
     rel_name = os.path.basename(file_path)
+    if rel_name.startswith("google") and rel_name.endswith(".html"):
+        continue
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
