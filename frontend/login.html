@@ -158,11 +158,23 @@
       }[m]));
     }
 
+    function getSafeRedirectUrl(target) {
+      if (!target) return 'home.html';
+      const clean = target.trim();
+      // Block protocol schemas and protocol-relative links (e.g. https://, //evil.com, javascript:)
+      if (/^(?:[a-z]+:|\/\/)/i.test(clean)) return 'home.html';
+      // Allow relative paths starting with / or local html targets
+      if (/^(\/[a-zA-Z0-9_\-\/]+(\.html)?|[a-zA-Z0-9_\-]+\.html)(\?[a-zA-Z0-9_\-=&]*)?$/.test(clean)) {
+        return clean;
+      }
+      return 'home.html';
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       // Auto-redirect if already authenticated
       if (localStorage.getItem('samachar_token') && localStorage.getItem('samachar_user')) {
-        const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
-        window.location.href = redirectUrl;
+        const rawRedirect = new URLSearchParams(window.location.search).get('redirect');
+        window.location.href = getSafeRedirectUrl(rawRedirect);
         return;
       }
 
@@ -207,13 +219,25 @@
         try {
           if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             try {
-              await fetch('http://localhost:8000/api/auth/login', {
+              const res = await fetch('http://localhost:8000/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
-                signal: AbortSignal.timeout(1500)
+                signal: AbortSignal.timeout(2000)
               });
-            } catch (_) {}
+              if (!res.ok) {
+                const errData = await res.json().catch(() => ({}));
+                showToast(errData.detail || 'Invalid email or password.', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Sign In to Feed →';
+                return;
+              }
+            } catch (netErr) {
+              // Only fallback to offline demo mode if server is genuinely unreachable
+              if (netErr.name !== 'AbortError' && !netErr.message?.includes('Failed to fetch') && !netErr.message?.includes('NetworkError')) {
+                console.warn('Backend login notice:', netErr);
+              }
+            }
           }
 
           const username = email.split('@')[0];
@@ -240,7 +264,8 @@
 
           showToast('✅ Welcome back! Entering truth dashboard...', 'success');
           
-          const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
+          const rawRedirect = new URLSearchParams(window.location.search).get('redirect');
+          const redirectUrl = getSafeRedirectUrl(rawRedirect);
           setTimeout(() => {
             window.location.href = redirectUrl;
           }, 350);

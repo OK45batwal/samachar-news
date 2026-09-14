@@ -1,4 +1,8 @@
-// Samachar Layout Controller: Header Auth, Theme switcher, Mobile Bottom Nav, Search Modal
+function sanitize(str) {
+  return String(str || '').replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
 
 (function() {
   const saved = localStorage.getItem('samachar_theme') || 'dark';
@@ -66,9 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="flex items-center gap-2">
           <a href="profile.html" class="btn btn-secondary btn-sm flex items-center gap-2" style="padding: 5px 12px; border-radius: var(--radius-full); transition: all 0.2s var(--ease-spring);" title="My Profile & Settings">
             <div style="width:22px;height:22px;border-radius:50%;background:var(--accent);color:#08090C;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 8px var(--accent-glow)">
-              ${(user.full_name || user.username || 'U')[0].toUpperCase()}
+              ${sanitize((user.full_name || user.username || 'U')[0].toUpperCase())}
             </div>
-            <span class="header-user-name" style="font-size: 13px; font-weight: 600;">${user.username || 'Profile'}</span>
+            <span class="header-user-name" style="font-size: 13px; font-weight: 600;">${sanitize(user.username || 'Profile')}</span>
           </a>
           <button onclick="logoutUser()" class="btn btn-ghost btn-sm btn-icon header-logout-btn" title="Sign Out" style="color: var(--text-muted); padding: 7px; border-radius: 50%;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -170,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!items.length) {
             headerSearchDropdown.innerHTML = `
               <div style="padding:16px;text-align:center;">
-                <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:6px;">No matching articles found for "${q}"</div>
+                <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:6px;">No matching articles found for "${sanitize(q)}"</div>
                 <a href="latest.html?q=${encodeURIComponent(q)}" style="font-size:11.5px;color:var(--accent);font-weight:700;text-decoration:none;">Search entire archive &rarr;</a>
               </div>
             `;
@@ -178,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           headerSearchDropdown.innerHTML = items.map(a => `
-            <a href="article.html?id=${a.id}" class="search-dropdown-item">
+            <a href="article.html?id=${encodeURIComponent(a.id)}" class="search-dropdown-item">
               <div class="search-dropdown-thumb">
                 <img src="${a.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=100&q=80'}" alt="${sanitize(a.title)}" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=100&q=80'" />
               </div>
@@ -193,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </a>
           `).join('') + `
             <div class="search-dropdown-footer">
-              <a href="latest.html?q=${encodeURIComponent(q)}">View all results for "${q}" &rarr;</a>
+              <a href="latest.html?q=${encodeURIComponent(q)}">View all results for "${sanitize(q)}" &rarr;</a>
             </div>
           `;
         } catch (err) {
@@ -327,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (articles.length === 0) {
               globalSearchResults.innerHTML = `
                 <div style="padding:24px 16px;text-align:center;">
-                  <div style="font-size:13px;color:#94A3B8;margin-bottom:8px;">No matching verified articles found for "${query}"</div>
+                  <div style="font-size:13px;color:#94A3B8;margin-bottom:8px;">No matching verified articles found for "${sanitize(query)}"</div>
                   <a href="latest.html?q=${encodeURIComponent(query)}" style="font-size:12px;color:#00F59B;font-weight:600;text-decoration:none;">Search entire archive &rarr;</a>
                 </div>
               `;
@@ -335,22 +339,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             globalSearchResults.innerHTML = articles.map(art => `
-              <a href="article.html?id=${art.id}" style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid #1E293B;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#1A2438'" onmouseout="this.style.background='transparent'">
+              <a href="article.html?id=${encodeURIComponent(art.id)}" style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid #1E293B;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#1A2438'" onmouseout="this.style.background='transparent'">
                 <div style="width:40px;height:40px;border-radius:6px;background:#243046;overflow:hidden;flex-shrink:0;">
                   <img src="${art.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=120&q=80'}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=120&q=80'" />
                 </div>
                 <div style="flex:1;min-width:0;">
-                  <div style="font-size:13px;font-weight:600;color:#F8FAFC;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${art.title}</div>
+                  <div style="font-size:13px;font-weight:600;color:#F8FAFC;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize(art.title)}</div>
                   <div style="font-size:11px;color:#94A3B8;display:flex;align-items:center;gap:8px;">
                     <span style="color:#00F59B;font-weight:600;">🟢 ${art.credibility_score || 95}% Verified</span>
                     <span>·</span>
-                    <span>${art.source_name || art.source?.name || 'Wire'}</span>
+                    <span>${sanitize(art.source_name || art.source?.name || 'Wire')}</span>
                   </div>
                 </div>
               </a>
             `).join('') + `
               <div style="padding:10px 16px;background:#131B2C;text-align:center;">
-                <a href="latest.html?q=${encodeURIComponent(query)}" style="font-size:12px;color:#00F59B;font-weight:600;text-decoration:none;">View all results for "${query}" &rarr;</a>
+                <a href="latest.html?q=${encodeURIComponent(query)}" style="font-size:12px;color:#00F59B;font-weight:600;text-decoration:none;">View all results for "${sanitize(query)}" &rarr;</a>
               </div>
             `;
           } catch (err) {
@@ -407,10 +411,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ${curUser ? `
           <div class="card p-3 mb-4 flex items-center gap-3" style="background:var(--bg-surface-2);border-color:var(--border);">
             <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:#08090C;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px var(--accent-glow);flex-shrink:0;">
-              ${(curUser.full_name || curUser.username || 'U')[0].toUpperCase()}
+              ${sanitize((curUser.full_name || curUser.username || 'U')[0].toUpperCase())}
             </div>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:700;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${curUser.username || 'Reader'}</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${sanitize(curUser.username || 'Reader')}</div>
               <a href="profile.html" style="font-size:11px;color:var(--accent);text-decoration:none;font-weight:600;">View Profile & Settings &rarr;</a>
             </div>
           </div>

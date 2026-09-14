@@ -19,9 +19,9 @@
   <link rel="canonical" href="https://samachar-news-2026.web.app/register.html" />
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="/assets/css/variables.css?v=11.0" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=11.0" />
-  <link rel="stylesheet" href="/assets/css/layout.css?v=11.0" />
+  <link rel="stylesheet" href="/assets/css/variables.css?v=12.0" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=12.0" />
+  <link rel="stylesheet" href="/assets/css/layout.css?v=12.0" />
   <!-- EmailJS Browser SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
@@ -245,6 +245,18 @@
       }[m]));
     }
 
+    function getSafeRedirectUrl(target) {
+      if (!target) return 'home.html';
+      const clean = target.trim();
+      // Block protocol schemas and protocol-relative links (e.g. https://, //evil.com, javascript:)
+      if (/^(?:[a-z]+:|\/\/)/i.test(clean)) return 'home.html';
+      // Allow relative paths starting with / or local html targets
+      if (/^(\/[a-zA-Z0-9_\-\/]+(\.html)?|[a-zA-Z0-9_\-]+\.html)(\?[a-zA-Z0-9_\-=&]*)?$/.test(clean)) {
+        return clean;
+      }
+      return 'home.html';
+    }
+
     function backToRegisterStage1() {
       document.getElementById('registerStage2').style.display = 'none';
       document.getElementById('registerStage1').style.display = 'block';
@@ -349,8 +361,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       // Auto-redirect if already authenticated
       if (localStorage.getItem('samachar_token') && localStorage.getItem('samachar_user')) {
-        const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
-        window.location.href = redirectUrl;
+        const rawRedirect = new URLSearchParams(window.location.search).get('redirect');
+        window.location.href = getSafeRedirectUrl(rawRedirect);
         return;
       }
 
@@ -547,7 +559,8 @@
 
           showToast('🎉 OTP verified! Welcome to Samachar Truth Platform.', 'success');
           
-          const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'home.html';
+          const rawRedirect = new URLSearchParams(window.location.search).get('redirect');
+          const redirectUrl = getSafeRedirectUrl(rawRedirect);
           setTimeout(() => {
             window.location.href = redirectUrl;
           }, 350);
