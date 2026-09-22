@@ -664,7 +664,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "US news outlets sue Trump over White House ban",
+        "claim": "India news: Hindu group apologizes over Eiffel Tower row",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network",
         "confidence_score": 85
@@ -692,7 +692,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "As Trump-Xi summit nears, Europe is caught in middle of US-China rivalry",
+        "claim": "Female footballers offered egg freezing but doubts remain",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network",
         "confidence_score": 85
@@ -710,7 +710,7 @@
     "summary": "A team from a small southwestern German town of just 7,000 inhabitants made history by sealing promotion to become the 59th club to play in the Bundesliga. Elversberg has got off to a memorable start.",
     "content": "A team from a small southwestern German town of just 7,000 inhabitants made history by sealing promotion to become the 59th club to play in the Bundesliga. Elversberg has got off to a memorable start.",
     "image_url": "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.dw.com/en/uk-man-charged-over-suspected-role-in-rwanda-genocide/a-79364493?maca=en-rss-en-all-1573-rdf",
+    "source_url": "https://www.dw.com/en/elversberg-bundesliga-newcomers-from-tiny-town-make-waves/a-77194483?maca=en-rss-en-all-1573-rdf",
     "author": "Deutsche Welle",
     "source_name": "Deutsche Welle",
     "category_name": "World",
@@ -720,10 +720,10 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "UK: Man charged over suspected role in Rwanda genocide",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
+        "claim": "A team from a small southwestern German town of just 7,000 inhabitants made history by sealing promotion to become the 59th club to play in the Bundesliga.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
       }
     ],
     "corroborating_sources": [
@@ -810,7 +810,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Here are some of the key revelations from Charles Earl Spencer's highly anticipated memoir Swan Song: Diana, My Sister. It has already provoked Buckingham Palace to react.",
+        "claim": "The My Feed, My Way, legislation would require the likes of Facebook, TikTok and Instagram to let users opt out of algorithms or risk heavy fines.",
         "status": "Official Statement",
         "evidence": "Direct on-record attribution from primary source spokesperson",
         "confidence_score": 95
@@ -838,10 +838,10 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Germany: Chancellor Merz braces for difficult days ahead",
+        "claim": "The government insists however that legally documented foreign traders remain protected.",
         "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
+        "evidence": "Cross-corroborated by journalistic wire network",
+        "confidence_score": 88
       }
     ],
     "corroborating_sources": [
@@ -866,7 +866,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Germany news: VW to step up cost-cutting program",
+        "claim": "US-Canada tariff dispute weighs on cross-border ties",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network",
         "confidence_score": 85
@@ -894,7 +894,13 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Germany's gas storage sites are far less full than in recent years.",
+        "claim": "Hungary orders 10 Russian diplomats to leave.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
+      },
+      {
+        "claim": "Budapest says the expulsions are necessary to protect security and sovereignty after years of comparatively close ties between Hungary and Russia.",
         "status": "Data-Backed Assertion",
         "evidence": "Quantitative metrics corroborated across primary reporting data",
         "confidence_score": 92
@@ -957,405 +963,7 @@
       }
     ],
     "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 282,
-    "title": "First for RNA therapy: man with rare motor-neuron disease improves after treatment",
-    "slug": "first-for-rna-therapy-man-with-rare-motor-neuron-disease-improves-after-treatment-1790070620-763",
-    "summary": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02945-z Gene-targeting treatments could be used to treat other people with rare forms of amyotrophic lateral sclerosis (ALS).",
-    "content": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02945-z Gene-targeting treatments could be used to treat other people with rare forms of amyotrophic lateral sclerosis (ALS).",
-    "image_url": "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02945-z",
-    "author": "Rachel Fieldhouse",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.518144",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02945-z Gene-targeting treatments could be used to treat other people with rare forms of amyotrophic lateral ...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 281,
-    "title": "How research funding took me out of the lab and into leadership",
-    "slug": "how-research-funding-took-me-out-of-the-lab-and-into-leadership-1790070620-689",
-    "summary": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02184-2 Landing two large grants caused Anna Sandak to take on a managerial role in her team and made her reflect on what it means to contribute to research.",
-    "content": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02184-2 Landing two large grants caused Anna Sandak to take on a managerial role in her team and made her reflect on what it means to contribute to research.",
-    "image_url": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02184-2",
-    "author": "Anna  Sandak",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.518072",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02184-2 Landing two large grants caused Anna Sandak to take on a managerial role in her team and made her ref...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 280,
-    "title": "Europe pushes for space independence amid geopolitical rifts",
-    "slug": "europe-pushes-for-space-independence-amid-geopolitical-rifts-1790070620-686",
-    "summary": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02919-1 The European Union is easing its reliance on US space infrastructure — and is seeking to grow its satellite and launch operations.",
-    "content": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02919-1 The European Union is easing its reliance on US space infrastructure — and is seeking to grow its satellite and launch operations.",
-    "image_url": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02919-1",
-    "author": "Jonathan O’Callaghan",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.518004",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02919-1 The European Union is easing its reliance on US space infrastructure — and is seeking to grow its sat...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 279,
-    "title": "Daily briefing: How to turn a paper into an AI agent",
-    "slug": "daily-briefing-how-to-turn-a-paper-into-an-ai-agent-1790070620-601",
-    "summary": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02994-4 A new tool is designed to help researchers interact with published papers. Plus, promising news for an RNA-based treatment for ALS and how psychoactive drugs might have shaped pre-Incan culture.",
-    "content": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02994-4 A new tool is designed to help researchers interact with published papers. Plus, promising news for an RNA-based treatment for ALS and how psychoactive drugs might have shaped pre-Incan culture.",
-    "image_url": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02994-4",
-    "author": "Flora Graham",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517933",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02994-4 A new tool is designed to help researchers interact with published papers.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 278,
-    "title": "Briefing Chat: Evidence mounts for hidden chambers beyond Tutankhamun's tomb",
-    "slug": "briefing-chat-evidence-mounts-for-hidden-chambers-beyond-tutankhamun-s-tomb-1790070620-601",
-    "summary": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02984-6 Nature staff discuss data that could point to Nefertiti’s burial place — plus, the implant that translates brain activity into speech and gestures.",
-    "content": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02984-6 Nature staff discuss data that could point to Nefertiti’s burial place — plus, the implant that translates brain activity into speech and gestures.",
-    "image_url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02984-6",
-    "author": "Elizabeth Gibney",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517862",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02984-6 Nature staff discuss data that could point to Nefertiti’s burial place — plus, the implant that trans...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 277,
-    "title": "Cognitive resilience helps to predict Alzheimer’s dementia",
-    "slug": "cognitive-resilience-helps-to-predict-alzheimer-s-dementia-1790070620-535",
-    "summary": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02897-4 The trait could explain why symptoms vary in severity between people with similar brain pathology.",
-    "content": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02897-4 The trait could explain why symptoms vary in severity between people with similar brain pathology.",
-    "image_url": "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02897-4",
-    "author": "Nature News",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517785",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 18 September 2026; doi:10.1038/d41586-026-02897-4 The trait could explain why symptoms vary in severity between people with similar brain pathology.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 276,
-    "title": "'Epigenetic' editing is here: gene-tagging technique banishes hepatitis B virus",
-    "slug": "epigenetic-editing-is-here-gene-tagging-technique-banishes-hepatitis-b-virus-1790070620-184",
-    "summary": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02981-9 Technique uses chemical tags to shut down viral DNA lurking in host’s genome.",
-    "content": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02981-9 Technique uses chemical tags to shut down viral DNA lurking in host’s genome.",
-    "image_url": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02981-9",
-    "author": "Miryam Naddaf",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517716",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02981-9 Technique uses chemical tags to shut down viral DNA lurking in host’s genome.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 275,
-    "title": "How do I change labs gracefully during my PhD?",
-    "slug": "how-do-i-change-labs-gracefully-during-my-phd-1790070620-399",
-    "summary": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02441-4 A scientist in training seeks help in finding a new adviser without damaging existing working relationships.",
-    "content": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02441-4 A scientist in training seeks help in finding a new adviser without damaging existing working relationships.",
-    "image_url": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02441-4",
-    "author": "N. G. Boeck",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517644",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02441-4 A scientist in training seeks help in finding a new adviser without damaging existing working relatio...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 274,
-    "title": "AI co-scientists are revolutionizing how research is done",
-    "slug": "ai-co-scientists-are-revolutionizing-how-research-is-done-1790070620-833",
-    "summary": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02931-5 Artificial-intelligence systems can generate hypotheses, design experiments and analyse data — but humans still need to decide what makes sense.",
-    "content": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02931-5 Artificial-intelligence systems can generate hypotheses, design experiments and analyse data — but humans still need to decide what makes sense.",
-    "image_url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02931-5",
-    "author": "Elie Dolgin",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517558",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02931-5 Artificial-intelligence systems can generate hypotheses, design experiments and analyse data — but hu...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 273,
-    "title": "China punishes prominent academics exposed by research sleuth",
-    "slug": "china-punishes-prominent-academics-exposed-by-research-sleuth-1790070620-660",
-    "summary": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02890-x Several scientists investigated for research-integrity violations by video-blogger ‘Student Geng’ have now faced disciplinary measures. The penalties are part of a misconduct crackdown on 31 research teams.",
-    "content": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02890-x Several scientists investigated for research-integrity violations by video-blogger ‘Student Geng’ have now faced disciplinary measures. The penalties are part of a misconduct crackdown on 31 research teams.",
-    "image_url": "https://images.unsplash.com/photo-1453873531674-2151101a6648?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02890-x",
-    "author": "Xiaoying You",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517482",
-    "credibility_score": 74,
-    "sensationalism_score": 18,
-    "fact_check_status": "developing",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02890-x Several scientists investigated for research-integrity violations by video-blogger ‘Student Geng’ hav...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "The penalties are part of a misconduct crackdown on 31 research teams.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Developing / Uncorroborated"
-  },
-  {
-    "id": 272,
-    "title": "Edible batteries power medical devices in the body",
-    "slug": "edible-batteries-power-medical-devices-in-the-body-1790070620-510",
-    "summary": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02987-3 The tiny power sources, tested in pigs, dissolve inside the digestive tract after several months.",
-    "content": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02987-3 The tiny power sources, tested in pigs, dissolve inside the digestive tract after several months.",
-    "image_url": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02987-3",
-    "author": "Katherine Bourzac",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517401",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02987-3 The tiny power sources, tested in pigs, dissolve inside the digestive tract after several months.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 271,
-    "title": "Losing your way of life to climate change matters — and we need a way to measure it",
-    "slug": "losing-your-way-of-life-to-climate-change-matters-and-we-need-a-way-to-measure-it-1790070620-667",
-    "summary": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02928-0 Climate losses extend beyond property and income. Policymakers need ways to assess what people value, experience and ultimately stand to lose.",
-    "content": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02928-0 Climate losses extend beyond property and income. Policymakers need ways to assess what people value, experience and ultimately stand to lose.",
-    "image_url": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02928-0",
-    "author": "Manasi  Kumar",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517327",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02928-0 Climate losses extend beyond property and income.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 270,
-    "title": "Six principles for supporting academic freedom in universities",
-    "slug": "six-principles-for-supporting-academic-freedom-in-universities-1790070620-333",
-    "summary": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02932-4 Many academics are concerned about threats to independent enquiry in higher education. Here’s how it can be protected while taking legitimate concerns into account.",
-    "content": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02932-4 Many academics are concerned about threats to independent enquiry in higher education. Here’s how it can be protected while taking legitimate concerns into account.",
-    "image_url": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/d41586-026-02932-4",
-    "author": "Sarah de Rijcke",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517231",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 21 September 2026; doi:10.1038/d41586-026-02932-4 Many academics are concerned about threats to independent enquiry in higher education.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 269,
-    "title": "Chemist-aligned retrosynthesis by ensembling diverse inductive bias models",
-    "slug": "chemist-aligned-retrosynthesis-by-ensembling-diverse-inductive-bias-models-1790070620-330",
-    "summary": "Nature, Published online: 21 September 2026; doi:10.1038/s41586-026-11160-9 Chemist-aligned retrosynthesis by ensembling diverse inductive bias models",
-    "content": "Nature, Published online: 21 September 2026; doi:10.1038/s41586-026-11160-9 Chemist-aligned retrosynthesis by ensembling diverse inductive bias models",
-    "image_url": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.nature.com/articles/s41586-026-11160-9",
-    "author": "Marwin H. S. Segler",
-    "source_name": "Nature News",
-    "category_name": "Science",
-    "published_at": "2026-09-22T09:50:18.517119",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Nature, Published online: 21 September 2026; doi:10.1038/s41586-026-11160-9 Chemist-aligned retrosynthesis by ensembling diverse inductive bias models Nature, Published online: ...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Nature News"
+      "Deutsche Welle"
     ],
     "bias_spectrum": "Center-Editorial Reporting"
   },
@@ -5530,16 +5138,16 @@
     "author": "BBC Sport",
     "source_name": "BBC Sport",
     "category_name": "Sports",
-    "published_at": "2026-09-22T08:46:54",
+    "published_at": "2026-09-08T09:56:43",
     "credibility_score": 81,
     "sensationalism_score": 4,
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Red Bull's Hadjar to return at Azerbaijan Grand Prix",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
+        "claim": "Three Americans have the chance to become the first home US Open men's champion since 2003.",
+        "status": "Data-Backed Assertion",
+        "evidence": "Quantitative metrics corroborated across primary reporting data",
+        "confidence_score": 92
       }
     ],
     "corroborating_sources": [
@@ -5564,35 +5172,7 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Exalogic-CMRL payoff case: Keralam’s UDF govt orders police inquiry into ED report seeking action against Pinarayi Vijayan.",
-        "status": "Verified Reporting",
-        "evidence": "Cross-corroborated by journalistic wire network",
-        "confidence_score": 88
-      }
-    ],
-    "corroborating_sources": [
-      "The Hindu"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 432,
-    "title": "India survive Japan scare in thrilling Sano contest",
-    "slug": "india-survive-japan-scare-in-thrilling-sano-contest-1790070620-481",
-    "summary": "Chasing 33 to win in five overs, Japan came very close, losing by only two runs",
-    "content": "Chasing 33 to win in five overs, Japan came very close, losing by only two runs",
-    "image_url": "http://p.imgci.com/db/PICTURES/CMS/422800/422887.jpg",
-    "source_url": "https://www.cricinfo.com/ci/content/story/1555337.html?ex_cid=OTC-RSS",
-    "author": "Cricinfo",
-    "source_name": "Cricinfo",
-    "category_name": "Sports",
-    "published_at": "2026-09-22T08:36:13",
-    "credibility_score": 80,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Chasing 33 to win in five overs, Japan came very close, losing by only two runs Chasing 33 to win in five overs, Japan came very close, losing by only two runs",
+        "claim": "The governing body said that any investors know Australia's schedule for the years to come and Tests would continue to overlap BBL The governing body said that any investors kno...",
         "status": "Data-Backed Assertion",
         "evidence": "Quantitative metrics corroborated across primary reporting data",
         "confidence_score": 92
@@ -5648,108 +5228,10 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "Why an influential GOP health policy expert still backs $1 trillion in Medicaid cuts — and which policy target is next.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "WASHINGTON &#x2014; Brian Blase, president of Paragon Health Institute, has become a trusted adviser to Republicans in Congress, who passed sweeping changes to federal funding f...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "The Medicaid program is expected to pay out some $1 trillion less than projected over the coming decade, thanks to policies Blase supported.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "The changes are causing health providers to scramble and rethink how they offer care.&#xa0; The cuts to the Medicaid program through the One Big Beautiful Bill Act were used to ...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "STAT News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 339,
-    "title": "STAT+: Ohio governor’s race is a battle over Covid, health costs, and trust in science",
-    "slug": "stat-ohio-governor-s-race-is-a-battle-over-covid-health-costs-and-trust-in-science-1790070620-419",
-    "summary": "The race between Amy Acton and Vivek Ramaswamy could be the election’s most direct test of where the heartland stands on health care and the pandemic.",
-    "content": "CLEVELAND &#x2014; Amy Acton couldn&#x2019;t speak.&#xa0; Supporters of Acton, the Democratic nominee for governor of Ohio, were waiting for her remarks along the banks of the Black River, once known as the &#x201c;river of fish tumors&#x201d; because of the catfish deformed by steel mill slag. Now the river was being rehabilitated. Acton, a physician who vaulted to national fame when she led Ohio&#x2019;s aggressive response to Covid-19 as the state&#x2019;s director of public health back in 2020, was running with the promise to do the same for state politics.&#xa0; The crowd, attending a Labor Day festival in the industrial city of Lorain, had spent the afternoon grazing on boba tea and pastelitos from food trucks while a live band covered &#x2019;90s hits like &#x201c;Return of the Mack.&#x201d; They didn&#x2019;t yet know that Acton wasn&#x2019;t going to make it onstage after all. Earlier that day, at a different campaign event about 90 miles east in Canfield, a man carrying two handguns, brass knuckles, and a Taser had barreled toward Acton while yelling her name, knocking over an elderly couple in the crowd. (The man, Patrick Havas, has since pleaded not guilty to charges including assault.) Of all the high-profile electoral contests this November, the heated race for Ohio governor could be the most direct test of where public opinion in the heartland currently stands on health care, trust in science, and the lasting legacy of the Covid pandemic. Acton&#x2019;s Republican opponent, Vivek Ramaswamy, is the billionaire founder and former CEO of biotech company Roivant who built his political profile as a 2024 presidential candidate in part on accusing the government of overreach in the pandemic &#x2014; claims he&#x2019;s made central to his current gubernatorial campaign as well. STAT visited events for each candidate on the same day in August to get a sense of how Acton and Ramaswamy are tapping into American health anxieties, and how their messages are resonating with Ohioans. Acton stands by her decisions during the pandemic, but is betting that people in Ohio are ready to move on and instead focus on fixing problems like health care affordability and access. (Affordable Care Act enrollment in Ohio dropped by one-third in the past year following the expiration of federal subsidies, the most of any state.)&#xa0; Continue to STAT+ to read the full story&hellip;",
-    "image_url": "https://www.statnews.com/wp-content/uploads/2026/09/OHGV_0309-1024x576.jpg",
-    "source_url": "https://www.statnews.com/2026/09/22/ohio-governor-election-health-care-policy-acton-ramaswamy/?utm_campaign=rss",
-    "author": "Sarah Todd",
-    "source_name": "STAT News",
-    "category_name": "Health",
-    "published_at": "2026-09-22T08:30:00",
-    "credibility_score": 74,
-    "sensationalism_score": 16,
-    "fact_check_status": "developing",
-    "key_claims": [
-      {
-        "claim": "Acton, a physician who vaulted to national fame when she led Ohio&#x2019;s aggressive response to Covid-19 as the state&#x2019;s director of public health back in 2020, was runn...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "Earlier that day, at a different campaign event about 90 miles east in Canfield, a man carrying two handguns, brass knuckles, and a Taser had barreled toward Acton while yelling...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "Acton&#x2019;s Republican opponent, Vivek Ramaswamy, is the billionaire founder and former CEO of biotech company Roivant who built his political profile as a 2024 presidential ...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "(Affordable Care Act enrollment in Ohio dropped by one-third in the past year following the expiration of federal subsidies, the most of any state.)&#xa0; Continue to STAT+ to r...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "STAT News"
-    ],
-    "bias_spectrum": "Developing / Uncorroborated"
-  },
-  {
-    "id": 415,
-    "title": "Pollock signs new Northampton deal in excess of £400K",
-    "slug": "pollock-signs-new-northampton-deal-in-excess-of-400k-1790070620-783",
-    "summary": "Henry Pollock has brought an end to his contract stand-off with Northampton, saying it was ultimately \"a very easy decision\" to sign an extension.",
-    "content": "Henry Pollock has brought an end to his contract stand-off with Northampton, saying it was ultimately \"a very easy decision\" to sign an extension.",
-    "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/d89e/live/11413900-b5f8-11f1-a430-4d16ee157c41.jpg",
-    "source_url": "https://www.bbc.co.uk/sport/rugby-union/articles/cq39m2eppe0wo?at_medium=RSS&at_campaign=rss",
-    "author": "BBC Sport",
-    "source_name": "BBC Sport",
-    "category_name": "Sports",
-    "published_at": "2026-09-22T08:28:34",
-    "credibility_score": 77,
-    "sensationalism_score": 16,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Pollock signs new Northampton deal in excess of £400K.",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      },
-      {
-        "claim": "Henry Pollock has brought an end to his contract stand-off with Northampton, saying it was ultimately a very easy decision to sign an extension.",
-        "status": "Official Statement",
-        "evidence": "Direct on-record attribution from primary source spokesperson",
-        "confidence_score": 95
+        "claim": "England should pick English-based players - Baxter",
+        "status": "Verified Reporting",
+        "evidence": "Primary story reporting corroborated by source network",
+        "confidence_score": 85
       }
     ],
     "corroborating_sources": [
@@ -5774,14 +5256,14 @@
     "fact_check_status": "corroborated",
     "key_claims": [
       {
-        "claim": "‘Made us sit on lap’: Bihar girls accuse headmaster of entering washroom, harassing",
+        "claim": "'Lots of talent here in the net' - Wolvaardt excited about testing newbies in Zimbabwe",
         "status": "Verified Reporting",
         "evidence": "Primary story reporting corroborated by source network",
         "confidence_score": 85
       }
     ],
     "corroborating_sources": [
-      "Times of India"
+      "Cricinfo"
     ],
     "bias_spectrum": "Center-Editorial Reporting"
   },
@@ -6888,428 +6370,6 @@
     ],
     "corroborating_sources": [
       "STAT News"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 83,
-    "title": "Palestinians turn to communal ovens to bake bread in Gaza",
-    "slug": "palestinians-turn-to-communal-ovens-to-bake-bread-in-gaza-1790070619-142",
-    "summary": "Amid Gaza’s food crisis, bread remains a staple as displaced families use communal ovens to save on costly fuel.",
-    "content": "Amid Gaza’s food crisis, bread remains a staple as displaced families use communal ovens to save on costly fuel.",
-    "image_url": "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.aljazeera.com/features/2026/9/22/palestinians-turn-to-communal-ovens-to-bake-bread-in-gaza?traffic_source=rss",
-    "author": "Al Jazeera",
-    "source_name": "Al Jazeera",
-    "category_name": "World",
-    "published_at": "2026-09-22T07:26:16",
-    "credibility_score": 79,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Palestinians turn to communal ovens to bake bread in Gaza",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "Al Jazeera"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 377,
-    "title": "On CCTV, IIT Bombay Student's Last Walk From Exam Hall To Hostel Room",
-    "slug": "on-cctv-iit-bombay-student-s-last-walk-from-exam-hall-to-hostel-room-1790070620-218",
-    "summary": "IIT Bombay student Sahil Ravindra Wakode was found dead in his room",
-    "content": "IIT Bombay: A crime branch team led by police officer Dharamveer Bansod will go through the footage as part of the investigation IIT Bombay: A crime branch team led by police officer Dharamveer Bansod will go through the footage as part of the investigation",
-    "image_url": "https://c.ndtvimg.com/2026-09/4bj8s158_iit-bombay-suicide-protest-sahil_625x300_19_September_26.jpg?im=FeatureCrop,algorithm=dnn,width=1280,height=720",
-    "source_url": "https://www.ndtv.com/india-news/on-cctv-iit-bombay-students-last-walk-from-exam-hall-to-hostel-room-12079938#publisher=newsstand",
-    "author": "NDTV Top Stories",
-    "source_name": "NDTV Top Stories",
-    "category_name": "India",
-    "published_at": "2026-09-22T07:24:22",
-    "credibility_score": 74,
-    "sensationalism_score": 16,
-    "fact_check_status": "developing",
-    "key_claims": [
-      {
-        "claim": "On CCTV, IIT Bombay Student's Last Walk From Exam Hall To Hostel Room",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "NDTV Top Stories"
-    ],
-    "bias_spectrum": "Developing / Uncorroborated"
-  },
-  {
-    "id": 84,
-    "title": "The most memorable moments at UNGA",
-    "slug": "the-most-memorable-moments-at-unga-1790070619-716",
-    "summary": "The UN General Assembly has delivered no shortage of unforgettable moments. Here’s a look back at some of them.",
-    "content": "The UN General Assembly has delivered no shortage of unforgettable moments. Here’s a look back at some of them.",
-    "image_url": "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.aljazeera.com/video/newsfeed/2026/9/22/the-most-memorable-moments-at-unga?traffic_source=rss",
-    "author": "Al Jazeera",
-    "source_name": "Al Jazeera",
-    "category_name": "World",
-    "published_at": "2026-09-22T07:23:04",
-    "credibility_score": 75,
-    "sensationalism_score": 16,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "The most memorable moments at UNGA",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "Al Jazeera"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 412,
-    "title": "Bangladesh foreign secretary Asad Alan Siam to be new high commissioner in New Delhi: Sources",
-    "slug": "bangladesh-foreign-secretary-asad-alan-siam-to-be-new-high-commissioner-in-new-delhi-sources-1790070620-908",
-    "summary": "Bangladesh's foreign secretary Asad Alan Siam is set to be the new high commissioner in New Delhi",
-    "content": "Bangladesh's foreign secretary Asad Alan Siam is set to be the new high commissioner in New Delhi",
-    "image_url": "https://www.hindustantimes.com/ht-img/img/2026/09/22/1600x900/logo/bangladesh_india_envoy_1766469459424_1766469459727_1790062227077_B2T5_2f5b6d4e-ea89-46d6-9cad-aa2fd6571b17_yhg9.jpg",
-    "source_url": "https://www.hindustantimes.com/india-news/bangladesh-foreign-secretary-asad-alan-siam-to-be-new-high-commissioner-in-new-delhi-sources-101790061564075.html",
-    "author": "Hindustan Times",
-    "source_name": "Hindustan Times",
-    "category_name": "India",
-    "published_at": "2026-09-22T07:21:21",
-    "credibility_score": 76,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Bangladesh foreign secretary Asad Alan Siam to be new high commissioner in New Delhi: Sources",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "Hindustan Times"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 7,
-    "title": "India Completes Phase-4 Expansion of National Green Hydrogen Grid",
-    "slug": "india-completes-phase-4-expansion-green-hydrogen-grid",
-    "summary": "The Ministry of New and Renewable Energy has announced the commercial commissioning of 12 green hydrogen production hubs, targeting 5 million metric tonnes annual capacity by 2030.",
-    "content": "Official government gazette notifications confirm the operational launch of 12 integrated green hydrogen hubs across Gujarat, Maharashtra, and Odisha. Industry audits verify that 1.2 GW of dedicated solar-wind hybrid infrastructure has been energized, with supply contracts signed with national steel and fertilizer corporations.",
-    "image_url": "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://samachar.news/verified/india-completes-phase-4-expansion-green-hydrogen-grid",
-    "author": "Editorial Intelligence Wire",
-    "source_name": "The Hindu",
-    "category_name": "India",
-    "published_at": "2026-09-22T07:20:17.522363",
-    "credibility_score": 94,
-    "sensationalism_score": 8,
-    "fact_check_status": "verified",
-    "key_claims": [
-      {
-        "claim": "12 integrated green hydrogen hubs commercially commissioned",
-        "status": "Official Statement",
-        "evidence": "Ministry of New and Renewable Energy Gazette Notification"
-      },
-      {
-        "claim": "Target of 5 million metric tonnes annual capacity by 2030",
-        "status": "Data-Backed Assertion",
-        "evidence": "National Green Hydrogen Mission roadmap documents"
-      },
-      {
-        "claim": "1.2 GW dedicated hybrid renewable capacity energized",
-        "status": "Verified Fact",
-        "evidence": "Audited grid interconnection logs from Power Grid Corp"
-      }
-    ],
-    "corroborating_sources": [
-      "The Hindu",
-      "Indian Express",
-      "Reuters",
-      "Bloomberg"
-    ],
-    "bias_spectrum": "Neutral Analytic (Policy Review)"
-  },
-  {
-    "id": 413,
-    "title": "Video shows passengers standing as plane moves on runway, Air India Express assures action",
-    "slug": "video-shows-passengers-standing-as-plane-moves-on-runway-air-india-express-assures-action-1790070620-330",
-    "summary": "Air India Express, in a comment under the video, apologised for the distress, stressing that safety remains the highest priority.",
-    "content": "Air India Express, in a comment under the video, apologised for the distress, stressing that safety remains the highest priority.",
-    "image_url": "https://www.hindustantimes.com/ht-img/img/2026/09/22/1600x900/logo/Image_1790060784322_oktR_1790060790464_7tmQ_8a14b296-bc1a-4a1a-b390-2510ad7a1c0f_yxD7.jpg",
-    "source_url": "https://www.hindustantimes.com/india-news/video-shows-passengers-standing-inside-flight-before-landing-air-india-express-assures-action-101790060793464.html",
-    "author": "Hindustan Times",
-    "source_name": "Hindustan Times",
-    "category_name": "India",
-    "published_at": "2026-09-22T07:16:17",
-    "credibility_score": 76,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Video shows passengers standing as plane moves on runway, Air India Express assures action",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "Hindustan Times"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 257,
-    "title": "AI Helps Meta-Mindfulness To Oversee Mindfulness And Keep Mindlessness In Check",
-    "slug": "ai-helps-meta-mindfulness-to-oversee-mindfulness-and-keep-mindlessness-in-check-1790070620-139",
-    "summary": "Meta-mindfulness entails overseeing mindfulness and keeping mindlessness in check. AI can help build meta-mindfulness. An AI Insider analysis and scoop.",
-    "content": "Meta-mindfulness entails overseeing mindfulness and keeping mindlessness in check. AI can help build meta-mindfulness. An AI Insider analysis and scoop.",
-    "image_url": "https://imageio.forbes.com/specials-images/imageserve/6a06874b7566622e6e3c37ad/0x0.jpg?width=960&precrop=2136%2C1424%2Cx0%2Cy0",
-    "source_url": "https://www.forbes.com/sites/lanceeliot/2026/09/22/ai-helps-meta-mindfulness-to-oversee-mindfulness-and-keep-mindlessness-in-check/",
-    "author": "Lance Eliot, Contributor",
-    "source_name": "Forbes",
-    "category_name": "Business",
-    "published_at": "2026-09-22T07:15:00",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "AI Helps Meta-Mindfulness To Oversee Mindfulness And Keep Mindlessness In Check",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "Forbes"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 22,
-    "title": "Iran must stop arming Houthis in Yemen, G7 says ahead of UN General Assembly",
-    "slug": "iran-must-stop-arming-houthis-in-yemen-g7-says-ahead-of-un-general-assembly-1790070619-793",
-    "summary": "The G7 also condemns \"in the strongest terms\" Houthi attacks on Saudi Arabia, saying that the escalation in fighting in Yemen jeopardises global energy security.",
-    "content": "The G7 also condemns \"in the strongest terms\" Houthi attacks on Saudi Arabia, saying that the escalation in fighting in Yemen jeopardises global energy security.",
-    "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/8de9/live/2f1c8fd0-b63c-11f1-b5fe-031254885cd0.jpg",
-    "source_url": "https://www.bbc.co.uk/news/articles/cwm2qpmepmlzo?at_medium=RSS&at_campaign=rss",
-    "author": "BBC World",
-    "source_name": "BBC World",
-    "category_name": "World",
-    "published_at": "2026-09-22T07:14:12",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "The G7 also condemns in the strongest terms Houthi attacks on Saudi Arabia, saying that the escalation in fighting in Yemen jeopardises global energy security.",
-        "status": "Official Statement",
-        "evidence": "Direct on-record attribution from primary source spokesperson",
-        "confidence_score": 95
-      }
-    ],
-    "corroborating_sources": [
-      "BBC World"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 85,
-    "title": "ISIL-linked detainees report night raids, extortion, violence at Roj camp",
-    "slug": "isil-linked-detainees-report-night-raids-extortion-violence-at-roj-camp-1790070619-563",
-    "summary": "Over 2,300 women and children are still held in what UN experts and human rights groups describe as open-ended detention",
-    "content": "Over 2,300 women and children are still held in what UN experts and human rights groups describe as open-ended detention",
-    "image_url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.aljazeera.com/features/2026/9/22/isil-linked-detainees-report-night-raids-extortion-violence-at-roj-camp?traffic_source=rss",
-    "author": "Al Jazeera",
-    "source_name": "Al Jazeera",
-    "category_name": "World",
-    "published_at": "2026-09-22T07:13:01",
-    "credibility_score": 79,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "ISIL-linked detainees report night raids, extortion, violence at Roj camp.",
-        "status": "Verified Reporting",
-        "evidence": "Cross-corroborated by journalistic wire network",
-        "confidence_score": 88
-      },
-      {
-        "claim": "Over 2,300 women and children are still held in what UN experts and human rights groups describe as open-ended detention Over 2,300 women and children are still held in what UN ...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Al Jazeera"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 387,
-    "title": "Bihar molestation case: Main accused Nandan Yadav injured in police encounter",
-    "slug": "bihar-molestation-case-main-accused-nandan-yadav-injured-in-police-encounter-1790070620-837",
-    "summary": "In a police operation targeting Nandan Yadav, the accused in a Jamui molestation case, he sustained a bullet injury to his leg and is now receiving medical treatment. This follow-up comes after viral videos of the incident sparked outrage across social media. Authorities have identified and charged several individuals related to the case, with investigations ongoing and steps being taken to erase ",
-    "content": "In a police operation targeting Nandan Yadav, the accused in a Jamui molestation case, he sustained a bullet injury to his leg and is now receiving medical treatment. This follow-up comes after viral videos of the incident sparked outrage across social media. Authorities have identified and charged several individuals related to the case, with investigations ongoing and steps being taken to erase the circulated videos.",
-    "image_url": "https://static.toiimg.com/photo/msid-134405569,imgsize-48276.cms",
-    "source_url": "https://timesofindia.indiatimes.com/city/patna/bihar-class-10-girl-molestation-case-main-accused-nandan-yadav-injured-in-police-encounter-in-jamui/articleshow/134405351.cms",
-    "author": "FARYAL RUMI",
-    "source_name": "Times of India",
-    "category_name": "India",
-    "published_at": "2026-09-22T07:11:12",
-    "credibility_score": 76,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Bihar molestation case: Main accused Nandan Yadav injured in police encounter",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "Times of India"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 214,
-    "title": "Novo Still Has Work to Do to Build Investor Confidence, CEO Says",
-    "slug": "novo-still-has-work-to-do-to-build-investor-confidence-ceo-says-1790070620-572",
-    "summary": "Novo CEO Mike Doustdar discusses investor confidence, drug testing and the potential for expanding the firm's obesity offerings. \"We should also have a mindset that we don't have a patent or a monopoly on all the good ideas,\" Doustdar tells Bloomberg Television. \"When there is a gap, strategically or scientifically, we're looking outside to see how we can fill the gaps.\" (Source: Bloomberg)",
-    "content": "Novo CEO Mike Doustdar discusses investor confidence, drug testing and the potential for expanding the firm's obesity offerings. \"We should also have a mindset that we don't have a patent or a monopoly on all the good ideas,\" Doustdar tells Bloomberg Television. \"When there is a gap, strategically or scientifically, we're looking outside to see how we can fill the gaps.\" (Source: Bloomberg)",
-    "image_url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
-    "source_url": "https://www.bloomberg.com/news/videos/2026-09-22/novo-still-has-work-to-do-to-build-confidence-ceo-says-video",
-    "author": "Bloomberg Markets",
-    "source_name": "Bloomberg Markets",
-    "category_name": "Business",
-    "published_at": "2026-09-22T07:09:54",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "We should also have a mindset that we don't have a patent or a monopoly on all the good ideas, Doustdar tells Bloomberg Television.",
-        "status": "Official Statement",
-        "evidence": "Direct on-record attribution from primary source spokesperson",
-        "confidence_score": 95
-      },
-      {
-        "claim": "When there is a gap, strategically or scientifically, we're looking outside to see how we can fill the gaps. (Source: Bloomberg) Novo CEO Mike Doustdar discusses investor confid...",
-        "status": "Official Statement",
-        "evidence": "Direct on-record attribution from primary source spokesperson",
-        "confidence_score": 95
-      },
-      {
-        "claim": "When there is a gap, strategically or scientifically, we're looking outside to see how we can fill the gaps. (Source: Bloomberg)",
-        "status": "Official Statement",
-        "evidence": "Direct on-record attribution from primary source spokesperson",
-        "confidence_score": 95
-      }
-    ],
-    "corroborating_sources": [
-      "Bloomberg Markets"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 378,
-    "title": "Opinion: Opinion | Trump-Xi Meet: What China Can Give America, And What India Could Lose",
-    "slug": "opinion-opinion-trump-xi-meet-what-china-can-give-america-and-what-india-could-lose-1790070620-798",
-    "summary": "If Trump can secure some of what he wants directly from Beijing, India's immediate value to Washington could change in particular areas.",
-    "content": "If Trump can secure some of what he wants directly from Beijing, India's immediate value to Washington could change in particular areas.",
-    "image_url": "https://c.ndtvimg.com/2026-09/acq8u1lo_trump-xi-jinping_625x300_20_September_26.jpeg?im=FitAndFill,algorithm=dnn,width=1280,height=720",
-    "source_url": "https://www.ndtv.com/opinion/trump-xi-meet-what-china-can-give-america-and-what-india-could-lose-12079705#publisher=newsstand",
-    "author": "NDTV Top Stories",
-    "source_name": "NDTV Top Stories",
-    "category_name": "India",
-    "published_at": "2026-09-22T07:09:15",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Opinion: Opinion | Trump-Xi Meet: What China Can Give America, And What India Could Lose",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "NDTV Top Stories"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 433,
-    "title": "India bat first in five-over shootout against Japan",
-    "slug": "india-bat-first-in-five-over-shootout-against-japan-1790070620-538",
-    "summary": "India left out Bumrah, Vaibhav Sooryavanshi and Vipraj Nigam from their 14-member squad after a rain-delayed start to the historic contest",
-    "content": "India left out Bumrah, Vaibhav Sooryavanshi and Vipraj Nigam from their 14-member squad after a rain-delayed start to the historic contest",
-    "image_url": "http://p.imgci.com/db/PICTURES/CMS/422800/422875.jpg",
-    "source_url": "https://www.cricinfo.com/ci/content/story/1555319.html?ex_cid=OTC-RSS",
-    "author": "Cricinfo",
-    "source_name": "Cricinfo",
-    "category_name": "Sports",
-    "published_at": "2026-09-22T07:08:42",
-    "credibility_score": 80,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "India left out Bumrah, Vaibhav Sooryavanshi and Vipraj Nigam from their 14-member squad after a rain-delayed start to the historic contest India left out Bumrah, Vaibhav Sooryav...",
-        "status": "Data-Backed Assertion",
-        "evidence": "Quantitative metrics corroborated across primary reporting data",
-        "confidence_score": 92
-      }
-    ],
-    "corroborating_sources": [
-      "Cricinfo"
-    ],
-    "bias_spectrum": "Center-Editorial Reporting"
-  },
-  {
-    "id": 379,
-    "title": "Vijay Builds On MK Stalin's Breakfast Scheme, But Gives It A New Identity",
-    "slug": "vijay-builds-on-mk-stalin-s-breakfast-scheme-but-gives-it-a-new-identity-1790070620-388",
-    "summary": "Children do not vote, but their enthusiasm for Vijay has been seen to influence voting choices",
-    "content": "The decision to extend free breakfast to students up to Class VIII means Vijay is not dismantling a flagship scheme of the previous government. Instead, his government is adding to a programme that has become closely associated with the DMK's welfare record. The decision to extend free breakfast to students up to Class VIII means Vijay is not dismantling a flagship scheme of the previous government. Instead, his government is adding to a programme that has become closely associated with the DMK's welfare record.",
-    "image_url": "https://c.ndtvimg.com/2026-09/42r096jk_vijay-breakfast-_625x300_22_September_26.jpeg",
-    "source_url": "https://www.ndtv.com/india-news/vijay-builds-on-mk-stalins-breakfast-scheme-but-gives-it-a-new-identity-12079800#publisher=newsstand",
-    "author": "NDTV Top Stories",
-    "source_name": "NDTV Top Stories",
-    "category_name": "India",
-    "published_at": "2026-09-22T07:03:21",
-    "credibility_score": 78,
-    "sensationalism_score": 4,
-    "fact_check_status": "corroborated",
-    "key_claims": [
-      {
-        "claim": "Vijay Builds On MK Stalin's Breakfast Scheme, But Gives It A New Identity",
-        "status": "Verified Reporting",
-        "evidence": "Primary story reporting corroborated by source network",
-        "confidence_score": 85
-      }
-    ],
-    "corroborating_sources": [
-      "NDTV Top Stories"
     ],
     "bias_spectrum": "Center-Editorial Reporting"
   }
