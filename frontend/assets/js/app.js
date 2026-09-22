@@ -193,15 +193,21 @@ function renderNewsCard(article) {
     ? `<a href="${article.source_url}" target="_blank" rel="noopener noreferrer" class="card-source-link hover-accent" title="Open source wire article: ${safeSource}"><span>${safeSource}</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
     : `<span class="text-xs text-muted font-medium">${safeSource}</span>`;
 
+  const isRecent = timeStr.includes('m ago') || timeStr === 'Just now';
+  const liveIndicatorHtml = isRecent 
+    ? `<span class="badge badge-verified pulse-ring-container" style="padding:2px 8px;font-size:9.5px;gap:5px;"><span class="radar-sweep-icon" style="width:10px;height:10px;"></span>LIVE WIRE</span>` 
+    : '';
+
   return `
-    <article class="card animate-fade-in-up" id="article-${article.id}">
+    <article class="card card-3d animate-fade-in-up" id="article-${article.id}">
       <div class="card-img-wrapper">
-        <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.src=getCategoryDefaultImage('${safeCat}', '${safeTitle.replace(/'/g, "\\'")}')" />
-        <div style="position:absolute;top:10px;left:10px;display:flex;gap:6px">
+        <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.onerror=null;this.src=getCategoryDefaultImage('${safeCat}')" />
+        <div class="layer-z-20" style="position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap;z-index:6;">
           <span class="badge ${badgeClass}">${badgeLabel}</span>
+          ${liveIndicatorHtml}
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body layer-z-10">
         <div class="flex items-center justify-between text-xs text-muted mb-2">
           <span class="badge ${catBadgeClass}" style="font-size:10px;padding:2px 6px;">${safeCat}</span>
           <span class="flex items-center gap-1"><span>⏱️ ${readMins}m read</span> · <span>${timeStr}</span></span>
@@ -211,13 +217,13 @@ function renderNewsCard(article) {
         </h3>
         <p class="text-xs text-secondary line-clamp-3">${safeSummary}</p>
       </div>
-      <div class="card-footer">
+      <div class="card-footer layer-z-20">
         ${sourceLinkHtml}
         <div class="flex items-center gap-2">
-          <button onclick="handleSaveBookmark(${article.id}, this)" class="btn btn-ghost btn-sm btn-icon bookmark-trigger-btn" title="Save Bookmark" style="border-radius:50%;transition:transform 0.2s var(--ease-spring);">
+          <button onclick="handleSaveBookmark(${article.id}, this)" class="btn btn-ghost btn-sm btn-icon bookmark-trigger-btn btn-pressable" title="Save Bookmark" style="border-radius:50%;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
           </button>
-          <a href="article.html?id=${article.id}" class="btn btn-secondary btn-sm" style="font-weight:600;">Read &rarr;</a>
+          <a href="article.html?id=${article.id}" class="btn btn-secondary btn-sm btn-pressable" style="font-weight:600;">Read &rarr;</a>
         </div>
       </div>
     </article>
@@ -236,7 +242,10 @@ async function handleSaveBookmark(articleId, btnEl) {
 
   if (!user && !localStorage.getItem('samachar_token')) {
     showToast('Please sign in to save bookmarks', 'error');
-    setTimeout(() => { window.location.href = 'login.html'; }, 600);
+    setTimeout(() => { 
+      const ret = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = `login.html?redirect=${ret}`; 
+    }, 800);
     return;
   }
 

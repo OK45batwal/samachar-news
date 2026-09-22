@@ -79,10 +79,6 @@
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    // If user is already authenticated, bypass landing page and go straight to live news portal
-    if (localStorage.getItem('samachar_token')) {
-      window.location.replace('home.html');
-    }
   </script>
 </head>
 <body>
@@ -93,9 +89,14 @@
       <div class="flex items-center gap-4">
         <span id="currentDateDisplay">Loading telemetry...</span>
         <span>·</span>
-        <span class="text-accent flex items-center gap-1 font-semibold">
-          <span class="logo-dot"></span>
+        <span class="text-accent flex items-center gap-1.5 font-semibold">
+          <span class="radar-sweep-icon"></span>
           MEKA 3.5 Disinformation Defense Active
+        </span>
+        <span>·</span>
+        <span class="flex items-center gap-1 text-secondary text-xs">
+          <span>⚡ Next Automated Ingestion:</span>
+          <strong id="liveSyncCountdown" class="text-accent font-mono live-sync-countdown">24:18</strong>
         </span>
       </div>
       <div class="flex items-center gap-4">
@@ -107,8 +108,8 @@
 
   <!-- Live Wire Telemetry Marquee Ticker -->
   <div class="landing-ticker-bar">
-    <div class="landing-ticker-label">
-      <span class="logo-dot"></span>
+    <div class="landing-ticker-label" style="display:flex;align-items:center;gap:6px;">
+      <span class="radar-sweep-icon" style="width:11px;height:11px;"></span>
       <span>LIVE WIRE FEED</span>
     </div>
     <div class="landing-ticker-track" id="landingTickerTrack">
@@ -161,7 +162,7 @@
       <!-- Pulsing Status Pill -->
       <div class="mb-5 animate-scale-in">
         <div class="status-pill-pulse">
-          <span class="logo-dot"></span>
+          <span class="radar-sweep-icon" style="width:11px;height:11px;"></span>
           <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: var(--accent); letter-spacing: 0.5px;">
             AUTONOMOUS TRUTH ENGINE 2.0 · ZERO SENSATIONALISM
           </span>
@@ -171,7 +172,7 @@
       <!-- Hero Headline -->
       <h1 class="heading-hero mb-6 animate-fade-in-up" style="animation-delay: 0.08s; font-size: clamp(34px, 5.5vw, 62px); line-height: 1.15; letter-spacing: -1px;">
         News Verified by Evidence,<br />
-        <span style="background: linear-gradient(135deg, var(--accent) 0%, #38BDF8 50%, #818CF8 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        <span class="text-shimmer">
           Never Sensationalism.
         </span>
       </h1>
@@ -183,20 +184,20 @@
 
       <!-- Main Action Buttons -->
       <div class="flex items-center justify-center gap-4 mb-12 animate-fade-in-up" style="flex-wrap: wrap; animation-delay: 0.18s;">
-        <a href="home.html" class="btn btn-primary" style="padding: 13px 28px; font-size: 14.5px; border-radius: 9999px; font-weight: 700; box-shadow: 0 4px 20px rgba(0, 245, 155, 0.3);">
+        <a href="home.html" class="btn btn-primary btn-pressable" style="padding: 13px 28px; font-size: 14.5px; border-radius: 9999px; font-weight: 700; box-shadow: 0 4px 20px rgba(0, 245, 155, 0.3);">
           Explore Live News Portal &rarr;
         </a>
-        <a href="factcheck.html" class="btn btn-secondary" style="padding: 13px 28px; font-size: 14.5px; border-radius: 9999px; font-weight: 700;">
+        <a href="factcheck.html" class="btn btn-secondary btn-pressable" style="padding: 13px 28px; font-size: 14.5px; border-radius: 9999px; font-weight: 700;">
           ⚡ Open Fact-Check Workbench
         </a>
       </div>
 
       <!-- Live Interactive Fact Checker Simulator -->
-      <div class="hero-workbench-card p-6 animate-fade-in-up" style="max-width: 820px; margin: 0 auto; text-align: left; animation-delay: 0.22s;">
-        <div class="flex items-center justify-between mb-4 pb-3 border-bottom" style="flex-wrap: wrap; gap: 8px;">
+      <div class="hero-workbench-card card-3d p-6 animate-fade-in-up" style="max-width: 820px; margin: 0 auto; text-align: left; animation-delay: 0.22s;">
+        <div class="flex items-center justify-between mb-4 pb-3 border-bottom layer-z-10" style="flex-wrap: wrap; gap: 8px;">
           <div class="flex items-center gap-2">
-            <span class="live-indicator-dot"></span>
-            <span class="text-xs font-mono font-bold text-accent">MEKA 3.5 CLAIM VERIFIER DEMO</span>
+            <span class="radar-sweep-icon"></span>
+            <span class="text-xs font-mono font-bold text-accent">MEKA 3.5 CLAIM VERIFIER 3D CONSOLE</span>
           </div>
           <span class="text-xs text-muted">Test any statement below in real time</span>
         </div>
@@ -485,6 +486,7 @@
   <script src="/assets/js/api.js?v=12.0"></script>
   <script src="/assets/js/layout.js?v=12.0"></script>
   <script src="/assets/js/app.js?v=12.0"></script>
+  <script src="/assets/js/spatial3d.js?v=12.0"></script>
   <script>
     // Format current date in top bar
     const dateEl = document.getElementById('currentDateDisplay');

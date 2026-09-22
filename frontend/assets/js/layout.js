@@ -101,38 +101,38 @@ document.addEventListener('DOMContentLoaded', () => {
     searchOverlay = document.createElement('div');
     searchOverlay.id = 'searchOverlay';
     searchOverlay.className = 'search-overlay';
-    searchOverlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(8,11,18,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:3000;display:none;align-items:flex-start;justify-content:center;padding-top:10vh;";
+    searchOverlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:3000;display:none;align-items:flex-start;justify-content:center;padding-top:10vh;";
     searchOverlay.innerHTML = `
-      <div class="search-modal" style="width:100%;max-width:640px;background:#101625;border:1px solid #222D42;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,0.9),0 0 0 1px rgba(0,245,155,0.3);overflow:hidden;margin:0 16px;display:flex;flex-direction:column;box-sizing:border-box;">
+      <div class="search-modal" style="width:100%;max-width:640px;background:var(--bg-surface-1);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-xl), 0 0 0 1px var(--accent-dim);overflow:hidden;margin:0 16px;display:flex;flex-direction:column;box-sizing:border-box;">
         
-        <div style="padding:14px 18px;background:#161E30;border-bottom:1px solid #222D42;display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00F59B" stroke-width="2.5" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="globalSearch" placeholder="Search verified news, claims, topics (Press Enter to view all)..." style="flex:1;min-width:0;width:auto;background:transparent;border:none!important;outline:none!important;box-shadow:none!important;font-size:15px;font-weight:500;color:#F8FAFC;padding:4px 0;margin:0;" autocomplete="off" />
+        <div style="padding:14px 18px;background:var(--bg-surface-2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="globalSearch" placeholder="Search verified news, claims, topics (Press Enter to view all)..." style="flex:1;min-width:0;width:auto;background:transparent;border:none!important;outline:none!important;box-shadow:none!important;font-size:15px;font-weight:500;color:var(--text-primary);padding:4px 0;margin:0;" autocomplete="off" />
           <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-            <kbd class="hide-mobile" style="font-family:monospace;font-size:10px;padding:3px 7px;background:#202B40;border:1px solid #2E3E5C;border-radius:5px;color:#94A3B8;">ESC</kbd>
-            <button id="closeSearchModalBtn" type="button" style="background:transparent;border:none;color:#94A3B8;font-size:16px;cursor:pointer;padding:4px 8px;line-height:1;border-radius:4px;" title="Close">✕</button>
+            <kbd class="hide-mobile" style="font-family:monospace;font-size:10px;padding:3px 7px;background:var(--bg-surface-3);border:1px solid var(--border);border-radius:5px;color:var(--text-secondary);">ESC</kbd>
+            <button id="closeSearchModalBtn" type="button" style="background:transparent;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;padding:4px 8px;line-height:1;border-radius:4px;" title="Close">✕</button>
           </div>
         </div>
         
-        <div id="globalSearchResults" style="display:none;max-height:360px;overflow-y:auto;border-top:1px solid #222D42;"></div>
+        <div id="globalSearchResults" style="display:none;max-height:360px;overflow-y:auto;border-top:1px solid var(--border);"></div>
         
         <div id="searchDefaultTrending" style="padding:18px 20px;">
-          <div style="font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">🔥 Popular Trending Topics:</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">🔥 Popular Trending Topics:</div>
           <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;">
-            <a href="latest.html?q=AI" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:#1B2436;border:1px solid #2A3854;color:#00F59B;font-size:12px;font-weight:600;text-decoration:none;">#ArtificialIntelligence</a>
-            <a href="latest.html?q=technology" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:#1B2436;border:1px solid #2A3854;color:#00F59B;font-size:12px;font-weight:600;text-decoration:none;">#Technology</a>
-            <a href="latest.html?q=business" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:#1B2436;border:1px solid #2A3854;color:#00F59B;font-size:12px;font-weight:600;text-decoration:none;">#Business</a>
-            <a href="latest.html?q=science" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:#1B2436;border:1px solid #2A3854;color:#00F59B;font-size:12px;font-weight:600;text-decoration:none;">#Science</a>
-            <a href="latest.html?q=india" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:#1B2436;border:1px solid #2A3854;color:#00F59B;font-size:12px;font-weight:600;text-decoration:none;">#India</a>
+            <a href="latest.html?q=AI" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:var(--bg-surface-2);border:1px solid var(--border);color:var(--accent);font-size:12px;font-weight:600;text-decoration:none;">#ArtificialIntelligence</a>
+            <a href="latest.html?q=technology" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:var(--bg-surface-2);border:1px solid var(--border);color:var(--accent);font-size:12px;font-weight:600;text-decoration:none;">#Technology</a>
+            <a href="latest.html?q=business" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:var(--bg-surface-2);border:1px solid var(--border);color:var(--accent);font-size:12px;font-weight:600;text-decoration:none;">#Business</a>
+            <a href="latest.html?q=science" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:var(--bg-surface-2);border:1px solid var(--border);color:var(--accent);font-size:12px;font-weight:600;text-decoration:none;">#Science</a>
+            <a href="latest.html?q=india" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:var(--bg-surface-2);border:1px solid var(--border);color:var(--accent);font-size:12px;font-weight:600;text-decoration:none;">#India</a>
           </div>
         </div>
 
-        <div style="padding:10px 18px;background:#161E30;border-top:1px solid #222D42;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#94A3B8;">
+        <div style="padding:10px 18px;background:var(--bg-surface-2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-muted);">
           <div style="display:flex;align-items:center;gap:12px;">
-            <span><kbd style="padding:2px 5px;background:#202B40;border:1px solid #2E3E5C;border-radius:4px;color:#F8FAFC;">↵</kbd> View All</span>
-            <span><kbd style="padding:2px 5px;background:#202B40;border:1px solid #2E3E5C;border-radius:4px;color:#F8FAFC;">ESC</kbd> Close</span>
+            <span><kbd style="padding:2px 5px;background:var(--bg-surface-3);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);">↵</kbd> View All</span>
+            <span><kbd style="padding:2px 5px;background:var(--bg-surface-3);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);">ESC</kbd> Close</span>
           </div>
-          <span style="color:#00F59B;font-weight:600;">Samachar Spotlight 2.0</span>
+          <span style="color:var(--accent);font-weight:600;">Samachar Spotlight 2.0</span>
         </div>
 
       </div>
@@ -339,22 +339,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             globalSearchResults.innerHTML = articles.map(art => `
-              <a href="article.html?id=${encodeURIComponent(art.id)}" style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid #1E293B;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#1A2438'" onmouseout="this.style.background='transparent'">
-                <div style="width:40px;height:40px;border-radius:6px;background:#243046;overflow:hidden;flex-shrink:0;">
+              <a href="article.html?id=${encodeURIComponent(art.id)}" style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='var(--bg-surface-2)'" onmouseout="this.style.background='transparent'">
+                <div style="width:40px;height:40px;border-radius:6px;background:var(--bg-surface-3);overflow:hidden;flex-shrink:0;">
                   <img src="${art.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=120&q=80'}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=120&q=80'" />
                 </div>
                 <div style="flex:1;min-width:0;">
-                  <div style="font-size:13px;font-weight:600;color:#F8FAFC;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize(art.title)}</div>
-                  <div style="font-size:11px;color:#94A3B8;display:flex;align-items:center;gap:8px;">
-                    <span style="color:#00F59B;font-weight:600;">🟢 ${art.credibility_score || 95}% Verified</span>
+                  <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize(art.title)}</div>
+                  <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:8px;">
+                    <span style="color:var(--accent);font-weight:600;">🟢 ${art.credibility_score || 95}% Verified</span>
                     <span>·</span>
                     <span>${sanitize(art.source_name || art.source?.name || 'Wire')}</span>
                   </div>
                 </div>
               </a>
             `).join('') + `
-              <div style="padding:10px 16px;background:#131B2C;text-align:center;">
-                <a href="latest.html?q=${encodeURIComponent(query)}" style="font-size:12px;color:#00F59B;font-weight:600;text-decoration:none;">View all results for "${sanitize(query)}" &rarr;</a>
+              <div style="padding:10px 16px;background:var(--bg-surface-2);text-align:center;">
+                <a href="latest.html?q=${encodeURIComponent(query)}" style="font-size:12px;color:var(--accent);font-weight:600;text-decoration:none;">View all results for "${sanitize(query)}" &rarr;</a>
               </div>
             `;
           } catch (err) {
@@ -587,7 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 9. Mobile Bottom Tab Bar (Native Editorial Standard)
   (function injectMobileBottomNav() {
     const path = window.location.pathname;
-    if (path.includes('login') || path.includes('register')) return;
+    if (path.includes('login') || path.includes('register') || path.includes('article')) return;
     if (document.querySelector('.mobile-bottom-nav')) return;
 
     const rawPath = path.split('/').pop() || 'home.html';
@@ -638,4 +638,18 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(nav);
   })();
+
+  // TasteSkill Dynamic Header Scroll Glow
+  const header = document.querySelector('.header');
+  if (header) {
+    const handleScroll = () => {
+      if (window.scrollY > 16) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+  }
 });

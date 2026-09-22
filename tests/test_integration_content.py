@@ -72,3 +72,55 @@ async def test_platform_stats_dynamic_countries():
         assert "countries_covered" in data
         assert isinstance(data["countries_covered"], int)
         assert data["countries_covered"] >= 1
+
+
+@pytest.mark.asyncio
+async def test_nextgen_article_endpoints():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        # Get an existing article ID
+        list_res = await client.get("/api/news/")
+        assert list_res.status_code == 200
+        articles = list_res.json()["articles"]
+        assert len(articles) > 0
+        art_id = articles[0]["id"]
+
+        # Test Cognitive Depth endpoint
+        depth_res = await client.get(f"/api/news/{art_id}/depth")
+        assert depth_res.status_code == 200
+        depth_data = depth_res.json()
+        assert "radar" in depth_data
+        assert "brief" in depth_data
+        assert "deep" in depth_data
+        assert "eli5" in depth_data
+        assert len(depth_data["radar"]["takeaways"]) > 0
+
+        # Test Socratic Ask Copilot endpoint
+        ask_res = await client.post(
+            f"/api/news/{art_id}/ask",
+            json={"question": "What are the counter-arguments?", "selected_context": "primary claim"}
+        )
+        assert ask_res.status_code == 200
+        ask_data = ask_res.json()
+        assert "answer" in ask_data
+        assert "confidence_score" in ask_data
+        assert "evidence_tag" in ask_data
+
+        # Test Perspective Prism endpoint
+        persp_res = await client.get(f"/api/news/{art_id}/perspectives")
+        assert persp_res.status_code == 200
+        persp_data = persp_res.json()
+        assert "consensus_points" in persp_data
+        assert "perspectives" in persp_data
+        assert "omission_radar" in persp_data
+
+        # Test Personal Impact endpoint
+        impact_res = await client.post(
+            f"/api/news/{art_id}/impact",
+            json={"persona": "developer"}
+        )
+        assert impact_res.status_code == 200
+        impact_data = impact_res.json()
+        assert "impact_level" in impact_data
+        assert "takeaway" in impact_data
+        assert "action_item" in impact_data

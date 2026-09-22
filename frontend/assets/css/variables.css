@@ -48,6 +48,33 @@
   --radius-xl: 20px;
   --radius-full: 9999px;
 
+  /* TasteSkill Layer Hierarchy (Prevents Z-Index Conflicts) */
+  --z-base: 1;
+  --z-dock: 100;
+  --z-nav: 990;
+  --z-header: 1000;
+  --z-bottom-nav: 1200;
+  --z-fab: 1300;
+  --z-sidebar: 2100;
+  --z-selection: 2200;
+  --z-modal-backdrop: 2500;
+  --z-copilot-backdrop: 2550;
+  --z-copilot-drawer: 2600;
+  --z-modal: 3000;
+  --z-toast: 9999;
+
+  /* Spacing Rhythm Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
   /* Calibrated Motion Physics & Easing Tokens */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring-snappy: cubic-bezier(0.2, 0.9, 0.2, 1);
@@ -82,6 +109,7 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 25px 60px rgba(0, 0, 0, 0.65);
   --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.14);
 }
 
@@ -112,5 +140,6 @@
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
   --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
   --shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.08);
+  --shadow-xl: 0 25px 50px -12px rgba(15, 23, 42, 0.12);
   --shadow-glow: 0 0 15px rgba(5, 150, 105, 0.1);
 }

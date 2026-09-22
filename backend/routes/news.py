@@ -8,7 +8,24 @@ from sqlalchemy.orm import selectinload
 from ..auth.auth import require_admin
 from ..database import get_db
 from ..models.models import Article, ArticleStatus, Category, Source, User
-from ..schemas import ArticleListOut, ArticleOut, CategoryOut, SourceOut
+from ..ai.intelligence import (
+    answer_article_question,
+    analyze_wire_perspectives,
+    calculate_personal_impact,
+    generate_cognitive_depths,
+)
+from ..schemas import (
+    ArticleAskRequest,
+    ArticleAskResponse,
+    ArticleListOut,
+    ArticleOut,
+    CategoryOut,
+    CognitiveDepthResponse,
+    PerspectivePrismResponse,
+    PersonalImpactRequest,
+    PersonalImpactResponse,
+    SourceOut,
+)
 
 logger = logging.getLogger("samachar.news")
 router = APIRouter(prefix="/api/news", tags=["News"])
@@ -177,3 +194,114 @@ async def get_article(id: int, db: AsyncSession = Depends(get_db)):
         await db.rollback()
 
     return article
+
+
+@router.get("/{id}/depth", response_model=CognitiveDepthResponse)
+async def get_article_depth(id: int, db: AsyncSession = Depends(get_db)):
+    """Retrieve 4-tier Cognitive Depth Matrix (15s Radar, 2m Brief, Deep Dive, ELI5)."""
+    query = (
+        select(Article)
+        .options(selectinload(Article.category), selectinload(Article.source))
+        .where(Article.id == id)
+    )
+    result = await db.execute(query)
+    article = result.scalar_one_or_none()
+
+    if not article:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    depths = generate_cognitive_depths(
+        title=article.title,
+        summary=article.summary or "",
+        content=article.content or "",
+        key_claims=article.key_claims or [],
+        category=article.category.name if article.category else None,
+        source=article.source.name if article.source else None,
+        credibility_score=article.credibility_score or 88,
+    )
+    return depths
+
+
+@router.post("/{id}/ask", response_model=ArticleAskResponse)
+async def ask_article(id: int, payload: ArticleAskRequest, db: AsyncSession = Depends(get_db)):
+    """Socratic in-situ Copilot: answer contextual queries bounded by the article's ground truth."""
+    query = (
+        select(Article)
+        .options(selectinload(Article.category), selectinload(Article.source))
+        .where(Article.id == id)
+    )
+    result = await db.execute(query)
+    article = result.scalar_one_or_none()
+
+    if not article:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    art_dict = {
+        "title": article.title,
+        "summary": article.summary or "",
+        "content": article.content or "",
+        "key_claims": article.key_claims or [],
+        "category_name": article.category.name if article.category else "General",
+        "source_name": article.source.name if article.source else "Wire Bureau",
+        "credibility_score": article.credibility_score or 88,
+        "sensationalism_score": article.sensationalism_score or 12,
+        "bias_spectrum": article.bias_spectrum or "Neutral Analytic",
+    }
+
+    ans = answer_article_question(
+        article_dict=art_dict,
+        question=payload.question,
+        selected_context=payload.selected_context,
+    )
+    return ans
+
+
+@router.get("/{id}/perspectives", response_model=PerspectivePrismResponse)
+async def get_perspectives(id: int, db: AsyncSession = Depends(get_db)):
+    """Multi-wire Perspective Prism & Omission Radar for multi-angle comparative journalism."""
+    query = (
+        select(Article)
+        .options(selectinload(Article.category), selectinload(Article.source))
+        .where(Article.id == id)
+    )
+    result = await db.execute(query)
+    article = result.scalar_one_or_none()
+
+    if not article:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    art_dict = {
+        "title": article.title,
+        "summary": article.summary or "",
+        "content": article.content or "",
+        "key_claims": article.key_claims or [],
+        "category_name": article.category.name if article.category else "General",
+        "source_name": article.source.name if article.source else "Wire Bureau",
+        "credibility_score": article.credibility_score or 88,
+    }
+
+    return analyze_wire_perspectives(art_dict)
+
+
+@router.post("/{id}/impact", response_model=PersonalImpactResponse)
+async def get_personal_impact(id: int, payload: PersonalImpactRequest, db: AsyncSession = Depends(get_db)):
+    """Personal Impact Simulator for citizen/worker/investor personas."""
+    query = (
+        select(Article)
+        .options(selectinload(Article.category), selectinload(Article.source))
+        .where(Article.id == id)
+    )
+    result = await db.execute(query)
+    article = result.scalar_one_or_none()
+
+    if not article:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    art_dict = {
+        "title": article.title,
+        "summary": article.summary or "",
+        "content": article.content or "",
+        "category_name": article.category.name if article.category else "General",
+    }
+
+    return calculate_personal_impact(art_dict, persona=payload.persona)

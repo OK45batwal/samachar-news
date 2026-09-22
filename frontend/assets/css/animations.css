@@ -1,0 +1,378 @@
+/* ==========================================================================
+   TasteSkill Motion Physics & Micro-Interaction Engine
+   60fps hardware-accelerated animations with spring curves & reduced-motion guards
+   ========================================================================== */
+
+/* Page Load Smooth Entrance */
+.page-fade-in {
+  animation: pageEntrance 0.35s var(--ease-spring) forwards;
+}
+
+@keyframes pageEntrance {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Skeleton Loading Shimmer Animation */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface-2) 0%,
+    var(--bg-surface-3) 50%,
+    var(--bg-surface-2) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.6s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* TasteSkill Tactile Button Micro-Interaction */
+.btn-pressable {
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.15s var(--ease-spring), box-shadow 0.15s ease;
+}
+
+.btn-pressable:active {
+  transform: scale(0.96) !important;
+}
+
+/* Subtle Shimmer Gradient Text */
+.text-shimmer {
+  background: linear-gradient(
+    135deg,
+    var(--accent) 0%,
+    #38BDF8 40%,
+    #818CF8 70%,
+    var(--accent) 100%
+  );
+  background-size: 250% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmerSweep 6s linear infinite;
+}
+
+@keyframes textShimmerSweep {
+  to { background-position: 250% center; }
+}
+
+/* Live Pulse Rings for Active Telemetry */
+.pulse-ring-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pulse-ring-container::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  opacity: 0.8;
+  animation: pulseRing 2s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* Parallax Tilt Lift Card on Hover */
+.tilt-card {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  transition: transform 0.25s var(--ease-spring), border-color 0.2s ease, box-shadow 0.25s ease;
+}
+
+.tilt-card:hover {
+  transform: translate3d(0, -4px, 0);
+}
+
+/* Toast Spring Entrance & Exit */
+@keyframes toastSlideIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   Spatial 3D & Living Environment Engine (TasteSkill 3D Standard)
+   ========================================================================== */
+
+/* 3D Perspective Base & Specular Glare Card */
+.card-3d {
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.card-3d.card-3d-active {
+  transition: border-color var(--transition-normal, 0.25s), box-shadow var(--transition-normal, 0.25s) !important;
+}
+
+.card-3d::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--glare-x, 50%) var(--glare-y, 50%),
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(16, 185, 129, 0.08) 35%,
+    transparent 65%
+  );
+  opacity: var(--glare-opacity, 0);
+  transition: opacity 0.25s ease;
+  z-index: 5;
+  mix-blend-mode: overlay;
+}
+
+[data-theme="light"] .card-3d::after {
+  background: radial-gradient(
+    circle at var(--glare-x, 50%) var(--glare-y, 50%),
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(16, 185, 129, 0.12) 40%,
+    transparent 70%
+  );
+}
+
+/* Multi-Plane Z-Axis Parallax Layers (Inside 3D Cards) */
+.layer-z-10 {
+  transform: translateZ(12px);
+  transform-style: preserve-3d;
+}
+
+.layer-z-20 {
+  transform: translateZ(24px);
+  transform-style: preserve-3d;
+}
+
+.layer-z-30 {
+  transform: translateZ(36px);
+  transform-style: preserve-3d;
+}
+
+/* Living Radar Sweep Beam Animation */
+.radar-sweep-icon {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.radar-sweep-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 270deg, var(--accent) 360deg);
+  animation: radarBeamRotate 2.2s linear infinite;
+}
+
+.radar-sweep-icon::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px var(--accent);
+}
+
+@keyframes radarBeamRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 3D Truth Gauge Holographic Orbital Rings */
+.truth-orb-3d {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  perspective: 600px;
+  margin: 0 auto;
+}
+
+.truth-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  pointer-events: none;
+}
+
+.truth-ring-1 {
+  border-top-color: var(--accent);
+  border-bottom-color: rgba(16, 185, 129, 0.2);
+  animation: orbitRing1 5s linear infinite;
+}
+
+.truth-ring-2 {
+  inset: 8px;
+  border-left-color: #38BDF8;
+  border-right-color: rgba(56, 189, 248, 0.2);
+  animation: orbitRing2 3.5s linear infinite reverse;
+}
+
+.truth-ring-3 {
+  inset: 16px;
+  border-top-color: #818CF8;
+  border-bottom-color: rgba(129, 140, 248, 0.15);
+  animation: orbitRing1 7s linear infinite;
+}
+
+.truth-orb-core {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  transform: translateZ(18px);
+}
+
+@keyframes orbitRing1 {
+  0% { transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }
+  100% { transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }
+}
+
+@keyframes orbitRing2 {
+  0% { transform: rotateX(-55deg) rotateY(-25deg) rotateZ(0deg); }
+  100% { transform: rotateX(-55deg) rotateY(-25deg) rotateZ(360deg); }
+}
+
+/* Ambient 3D Spatial Canvas Layer */
+.spatial-ambient-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.spatial-depth-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.orb-1 {
+  width: 500px;
+  height: 500px;
+  top: -100px;
+  left: -100px;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  animation: floatOrb1 18s ease-in-out infinite alternate;
+}
+
+.orb-2 {
+  width: 600px;
+  height: 600px;
+  top: 40%;
+  right: -150px;
+  background: radial-gradient(circle, #38BDF8 0%, transparent 70%);
+  animation: floatOrb2 22s ease-in-out infinite alternate;
+}
+
+.orb-3 {
+  width: 450px;
+  height: 450px;
+  bottom: -50px;
+  left: 20%;
+  background: radial-gradient(circle, #6366F1 0%, transparent 70%);
+  animation: floatOrb3 15s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrb1 {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(80px, 60px, 0) scale(1.15); }
+}
+
+@keyframes floatOrb2 {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(-90px, -70px, 0) scale(1.12); }
+}
+
+@keyframes floatOrb3 {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(60px, -50px, 0) scale(0.9); }
+}
+
+/* Spatial Isometric Grid Mesh */
+.spatial-grid-mesh {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at 50% 30%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at 50% 30%, black 30%, transparent 80%);
+}
+
+[data-theme="light"] .spatial-grid-mesh {
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+/* Accessibility: Safe Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .page-fade-in,
+  .skeleton,
+  .text-shimmer,
+  .pulse-ring-container::after,
+  .tilt-card,
+  .card-3d,
+  .truth-ring,
+  .spatial-depth-orb,
+  .radar-sweep-icon::before {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

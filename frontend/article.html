@@ -52,9 +52,17 @@
       margin-bottom: 24px;
     }
     .article-body-text {
-      font-size: 17px;
-      line-height: 1.85;
+      font-family: var(--font-editorial);
+      font-size: 19.5px;
+      line-height: 1.82;
+      letter-spacing: -0.003em;
       color: var(--text-primary);
+    }
+    @media (max-width: 768px) {
+      .article-body-text {
+        font-size: 18px;
+        line-height: 1.85;
+      }
     }
     .article-body-text p {
       margin-bottom: 24px;
@@ -97,9 +105,14 @@
       <div class="flex items-center gap-4">
         <span id="currentDateDisplay">Tuesday, Sep 1, 2026</span>
         <span>·</span>
-        <span class="text-accent font-semibold flex items-center gap-1">
-          <span class="logo-dot"></span>
+        <span class="text-accent font-semibold flex items-center gap-1.5">
+          <span class="radar-sweep-icon"></span>
           Verified Article Intelligence
+        </span>
+        <span>·</span>
+        <span class="flex items-center gap-1 text-secondary text-xs">
+          <span>⚡ Next Wire Ingestion:</span>
+          <strong id="liveSyncCountdown" class="text-accent font-mono live-sync-countdown">24:18</strong>
         </span>
       </div>
       <div class="flex items-center gap-4">
@@ -188,6 +201,10 @@
         <span>Primary Wire: <a id="articleSourceLink" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Open primary wire dispatch"><span id="articleSource">Reuters</span> <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></span>
       </div>
       <div class="flex items-center gap-2 article-action-buttons">
+        <button id="openCopilotBtn" class="btn btn-primary btn-sm flex items-center gap-1" style="background:var(--accent);color:#000;font-weight:700;box-shadow:0 0 14px rgba(0,240,255,0.3);" title="Open Socratic Copilot">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Ask Copilot
+        </button>
         <a id="headerSourceBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm flex items-center gap-1" title="Read original wire source dispatch">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
           Source ↗
@@ -245,25 +262,174 @@
       </div>
     </div>
 
-    <!-- Executive Takeaways Box -->
-    <div class="card p-5 mb-6" style="background:var(--bg-surface-2);border-left:4px solid var(--accent)">
-      <div class="text-xs font-bold text-accent mb-2 uppercase tracking-wide flex items-center gap-2">
-        <span>⚡ EXECUTIVE INTELLIGENCE SUMMARY</span>
+    <!-- Next-Gen Cognitive Depth Dock -->
+    <div class="depth-dock-wrapper" id="depthDockWrapper">
+      <div class="depth-dock">
+        <button type="button" class="depth-btn active" data-depth="radar" id="depthBtnRadar">
+          <span>⚡ 15s Radar</span>
+          <span class="depth-badge" id="depthBadgeRadar">15s</span>
+        </button>
+        <button type="button" class="depth-btn" data-depth="brief" id="depthBtnBrief">
+          <span>📋 2m Brief</span>
+          <span class="depth-badge" id="depthBadgeBrief">90s</span>
+        </button>
+        <button type="button" class="depth-btn" data-depth="deep" id="depthBtnDeep">
+          <span>📖 Deep Dive</span>
+          <span class="depth-badge" id="depthBadgeDeep">Full</span>
+        </button>
+        <button type="button" class="depth-btn" data-depth="eli5" id="depthBtnEli5">
+          <span>💡 ELI5</span>
+          <span class="depth-badge">Analogy</span>
+        </button>
       </div>
-      <p class="text-sm text-secondary" id="articleSummaryText" style="line-height:1.75"></p>
     </div>
 
-    <!-- Truth & Credibility Scorecard -->
-    <div class="scorecard-banner mb-8" id="articleScorecard">
-      <div class="flex items-center justify-between mb-2">
-        <span class="badge badge-verified" id="scorecardStatusBadge">🟢 MULTI-SOURCE CORROBORATED</span>
-        <span class="font-mono text-xs text-muted" id="scorecardSpectrum">Neutral Analytic</span>
+    <!-- Dynamic Cognitive Panes Container -->
+    <div id="depthPanesContainer" class="mb-8">
+      <!-- Pane 1: 15s Radar -->
+      <div id="paneRadar" class="depth-view-pane active">
+        <div class="card p-6" style="background:var(--bg-surface-1);border-color:var(--border-light);">
+          <div class="flex items-center justify-between mb-4 pb-2 border-bottom">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-verified">⚡ 15-SECOND RADAR</span>
+              <span class="text-xs text-accent font-mono font-bold" id="radarMetricBadge">Corroborated Metric</span>
+            </div>
+            <span class="text-xs text-muted" id="radarSourceBadge">Wire Network</span>
+          </div>
+          <p class="text-xs text-secondary mb-3">High-signal takeaways synthesized from primary assertions:</p>
+          <div class="radar-grid" id="radarTakeawaysList"></div>
+        </div>
       </div>
-      <h3 class="heading-sm mb-2">Truth & Corroboration Scorecard</h3>
-      <p class="text-xs text-secondary mb-4">
-        Factual assertions independently corroborated across accredited wire networks with verified documentation.
-      </p>
-      <div class="scorecard-grid">
+
+      <!-- Pane 2: 2m Brief -->
+      <div id="paneBrief" class="depth-view-pane">
+        <div class="card p-6" style="background:var(--bg-surface-1);border-color:var(--border-light);">
+          <div class="flex items-center justify-between mb-4 pb-2 border-bottom">
+            <span class="badge badge-verified">📋 EXECUTIVE BRIEFING</span>
+            <span class="text-xs text-muted font-mono">Reading Time: ~90s</span>
+          </div>
+          
+          <h4 class="text-xs font-bold text-accent uppercase tracking-wider mb-1">What Happened</h4>
+          <p class="text-sm text-secondary mb-4" id="briefWhatHappened" style="line-height:1.7;"></p>
+          
+          <h4 class="text-xs font-bold text-accent uppercase tracking-wider mb-1">Why It Matters</h4>
+          <p class="text-sm text-secondary mb-4" id="briefWhyItMatters" style="line-height:1.7;"></p>
+          
+          <h4 class="text-xs font-bold text-accent uppercase tracking-wider mb-2">Stakeholder Matrix</h4>
+          <div class="brief-stakeholder-grid">
+            <div class="brief-gain-box">
+              <div class="text-xs font-bold text-success mb-1">🟢 WHO BENEFITS / GAINS</div>
+              <p class="text-xs text-secondary mb-0" id="briefBeneficiaries" style="line-height:1.5;"></p>
+            </div>
+            <div class="brief-loss-box">
+              <div class="text-xs font-bold text-danger mb-1">🔴 WHO IS CHALLENGED / LOSES</div>
+              <p class="text-xs text-secondary mb-0" id="briefDisadvantaged" style="line-height:1.5;"></p>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-top flex items-center justify-between text-xs text-secondary">
+            <span><strong>What's Next:</strong> <span id="briefWhatsNext">Regulatory filings and ongoing committee updates.</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pane 3: Deep Dive (Full Article Content) -->
+      <div id="paneDeep" class="depth-view-pane">
+        <!-- Executive Takeaways Box -->
+        <div class="card p-5 mb-6" style="background:var(--bg-surface-2);border-left:4px solid var(--accent)">
+          <div class="text-xs font-bold text-accent mb-2 uppercase tracking-wide flex items-center gap-2">
+            <span>⚡ EXECUTIVE INTELLIGENCE SUMMARY</span>
+          </div>
+          <p class="text-sm text-secondary" id="articleSummaryText" style="line-height:1.75"></p>
+        </div>
+
+        <div class="article-body-text mb-6" id="articleBody">
+          <p>Loading full story content...</p>
+        </div>
+      </div>
+
+      <!-- Pane 4: ELI5 (Explain Like I'm 5) -->
+      <div id="paneEli5" class="depth-view-pane">
+        <div class="card p-6" style="background:var(--bg-surface-1);border-color:var(--border-light);">
+          <div class="badge badge-verified mb-3">💡 EXPLAIN LIKE I'M 5</div>
+          <div class="eli5-analogy-box">
+            <div class="flex items-center gap-2 text-xs font-bold text-warning uppercase mb-2">
+              <span>🎯 Everyday Analogy</span>
+            </div>
+            <p class="text-sm text-primary mb-3" id="eli5AnalogyText" style="line-height:1.75;font-weight:500;"></p>
+            <div class="text-xs text-secondary"><strong>The Core Concept:</strong> <span id="eli5BigIdeaText"></span></div>
+          </div>
+          
+          <div class="card p-4 mb-4" style="background:var(--bg-surface-2);border-left:3px solid var(--accent)">
+            <h4 class="text-xs font-bold text-accent uppercase mb-1">Why should you care?</h4>
+            <p class="text-xs text-secondary mb-0" id="eli5WhyCareText" style="line-height:1.6"></p>
+          </div>
+
+          <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-2">Plain English Jargon Buster</h4>
+          <div class="jargon-grid" id="eli5JargonList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Personal Impact Simulator -->
+    <div class="card p-6 mb-8" style="background: var(--bg-surface-2); border-left: 4px solid var(--accent); border-color: var(--border-light);">
+      <div class="flex items-center justify-between mb-3" style="flex-wrap:wrap;gap:8px;">
+        <div class="flex items-center gap-2">
+          <span class="badge badge-verified" style="font-size:10px;">🎯 PERSONAL IMPACT SIMULATOR</span>
+          <span class="text-xs text-muted">What does this story mean for YOU?</span>
+        </div>
+        <span class="font-mono text-xs text-accent font-bold" id="impactRelevanceScore">92% Relevance</span>
+      </div>
+
+      <div class="impact-persona-pills">
+        <button type="button" class="impact-pill-btn active" data-persona="consumer">Consumer & Household</button>
+        <button type="button" class="impact-pill-btn" data-persona="developer">Tech & Developer</button>
+        <button type="button" class="impact-pill-btn" data-persona="investor">Investor & Founder</button>
+        <button type="button" class="impact-pill-btn" data-persona="student">Student & Researcher</button>
+      </div>
+
+      <div class="card p-4" style="background:var(--bg-surface-1);border-color:var(--border-light);">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs text-muted uppercase font-bold" id="impactPersonaTitle">Consumer & Household Impact</span>
+          <span class="badge badge-verified" id="impactLevelBadge">High Direct Impact</span>
+        </div>
+        <p class="text-xs text-primary mb-3" id="impactTakeawayText" style="line-height:1.6;"></p>
+        <div class="text-xs text-secondary pt-2 border-top">
+          <strong>Recommended Action:</strong> <span id="impactActionText"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Truth & Credibility Scorecard (3D Holographic Standard) -->
+    <div class="scorecard-banner card-3d mb-8" id="articleScorecard">
+      <div class="flex items-center justify-between mb-3 layer-z-20">
+        <span class="badge badge-verified" id="scorecardStatusBadge">🟢 MULTI-SOURCE CORROBORATED</span>
+        <span class="font-mono text-xs text-muted flex items-center gap-1.5">
+          <span class="radar-sweep-icon" style="width:10px;height:10px;"></span>
+          <span id="scorecardSpectrum">Neutral Analytic</span>
+        </span>
+      </div>
+
+      <div class="flex items-center justify-between gap-6 mb-4 layer-z-10" style="flex-wrap:wrap;">
+        <div style="flex:1;min-width:240px;">
+          <h3 class="heading-sm mb-2">Truth & Corroboration Scorecard</h3>
+          <p class="text-xs text-secondary mb-0" style="line-height:1.6;">
+            Factual assertions independently corroborated across accredited wire networks with verified documentation and MEKA 3.5 forensic telemetry.
+          </p>
+        </div>
+        <!-- 3D Hologram Truth Orbital Orb -->
+        <div class="truth-orb-3d layer-z-30 hide-mobile" title="3D Truth Corroboration Orbit">
+          <div class="truth-ring truth-ring-1"></div>
+          <div class="truth-ring truth-ring-2"></div>
+          <div class="truth-ring truth-ring-3"></div>
+          <div class="truth-orb-core">
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:900;color:var(--accent);" id="orbCredVal">96%</div>
+            <div style="font-size:9.5px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;">VERIFIED</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scorecard-grid layer-z-10">
         <div class="scorecard-stat">
           <div class="val" id="scorecardCredVal">96%</div>
           <div class="text-xs text-muted mt-1">Credibility Index</div>
@@ -279,29 +445,26 @@
       </div>
     </div>
 
-    <!-- Stance & Wire Consensus Map -->
-    <div class="card p-6 mb-8" style="background: var(--bg-surface-1); border-color: var(--border-light);">
-      <h3 class="heading-sm mb-2 flex items-center gap-2">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
-        Multi-Wire Consensus & Stance Map
-      </h3>
-      <p class="text-xs text-secondary mb-4">Real-time triangulation across independent journalistic bureaus:</p>
-      
-      <div class="flex flex-col gap-3">
-        <div class="flex items-center justify-between text-xs">
-          <span class="flex items-center gap-2">
-            <span class="badge badge-verified" style="padding:2px 6px;font-size:10px">SUPPORTING</span>
-            <span>Reuters, Associated Press, Bloomberg</span>
-          </span>
-          <span class="font-mono text-accent font-bold">100% Alignment</span>
+    <!-- Dynamic Perspective Prism & Omission Radar -->
+    <div class="card p-6 mb-8" id="perspectivePrismSection" style="background: var(--bg-surface-1); border-color: var(--border-light);">
+      <div class="flex items-center justify-between mb-2" style="flex-wrap:wrap;gap:8px;">
+        <h3 class="heading-sm flex items-center gap-2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          The Perspective Prism
+        </h3>
+        <span class="badge badge-verified" id="prismConsensusBadge">92% WIRE CONSENSUS</span>
+      </div>
+      <p class="text-xs text-secondary mb-4">
+        Multi-angle journalistic triangulation: how distinct bureau clusters frame this story:
+      </p>
+      <div class="perspective-card-grid" id="prismPerspectiveCards"></div>
+      <div class="omission-radar-alert" id="prismOmissionAlert">
+        <div class="flex items-center gap-2 text-xs font-bold text-warning uppercase mb-1">
+          <span>⚠️ OMISSION RADAR</span>
         </div>
-        <div class="flex items-center justify-between text-xs">
-          <span class="flex items-center gap-2">
-            <span class="badge badge-corroborated" style="padding:2px 6px;font-size:10px">CONTEXTUALIZING</span>
-            <span>BBC News, Nature Journal, PTI</span>
-          </span>
-          <span class="font-mono text-secondary font-bold">High Alignment</span>
-        </div>
+        <p class="text-xs text-secondary mb-0" id="prismOmissionText">
+          Primary wires prioritize speed and economic figures. Secondary and regional outlets provide depth on civic impact.
+        </p>
       </div>
     </div>
 
@@ -315,11 +478,6 @@
         <span class="text-xs text-muted">Click any claim to inspect evidence</span>
       </div>
       <div id="articleClaimsList"></div>
-    </div>
-
-    <!-- Article Content -->
-    <div class="article-body-text mb-8" id="articleBody">
-      <p>Loading full story content...</p>
     </div>
 
     <!-- Original Publisher Wire Dispatch Card -->
@@ -427,15 +585,81 @@
     </div>
   </footer>
 
+  <!-- Floating Text Selection Tooltip -->
+  <div id="selectionCopilotPill" class="selection-copilot-pill">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    <span>Ask Copilot about this</span>
+  </div>
+
+  <!-- Socratic Copilot Backdrop & Drawer -->
+  <div id="copilotBackdrop" class="copilot-backdrop"></div>
+  <aside id="copilotDrawer" class="copilot-drawer" aria-label="Socratic Copilot">
+    <div class="copilot-sheet-handle hide-desktop"></div>
+    <div class="copilot-header">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="badge badge-verified" style="font-size:10px;padding:2px 8px;">⚡ SAMACHAR COPILOT</span>
+          <span class="text-xs text-muted font-mono">Socratic Ground Truth</span>
+        </div>
+        <h4 class="heading-sm mt-1" style="font-size:15px;margin-bottom:0;">Ask the Article</h4>
+      </div>
+      <button id="closeCopilotBtn" class="btn btn-ghost btn-sm" aria-label="Close Copilot">✕</button>
+    </div>
+
+    <div class="copilot-messages" id="copilotMessages">
+      <div class="copilot-msg-ai">
+        👋 <strong>Hello! I am your Socratic News Copilot.</strong><br/>
+        I have indexed this verified dispatch. Highlight any sentence or tap an inquiry chip below to test counter-arguments, assess personal impact, or inspect verified citations.
+      </div>
+    </div>
+
+    <!-- Suggested Quick Chips -->
+    <div class="copilot-pill-suggestions" id="copilotPillSuggestions">
+      <button type="button" class="copilot-prompt-chip" data-q="What are the strongest counter-arguments to this?">⚡ Counter-Arguments</button>
+      <button type="button" class="copilot-prompt-chip" data-q="How does this impact my personal wallet and everyday life?">💼 Impact on My Life</button>
+      <button type="button" class="copilot-prompt-chip" data-q="Explain this in simple terms like I am 5">💡 Explain Like I'm 5</button>
+      <button type="button" class="copilot-prompt-chip" data-q="Show me primary source quotes and verified evidence">🔍 Source Evidence</button>
+    </div>
+
+    <!-- Input Bar -->
+    <form id="copilotForm" class="copilot-input-bar">
+      <input type="text" id="copilotInput" class="copilot-input" placeholder="Ask anything about this article..." autocomplete="off" />
+      <button type="submit" class="btn btn-primary btn-sm flex items-center justify-center" style="padding:0 14px;background:var(--accent);color:#000;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </form>
+  <!-- Mobile Sticky Article Action Bar (TasteSkill Standard) -->
+  <div class="mobile-article-bar hide-desktop" id="mobileArticleBar">
+    <button type="button" id="mobileCopilotBtn" class="mobile-article-btn" style="color:var(--accent);font-weight:700;" title="Ask Copilot">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span>Copilot</span>
+    </button>
+    <button type="button" id="mobileBookmarkBtn" class="mobile-article-btn" title="Save Bookmark">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+      <span>Save</span>
+    </button>
+    <button type="button" id="mobileAudioBtn" class="mobile-article-btn" title="Listen to Story">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+      <span>Listen</span>
+    </button>
+    <button type="button" onclick="navigator.clipboard.writeText(window.location.href);showToast('Link copied to clipboard!','success')" class="mobile-article-btn" title="Share Story">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      <span>Share</span>
+    </button>
+  </div>
+
   <div id="toastContainer" class="toast-container"></div>
 
   <script src="/assets/js/api.js?v=12.0"></script>
   <script src="/assets/js/layout.js?v=12.0"></script>
   <script src="/assets/js/app.js?v=12.0"></script>
+  <script src="/assets/js/spatial3d.js?v=12.0"></script>
   <script>
     let currentSpeech = null;
     let isPlayingAudio = false;
     let speechRate = 1.0;
+    let currentArticleData = null;
+    let activeSelectedContext = null;
 
     const evidenceModal = document.getElementById('evidenceModal');
     function closeEvidenceModal() {
@@ -454,13 +678,270 @@
       if (e.target === evidenceModal) closeEvidenceModal();
     });
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && evidenceModal?.classList.contains('active')) {
-        closeEvidenceModal();
+      if (e.key === 'Escape') {
+        if (evidenceModal?.classList.contains('active')) closeEvidenceModal();
+        closeCopilotDrawer();
       }
     });
 
+    // ========================================================================
+    // Socratic Copilot Drawer Handlers
+    // ========================================================================
+    const copilotDrawer = document.getElementById('copilotDrawer');
+    const copilotBackdrop = document.getElementById('copilotBackdrop');
+    const copilotInput = document.getElementById('copilotInput');
+    const copilotMessages = document.getElementById('copilotMessages');
+    const selectionPill = document.getElementById('selectionCopilotPill');
+
+    function openCopilotDrawer(prefill = '') {
+      if (copilotDrawer) copilotDrawer.classList.add('open');
+      if (copilotBackdrop) copilotBackdrop.classList.add('open');
+      if (prefill && copilotInput) {
+        copilotInput.value = prefill;
+        copilotInput.focus();
+      }
+      if (selectionPill) selectionPill.style.display = 'none';
+    }
+
+    function closeCopilotDrawer() {
+      if (copilotDrawer) copilotDrawer.classList.remove('open');
+      if (copilotBackdrop) copilotBackdrop.classList.remove('open');
+    }
+
+    document.getElementById('openCopilotBtn')?.addEventListener('click', () => openCopilotDrawer());
+    document.getElementById('closeCopilotBtn')?.addEventListener('click', closeCopilotDrawer);
+    copilotBackdrop?.addEventListener('click', closeCopilotDrawer);
+
+    // Mobile Bottom Action Bar Handlers
+    document.getElementById('mobileCopilotBtn')?.addEventListener('click', () => openCopilotDrawer());
+    document.getElementById('mobileBookmarkBtn')?.addEventListener('click', () => document.getElementById('bookmarkBtn')?.click());
+    document.getElementById('mobileAudioBtn')?.addEventListener('click', () => document.getElementById('audioPlayBtn')?.click());
+
+    // Floating text selection listener
+    document.addEventListener('mouseup', () => {
+      setTimeout(() => {
+        const selection = window.getSelection();
+        const selectedText = selection.toString().trim();
+        if (selectedText.length > 5 && selectedText.length < 350) {
+          activeSelectedContext = selectedText;
+          const range = selection.getRangeAt(0);
+          const rect = range.getBoundingClientRect();
+          if (selectionPill) {
+            selectionPill.style.top = `${window.scrollY + rect.top}px`;
+            selectionPill.style.left = `${window.scrollX + rect.left + (rect.width / 2)}px`;
+            selectionPill.style.display = 'inline-flex';
+          }
+        } else {
+          if (selectionPill) selectionPill.style.display = 'none';
+        }
+      }, 50);
+    });
+
+    selectionPill?.addEventListener('click', () => {
+      const q = activeSelectedContext ? `Explain this assertion: "${activeSelectedContext}"` : '';
+      openCopilotDrawer(q);
+      if (activeSelectedContext && currentArticleData) {
+        handleCopilotQuery(q, activeSelectedContext);
+      }
+    });
+
+    async function handleCopilotQuery(questionText, selectedContext = null) {
+      if (!questionText || !currentArticleData) return;
+
+      // Add user message balloon
+      const userBubble = document.createElement('div');
+      userBubble.className = 'copilot-msg-user';
+      userBubble.textContent = questionText;
+      copilotMessages.appendChild(userBubble);
+
+      // Add AI loading indicator
+      const aiBubble = document.createElement('div');
+      aiBubble.className = 'copilot-msg-ai';
+      aiBubble.innerHTML = '<span class="text-muted">⚡ Analyzing verified ground truth...</span>';
+      copilotMessages.appendChild(aiBubble);
+      copilotMessages.scrollTop = copilotMessages.scrollHeight;
+
+      try {
+        const res = await askArticleQuestion(currentArticleData.id, questionText, selectedContext, currentArticleData);
+        aiBubble.innerHTML = `
+          <div class="flex items-center gap-2 mb-2 pb-1 border-bottom">
+            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">🟢 ${sanitize(res.evidence_tag || 'Ground Truth')}</span>
+            <span class="text-xs text-muted font-mono">${res.confidence_score || 88}% Confidence</span>
+          </div>
+          <div style="white-space:pre-line;">${sanitize(res.answer)}</div>
+          ${res.highlighted_claim ? `<div class="mt-2 pt-2 border-top text-xs text-secondary font-italic">📌 Citation: «${sanitize(res.highlighted_claim)}»</div>` : ''}
+        `;
+      } catch (e) {
+        aiBubble.innerHTML = `<span class="text-danger">Failed to process question: ${sanitize(e.message)}</span>`;
+      }
+      copilotMessages.scrollTop = copilotMessages.scrollHeight;
+    }
+
+    document.getElementById('copilotForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = copilotInput.value.trim();
+      if (!q) return;
+      copilotInput.value = '';
+      handleCopilotQuery(q, activeSelectedContext);
+    });
+
+    document.querySelectorAll('.copilot-prompt-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const q = btn.getAttribute('data-q');
+        handleCopilotQuery(q, activeSelectedContext);
+      });
+    });
+
+    // ========================================================================
+    // Cognitive Depth Dock Switching & Population
+    // ========================================================================
+    const depthBtns = document.querySelectorAll('.depth-btn');
+    const depthPanes = {
+      radar: document.getElementById('paneRadar'),
+      brief: document.getElementById('paneBrief'),
+      deep: document.getElementById('paneDeep'),
+      eli5: document.getElementById('paneEli5')
+    };
+
+    function switchCognitiveDepth(mode) {
+      depthBtns.forEach(btn => {
+        if (btn.getAttribute('data-depth') === mode) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      Object.entries(depthPanes).forEach(([key, pane]) => {
+        if (pane) {
+          if (key === mode) {
+            pane.classList.add('active');
+          } else {
+            pane.classList.remove('active');
+          }
+        }
+      });
+    }
+
+    depthBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.getAttribute('data-depth');
+        switchCognitiveDepth(mode);
+      });
+    });
+
+    async function populateCognitiveDepths(article) {
+      try {
+        const depths = await getArticleCognitiveDepths(article.id, article);
+
+        // Populate Radar
+        if (depths.radar) {
+          document.getElementById('depthBadgeRadar').textContent = depths.radar.reading_time || '15s';
+          document.getElementById('radarMetricBadge').textContent = depths.radar.key_metric || 'Corroborated Metric';
+          document.getElementById('radarSourceBadge').textContent = `Wire Attribution: ${depths.radar.primary_source || 'Reuters'}`;
+          const radarList = document.getElementById('radarTakeawaysList');
+          if (radarList && depths.radar.takeaways) {
+            radarList.innerHTML = depths.radar.takeaways.map((t, idx) => `
+              <div class="radar-bullet-card">
+                <div class="radar-num-badge">${idx + 1}</div>
+                <div>
+                  <p class="text-sm font-semibold mb-0" style="line-height:1.5;">${sanitize(t)}</p>
+                </div>
+              </div>
+            `).join('');
+          }
+        }
+
+        // Populate Brief
+        if (depths.brief) {
+          document.getElementById('depthBadgeBrief').textContent = depths.brief.reading_time || '90s';
+          document.getElementById('briefWhatHappened').textContent = depths.brief.what_happened || article.title;
+          document.getElementById('briefWhyItMatters').textContent = depths.brief.why_it_matters || 'Major international benchmark.';
+          document.getElementById('briefBeneficiaries').textContent = depths.brief.stakeholders?.beneficiaries || 'Public transparency.';
+          document.getElementById('briefDisadvantaged').textContent = depths.brief.stakeholders?.disadvantaged || 'Partisan narratives.';
+          document.getElementById('briefWhatsNext').textContent = depths.brief.whats_next || 'Upcoming committee reviews.';
+        }
+
+        // Populate ELI5
+        if (depths.eli5) {
+          document.getElementById('eli5AnalogyText').textContent = depths.eli5.simple_analogy || '';
+          document.getElementById('eli5BigIdeaText').textContent = depths.eli5.the_big_idea || '';
+          document.getElementById('eli5WhyCareText').textContent = depths.eli5.why_care || '';
+          const jargonList = document.getElementById('eli5JargonList');
+          if (jargonList && depths.eli5.jargon_buster) {
+            jargonList.innerHTML = depths.eli5.jargon_buster.map(j => `
+              <div class="jargon-card">
+                <div class="text-xs font-bold text-accent mb-1">${sanitize(j.term)}</div>
+                <div class="text-xs text-secondary">${sanitize(j.meaning)}</div>
+              </div>
+            `).join('');
+          }
+        }
+      } catch (err) {
+        console.warn('Cognitive depths loading error:', err);
+      }
+    }
+
+    // ========================================================================
+    // Perspective Prism & Personal Impact Simulator
+    // ========================================================================
+    async function populatePerspectivePrism(article) {
+      try {
+        const prism = await getArticlePerspectivePrism(article.id, article);
+        document.getElementById('prismConsensusBadge').textContent = `🟢 ${prism.consensus_percentage || 92}% WIRE CONSENSUS`;
+        const container = document.getElementById('prismPerspectiveCards');
+        if (container && prism.perspectives) {
+          container.innerHTML = prism.perspectives.map(p => `
+            <div class="perspective-col">
+              <span class="badge badge-corroborated" style="font-size:9.5px;padding:2px 6px;margin-bottom:8px;">${sanitize(p.angle)}</span>
+              <h5 class="text-xs font-bold mb-1" style="color:var(--text-primary);">${sanitize(p.cluster)}</h5>
+              <p class="text-xs text-secondary mb-2" style="line-height:1.5;"><strong>Emphasis:</strong> ${sanitize(p.emphasis)}</p>
+              <p class="text-xs text-muted mb-0" style="line-height:1.5;"><strong>Trade-off:</strong> ${sanitize(p.omitted_nuance)}</p>
+            </div>
+          `).join('');
+        }
+        if (prism.omission_radar?.wire_emphasis) {
+          document.getElementById('prismOmissionText').textContent = 
+            `${prism.omission_radar.wire_emphasis} Blindspot Check: ${prism.omission_radar.potential_blindspot}`;
+        }
+      } catch (err) {
+        console.warn('Perspective prism error:', err);
+      }
+    }
+
+    async function loadPersonalImpact(persona = 'consumer') {
+      if (!currentArticleData) return;
+      try {
+        const impact = await getArticlePersonalImpact(currentArticleData.id, persona, currentArticleData);
+        document.getElementById('impactRelevanceScore').textContent = `${impact.relevance_score || 85}% Relevance`;
+        document.getElementById('impactLevelBadge').textContent = `${impact.impact_level || 'Moderate'} Impact`;
+        document.getElementById('impactTakeawayText').textContent = impact.takeaway || '';
+        document.getElementById('impactActionText').textContent = impact.action_item || '';
+      } catch (e) {
+        console.warn('Personal impact error:', e);
+      }
+    }
+
+    document.querySelectorAll('.impact-pill-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.impact-pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const p = btn.getAttribute('data-persona');
+        const titles = {
+          consumer: 'Consumer & Household Impact',
+          developer: 'Tech & Engineering Impact',
+          investor: 'Capital & Investment Impact',
+          student: 'Academic & Research Impact'
+        };
+        document.getElementById('impactPersonaTitle').textContent = titles[p] || 'Personal Impact';
+        loadPersonalImpact(p);
+      });
+    });
+
+    // ========================================================================
+    // Main Document Bootstrapping
+    // ========================================================================
     document.addEventListener('DOMContentLoaded', async () => {
-      // Reading Progress Handler
       window.addEventListener('scroll', () => {
         const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (window.scrollY / (h || 1)) * 100;
@@ -476,45 +957,36 @@
 
       try {
         const article = await getArticleById(id);
+        currentArticleData = article;
         document.title = `${article.title} — Samachar`;
 
         const sourceName = article.source?.name || article.source_name || 'News Wire';
         const sourceUrl = article.source_url || '';
 
         document.getElementById('articleTitle').textContent = article.title;
-        document.getElementById('articleCategory').textContent = article.category?.name || 'General';
+        document.getElementById('articleCategory').textContent = article.category?.name || article.category_name || 'General';
         document.getElementById('articleAuthor').textContent = article.author || 'Wire Service';
         document.getElementById('articleSource').textContent = sourceName;
         document.getElementById('articleDate').textContent = timeAgo(article.published_at);
         document.getElementById('articleSummaryText').textContent = article.summary || article.title;
 
-        // Wire Source Links & Outbound Dispatches
+        // Wire Source Links
         const sourceLink = document.getElementById('articleSourceLink');
         if (sourceLink) {
-          if (sourceUrl) {
-            sourceLink.href = sourceUrl;
-          } else {
-            sourceLink.removeAttribute('href');
-            sourceLink.style.cursor = 'default';
-          }
+          if (sourceUrl) sourceLink.href = sourceUrl;
+          else { sourceLink.removeAttribute('href'); sourceLink.style.cursor = 'default'; }
         }
 
         const hdrSourceBtn = document.getElementById('headerSourceBtn');
         if (hdrSourceBtn) {
-          if (sourceUrl) {
-            hdrSourceBtn.href = sourceUrl;
-          } else {
-            hdrSourceBtn.style.display = 'none';
-          }
+          if (sourceUrl) hdrSourceBtn.href = sourceUrl;
+          else hdrSourceBtn.style.display = 'none';
         }
 
         const origBtn = document.getElementById('originalSourceBtn');
         if (origBtn) {
-          if (sourceUrl) {
-            origBtn.href = sourceUrl;
-          } else {
-            origBtn.style.display = 'none';
-          }
+          if (sourceUrl) origBtn.href = sourceUrl;
+          else origBtn.style.display = 'none';
         }
 
         const pubEl = document.getElementById('sourcePublisherName');
@@ -526,12 +998,8 @@
             try {
               const u = new URL(sourceUrl);
               domEl.textContent = u.hostname.replace(/^www\./, '');
-            } catch (_) {
-              domEl.textContent = sourceName;
-            }
-          } else {
-            domEl.textContent = sourceName;
-          }
+            } catch (_) { domEl.textContent = sourceName; }
+          } else { domEl.textContent = sourceName; }
         }
 
         const coverCredit = document.getElementById('articleCoverCredit');
@@ -542,112 +1010,38 @@
 
         const imgSourceLink = document.getElementById('articleImageSourceLink');
         if (imgSourceLink) {
-          if (sourceUrl) {
-            imgSourceLink.href = sourceUrl;
-          } else {
-            imgSourceLink.style.display = 'none';
-          }
+          if (sourceUrl) imgSourceLink.href = sourceUrl;
+          else imgSourceLink.style.display = 'none';
         }
 
-        // Cover Image with Intelligent Topic Fallback
+        // Hero Cover Photo
         const heroImg = document.getElementById('articleImage');
         const fallbackCover = (typeof getCategoryDefaultImage === 'function')
           ? getCategoryDefaultImage(article.category?.name || article.category_name, article.title)
           : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80';
-
         heroImg.src = article.image_url || fallbackCover;
-        heroImg.onerror = () => {
-          heroImg.src = fallbackCover;
-        };
+        heroImg.onerror = () => { heroImg.src = fallbackCover; };
 
+        // Truth Scorecard
         const cred = article.credibility_score || 88;
         const sens = article.sensationalism_score || 10;
         document.getElementById('articleBadge').textContent = `🟢 ${cred}% VERIFIED`;
         document.getElementById('scorecardCredVal').textContent = `${cred}%`;
+        const orbEl = document.getElementById('orbCredVal');
+        if (orbEl) orbEl.textContent = `${cred}%`;
         document.getElementById('scorecardSensVal').textContent = `${sens}%`;
         document.getElementById('scorecardSpectrum').textContent = article.bias_spectrum || 'Neutral Analytic';
 
+        // Deep Dive Body Text
         const bodyEl = document.getElementById('articleBody');
         const paragraphs = (article.content || article.summary || '').split('\n').filter(p => p.trim());
         bodyEl.innerHTML = paragraphs.map(p => `<p>${sanitize(p)}</p>`).join('');
 
-        // Dynamic Google Search Console / Google News JSON-LD & BreadcrumbList
-        try {
-          const canonicalHref = `https://samachar-news-2026.web.app/article.html?id=${encodeURIComponent(id)}`;
-          const canonicalEl = document.getElementById('canonicalLink');
-          if (canonicalEl) canonicalEl.href = canonicalHref;
-
-          const oldLd = document.getElementById('jsonLdArticle');
-          if (oldLd) oldLd.remove();
-          const ldScript = document.createElement('script');
-          ldScript.id = 'jsonLdArticle';
-          ldScript.type = 'application/ld+json';
-          const catName = article.category?.name || article.category_name || 'News';
-          ldScript.textContent = JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "NewsArticle",
-                "@id": `${canonicalHref}#article`,
-                "isPartOf": {
-                  "@type": "WebSite",
-                  "@id": "https://samachar-news-2026.web.app/#website",
-                  "name": "Samachar"
-                },
-                "headline": article.title,
-                "description": article.summary || article.title,
-                "image": [heroImg.src],
-                "datePublished": article.published_at || new Date().toISOString(),
-                "dateModified": article.updated_at || article.published_at || new Date().toISOString(),
-                "mainEntityOfPage": canonicalHref,
-                "articleSection": catName,
-                "author": [{
-                  "@type": "Person",
-                  "name": article.author || sourceName || "Editorial Bureau"
-                }],
-                "publisher": {
-                  "@type": "NewsMediaOrganization",
-                  "name": "Samachar News Intelligence",
-                  "url": "https://samachar-news-2026.web.app/",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://samachar-news-2026.web.app/assets/icons/favicon.svg"
-                  }
-                }
-              },
-              {
-                "@type": "BreadcrumbList",
-                "@id": `${canonicalHref}#breadcrumb`,
-                "itemListElement": [
-                  {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "https://samachar-news-2026.web.app/"
-                  },
-                  {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": catName,
-                    "item": `https://samachar-news-2026.web.app/latest.html?category=${encodeURIComponent(catName.toLowerCase())}`
-                  },
-                  {
-                    "@type": "ListItem",
-                    "position": 3,
-                    "name": article.title,
-                    "item": canonicalHref
-                  }
-                ]
-              }
-            ]
-          });
-          document.head.appendChild(ldScript);
-        } catch (_) {}
-
+        // Populate Claims Breakdown
         const claimsList = document.getElementById('articleClaimsList');
         if (article.key_claims && article.key_claims.length) {
-          claimsList.innerHTML = article.key_claims.map(c => `
-            <div class="claim-card" style="cursor:pointer;" onclick="openEvidenceModal('${sanitize(c.claim).replace(/'/g, "\\'")}', '${sanitize(c.evidence || '').replace(/'/g, "\\'")}', '${sanitize(c.status || '')}')">
+          claimsList.innerHTML = article.key_claims.map((c, idx) => `
+            <div class="claim-card claim-card-inspectable" data-claim-idx="${idx}" style="cursor:pointer;">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-accent">${sanitize(c.status || 'Verified Fact')}</span>
                 <span class="text-xs text-muted">🔍 Click to Inspect Evidence</span>
@@ -656,16 +1050,31 @@
               <p class="text-xs text-secondary">${sanitize(c.evidence || 'Audited by wire network')}</p>
             </div>
           `).join('');
+
+          claimsList.querySelectorAll('.claim-card-inspectable').forEach(card => {
+            card.addEventListener('click', () => {
+              const idx = parseInt(card.getAttribute('data-claim-idx'), 10);
+              const c = article.key_claims[idx];
+              if (c) {
+                openEvidenceModal(c.claim, c.evidence || '', c.status || 'Verified Fact');
+              }
+            });
+          });
         } else {
           claimsList.innerHTML = '<div class="text-xs text-muted">Primary assertion parsed and verified against source registry.</div>';
         }
 
         const chipsContainer = document.getElementById('corroboratingSourcesChips');
-        const sources = article.corroborating_sources || [article.source?.name || 'Reuters', 'BBC News', 'Associated Press'];
+        const sources = article.corroborating_sources || [sourceName, 'BBC News', 'Associated Press'];
         chipsContainer.innerHTML = sources.map(s => `<span class="badge badge-corroborated">✓ ${sanitize(s)}</span>`).join('');
         document.getElementById('scorecardSourcesCount').textContent = `${sources.length} Wires`;
 
-        // Audio Briefing Player with Dynamic Soundwave Visualizer
+        // Initialize Next-Gen Modules
+        await populateCognitiveDepths(article);
+        await populatePerspectivePrism(article);
+        await loadPersonalImpact('consumer');
+
+        // Audio Player
         const playBtn = document.getElementById('audioPlayBtn');
         const speedBtn = document.getElementById('audioSpeedBtn');
         const playText = document.getElementById('audioPlayText');
@@ -675,7 +1084,6 @@
             showToast('Voice synthesis is not supported on this device', 'error');
             return;
           }
-
           if (isPlayingAudio) {
             window.speechSynthesis.cancel();
             isPlayingAudio = false;

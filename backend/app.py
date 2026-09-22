@@ -114,8 +114,34 @@ async def get_stats_alias(db: AsyncSession = Depends(get_db)):
     return await get_platform_stats(db)
 
 
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+if os.path.exists(frontend_dir):
+    assets_dir = os.path.join(frontend_dir, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    html_pages = [
+        "home.html", "index.html", "latest.html", "trending.html",
+        "article.html", "factcheck.html", "bookmarks.html", "profile.html",
+        "login.html", "register.html", "about.html", "privacy.html", "terms.html", "404.html"
+    ]
+    for page_name in html_pages:
+        page_file = os.path.join(frontend_dir, page_name)
+        if os.path.exists(page_file):
+            def create_page_handler(p):
+                async def _page_handler():
+                    return FileResponse(p)
+                return _page_handler
+            app.add_api_route(f"/{page_name}", create_page_handler(page_file), methods=["GET"], include_in_schema=False)
+
+
 @app.get("/")
-async def api_root():
+async def api_root(request: Request):
+    accept = request.headers.get("accept", "")
+    index_file = os.path.join(frontend_dir, "index.html")
+    if "text/html" in accept and os.path.exists(index_file):
+        return FileResponse(index_file)
+
     return {
         "status": "online",
         "service": "Samachar Real-Time Fact Intelligence API",

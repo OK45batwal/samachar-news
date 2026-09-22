@@ -126,3 +126,43 @@ class BookmarkOut(BaseModel):
     notes: Optional[str] = None
     created_at: datetime
     article: Optional[ArticleOut] = None
+
+
+class CognitiveDepthResponse(BaseModel):
+    radar: Dict[str, Any]
+    brief: Dict[str, Any]
+    deep: Dict[str, Any]
+    eli5: Dict[str, Any]
+
+
+class ArticleAskRequest(BaseModel):
+    question: str
+    selected_context: Optional[str] = None
+
+
+class ArticleAskResponse(BaseModel):
+    question: str
+    answer: str
+    highlighted_claim: Optional[str] = None
+    evidence_tag: str
+    confidence_score: int
+
+
+class PerspectivePrismResponse(BaseModel):
+    consensus_points: List[str]
+    perspectives: List[Dict[str, Any]]
+    omission_radar: Dict[str, Any]
+    consensus_percentage: int
+
+
+class PersonalImpactRequest(BaseModel):
+    persona: str = "general"  # "consumer", "tech_worker", "investor", "student", "general"
+
+
+class PersonalImpactResponse(BaseModel):
+    persona: str
+    impact_level: str
+    relevance_score: int
+    takeaway: str
+    action_item: str
+    article_title: str

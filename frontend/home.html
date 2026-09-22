@@ -27,10 +27,6 @@
   <script>
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    // If user is not authenticated, redirect automatically to landing page
-    if (!localStorage.getItem('samachar_token')) {
-      window.location.replace('index.html');
-    }
   </script>
 </head>
 <body>
@@ -41,12 +37,15 @@
       <div class="flex items-center gap-4">
         <span id="currentDateDisplay">Tuesday, Sep 1, 2026</span>
         <span>·</span>
-        <span class="text-accent flex items-center gap-1 font-semibold">
-          <span class="logo-dot"></span>
-          Truth Engine v2.0 Active
+        <span class="text-accent flex items-center gap-1.5 font-semibold">
+          <span class="radar-sweep-icon"></span>
+          MEKA 3.5 Truth Defense Active
         </span>
         <span>·</span>
-        <span>Edition: <strong>Global / India</strong></span>
+        <span class="flex items-center gap-1 text-secondary text-xs">
+          <span>⚡ Next Wire Ingestion:</span>
+          <strong id="liveSyncCountdown" class="text-accent font-mono live-sync-countdown">24:18</strong>
+        </span>
       </div>
       <div class="flex items-center gap-4">
         <a href="factcheck.html" class="text-accent font-semibold flex items-center gap-1">
@@ -233,6 +232,7 @@
   <script src="/assets/js/api.js?v=12.0"></script>
   <script src="/assets/js/layout.js?v=12.0"></script>
   <script src="/assets/js/app.js?v=12.0"></script>
+  <script src="/assets/js/spatial3d.js?v=12.0"></script>
   <script>
     let currentCategory = '';
     let isVerifiedOnly = false;
@@ -341,14 +341,16 @@
         ? `<a href="${side2.source_url}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${side2Source}">${side2Source} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
         : `<span>${side2Source}</span>`;
 
+      heroMain.classList.add('card-3d');
       heroMain.innerHTML = `
         <div class="card-img-wrapper" style="height:380px">
           <img src="${mainImg}" class="bento-main-img" alt="${sanitize(main.title)}" onerror="this.src=getCategoryDefaultImage('${main.category?.name || 'world'}', '${sanitize(main.title).replace(/'/g, "\\'")}')" />
-          <div style="position:absolute;top:16px;left:16px">
+          <div class="layer-z-20" style="position:absolute;top:16px;left:16px;z-index:6;display:flex;gap:6px;align-items:center;">
             <span class="badge badge-verified">🟢 ${main.credibility_score || 96}% VERIFIED SPOTLIGHT</span>
+            <span class="badge badge-verified pulse-ring-container" style="padding:2px 8px;font-size:9.5px;gap:5px;"><span class="radar-sweep-icon" style="width:10px;height:10px;"></span>LIVE</span>
           </div>
         </div>
-        <div class="bento-main-content">
+        <div class="bento-main-content layer-z-10">
           <div class="flex items-center justify-between text-xs text-muted mb-2">
             <span class="text-accent font-semibold">${sanitize(main.category?.name || 'Top Story')} · ${timeAgo(main.published_at)}</span>
             ${mainSourceLink}
@@ -359,24 +361,28 @@
       `;
 
       heroSide.innerHTML = `
-        <div class="bento-side-card">
-          <div>
-            <span class="badge badge-verified mb-2">🟢 ${side1.credibility_score || 94}% VERIFIED</span>
+        <div class="bento-side-card card-3d">
+          <div class="layer-z-10">
+            <div class="layer-z-20 mb-2">
+              <span class="badge badge-verified">🟢 ${side1.credibility_score || 94}% VERIFIED</span>
+            </div>
             <h3 class="heading-sm mb-1"><a href="article.html?id=${side1.id}">${sanitize(side1.title)}</a></h3>
             <p class="text-xs text-secondary line-clamp-2">${sanitize(side1.summary || '')}</p>
           </div>
-          <div class="flex items-center justify-between text-xs text-muted mt-3">
+          <div class="flex items-center justify-between text-xs text-muted mt-3 layer-z-10">
             ${side1SourceLink}
             <span>${timeAgo(side1.published_at)}</span>
           </div>
         </div>
-        <div class="bento-side-card">
-          <div>
-            <span class="badge badge-corroborated mb-2">🔵 ${side2.credibility_score || 88}% CORROBORATED</span>
+        <div class="bento-side-card card-3d">
+          <div class="layer-z-10">
+            <div class="layer-z-20 mb-2">
+              <span class="badge badge-corroborated">🔵 ${side2.credibility_score || 88}% CORROBORATED</span>
+            </div>
             <h3 class="heading-sm mb-1"><a href="article.html?id=${side2.id}">${sanitize(side2.title)}</a></h3>
             <p class="text-xs text-secondary line-clamp-2">${sanitize(side2.summary || '')}</p>
           </div>
-          <div class="flex items-center justify-between text-xs text-muted mt-3">
+          <div class="flex items-center justify-between text-xs text-muted mt-3 layer-z-10">
             ${side2SourceLink}
             <span>${timeAgo(side2.published_at)}</span>
           </div>
