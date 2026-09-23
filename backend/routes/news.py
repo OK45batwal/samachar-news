@@ -1,9 +1,14 @@
 import logging
-from typing import List, Optional
+import time
+from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import desc, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
+
+# Fast in-memory cache for intelligence heuristics (article_id -> (timestamp, payload))
+_INTELLIGENCE_CACHE: Dict[str, tuple[float, Any]] = {}
+_CACHE_TTL_SECONDS = 300  # 5 minutes
 
 from ..auth.auth import require_admin
 from ..database import get_db
@@ -199,6 +204,13 @@ async def get_article(id: int, db: AsyncSession = Depends(get_db)):
 @router.get("/{id}/depth", response_model=CognitiveDepthResponse)
 async def get_article_depth(id: int, db: AsyncSession = Depends(get_db)):
     """Retrieve 4-tier Cognitive Depth Matrix (15s Radar, 2m Brief, Deep Dive, ELI5)."""
+    cache_key = f"depth_{id}"
+    now = time.time()
+    if cache_key in _INTELLIGENCE_CACHE:
+        ts, cached_val = _INTELLIGENCE_CACHE[cache_key]
+        if now - ts < _CACHE_TTL_SECONDS:
+            return cached_val
+
     query = (
         select(Article)
         .options(selectinload(Article.category), selectinload(Article.source))
@@ -219,6 +231,7 @@ async def get_article_depth(id: int, db: AsyncSession = Depends(get_db)):
         source=article.source.name if article.source else None,
         credibility_score=article.credibility_score or 88,
     )
+    _INTELLIGENCE_CACHE[cache_key] = (now, depths)
     return depths
 
 
@@ -259,6 +272,13 @@ async def ask_article(id: int, payload: ArticleAskRequest, db: AsyncSession = De
 @router.get("/{id}/perspectives", response_model=PerspectivePrismResponse)
 async def get_perspectives(id: int, db: AsyncSession = Depends(get_db)):
     """Multi-wire Perspective Prism & Omission Radar for multi-angle comparative journalism."""
+    cache_key = f"perspectives_{id}"
+    now = time.time()
+    if cache_key in _INTELLIGENCE_CACHE:
+        ts, cached_val = _INTELLIGENCE_CACHE[cache_key]
+        if now - ts < _CACHE_TTL_SECONDS:
+            return cached_val
+
     query = (
         select(Article)
         .options(selectinload(Article.category), selectinload(Article.source))
@@ -280,7 +300,9 @@ async def get_perspectives(id: int, db: AsyncSession = Depends(get_db)):
         "credibility_score": article.credibility_score or 88,
     }
 
-    return analyze_wire_perspectives(art_dict)
+    perspectives = analyze_wire_perspectives(art_dict)
+    _INTELLIGENCE_CACHE[cache_key] = (now, perspectives)
+    return perspectives
 
 
 @router.post("/{id}/impact", response_model=PersonalImpactResponse)

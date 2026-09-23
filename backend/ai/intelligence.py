@@ -26,7 +26,9 @@ def generate_cognitive_depths(
     - Level 3: Deep Dive (Full corroborated story + claims)
     - Level 4: ELI5 (Analogy-driven simplified breakdown)
     """
-    text_corpus = f"{summary or ''} {content or ''}".strip()
+    # Bound input corpus to prevent excessive regex processing on massive payloads
+    raw_corpus = f"{summary or ''} {content or ''}".strip()
+    text_corpus = raw_corpus[:25000]
     sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', text_corpus) if len(s.strip()) > 20]
     claims = key_claims or []
 

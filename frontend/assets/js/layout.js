@@ -241,6 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function openSearch() {
     if (searchOverlay) {
       searchOverlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
       setTimeout(() => {
         globalSearchInput?.focus();
       }, 50);
@@ -250,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeSearch() {
     if (searchOverlay) {
       searchOverlay.style.display = 'none';
+      document.body.style.overflow = '';
       if (globalSearchInput) globalSearchInput.value = '';
       if (globalSearchResults) {
         globalSearchResults.innerHTML = '';
