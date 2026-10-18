@@ -97,61 +97,7 @@
     <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=295</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=294</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=293</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=292</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=291</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=290</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=289</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=288</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=287</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=286</loc>
+    <loc>https://samachar-news-2026.web.app/article.html?id=119</loc>
     <lastmod>2026-10-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
@@ -241,7 +187,7 @@
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=104</loc>
+    <loc>https://samachar-news-2026.web.app/article.html?id=286</loc>
     <lastmod>2026-10-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
@@ -331,7 +277,61 @@
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=271</loc>
+    <loc>https://samachar-news-2026.web.app/article.html?id=296</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=295</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=294</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=293</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=292</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=291</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=290</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=289</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=288</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=287</loc>
     <lastmod>2026-10-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
@@ -343,7 +343,19 @@
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=366</loc>
+    <loc>https://samachar-news-2026.web.app/article.html?id=467</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=200</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=442</loc>
     <lastmod>2026-10-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
@@ -380,18 +392,6 @@
   </url>
   <url>
     <loc>https://samachar-news-2026.web.app/article.html?id=372</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=373</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=374</loc>
     <lastmod>2026-10-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
