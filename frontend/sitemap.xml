@@ -97,12 +97,6 @@
     <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=285</loc>
-    <lastmod>2026-10-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
     <loc>https://samachar-news-2026.web.app/article.html?id=284</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
@@ -187,7 +181,7 @@
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=295</loc>
+    <loc>https://samachar-news-2026.web.app/article.html?id=270</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
@@ -242,6 +236,18 @@
   </url>
   <url>
     <loc>https://samachar-news-2026.web.app/article.html?id=286</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=285</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://samachar-news-2026.web.app/article.html?id=119</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
@@ -331,12 +337,6 @@
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=104</loc>
-    <lastmod>2026-10-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
     <loc>https://samachar-news-2026.web.app/article.html?id=1</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
@@ -355,13 +355,13 @@
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=200</loc>
+    <loc>https://samachar-news-2026.web.app/article.html?id=410</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://samachar-news-2026.web.app/article.html?id=465</loc>
+    <loc>https://samachar-news-2026.web.app/article.html?id=365</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
