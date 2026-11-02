@@ -77,8 +77,8 @@ async def login(req: Request, body: UserLogin, response: Response, db: AsyncSess
     if not user.is_active:
         raise HTTPException(status_code=403, detail="Account is deactivated")
 
-    access_token = create_access_token({"sub": user.id, "role": user.role.value})
-    refresh_token = create_refresh_token({"sub": user.id})
+    access_token = create_access_token({"sub": user.id, "role": user.role.value, "ver": user.token_version or 0})
+    refresh_token = create_refresh_token({"sub": user.id, "ver": user.token_version or 0})
 
     response.set_cookie(
         key="access_token",
@@ -123,8 +123,10 @@ async def refresh_token(request: Request, response: Response, db: AsyncSession =
     user = result.scalar_one_or_none()
     if not user or not user.is_active:
         raise HTTPException(status_code=401, detail="User not found")
+    if int(payload.get("ver", 0)) != int(user.token_version or 0):
+        raise HTTPException(status_code=401, detail="Session has been invalidated")
 
-    access_token = create_access_token({"sub": user.id, "role": user.role.value})
+    access_token = create_access_token({"sub": user.id, "role": user.role.value, "ver": user.token_version or 0})
     response.set_cookie(
         key="access_token",
         value=access_token,
@@ -250,6 +252,8 @@ async def logout(
         token = request.cookies.get("access_token")
     if token:
         await revoke_token(token, db)
+    current_user.token_version = (current_user.token_version or 0) + 1
+    await db.commit()
     response.delete_cookie("access_token")
     return {"message": "Logged out successfully"}
 
@@ -294,6 +298,7 @@ async def reset_password(req: Request, body: dict, db: AsyncSession = Depends(ge
         raise HTTPException(status_code=404, detail="User not found")
 
     user.hashed_password = hash_password(new_pwd)
-    await revoke_token(token, db)
+    user.token_version = (user.token_version or 0) + 1
     await db.commit()
+    await revoke_token(token, db)
     return {"message": "Password updated successfully. You can now log in."}

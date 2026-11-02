@@ -4,7 +4,18 @@ function sanitize(str) {
   if (!str) return '';
   const div = document.createElement('div');
   div.textContent = str;
-  return div.innerHTML;
+  // Escape quotes too so the result is safe inside HTML attributes.
+  return div.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function safeUrl(url) {
+  if (!url) return '';
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.href : '';
+  } catch (_) {
+    return '';
+  }
 }
 
 function timeAgo(dateString) {
@@ -163,14 +174,16 @@ function getCategoryBadgeClass(catName) {
 
 // News Card Builder with precise alignment
 function renderNewsCard(article) {
+  const safeId = Number.isFinite(Number(article.id)) ? Number(article.id) : 0;
   const safeTitle = sanitize(article.title);
   const safeSummary = sanitize(article.summary || '');
   const safeSource = sanitize(article.source?.name || article.source_name || 'News Wire');
   const safeCat = sanitize(article.category?.name || article.category_name || 'Top News');
   const timeStr = timeAgo(article.published_at);
-  const credScore = article.credibility_score || 88;
+  const credScore = Number(article.credibility_score) || 88;
   const status = article.fact_check_status || 'verified';
-  const imgUrl = article.image_url || getCategoryDefaultImage(safeCat, safeTitle);
+  const imgUrl = safeUrl(article.image_url) || getCategoryDefaultImage(article.category?.name || article.category_name, article.title);
+  const sourceUrl = safeUrl(article.source_url);
   const catBadgeClass = getCategoryBadgeClass(safeCat);
   const wordCount = (article.content || article.summary || '').split(/\s+/).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 180));
@@ -189,8 +202,8 @@ function renderNewsCard(article) {
     badgeLabel = `🔴 ${credScore}% UNVERIFIED`;
   }
 
-  const sourceLinkHtml = article.source_url
-    ? `<a href="${article.source_url}" target="_blank" rel="noopener noreferrer" class="card-source-link hover-accent" title="Open source wire article: ${safeSource}"><span>${safeSource}</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
+  const sourceLinkHtml = sourceUrl
+    ? `<a href="${sourceUrl}" target="_blank" rel="noopener noreferrer" class="card-source-link hover-accent" title="Open source wire article: ${safeSource}"><span>${safeSource}</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
     : `<span class="text-xs text-muted font-medium">${safeSource}</span>`;
 
   const isRecent = timeStr.includes('m ago') || timeStr === 'Just now';
@@ -199,9 +212,9 @@ function renderNewsCard(article) {
     : '';
 
   return `
-    <article class="card card-3d animate-fade-in-up" id="article-${article.id}">
+    <article class="card card-3d animate-fade-in-up" id="article-${safeId}">
       <div class="card-img-wrapper">
-        <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.onerror=null;this.src=getCategoryDefaultImage('${safeCat}')" />
+        <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.onerror=null;this.src=getCategoryDefaultImage('world')" />
         <div class="layer-z-20" style="position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap;z-index:6;">
           <span class="badge ${badgeClass}">${badgeLabel}</span>
           ${liveIndicatorHtml}
@@ -213,17 +226,17 @@ function renderNewsCard(article) {
           <span class="flex items-center gap-1"><span>⏱️ ${readMins}m read</span> · <span>${timeStr}</span></span>
         </div>
         <h3 class="heading-sm mb-2 line-clamp-2">
-          <a href="article.html?id=${article.id}" class="card-headline-link">${safeTitle}</a>
+          <a href="article.html?id=${safeId}" class="card-headline-link">${safeTitle}</a>
         </h3>
         <p class="text-xs text-secondary line-clamp-3">${safeSummary}</p>
       </div>
       <div class="card-footer layer-z-20">
         ${sourceLinkHtml}
         <div class="flex items-center gap-2">
-          <button onclick="handleSaveBookmark(${article.id}, this)" class="btn btn-ghost btn-sm btn-icon bookmark-trigger-btn btn-pressable" title="Save Bookmark" style="border-radius:50%;">
+          <button onclick="handleSaveBookmark(${safeId}, this)" class="btn btn-ghost btn-sm btn-icon bookmark-trigger-btn btn-pressable" title="Save Bookmark" style="border-radius:50%;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
           </button>
-          <a href="article.html?id=${article.id}" class="btn btn-secondary btn-sm btn-pressable" style="font-weight:600;">Read &rarr;</a>
+          <a href="article.html?id=${safeId}" class="btn btn-secondary btn-sm btn-pressable" style="font-weight:600;">Read &rarr;</a>
         </div>
       </div>
     </article>
@@ -256,18 +269,13 @@ async function handleSaveBookmark(articleId, btnEl) {
   }
 
   try {
-    if (typeof saveBookmark === 'function') {
-      await saveBookmark(articleId);
-    } else {
-      let bms = JSON.parse(localStorage.getItem('samachar_local_bookmarks') || '[]');
-      if (!bms.includes(articleId)) {
-        bms.push(articleId);
-        localStorage.setItem('samachar_local_bookmarks', JSON.stringify(bms));
-      }
+    if (typeof createBookmark !== 'function') {
+      throw new Error('Bookmark service unavailable.');
     }
+    await createBookmark(articleId);
     showToast('📌 Article saved to your research bookmarks!', 'success');
   } catch (err) {
-    showToast(err.message || 'Bookmark updated.', 'info');
+    showToast(err.message || 'Could not save bookmark.', 'error');
   }
 }
 

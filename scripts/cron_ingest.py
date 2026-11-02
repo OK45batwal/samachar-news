@@ -4,6 +4,7 @@ Fetches breaking stories from 25+ global wire feeds, runs MEKA 3.0 Truth Engine,
 and updates both the SQLite/Postgres DB and frontend/assets/data/news.json.
 """
 import asyncio
+import hashlib
 import json
 import logging
 import os
@@ -21,6 +22,12 @@ from sqlalchemy import select
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("24x7_news_updater")
+
+
+def _stable_article_id(article) -> int:
+    """Derive a stable numeric public ID from the article's canonical URL/slug."""
+    key = article.source_url or article.slug or article.title
+    return int(hashlib.sha1(key.encode("utf-8")).hexdigest()[:12], 16)
 
 
 async def update_live_news_dataset(limit: int = 150):
@@ -66,7 +73,7 @@ async def update_live_news_dataset(limit: int = 150):
                     modified = True
 
                 dataset.append({
-                    "id": a.id,
+                    "id": _stable_article_id(a),
                     "title": a.title,
                     "slug": a.slug,
                     "summary": a.summary,

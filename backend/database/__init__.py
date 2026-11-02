@@ -37,4 +37,9 @@ async def init_db():
             await conn.execute(text("ALTER TABLE email_otps ADD COLUMN attempts INTEGER DEFAULT 0"))
         except Exception:
             pass
+        try:
+            from sqlalchemy import text
+            await conn.execute(text("ALTER TABLE users ADD COLUMN token_version INTEGER DEFAULT 0"))
+        except Exception:
+            pass
 

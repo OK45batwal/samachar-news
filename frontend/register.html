@@ -239,12 +239,6 @@
       }, 4000);
     }
 
-    function sanitize(str) {
-      return String(str || '').replace(/[&<>"']/g, m => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      }[m]));
-    }
-
     function getSafeRedirectUrl(target) {
       if (!target) return 'home.html';
       const clean = target.trim();
@@ -529,31 +523,33 @@
         try {
           const { fullName, email, password } = pendingRegistration;
           const regBase = apiBase || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:8000' : '');
-          if (regBase) {
-            try {
-              await fetch(regBase + '/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password, full_name: fullName }),
-                signal: AbortSignal.timeout(2000)
-              });
-            } catch (_) {}
+          if (!regBase) {
+            throw new Error('Registration service is unavailable. Please try again later.');
           }
 
-          const user = {
-            id: 'usr_' + Date.now(),
-            email: sanitize(email),
-            username: sanitize(email.split('@')[0]),
-            full_name: sanitize(fullName),
-            role: 'user',
-            session_created: new Date().toISOString(),
-            preferences: { theme: 'dark', verified_only: true }
-          };
-          const token = 'samachar_jwt_' + btoa(JSON.stringify(user));
+          const regRes = await fetch(regBase + '/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, full_name: fullName }),
+          });
+          const regData = await regRes.json().catch(() => ({}));
+          if (!regRes.ok && regRes.status !== 400) {
+            throw new Error(regData.detail || 'Registration failed.');
+          }
 
-          localStorage.setItem('samachar_token', token);
-          localStorage.setItem('samachar_user', JSON.stringify(user));
-          localStorage.setItem('samachar_registered_' + email, JSON.stringify(user));
+          const loginRes = await fetch(regBase + '/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          });
+          const loginData = await loginRes.json().catch(() => ({}));
+          if (!loginRes.ok || !loginData.access_token || !loginData.user) {
+            throw new Error(loginData.detail || 'Account could not be activated. Please try signing in.');
+          }
+
+          localStorage.setItem('samachar_token', loginData.access_token);
+          localStorage.setItem('samachar_user', JSON.stringify(loginData.user));
+          localStorage.setItem('samachar_registered_' + email, JSON.stringify(loginData.user));
           localStorage.setItem('samachar_remember_email', email);
           sessionStorage.removeItem('samachar_auth_otp_' + email);
 

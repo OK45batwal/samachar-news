@@ -12,6 +12,13 @@ from ..schemas import BookmarkCreate, BookmarkOut
 router = APIRouter(prefix="/api/bookmarks", tags=["bookmarks"])
 
 
+def _bookmark_options():
+    return (
+        selectinload(Bookmark.article).selectinload(Article.category),
+        selectinload(Bookmark.article).selectinload(Article.source),
+    )
+
+
 @router.get("/", response_model=List[BookmarkOut])
 async def get_user_bookmarks(
     user: User = Depends(get_current_user),
@@ -19,7 +26,7 @@ async def get_user_bookmarks(
 ):
     query = (
         select(Bookmark)
-        .options(selectinload(Bookmark.article).selectinload(Article.category), selectinload(Bookmark.article).selectinload(Article.source))
+        .options(*_bookmark_options())
         .where(Bookmark.user_id == user.id)
         .order_by(Bookmark.created_at.desc())
     )
@@ -40,7 +47,9 @@ async def create_bookmark(
 
     # Check already bookmarked
     existing = await db.execute(
-        select(Bookmark).where(Bookmark.user_id == user.id, Bookmark.article_id == body.article_id)
+        select(Bookmark).options(*_bookmark_options()).where(
+            Bookmark.user_id == user.id, Bookmark.article_id == body.article_id
+        )
     )
     b = existing.scalar_one_or_none()
     if b:
@@ -55,7 +64,10 @@ async def create_bookmark(
     db.add(bookmark)
     await db.commit()
     await db.refresh(bookmark)
-    return bookmark
+    loaded = await db.execute(
+        select(Bookmark).options(*_bookmark_options()).where(Bookmark.id == bookmark.id)
+    )
+    return loaded.scalar_one()
 
 
 @router.delete("/{article_id}")

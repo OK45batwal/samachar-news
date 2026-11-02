@@ -452,10 +452,10 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
           The Perspective Prism
         </h3>
-        <span class="badge badge-verified" id="prismConsensusBadge">92% WIRE CONSENSUS</span>
+        <span class="badge badge-verified" id="prismConsensusBadge">Not assessed</span>
       </div>
       <p class="text-xs text-secondary mb-4">
-        Multi-angle journalistic triangulation: how distinct bureau clusters frame this story:
+        Analytical lenses for reading this story (not a cross-bureau comparison):
       </p>
       <div class="perspective-card-grid" id="prismPerspectiveCards"></div>
       <div class="omission-radar-alert" id="prismOmissionAlert">
@@ -888,7 +888,7 @@
     async function populatePerspectivePrism(article) {
       try {
         const prism = await getArticlePerspectivePrism(article.id, article);
-        document.getElementById('prismConsensusBadge').textContent = `🟢 ${prism.consensus_percentage || 92}% WIRE CONSENSUS`;
+        document.getElementById('prismConsensusBadge').textContent = `${prism.consensus_percentage ?? 0}% SOURCE CORROBORATION`;
         const container = document.getElementById('prismPerspectiveCards');
         if (container && prism.perspectives) {
           container.innerHTML = prism.perspectives.map(p => `
@@ -961,7 +961,7 @@
         document.title = `${article.title} — Samachar`;
 
         const sourceName = article.source?.name || article.source_name || 'News Wire';
-        const sourceUrl = article.source_url || '';
+        const sourceUrl = safeUrl(article.source_url || '');
 
         document.getElementById('articleTitle').textContent = article.title;
         document.getElementById('articleCategory').textContent = article.category?.name || article.category_name || 'General';
@@ -1019,7 +1019,7 @@
         const fallbackCover = (typeof getCategoryDefaultImage === 'function')
           ? getCategoryDefaultImage(article.category?.name || article.category_name, article.title)
           : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80';
-        heroImg.src = article.image_url || fallbackCover;
+        heroImg.src = safeUrl(article.image_url) || fallbackCover;
         heroImg.onerror = () => { heroImg.src = fallbackCover; };
 
         // Truth Scorecard

@@ -436,41 +436,39 @@ async function verifyClaim(queryText, queryType = 'claim') {
     /\b(?:exposed|bombshell|unmasked|humiliated|brutal takedown)\b/i
   ];
 
-  const factualPatterns = [
-    /\b(?:confirmed|according to|officials? reported|data shows|study published|reuters reported|statement released)\b/i,
-    /\b(?:spokesperson said|ministry announced|department stated|press release|peer-reviewed|published in)\b/i,
-    /\b(?:investigation revealed|statistics indicate|official record|audit|ratified|documented|reports?)\b/i,
-    /\b(?:\d+(?:\.\d+)?%|\$\d+|\d+\s*(?:million|billion|trillion|percent|crore|lakh))\b/i,
-    /\b(?:parliament passed|court ruled|un security council|world health organization|clinical trials?)\b/i
-  ];
-
   let sensScore = 6;
   sensationalPatterns.forEach(p => { if (p.test(lower)) sensScore += 18; });
   if (queryText.includes('!') || queryText.includes('?')) sensScore += 10;
   sensScore = Math.min(100, sensScore);
 
   const disinfoMatches = disinfoPatterns.filter(p => p.test(lower));
-  const hasEvidence = factualPatterns.some(p => p.test(lower));
+  const namedSourcePattern = /\b(?:reuters|associated press|ap news|bbc|bloomberg|the hindu|indian express|financial times|wall street journal|wsj|the guardian|techcrunch|the verge|ars technica|ndtv|times of india|hindustan times|espn|cricinfo|al jazeera|cnbc|nasa|nih|world health organization)\b/i;
+  const hasNamedSource = namedSourcePattern.test(lower) || /\bWHO\b/.test(queryText);
+  const hasQuantitative = /\b(?:\d+(?:\.\d+)?%|\$\d+(?:\.\d+)?|\d+\s*(?:million|billion|trillion|percent|crore|lakh))/i.test(lower);
 
-  let verdict = "Developing / Plausible Claim";
-  let credibility = Math.min(85, Math.max(50, 78 - Math.floor(sensScore / 2)));
-  let analysis = "The headline represents developing news reporting with standard journalistic phrasing, currently cross-corroborating with accredited wire databases.";
-  let sources = ["Reuters Wire", "Associated Press", "BBC News Network"];
+  let verdict = "🔴 Unverified — Insufficient Evidence";
+  let credibility = Math.min(45, Math.max(10, 45 - Math.floor(sensScore / 3)));
+  let analysis = "No named, verifiable source or retrievable evidence was provided. This tool performs lexical screening only; treat the claim as unverified.";
+  let sources = [];
 
   if (disinfoMatches.length > 0) {
     verdict = "🔴 False Claim / Pseudoscience Alert";
     credibility = Math.max(8, 25 - disinfoMatches.length * 10);
     sensScore = Math.max(80, sensScore);
     analysis = "⚠️ High Disinformation Alert: This statement matches known medical disinformation, financial scam, or conspiratorial propaganda patterns that lack institutional or peer-reviewed evidence.";
-    sources = ["Independent Fact-Checking Network (IFCN)"];
-  } else if (sensScore >= 50) {
+    sources = ["Heuristic disinformation pattern match"];
+  } else if (sensScore >= 65) {
     verdict = "🔴 High Sensationalism / Unverified";
     credibility = Math.max(20, 100 - sensScore);
     analysis = "This claim exhibits sensationalized phrasing, emotive hyperbole, or clickbait rhetoric lacking accredited primary source attribution.";
-  } else if (hasEvidence) {
-    verdict = "🟢 Corroborated Statement";
-    credibility = Math.min(98, 88 + (15 - Math.floor(sensScore / 5)));
-    analysis = "The claim includes verifiable empirical metrics, official agency statements, or peer-reviewed statistics corroborated across accredited wire services.";
+  } else if (hasNamedSource) {
+    verdict = "Attributed Claim — Not Independently Verified";
+    credibility = 90;
+    analysis = "The claim names a source, but this is a lexical attribution check only. No live evidence was retrieved and no independent corroboration was performed.";
+  } else if (hasQuantitative) {
+    verdict = "Developing / Plausible Claim";
+    credibility = 60;
+    analysis = "The statement includes quantitative details but does not name a verifiable source. No evidence was retrieved; treat this claim as unverified.";
   }
 
   return {
@@ -481,7 +479,7 @@ async function verifyClaim(queryText, queryType = 'claim') {
     claims_breakdown: [
       {
         claim: queryText,
-        status: verdict.includes("Corroborated") ? "Data-Backed Assertion" : (verdict.includes("Alert") ? "Disputed / Unsubstantiated" : "Under Review"),
+        status: verdict.includes("Attributed") ? "Attribution Check" : (verdict.includes("Alert") ? "Disputed / Unsubstantiated" : "Unverified"),
         evidence: analysis,
         confidence_score: credibility
       }
@@ -577,21 +575,21 @@ async function sendDeleteOtp() {
 
 async function verifyAndDeleteAccount(enteredOtp) {
   const token = localStorage.getItem('samachar_token');
-  const storedOtp = sessionStorage.getItem('samachar_delete_otp');
-
-  if (storedOtp && enteredOtp && String(enteredOtp).trim() !== String(storedOtp).trim()) {
-    throw new Error('Invalid OTP code. Please enter the correct 6-digit verification code.');
+  if (!token) {
+    throw new Error('Please sign in before deleting your account.');
   }
 
-  try {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      await fetch(`http://localhost:8000/api/auth/account?otp=${encodeURIComponent(enteredOtp || '')}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-        signal: AbortSignal.timeout(1500)
-      }).catch(() => {});
-    }
-  } catch (_) {}
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const apiBase = window.SAMACHAR_API_URL || localStorage.getItem('samachar_api_url') || (isLocal ? 'http://localhost:8000' : '');
+  const res = await fetch(`${apiBase}/api/auth/account`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${token}` },
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.detail || 'Account deletion failed. Your account was not deleted.');
+  }
 
   let user = null;
   try {
@@ -635,7 +633,11 @@ async function createBookmark(articleId, folder = 'default', notes = null) {
     // Client-side local backup storage
     const raw = localStorage.getItem('samachar_local_bookmarks') || '[]';
     const list = JSON.parse(raw);
-    const targetArticle = FALLBACK_ARTICLES.find(a => String(a.id) === String(articleId)) || {
+    let targetArticle = FALLBACK_ARTICLES.find(a => String(a.id) === String(articleId));
+    if (!targetArticle && typeof getArticleById === 'function') {
+      try { targetArticle = await getArticleById(articleId); } catch (_) {}
+    }
+    targetArticle = targetArticle || {
       id: articleId,
       title: 'Verified Wire Article #' + articleId,
       summary: 'Verified intelligence article archived in your research bookmark collection.',
@@ -658,12 +660,20 @@ async function createBookmark(articleId, folder = 'default', notes = null) {
 }
 
 async function deleteBookmark(bookmarkId) {
-  try {
-    await request(`/api/bookmarks/${bookmarkId}`, { method: 'DELETE' });
-  } catch (_) {}
   const raw = localStorage.getItem('samachar_local_bookmarks') || '[]';
-  const list = JSON.parse(raw).filter(b => String(b.id) !== String(bookmarkId));
-  localStorage.setItem('samachar_local_bookmarks', JSON.stringify(list));
+  const list = JSON.parse(raw);
+  const target = list.find(b => String(b.id) === String(bookmarkId));
+  const articleId = target?.article_id ?? target?.article?.id;
+
+  if (articleId != null) {
+    try {
+      await request(`/api/bookmarks/${articleId}`, { method: 'DELETE' });
+    } catch (_) {}
+  }
+
+  localStorage.setItem('samachar_local_bookmarks', JSON.stringify(
+    list.filter(b => String(b.id) !== String(bookmarkId))
+  ));
   return { status: 'deleted' };
 }
 
@@ -890,39 +900,46 @@ async function getArticlePerspectivePrism(articleId, fallbackArticle = null) {
   const art = fallbackArticle || {};
   const cat = art.category?.name || art.category_name || 'General';
   const source = art.source?.name || art.source_name || 'Global Wire';
-  const cred = art.credibility_score || 88;
+  const supportingSources = (art.corroborating_sources || []).filter(Boolean);
+  const consensusScore = supportingSources.length >= 2
+    ? Math.min(45, 15 + supportingSources.length * 10)
+    : 0;
 
   return {
-    consensus_percentage: Math.min(98, Math.max(80, cred)),
-    consensus_points: [
-      `Core factual event corroborated across primary wire bureau ${source}.`,
-      `Official statistics and institutional statements align across international bureaus.`,
-      `Timeline of developments matches verified communiques.`
-    ],
+    consensus_percentage: consensusScore,
+    consensus_points: supportingSources.length >= 2
+      ? [
+          `Reporting is attributed to ${supportingSources.length} sources: ${supportingSources.join(', ')}.`,
+          'This platform has not independently compared the full text of those reports.'
+        ]
+      : [
+          `Only one source (${source}) is attached to this story.`,
+          'Independent corroboration has not been established.'
+        ],
     perspectives: [
       {
-        cluster: "Global Wire Bureaus (Reuters, AP, Bloomberg)",
+        cluster: "Wire-service analytical lens",
         angle: "Empirical & Market Focus",
-        emphasis: "Speed of dispatches, quantitative metrics, immediate economic and institutional consequences.",
-        omitted_nuance: "Less coverage of grassroots sentiments and long-tail regional reactions."
+        emphasis: "Analytical frame emphasising quantitative metrics and immediate economic and institutional consequences.",
+        omitted_nuance: "This lens may underweight grassroots sentiment and long-tail regional reactions."
       },
       {
-        cluster: "Regional & Public Broadcasters (BBC, DW, The Hindu)",
+        cluster: "Public-broadcaster analytical lens",
         angle: "Societal & Civic Context",
-        emphasis: "Impact on civic institutions, public sentiment, legislative oversight, and regional implications.",
-        omitted_nuance: "Less emphasis on high-frequency financial market fluctuations."
+        emphasis: "Analytical frame emphasising civic institutions, public sentiment, legislative oversight, and regional implications.",
+        omitted_nuance: "This lens may underweight high-frequency financial market fluctuations."
       },
       {
-        cluster: "Investigative & Independent Journals",
+        cluster: "Investigative analytical lens",
         angle: "Structural & Longitudinal Analysis",
-        emphasis: "Underlying regulatory lobbying, environmental or labor implications, and historical precedent.",
-        omitted_nuance: "Published later in the news cycle than breaking wire alerts."
+        emphasis: "Analytical frame emphasising regulatory lobbying, environmental or labor implications, and historical precedent.",
+        omitted_nuance: "This lens typically publishes later than breaking wire alerts."
       }
     ],
     omission_radar: {
       wire_emphasis: `Focuses primarily on ${cat} developments and official government/corporate statements.`,
       potential_blindspot: "Alternative grassroots perspectives and long-term indirect externalities.",
-      consensus_score: Math.min(98, Math.max(75, cred))
+      consensus_score: consensusScore
     }
   };
 }

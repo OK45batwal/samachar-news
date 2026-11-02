@@ -83,6 +83,27 @@ TOPIC_ENTITIES = [
 ]
 
 
+# Distinctive named publishers/agencies used for lexical attribution checks.
+# Generic words ("nature", "science") are deliberately excluded to avoid false matches.
+NAMED_EVIDENCE_SOURCES = [
+    "reuters", "associated press", "ap news", "bbc", "bloomberg",
+    "the hindu", "indian express", "financial times", "wall street journal",
+    "wsj", "the guardian", "techcrunch", "the verge", "ars technica",
+    "ndtv", "times of india", "hindustan times", "espn", "cricinfo",
+    "al jazeera", "cnbc", "nasa", "nih", "world health organization",
+]
+
+
+def _find_named_sources(query: str) -> List[str]:
+    found = []
+    for name in NAMED_EVIDENCE_SOURCES:
+        if re.search(r'\b' + re.escape(name) + r'\b', query, re.IGNORECASE):
+            found.append(name)
+    if re.search(r'\bWHO\b', query):
+        found.append("who")
+    return found
+
+
 def calculate_sensationalism_score(title: str, text: str) -> int:
     """
     Compute fine-grained Sensationalism & Clickbait Index (0 to 100%).
@@ -116,10 +137,10 @@ def calculate_sensationalism_score(title: str, text: str) -> int:
     return min(100, max(0, score))
 
 
-def extract_key_claims(title: str, text: str) -> List[Dict[str, Any]]:
+def extract_key_claims(title: str, text: str, corroborating_count: int = 1) -> List[Dict[str, Any]]:
     """
     Decompose news articles into atomic, structured claims.
-    Categorizes claims into Official Statements, Quantitative Assertions, or Verified Reports.
+    Categorizes claims into Official Statements, Quantitative Assertions, or Reported Claims.
     """
     claims = []
     combined = f"{title}. {text or ''}"
@@ -141,16 +162,20 @@ def extract_key_claims(title: str, text: str) -> List[Dict[str, Any]]:
             
             if has_quote:
                 status = "Official Statement"
-                ev = "Direct on-record attribution from primary source spokesperson"
-                conf = 95
+                ev = "Direct on-record quote in the source text"
+                conf = 90
             elif has_stats:
                 status = "Data-Backed Assertion"
-                ev = "Quantitative metrics corroborated across primary reporting data"
-                conf = 92
+                ev = "Quantitative figure reported in the source text"
+                conf = 85
             else:
-                status = "Verified Reporting"
-                ev = "Cross-corroborated by journalistic wire network"
-                conf = 88
+                status = "Reported Claim"
+                if corroborating_count >= 2:
+                    ev = f"Reported across {corroborating_count} named sources"
+                    conf = 80
+                else:
+                    ev = "Reported in the source text only; not independently corroborated"
+                    conf = 55
                 
             claims.append({
                 "claim": clean_s if len(clean_s) <= 180 else clean_s[:177] + "...",
@@ -162,9 +187,9 @@ def extract_key_claims(title: str, text: str) -> List[Dict[str, Any]]:
     if not claims and title:
         claims.append({
             "claim": title.strip(),
-            "status": "Verified Reporting",
-            "evidence": "Primary story reporting corroborated by source network",
-            "confidence_score": 85
+            "status": "Reported Claim",
+            "evidence": "Headline claim; no independent corroboration retrieved",
+            "confidence_score": 50
         })
         
     return claims
@@ -175,7 +200,7 @@ def evaluate_article_credibility(
     summary: str,
     content: str,
     source_name: Optional[str] = None,
-    corroborating_count: int = 2
+    corroborating_count: int = 1
 ) -> Dict[str, Any]:
     """
     MEKA 3.5 Multi-Factor Credibility & Disinformation Scoring:
@@ -210,7 +235,7 @@ def evaluate_article_credibility(
     elif credibility >= 85 and corroborating_count >= 2 and sensationalism <= 25:
         status = "verified"
         bias = "Neutral Analytic (Wire Grade)" if source_score >= 94 else "Center-Editorial Reporting"
-    elif credibility >= 75:
+    elif credibility >= 75 and corroborating_count >= 2:
         status = "corroborated"
         bias = "Center-Editorial Reporting"
     elif credibility >= 55:
@@ -223,7 +248,7 @@ def evaluate_article_credibility(
         status = "unverified"
         bias = "General News Wire"
         
-    claims = extract_key_claims(title, text)
+    claims = extract_key_claims(title, text, corroborating_count)
     
     return {
         "credibility_score": credibility,
@@ -231,7 +256,7 @@ def evaluate_article_credibility(
         "fact_check_status": status,
         "bias_spectrum": bias,
         "key_claims": claims,
-        "corroboration_count": max(corroborating_count, 2),
+        "corroboration_count": max(0, corroborating_count),
         "disinformation_flags": len(disinfo_matches)
     }
 
@@ -251,7 +276,11 @@ def verify_custom_claim(query_text: str) -> Dict[str, Any]:
     lower_query = query_text.lower()
     sensationalism = calculate_sensationalism_score(query_text, "")
     claims = extract_key_claims(query_text, "")
-    has_evidence = any(re.search(p, lower_query) for p in FACTUAL_INDICATORS)
+    has_quantitative = bool(re.search(
+        r'\b(?:\d+(?:\.\d+)?%|\$\d+(?:\.\d+)?|\d+\s*(?:million|billion|trillion|percent|crore|lakh))',
+        lower_query,
+    ))
+    named_sources = _find_named_sources(query_text)
     
     # Check for disinformation / conspiracy / fake news markers
     disinfo_found = [p for p in DISINFORMATION_PATTERNS if re.search(p, lower_query)]
@@ -261,18 +290,37 @@ def verify_custom_claim(query_text: str) -> Dict[str, Any]:
         credibility = max(8, 25 - len(disinfo_found) * 10)
         sensationalism = max(75, sensationalism)
         analysis = "⚠️ High Disinformation Alert: This statement matches known pseudoscience, financial scam, or conspiratorial propaganda patterns that lack institutional or peer-reviewed evidence."
+        sources = ["Heuristic disinformation pattern match"]
     elif sensationalism >= 65:
         verdict = "🔴 High Sensationalism / Unverified"
         credibility = max(20, 100 - sensationalism)
         analysis = "This claim exhibits sensationalized phrasing, emotive hyperbole, or clickbait rhetoric lacking accredited primary source attribution."
-    elif has_evidence:
-        verdict = "Corroborated Statement"
-        credibility = min(98, 85 + (20 - sensationalism // 5))
-        analysis = "The claim includes verifiable data, official quotations, or empirical statistics verified across mainstream journalistic reporting standards."
-    else:
+        sources = []
+    elif named_sources:
+        source_score = max(SOURCE_RELIABILITY_MAP.get(name, 88) for name in named_sources)
+        verdict = "Attributed Claim — Not Independently Verified"
+        credibility = min(92, max(80, source_score - 5))
+        analysis = (
+            f"The claim cites {', '.join(named_sources)}. This is a lexical attribution check only; "
+            "no live evidence was retrieved and no independent corroboration was performed."
+        )
+        sources = []
+    elif has_quantitative:
         verdict = "Developing / Plausible Claim"
-        credibility = min(85, max(50, 75 - sensationalism // 2))
-        analysis = "The headline represents developing news reporting with standard editorial phrasing, currently awaiting further multi-wire corroboration."
+        credibility = 60
+        analysis = (
+            "The statement includes quantitative details but does not name a verifiable source. "
+            "No evidence was retrieved; treat this claim as unverified."
+        )
+        sources = []
+    else:
+        verdict = "🔴 Unverified — Insufficient Evidence"
+        credibility = min(45, max(10, 45 - sensationalism // 3))
+        analysis = (
+            "No named, verifiable source or retrievable evidence was provided. "
+            "This tool performs lexical screening only; treat the claim as unverified."
+        )
+        sources = []
         
     return {
         "verdict": verdict,
@@ -280,5 +328,5 @@ def verify_custom_claim(query_text: str) -> Dict[str, Any]:
         "sensationalism_score": sensationalism,
         "analysis": analysis,
         "claims_breakdown": claims,
-        "corroborated_sources": ["Cross-Referenced Editorial Reporting", "Open-Source Verification Database"] if not disinfo_found else ["Flagged by Disinformation Pattern Database"]
+        "corroborated_sources": sources
     }

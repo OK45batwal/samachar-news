@@ -237,7 +237,7 @@
           const safeSource = sanitize(art.source?.name || 'Wire');
           const safeCat = sanitize(art.category?.name || 'Top News');
           const credScore = art.credibility_score || 92;
-          const imgUrl = art.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+          const imgUrl = safeUrl(art.image_url) || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
 
           return `
             <article class="card" id="bookmark-card-${b.id}" style="background:var(--bg-surface-1);border-color:var(--border-light);display:flex;flex-direction:column;justify-content:space-between;">

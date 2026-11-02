@@ -586,7 +586,7 @@
           previewGrid.innerHTML = articles.slice(0, 3).map(a => `
             <div class="card" style="transition: transform 0.25s var(--ease-spring);">
               <div class="card-img-wrapper" style="height: 160px;">
-                <img src="${a.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80'}" alt="${sanitize(a.title)}" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80'" />
+                <img src="${safeUrl(a.image_url) || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80'}" alt="${sanitize(a.title)}" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80'" />
               </div>
               <div class="card-body" style="padding: 16px;">
                 <div class="flex items-center justify-between mb-2">

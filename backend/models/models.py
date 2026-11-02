@@ -43,6 +43,7 @@ class User(Base):
     full_name = Column(String(255))
     role = Column(SAEnum(UserRole, values_callable=lambda x: [e.value for e in x]), default=UserRole.USER, nullable=False)
     is_active = Column(Boolean, default=True)
+    token_version = Column(Integer, default=0, nullable=False)
     preferences = Column(JSON, default=dict)
     created_at = Column(DateTime, default=_utc_now)
     updated_at = Column(DateTime, default=_utc_now, onupdate=_utc_now)

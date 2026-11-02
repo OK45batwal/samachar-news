@@ -228,7 +228,7 @@
         if (stories && stories.length) {
           // Render #1 Spotlight Story
           const lead = stories[0];
-          const leadImg = lead.image_url || getCategoryFallbackPhoto(lead.category_name || lead.category?.name);
+          const leadImg = safeUrl(lead.image_url) || getCategoryFallbackPhoto(lead.category_name || lead.category?.name);
           const leadCat = sanitize(lead.category?.name || lead.category_name || 'Top Wire');
           const leadSource = sanitize(lead.source?.name || lead.source_name || 'Reuters Wire');
           const leadScore = lead.credibility_score || 95;

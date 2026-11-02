@@ -152,12 +152,6 @@
       }, 4000);
     }
 
-    function sanitize(str) {
-      return String(str || '').replace(/[&<>"']/g, m => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      }[m]));
-    }
-
     function getSafeRedirectUrl(target) {
       if (!target) return 'home.html';
       const clean = target.trim();
@@ -217,45 +211,27 @@
         btn.textContent = 'Authenticating Session...';
 
         try {
-          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            try {
-              const res = await fetch('http://localhost:8000/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-                signal: AbortSignal.timeout(2000)
-              });
-              if (!res.ok) {
-                const errData = await res.json().catch(() => ({}));
-                showToast(errData.detail || 'Invalid email or password.', 'error');
-                btn.disabled = false;
-                btn.textContent = 'Sign In to Feed →';
-                return;
-              }
-            } catch (netErr) {
-              // Only fallback to offline demo mode if server is genuinely unreachable
-              if (netErr.name !== 'AbortError' && !netErr.message?.includes('Failed to fetch') && !netErr.message?.includes('NetworkError')) {
-                console.warn('Backend login notice:', netErr);
-              }
-            }
+          const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+          const apiBase = window.SAMACHAR_API_URL || localStorage.getItem('samachar_api_url') || (isLocal ? 'http://localhost:8000' : '');
+          const res = await fetch(`${apiBase}/api/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          });
+          const data = await res.json().catch(() => ({}));
+
+          if (!res.ok) {
+            showToast(data.detail || 'Invalid email or password.', 'error');
+            btn.disabled = false;
+            btn.textContent = 'Sign In to Feed →';
+            return;
+          }
+          if (!data.access_token || !data.user) {
+            throw new Error('Authentication service returned an invalid response.');
           }
 
-          const username = email.split('@')[0];
-          const user = {
-            id: 'usr_' + Date.now(),
-            email: sanitize(email),
-            username: sanitize(username),
-            full_name: sanitize(username.toUpperCase()) + ' (Verified Reader)',
-            role: 'user',
-            remember: rememberMe,
-            session_created: new Date().toISOString(),
-            preferences: { theme: 'dark', verified_only: true }
-          };
-
-          const token = 'samachar_jwt_' + btoa(JSON.stringify(user));
-
-          localStorage.setItem('samachar_token', token);
-          localStorage.setItem('samachar_user', JSON.stringify(user));
+          localStorage.setItem('samachar_token', data.access_token);
+          localStorage.setItem('samachar_user', JSON.stringify(data.user));
           if (rememberMe) {
             localStorage.setItem('samachar_remember_email', email);
           } else {

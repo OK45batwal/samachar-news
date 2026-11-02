@@ -183,7 +183,7 @@ async def get_article(id: int, db: AsyncSession = Depends(get_db)):
     query = (
         select(Article)
         .options(selectinload(Article.category), selectinload(Article.source))
-        .where(Article.id == id)
+        .where(Article.id == id, Article.status == ArticleStatus.PUBLISHED)
     )
     result = await db.execute(query)
     article = result.scalar_one_or_none()
@@ -214,7 +214,7 @@ async def get_article_depth(id: int, db: AsyncSession = Depends(get_db)):
     query = (
         select(Article)
         .options(selectinload(Article.category), selectinload(Article.source))
-        .where(Article.id == id)
+        .where(Article.id == id, Article.status == ArticleStatus.PUBLISHED)
     )
     result = await db.execute(query)
     article = result.scalar_one_or_none()
@@ -241,7 +241,7 @@ async def ask_article(id: int, payload: ArticleAskRequest, db: AsyncSession = De
     query = (
         select(Article)
         .options(selectinload(Article.category), selectinload(Article.source))
-        .where(Article.id == id)
+        .where(Article.id == id, Article.status == ArticleStatus.PUBLISHED)
     )
     result = await db.execute(query)
     article = result.scalar_one_or_none()
@@ -282,7 +282,7 @@ async def get_perspectives(id: int, db: AsyncSession = Depends(get_db)):
     query = (
         select(Article)
         .options(selectinload(Article.category), selectinload(Article.source))
-        .where(Article.id == id)
+        .where(Article.id == id, Article.status == ArticleStatus.PUBLISHED)
     )
     result = await db.execute(query)
     article = result.scalar_one_or_none()
@@ -298,6 +298,7 @@ async def get_perspectives(id: int, db: AsyncSession = Depends(get_db)):
         "category_name": article.category.name if article.category else "General",
         "source_name": article.source.name if article.source else "Wire Bureau",
         "credibility_score": article.credibility_score or 88,
+        "corroborating_sources": article.corroborating_sources or [],
     }
 
     perspectives = analyze_wire_perspectives(art_dict)
@@ -311,7 +312,7 @@ async def get_personal_impact(id: int, payload: PersonalImpactRequest, db: Async
     query = (
         select(Article)
         .options(selectinload(Article.category), selectinload(Article.source))
-        .where(Article.id == id)
+        .where(Article.id == id, Article.status == ArticleStatus.PUBLISHED)
     )
     result = await db.execute(query)
     article = result.scalar_one_or_none()

@@ -319,6 +319,7 @@ async def ingest_all_feeds() -> Dict[str, Any]:
 
         seen_urls = set()
         pending_broadcasts = []
+        committed_broadcasts = []
         batch_pending_count = 0
 
         for item in all_fetched:
@@ -346,7 +347,7 @@ async def ingest_all_feeds() -> Dict[str, Any]:
                 summary=item["summary"],
                 content=item["content"],
                 source_name=src_name,
-                corroborating_count=2,
+                corroborating_count=1,
             )
 
             # Generate unique slug
@@ -376,30 +377,23 @@ async def ingest_all_feeds() -> Dict[str, Any]:
 
             try:
                 db.add(article)
+                article._broadcast_source = src_name
                 created_count += 1
                 batch_pending_count += 1
                 if fact_metrics["credibility_score"] >= 80:
                     verified_count += 1
 
-                status_str = article.fact_check_status.value if hasattr(article.fact_check_status, 'value') else str(article.fact_check_status)
-                pending_broadcasts.append({
-                    "id": article.id,
-                    "title": article.title,
-                    "slug": article.slug,
-                    "summary": article.summary,
-                    "credibility_score": article.credibility_score,
-                    "fact_check_status": status_str,
-                    "source": src_name,
-                    "image_url": article.image_url,
-                    "published_at": article.published_at.isoformat() if article.published_at else None,
-                })
+                pending_broadcasts.append(article)
 
                 # Commit in chunks of 20 to balance memory and disk fsync
                 if batch_pending_count >= 20:
                     await db.commit()
+                    committed_broadcasts.extend(pending_broadcasts)
+                    pending_broadcasts.clear()
                     batch_pending_count = 0
             except Exception as e:
                 logger.warning("Failed to stage article '%s': %s", item.get("title", "")[:50], e)
+                pending_broadcasts.clear()
                 await db.rollback()
                 batch_pending_count = 0
 
@@ -407,18 +401,33 @@ async def ingest_all_feeds() -> Dict[str, Any]:
         if batch_pending_count > 0:
             try:
                 await db.commit()
+                committed_broadcasts.extend(pending_broadcasts)
+                pending_broadcasts.clear()
             except Exception as commit_err:
                 logger.warning("Final batch commit encountered error: %s", commit_err)
                 await db.rollback()
 
         # Broadcast live updates to connected WebSocket clients
-        if pending_broadcasts:
+        if committed_broadcasts:
             try:
                 from ..websocket.ws import manager
-                for msg in pending_broadcasts[:30]:  # Cap broadcast burst
+                for article in committed_broadcasts[:30]:  # Cap broadcast burst
+                    if article.id is None:
+                        continue
+                    status_str = article.fact_check_status.value if hasattr(article.fact_check_status, 'value') else str(article.fact_check_status)
                     await manager.broadcast({
                         "type": "new_article",
-                        "article": msg
+                        "article": {
+                            "id": article.id,
+                            "title": article.title,
+                            "slug": article.slug,
+                            "summary": article.summary,
+                            "credibility_score": article.credibility_score,
+                            "fact_check_status": status_str,
+                            "source": getattr(article, "_broadcast_source", "News Wire"),
+                            "image_url": article.image_url,
+                            "published_at": article.published_at.isoformat() if article.published_at else None,
+                        }
                     })
             except Exception as ws_err:
                 logger.debug("Live websocket broadcast skipped: %s", ws_err)

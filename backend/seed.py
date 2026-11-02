@@ -1,9 +1,12 @@
 import asyncio
-from datetime import datetime, timezone, timedelta
+import os
+import uuid
+from datetime import datetime, timedelta
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .auth.auth import hash_password
+from .config import settings
 from .database import async_session, init_db
 from .models.models import Article, ArticleStatus, Category, FactCheckStatus, Source, User, UserRole
 
@@ -428,55 +431,53 @@ async def seed_database():
                 await db.flush()
             src_map[s["name"]] = src.id
 
-        # 3. Ensure Users exist
-        check_admin = await db.execute(select(User).where(User.email == "admin@samachar.news"))
-        if not check_admin.scalar_one_or_none():
-            admin_user = User(
-                email="admin@samachar.news",
-                username="admin",
-                hashed_password=hash_password("AdminPass123!"),
-                full_name="Samachar Chief Editor",
-                role=UserRole.ADMIN,
-            )
-            demo_user = User(
-                email="reader@samachar.news",
-                username="reader",
-                hashed_password=hash_password("ReaderPass123!"),
-                full_name="Alex Mercer",
-                role=UserRole.USER,
-            )
-            db.add_all([admin_user, demo_user])
-            await db.flush()
-
-        # 4. Ensure Benchmark Articles exist
-        now = datetime.now(timezone.utc).replace(tzinfo=None)
-        for i, a in enumerate(BENCHMARK_ARTICLES):
-            check_art = await db.execute(select(Article).where(Article.slug == a["slug"]))
-            if not check_art.scalar_one_or_none():
-                art = Article(
-                    title=a["title"],
-                    slug=a["slug"],
-                    summary=a["summary"],
-                    content=a["content"],
-                    image_url=a["image_url"],
-                    source_url=f"https://samachar.news/verified/{a['slug']}",
-                    author="Editorial Intelligence Wire",
-                    status=ArticleStatus.PUBLISHED,
-                    sentiment_score=20,
-                    fact_check_status=a["fact_check_status"],
-                    credibility_score=a["credibility_score"],
-                    sensationalism_score=a["sensationalism_score"],
-                    key_claims=a["key_claims"],
-                    corroborating_sources=a["corroborating_sources"],
-                    bias_spectrum=a["bias_spectrum"],
-                    category_id=cat_map.get(a["category_slug"]),
-                    source_id=src_map.get(a["source_name"]),
-                    published_at=now - timedelta(minutes=i * 25),
+        # 3. Ensure an administrator exists only when explicitly configured.
+        admin_email = os.getenv("ADMIN_EMAIL", "").strip().lower()
+        admin_password = os.getenv("ADMIN_PASSWORD", "")
+        if admin_email and admin_password:
+            check_admin = await db.execute(select(User).where(User.email == admin_email))
+            if not check_admin.scalar_one_or_none():
+                admin_user = User(
+                    email=admin_email,
+                    username=f"{admin_email.split('@')[0]}-{uuid.uuid4().hex[:6]}",
+                    hashed_password=hash_password(admin_password),
+                    full_name="Samachar Administrator",
+                    role=UserRole.ADMIN,
                 )
-                db.add(art)
+                db.add(admin_user)
+                await db.flush()
+
+        # 4. Ensure Benchmark Articles exist (development/test fixtures only)
+        if settings.ENVIRONMENT.lower() != "production":
+            # Fixed historical timestamp so fixtures never masquerade as fresh news.
+            benchmark_start = datetime(2025, 1, 1)
+            for i, a in enumerate(BENCHMARK_ARTICLES):
+                check_art = await db.execute(select(Article).where(Article.slug == a["slug"]))
+                if not check_art.scalar_one_or_none():
+                    art = Article(
+                        title=a["title"],
+                        slug=a["slug"],
+                        summary=a["summary"],
+                        content=a["content"],
+                        image_url=a["image_url"],
+                        source_url=f"https://samachar.news/verified/{a['slug']}",
+                        author="Editorial Intelligence Wire",
+                        status=ArticleStatus.PUBLISHED,
+                        sentiment_score=20,
+                        fact_check_status=a["fact_check_status"],
+                        credibility_score=a["credibility_score"],
+                        sensationalism_score=a["sensationalism_score"],
+                        key_claims=a["key_claims"],
+                        corroborating_sources=a["corroborating_sources"],
+                        bias_spectrum=a["bias_spectrum"],
+                        category_id=cat_map.get(a["category_slug"]),
+                        source_id=src_map.get(a["source_name"]),
+                        published_at=benchmark_start - timedelta(minutes=i * 25),
+                    )
+                    db.add(art)
 
         await db.commit()
-        print("✓ Database seeded successfully with benchmark articles.")
+        print("✓ Database seeded successfully.")
 
 
 if __name__ == "__main__":

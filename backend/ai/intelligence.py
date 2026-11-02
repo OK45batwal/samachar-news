@@ -264,46 +264,54 @@ def analyze_wire_perspectives(article_dict: Dict[str, Any]) -> Dict[str, Any]:
     title = article_dict.get("title", "")
     category = article_dict.get("category_name", "General")
     source = article_dict.get("source_name", "Wire Network")
-    credibility = article_dict.get("credibility_score", 88)
+    supporting_sources = [s for s in (article_dict.get("corroborating_sources") or []) if s]
 
-    consensus_points = [
-        f"Core factual occurrence confirmed by primary bureau {source}.",
-        "Statistical figures and institutional statements align across wire dispatches.",
-        "Timeline of milestones matches official press communiques."
-    ]
+    if len(supporting_sources) >= 2:
+        consensus_points = [
+            f"Reporting is attributed to {len(supporting_sources)} sources: {', '.join(supporting_sources)}.",
+            "This platform has not independently compared the full text of those reports.",
+        ]
+        # Reflects breadth of attribution, not verified agreement.
+        consensus_score = min(45, 15 + len(supporting_sources) * 10)
+    else:
+        consensus_points = [
+            f"Only one source ({source}) is attached to this story.",
+            "Independent corroboration has not been established.",
+        ]
+        consensus_score = 0
 
     perspectives = [
         {
-            "cluster": "Global Wire Bureaus (Reuters, AP, Bloomberg)",
+            "cluster": "Wire-service analytical lens",
             "angle": "Empirical & Market Focus",
-            "emphasis": "Speed of delivery, quantitative metrics, immediate macroeconomic and geopolitical consequences.",
-            "omitted_nuance": "Less coverage of grassroots societal sentiments and long-tail regional reactions."
+            "emphasis": "Analytical frame emphasising quantitative metrics and immediate macroeconomic or geopolitical consequences.",
+            "omitted_nuance": "This lens may underweight grassroots sentiment and long-tail regional reactions."
         },
         {
-            "cluster": "Regional & Public Broadcasters (BBC, DW, The Hindu)",
+            "cluster": "Public-broadcaster analytical lens",
             "angle": "Societal & Policy Context",
-            "emphasis": "Impact on civic institutions, public sentiment, legislative oversight, and regional implications.",
-            "omitted_nuance": "Less emphasis on high-frequency financial market fluctuations."
+            "emphasis": "Analytical frame emphasising civic institutions, public sentiment, legislative oversight, and regional implications.",
+            "omitted_nuance": "This lens may underweight high-frequency financial market fluctuations."
         },
         {
-            "cluster": "Investigative & Independent Journals",
+            "cluster": "Investigative analytical lens",
             "angle": "Structural & Longitudinal Analysis",
-            "emphasis": "Underlying regulatory lobbying, environmental or labor implications, and historical precedent.",
-            "omitted_nuance": "Published later in the news cycle than breaking wire alerts."
+            "emphasis": "Analytical frame emphasising regulatory lobbying, environmental or labor implications, and historical precedent.",
+            "omitted_nuance": "This lens typically publishes later than breaking wire alerts."
         }
     ]
 
     omission_radar = {
         "wire_emphasis": f"Focuses primarily on {category} developments and official government/corporate statements.",
         "potential_blindspot": "Alternative grassroots perspectives and long-term indirect environmental/social externalities.",
-        "consensus_score": min(98, max(75, credibility))
+        "consensus_score": consensus_score
     }
 
     return {
         "consensus_points": consensus_points,
         "perspectives": perspectives,
         "omission_radar": omission_radar,
-        "consensus_percentage": min(98, max(80, credibility))
+        "consensus_percentage": consensus_score
     }
 
 

@@ -99,6 +99,8 @@ async def get_current_user(
     user = result.scalar_one_or_none()
     if user is None or not user.is_active:
         raise HTTPException(status_code=401, detail="User not found or inactive")
+    if int(payload.get("ver", 0)) != int(user.token_version or 0):
+        raise HTTPException(status_code=401, detail="Session has been invalidated")
     return user
 
 

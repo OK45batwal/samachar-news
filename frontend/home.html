@@ -290,8 +290,8 @@
           if (tickerTrack) {
             tickerTrack.innerHTML = res.articles.slice(0, 6).map(a => `
               <div class="ticker-item">
-                <span class="badge badge-verified" style="font-size:10px;padding:2px 6px;">🟢 ${a.credibility_score || 95}% VERIFIED</span>
-                <a href="article.html?id=${a.id}">${sanitize(a.title)}</a>
+                <span class="badge badge-verified" style="font-size:10px;padding:2px 6px;">🟢 ${Number(a.credibility_score) || 95}% VERIFIED</span>
+                <a href="article.html?id=${Number(a.id) || 0}">${sanitize(a.title)}</a>
                 <span class="text-xs text-muted font-mono" style="margin-left:4px;">· ${timeAgo(a.published_at)}</span>
               </div>
             `).join('');
@@ -325,28 +325,31 @@
       const side1 = top3[1] || top3[0];
       const side2 = top3[2] || top3[0];
 
-      const mainImg = main.image_url || getCategoryDefaultImage(main.category?.name, main.title);
+      const mainImg = safeUrl(main.image_url) || getCategoryDefaultImage(main.category?.name, main.title);
       const mainSource = sanitize(main.source?.name || main.source_name || 'Wire Feed');
-      const mainSourceLink = main.source_url
-        ? `<a href="${main.source_url}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${mainSource}">${mainSource} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
+      const mainSourceUrl = safeUrl(main.source_url);
+      const mainSourceLink = mainSourceUrl
+        ? `<a href="${mainSourceUrl}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${mainSource}">${mainSource} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
         : `<span>${mainSource}</span>`;
 
       const side1Source = sanitize(side1.source?.name || side1.source_name || 'Wire');
-      const side1SourceLink = side1.source_url
-        ? `<a href="${side1.source_url}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${side1Source}">${side1Source} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
+      const side1SourceUrl = safeUrl(side1.source_url);
+      const side1SourceLink = side1SourceUrl
+        ? `<a href="${side1SourceUrl}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${side1Source}">${side1Source} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
         : `<span>${side1Source}</span>`;
 
       const side2Source = sanitize(side2.source?.name || side2.source_name || 'Wire');
-      const side2SourceLink = side2.source_url
-        ? `<a href="${side2.source_url}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${side2Source}">${side2Source} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
+      const side2SourceUrl = safeUrl(side2.source_url);
+      const side2SourceLink = side2SourceUrl
+        ? `<a href="${side2SourceUrl}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${side2Source}">${side2Source} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
         : `<span>${side2Source}</span>`;
 
       heroMain.classList.add('card-3d');
       heroMain.innerHTML = `
         <div class="card-img-wrapper" style="height:380px">
-          <img src="${mainImg}" class="bento-main-img" alt="${sanitize(main.title)}" onerror="this.src=getCategoryDefaultImage('${main.category?.name || 'world'}', '${sanitize(main.title).replace(/'/g, "\\'")}')" />
+          <img src="${mainImg}" class="bento-main-img" alt="${sanitize(main.title)}" onerror="this.onerror=null;this.src=getCategoryDefaultImage('world')" />
           <div class="layer-z-20" style="position:absolute;top:16px;left:16px;z-index:6;display:flex;gap:6px;align-items:center;">
-            <span class="badge badge-verified">🟢 ${main.credibility_score || 96}% VERIFIED SPOTLIGHT</span>
+            <span class="badge badge-verified">🟢 ${Number(main.credibility_score) || 96}% VERIFIED SPOTLIGHT</span>
             <span class="badge badge-verified pulse-ring-container" style="padding:2px 8px;font-size:9.5px;gap:5px;"><span class="radar-sweep-icon" style="width:10px;height:10px;"></span>LIVE</span>
           </div>
         </div>
@@ -355,7 +358,7 @@
             <span class="text-accent font-semibold">${sanitize(main.category?.name || 'Top Story')} · ${timeAgo(main.published_at)}</span>
             ${mainSourceLink}
           </div>
-          <h2 class="heading-lg my-2"><a href="article.html?id=${main.id}">${sanitize(main.title)}</a></h2>
+          <h2 class="heading-lg my-2"><a href="article.html?id=${Number(main.id) || 0}">${sanitize(main.title)}</a></h2>
           <p class="text-sm text-secondary line-clamp-2">${sanitize(main.summary || '')}</p>
         </div>
       `;
@@ -364,9 +367,9 @@
         <div class="bento-side-card card-3d">
           <div class="layer-z-10">
             <div class="layer-z-20 mb-2">
-              <span class="badge badge-verified">🟢 ${side1.credibility_score || 94}% VERIFIED</span>
+              <span class="badge badge-verified">🟢 ${Number(side1.credibility_score) || 94}% VERIFIED</span>
             </div>
-            <h3 class="heading-sm mb-1"><a href="article.html?id=${side1.id}">${sanitize(side1.title)}</a></h3>
+            <h3 class="heading-sm mb-1"><a href="article.html?id=${Number(side1.id) || 0}">${sanitize(side1.title)}</a></h3>
             <p class="text-xs text-secondary line-clamp-2">${sanitize(side1.summary || '')}</p>
           </div>
           <div class="flex items-center justify-between text-xs text-muted mt-3 layer-z-10">
@@ -377,9 +380,9 @@
         <div class="bento-side-card card-3d">
           <div class="layer-z-10">
             <div class="layer-z-20 mb-2">
-              <span class="badge badge-corroborated">🔵 ${side2.credibility_score || 88}% CORROBORATED</span>
+              <span class="badge badge-corroborated">🔵 ${Number(side2.credibility_score) || 88}% CORROBORATED</span>
             </div>
-            <h3 class="heading-sm mb-1"><a href="article.html?id=${side2.id}">${sanitize(side2.title)}</a></h3>
+            <h3 class="heading-sm mb-1"><a href="article.html?id=${Number(side2.id) || 0}">${sanitize(side2.title)}</a></h3>
             <p class="text-xs text-secondary line-clamp-2">${sanitize(side2.summary || '')}</p>
           </div>
           <div class="flex items-center justify-between text-xs text-muted mt-3 layer-z-10">

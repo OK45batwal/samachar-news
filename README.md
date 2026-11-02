@@ -138,12 +138,11 @@ npm run dev
 
 ---
 
-## 🔑 Demo & Testing Credentials
+## 🔑 Accounts & Administrator Bootstrap
 
-| Role | Email | Password | Permissions |
-|---|---|---|---|
-| **Verified Reader** | `reader@samachar.news` | `ReaderPass123!` | Live news reading, bookmarking, fact-check tool, personal telemetry |
-| **Chief Editor (Admin)** | `admin@samachar.news` | `AdminPass123!` | Full editorial dashboard, feed sync trigger, database administration |
+There are no default credentials. Register a normal account through the app, or create an
+administrator at startup by setting `ADMIN_EMAIL` and `ADMIN_PASSWORD` in the environment.
+The administrator is only created when both values are provided (see `.env.example`).
 
 ---
 
