@@ -1,5 +1,8 @@
 function sanitize(str) {
-  return String(str || '').replace(/[&<>"']/g, m => ({
+  // Decode feed entities (e.g. &nbsp;) before escaping.
+  const decoder = document.createElement('textarea');
+  decoder.innerHTML = String(str || '');
+  return decoder.value.replace(/[&<>"']/g, m => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[m]));
 }
@@ -107,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         <div style="padding:14px 18px;background:var(--bg-surface-2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="globalSearch" placeholder="Search verified news, claims, topics (Press Enter to view all)..." style="flex:1;min-width:0;width:auto;background:transparent;border:none!important;outline:none!important;box-shadow:none!important;font-size:15px;font-weight:500;color:var(--text-primary);padding:4px 0;margin:0;" autocomplete="off" />
+          <input type="text" id="globalSearch" placeholder="Search news, claims, topics (Press Enter to view all)..." style="flex:1;min-width:0;width:auto;background:transparent;border:none!important;outline:none!important;box-shadow:none!important;font-size:15px;font-weight:500;color:var(--text-primary);padding:4px 0;margin:0;" autocomplete="off" />
           <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
             <kbd class="hide-mobile" style="font-family:monospace;font-size:10px;padding:3px 7px;background:var(--bg-surface-3);border:1px solid var(--border);border-radius:5px;color:var(--text-secondary);">ESC</kbd>
             <button id="closeSearchModalBtn" type="button" style="background:transparent;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;padding:4px 8px;line-height:1;border-radius:4px;" title="Close">✕</button>
@@ -573,7 +576,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobSearch = document.createElement('button');
     mobSearch.id = 'mobileSearchTrigger';
     mobSearch.className = 'btn btn-icon btn-ghost hide-desktop';
-    mobSearch.setAttribute('aria-label', 'Search verified news');
+    mobSearch.setAttribute('aria-label', 'Search news');
     mobSearch.setAttribute('title', 'Search (⌘K)');
     mobSearch.style.cssText = 'padding: 8px; border-radius: 50%; color: var(--text-secondary);';
     mobSearch.innerHTML = `

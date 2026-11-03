@@ -1,51 +1,51 @@
 /* Design System Tokens — Samachar Minimalist Editorial Platform */
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap');
 
 :root {
   /* Typographic Families */
-  --font-brand: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-brand: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-editorial: 'Newsreader', Georgia, Cambria, 'Times New Roman', serif;
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Universal Truth & Alert Accents */
-  --accent: #10B981;
-  --accent-hover: #059669;
-  --accent-glow: rgba(16, 185, 129, 0.2);
-  --accent-dim: rgba(16, 185, 129, 0.08);
-  --accent-border: rgba(16, 185, 129, 0.3);
+  --accent: #9AD6B2;
+  --accent-hover: #B6E5C8;
+  --accent-glow: rgba(154, 214, 178, 0.10);
+  --accent-dim: rgba(154, 214, 178, 0.08);
+  --accent-border: rgba(154, 214, 178, 0.35);
 
-  --corroborated: #0284C7;
-  --corroborated-dim: rgba(2, 132, 199, 0.1);
-  --developing: #D97706;
-  --developing-dim: rgba(217, 119, 6, 0.1);
-  --disputed: #E11D48;
-  --disputed-dim: rgba(225, 29, 72, 0.1);
-  --danger: #EF4444;
+  --corroborated: #9BC1DB;
+  --corroborated-dim: rgba(155, 193, 219, 0.08);
+  --developing: #D9B36A;
+  --developing-dim: rgba(217, 179, 106, 0.08);
+  --disputed: #D98A8A;
+  --disputed-dim: rgba(217, 138, 138, 0.08);
+  --danger: #D98A8A;
 
   /* Minimalist Category Accents (Subdued Editorial Tones) */
-  --chan-tech: #6366F1;
-  --chan-tech-dim: rgba(99, 102, 241, 0.1);
-  --chan-world: #0EA5E9;
-  --chan-world-dim: rgba(14, 165, 233, 0.1);
-  --chan-india: #F97316;
-  --chan-india-dim: rgba(249, 115, 22, 0.1);
-  --chan-markets: #10B981;
-  --chan-markets-dim: rgba(16, 185, 129, 0.1);
-  --chan-science: #8B5CF6;
-  --chan-science-dim: rgba(139, 92, 246, 0.1);
-  --chan-health: #EC4899;
-  --chan-health-dim: rgba(236, 72, 153, 0.1);
-  --chan-sports: #EAB308;
-  --chan-sports-dim: rgba(234, 179, 8, 0.1);
+  --chan-tech: #9BC1DB;
+  --chan-tech-dim: transparent;
+  --chan-world: #9BC1DB;
+  --chan-world-dim: transparent;
+  --chan-india: #D9B36A;
+  --chan-india-dim: transparent;
+  --chan-markets: #9AD6B2;
+  --chan-markets-dim: transparent;
+  --chan-science: #C0B3DB;
+  --chan-science-dim: transparent;
+  --chan-health: #D9A9B8;
+  --chan-health-dim: transparent;
+  --chan-sports: #D9B36A;
+  --chan-sports-dim: transparent;
 
   /* Shared Radii - Minimal & Crisp */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
   --radius-full: 9999px;
 
   /* TasteSkill Layer Hierarchy (Prevents Z-Index Conflicts) */
@@ -90,56 +90,56 @@
 
 /* Default & Obsidian Minimalist Dark Theme */
 :root, [data-theme="dark"] {
-  --bg-base: #0B0E14;
-  --bg-surface-1: #111622;
-  --bg-surface-2: #161D2C;
-  --bg-surface-3: #1E273A;
-  --bg-elevated: #161D2C;
-  --bg-glass: rgba(17, 22, 34, 0.88);
-  --bg-glass-heavy: rgba(11, 14, 20, 0.95);
+  --bg-base: #050505;
+  --bg-surface-1: #0A0A0A;
+  --bg-surface-2: #101010;
+  --bg-surface-3: #171717;
+  --bg-elevated: #141414;
+  --bg-glass: rgba(5, 5, 5, 0.92);
+  --bg-glass-heavy: rgba(5, 5, 5, 0.98);
 
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
+  --text-primary: #F2EFE7;
+  --text-secondary: #A6A39B;
+  --text-muted: #706D66;
 
-  --border: rgba(255, 255, 255, 0.08);
-  --border-light: rgba(255, 255, 255, 0.14);
-  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border: rgba(242, 239, 231, 0.10);
+  --border-light: rgba(242, 239, 231, 0.18);
+  --border-subtle: rgba(242, 239, 231, 0.05);
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
-  --shadow-xl: 0 25px 60px rgba(0, 0, 0, 0.65);
-  --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.14);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-glow: none;
 }
 
-/* Editorial Minimalist Light Theme */
+/* Editorial Paper Light Theme */
 [data-theme="light"] {
-  --bg-base: #FAFAFB;
-  --bg-surface-1: #FFFFFF;
-  --bg-surface-2: #F3F4F6;
-  --bg-surface-3: #E5E7EB;
-  --bg-elevated: #FFFFFF;
-  --bg-glass: rgba(255, 255, 255, 0.92);
-  --bg-glass-heavy: rgba(250, 250, 251, 0.97);
+  --bg-base: #F2EFE7;
+  --bg-surface-1: #FAF8F2;
+  --bg-surface-2: #EFEBE1;
+  --bg-surface-3: #E5E0D4;
+  --bg-elevated: #FAF8F2;
+  --bg-glass: rgba(242, 239, 231, 0.94);
+  --bg-glass-heavy: rgba(242, 239, 231, 0.98);
 
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
+  --text-primary: #151514;
+  --text-secondary: #4D4A43;
+  --text-muted: #78746A;
 
-  --border: #E5E7EB;
-  --border-light: #D1D5DB;
-  --border-subtle: rgba(0, 0, 0, 0.04);
+  --border: rgba(21, 21, 20, 0.14);
+  --border-light: rgba(21, 21, 20, 0.24);
+  --border-subtle: rgba(21, 21, 20, 0.06);
 
-  --accent: #059669;
-  --accent-hover: #047857;
-  --accent-glow: rgba(5, 150, 105, 0.18);
-  --accent-dim: rgba(5, 150, 105, 0.08);
-  --accent-border: rgba(5, 150, 105, 0.25);
+  --accent: #2E6B4A;
+  --accent-hover: #24573C;
+  --accent-glow: rgba(46, 107, 74, 0.10);
+  --accent-dim: rgba(46, 107, 74, 0.06);
+  --accent-border: rgba(46, 107, 74, 0.28);
 
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.08);
-  --shadow-xl: 0 25px 50px -12px rgba(15, 23, 42, 0.12);
-  --shadow-glow: 0 0 15px rgba(5, 150, 105, 0.1);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-glow: none;
 }

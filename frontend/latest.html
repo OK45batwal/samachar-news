@@ -28,6 +28,7 @@
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
+  <link rel="stylesheet" href="/assets/css/paper.css?v=13.0" />
 </head>
 <body>
 
@@ -70,7 +71,7 @@
       <div class="header-search-bar" id="headerSearchBarContainer">
         <div class="search-box-inner">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="search-box-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search verified news, facts, topics..." autocomplete="off" />
+          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search news, facts, topics..." autocomplete="off" />
           <button type="button" id="headerSearchClearBtn" class="search-box-clear" style="display:none;" title="Clear">✕</button>
           <kbd class="search-box-kbd hide-mobile">⌘K</kbd>
         </div>
@@ -111,7 +112,7 @@
       <div class="flex items-center justify-between gap-4" style="flex-wrap: wrap;">
         <div>
           <span class="badge badge-verified mb-2" id="channelBadge">GLOBAL NEWS INTELLIGENCE</span>
-          <h1 class="heading-lg" id="channelTitle">All News & Verified Stories</h1>
+          <h1 class="heading-lg" id="channelTitle">All stories</h1>
           <p class="text-xs text-secondary mt-1" id="channelDesc">Monitoring 60+ global news wires with real-time claim extraction and truth scoring</p>
         </div>
         <div class="flex items-center gap-3" style="flex-wrap: wrap;">
@@ -121,7 +122,7 @@
           </button>
           <button type="button" id="verifiedToggleBtn" class="toggle-filter-btn" title="Toggle verified stories filter">
             <span class="toggle-switch-indicator"></span>
-            <span>Verified Only (85%+)</span>
+            <span>Verified only (85%+)</span>
           </button>
         </div>
       </div>
@@ -149,13 +150,8 @@
             <span class="logo-tag">TRUTH FIRST</span>
           </a>
           <p class="text-xs text-muted" style="max-width:320px;line-height:1.7;">
-            Next-generation real-time news intelligence platform. Triangulating breaking dispatches across 25+ accredited global wire bureaus with automated claim verification and truth indexing.
+            Samachar groups reporting from named wire services so the same story can be read across sources — with the original link on every page.
           </p>
-          <div class="flex items-center gap-2 text-xs text-muted mt-3">
-            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">🟢 LIVE 24x7 INGESTION</span>
-            <span>·</span>
-            <span>Obsidian Truth Engine 2.0</span>
-          </div>
         </div>
         <div>
           <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">News Desks</h4>
@@ -236,7 +232,7 @@
         if (tagEl) tagEl.textContent = 'Search Results';
         if (clearSearchBtn) clearSearchBtn.style.display = 'inline-flex';
       } else {
-        titleEl.textContent = 'All News & Verified Stories';
+        titleEl.textContent = 'All stories';
         descEl.textContent = 'Monitoring 60+ global news wires with real-time claim extraction and truth scoring.';
         badgeEl.textContent = 'GLOBAL NEWS INTELLIGENCE';
         if (tagEl) tagEl.textContent = 'All Categories';

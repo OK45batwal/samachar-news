@@ -2,8 +2,11 @@
 
 function sanitize(str) {
   if (!str) return '';
+  // Decode feed entities (e.g. &nbsp;) before escaping, so they render as text, not literals.
+  const decoder = document.createElement('textarea');
+  decoder.innerHTML = String(str);
   const div = document.createElement('div');
-  div.textContent = str;
+  div.textContent = decoder.value;
   // Escape quotes too so the result is safe inside HTML attributes.
   return div.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
@@ -160,16 +163,20 @@ function getCategoryDefaultImage(catName, articleTitle = '') {
 }
 window.getCategoryDefaultImage = getCategoryDefaultImage;
 
-function getCategoryBadgeClass(catName) {
-  const slug = (catName || '').toLowerCase().trim();
-  if (slug.includes('tech')) return 'badge-chan-tech';
-  if (slug.includes('world')) return 'badge-chan-world';
-  if (slug.includes('india')) return 'badge-chan-india';
-  if (slug.includes('business') || slug.includes('market')) return 'badge-chan-markets';
-  if (slug.includes('science')) return 'badge-chan-science';
-  if (slug.includes('health')) return 'badge-chan-health';
-  if (slug.includes('sport')) return 'badge-chan-sports';
-  return 'badge-verified';
+function getTruthBadge(article) {
+  const credScore = Number(article.credibility_score) || 0;
+  const status = article.fact_check_status || 'verified';
+  const score = credScore ? `${credScore}% ` : '';
+  if (status === 'corroborated' || (credScore >= 75 && credScore < 85)) {
+    return { badgeClass: 'badge-corroborated', badgeLabel: `${score}CORROBORATED` };
+  }
+  if (status === 'developing' || (credScore >= 55 && credScore < 75)) {
+    return { badgeClass: 'badge-developing', badgeLabel: `${score}DEVELOPING` };
+  }
+  if (status === 'disputed' || credScore < 55) {
+    return { badgeClass: 'badge-disputed', badgeLabel: `${score}UNVERIFIED` };
+  }
+  return { badgeClass: 'badge-verified', badgeLabel: `${score}VERIFIED` };
 }
 
 // News Card Builder with precise alignment
@@ -180,65 +187,47 @@ function renderNewsCard(article) {
   const safeSource = sanitize(article.source?.name || article.source_name || 'News Wire');
   const safeCat = sanitize(article.category?.name || article.category_name || 'Top News');
   const timeStr = timeAgo(article.published_at);
-  const credScore = Number(article.credibility_score) || 88;
-  const status = article.fact_check_status || 'verified';
   const imgUrl = safeUrl(article.image_url) || getCategoryDefaultImage(article.category?.name || article.category_name, article.title);
   const sourceUrl = safeUrl(article.source_url);
-  const catBadgeClass = getCategoryBadgeClass(safeCat);
   const wordCount = (article.content || article.summary || '').split(/\s+/).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 180));
-
-  let badgeClass = 'badge-verified';
-  let badgeLabel = `🟢 ${credScore}% VERIFIED`;
-
-  if (status === 'corroborated' || (credScore >= 75 && credScore < 85)) {
-    badgeClass = 'badge-corroborated';
-    badgeLabel = `🔵 ${credScore}% CORROBORATED`;
-  } else if (status === 'developing' || (credScore >= 55 && credScore < 75)) {
-    badgeClass = 'badge-developing';
-    badgeLabel = `🟡 ${credScore}% DEVELOPING`;
-  } else if (status === 'disputed' || credScore < 55) {
-    badgeClass = 'badge-disputed';
-    badgeLabel = `🔴 ${credScore}% UNVERIFIED`;
-  }
+  const { badgeClass, badgeLabel } = getTruthBadge(article);
 
   const sourceLinkHtml = sourceUrl
     ? `<a href="${sourceUrl}" target="_blank" rel="noopener noreferrer" class="card-source-link hover-accent" title="Open source wire article: ${safeSource}"><span>${safeSource}</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
     : `<span class="text-xs text-muted font-medium">${safeSource}</span>`;
 
   const isRecent = timeStr.includes('m ago') || timeStr === 'Just now';
-  const liveIndicatorHtml = isRecent 
-    ? `<span class="badge badge-verified pulse-ring-container" style="padding:2px 8px;font-size:9.5px;gap:5px;"><span class="radar-sweep-icon" style="width:10px;height:10px;"></span>LIVE WIRE</span>` 
-    : '';
+  const liveIndicatorHtml = isRecent ? '<span class="badge badge-verified">LIVE</span>' : '';
 
   return `
-    <article class="card card-3d animate-fade-in-up" id="article-${safeId}">
-      <div class="card-img-wrapper">
-        <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.onerror=null;this.src=getCategoryDefaultImage('world')" />
-        <div class="layer-z-20" style="position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap;z-index:6;">
+    <article class="story-row" id="article-${safeId}">
+      <div class="story-row-main">
+        <div class="story-row-kicker">
           <span class="badge ${badgeClass}">${badgeLabel}</span>
           ${liveIndicatorHtml}
+          <span class="dot">/</span>
+          <span>${safeCat}</span>
+          <span class="dot">/</span>
+          <span>${readMins} min read</span>
+          <span class="dot">/</span>
+          <span>${timeStr}</span>
+        </div>
+        <h3 class="story-row-title"><a href="article.html?id=${safeId}">${safeTitle}</a></h3>
+        <p class="story-row-summary">${safeSummary}</p>
+        <div class="story-row-foot">
+          ${sourceLinkHtml}
+          <div class="story-row-actions">
+            <button onclick="handleSaveBookmark(${safeId}, this)" class="btn btn-ghost btn-sm btn-icon bookmark-trigger-btn" title="Save Bookmark" aria-label="Save bookmark">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+            </button>
+            <a href="article.html?id=${safeId}" class="btn btn-ghost btn-sm">Read &rarr;</a>
+          </div>
         </div>
       </div>
-      <div class="card-body layer-z-10">
-        <div class="flex items-center justify-between text-xs text-muted mb-2">
-          <span class="badge ${catBadgeClass}" style="font-size:10px;padding:2px 6px;">${safeCat}</span>
-          <span class="flex items-center gap-1"><span>⏱️ ${readMins}m read</span> · <span>${timeStr}</span></span>
-        </div>
-        <h3 class="heading-sm mb-2 line-clamp-2">
-          <a href="article.html?id=${safeId}" class="card-headline-link">${safeTitle}</a>
-        </h3>
-        <p class="text-xs text-secondary line-clamp-3">${safeSummary}</p>
-      </div>
-      <div class="card-footer layer-z-20">
-        ${sourceLinkHtml}
-        <div class="flex items-center gap-2">
-          <button onclick="handleSaveBookmark(${safeId}, this)" class="btn btn-ghost btn-sm btn-icon bookmark-trigger-btn btn-pressable" title="Save Bookmark" style="border-radius:50%;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-          </button>
-          <a href="article.html?id=${safeId}" class="btn btn-secondary btn-sm btn-pressable" style="font-weight:600;">Read &rarr;</a>
-        </div>
-      </div>
+      <a href="article.html?id=${safeId}" class="story-row-thumb" tabindex="-1" aria-hidden="true">
+        <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.onerror=null;this.src=getCategoryDefaultImage('world')" />
+      </a>
     </article>
   `;
 }

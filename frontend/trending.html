@@ -24,6 +24,7 @@
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
+  <link rel="stylesheet" href="/assets/css/paper.css?v=13.0" />
 </head>
 <body>
 
@@ -70,7 +71,7 @@
       <div class="header-search-bar" id="headerSearchBarContainer">
         <div class="search-box-inner">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="search-box-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search verified news, facts, topics..." autocomplete="off" />
+          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search news, facts, topics..." autocomplete="off" />
           <button type="button" id="headerSearchClearBtn" class="search-box-clear" style="display:none;" title="Clear">✕</button>
           <kbd class="search-box-kbd hide-mobile">⌘K</kbd>
         </div>
@@ -110,7 +111,7 @@
           <span class="badge" style="background: rgba(255, 77, 77, 0.15); color: #FF4D4D; border: 1px solid rgba(255, 77, 77, 0.35);">🔥 LIVE WIRE VELOCITY</span>
           <span class="badge badge-verified">REAL-TIME DATASET</span>
         </div>
-        <h1 class="heading-lg">Trending Verified Dispatches</h1>
+        <h1 class="heading-lg">Trending dispatches</h1>
         <p class="text-xs text-secondary">Stories ranked by global wire corroboration, readership velocity, and credibility score.</p>
       </div>
       <div class="flex items-center gap-2">
@@ -128,7 +129,7 @@
 
     <!-- Trending Grid -->
     <h2 class="heading-md mb-4 flex items-center gap-2">
-      <span>🔥 Ranked Stories</span>
+      <span>Ranked stories</span>
       <span class="text-xs text-muted" id="trendingCountBadge">(12 Dispatches)</span>
     </h2>
 
@@ -147,13 +148,8 @@
             <span class="logo-tag">TRUTH FIRST</span>
           </a>
           <p class="text-xs text-muted" style="max-width:320px;line-height:1.7;">
-            Next-generation real-time news intelligence platform. Triangulating breaking dispatches across 25+ accredited global wire bureaus with automated claim verification and truth indexing.
+            Samachar groups reporting from named wire services so the same story can be read across sources — with the original link on every page.
           </p>
-          <div class="flex items-center gap-2 text-xs text-muted mt-3">
-            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">🟢 LIVE 24x7 INGESTION</span>
-            <span>·</span>
-            <span>Obsidian Truth Engine 2.0</span>
-          </div>
         </div>
         <div>
           <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">News Desks</h4>
@@ -231,45 +227,49 @@
           const leadImg = safeUrl(lead.image_url) || getCategoryFallbackPhoto(lead.category_name || lead.category?.name);
           const leadCat = sanitize(lead.category?.name || lead.category_name || 'Top Wire');
           const leadSource = sanitize(lead.source?.name || lead.source_name || 'Reuters Wire');
-          const leadScore = lead.credibility_score || 95;
+          const leadBadge = getTruthBadge(lead);
+          const leadId = Number(lead.id) || 0;
 
           spotlight.style.display = 'block';
           spotlight.innerHTML = `
-            <div class="card p-6" style="background: linear-gradient(135deg, var(--bg-surface-1) 0%, #161F30 100%); border: 1px solid var(--border-light); box-shadow: var(--shadow-lg);">
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; align-items: center;">
-                <div style="height: 280px; border-radius: 12px; overflow: hidden; position: relative;">
-                  <img src="${leadImg}" style="width: 100%; height: 100%; object-fit: cover;" alt="${sanitize(lead.title)}" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'" />
-                  <div style="position: absolute; top: 12px; left: 12px; display: flex; gap: 6px;">
-                    <span class="badge" style="background: #FF4D4D; color: #fff; font-weight: 800;">🏆 #1 TRENDING SPOTLIGHT</span>
-                    <span class="badge badge-verified">🟢 ${leadScore}% VERIFIED</span>
-                  </div>
+            <article class="story-row" style="border-top: var(--rule); padding-top: 26px;">
+              <div class="story-row-main">
+                <div class="story-row-kicker">
+                  <span>#01</span>
+                  <span class="dot">/</span>
+                  <span class="badge ${leadBadge.badgeClass}">${leadBadge.badgeLabel}</span>
+                  <span class="dot">/</span>
+                  <span>${leadCat}</span>
+                  <span class="dot">/</span>
+                  <span>${timeAgo(lead.published_at)}</span>
                 </div>
-                <div>
-                  <div class="text-xs text-accent font-semibold mb-2">${leadCat} · ${timeAgo(lead.published_at)} · ${leadSource}</div>
-                  <h2 class="heading-lg mb-3">
-                    <a href="article.html?id=${lead.id}" style="color: var(--text-primary); text-decoration: none;">${sanitize(lead.title)}</a>
-                  </h2>
-                  <p class="text-sm text-secondary mb-4 leading-relaxed">${sanitize(lead.summary || '')}</p>
-                  <div class="flex items-center gap-3">
-                    <a href="article.html?id=${lead.id}" class="btn btn-primary btn-sm font-bold">Read Full Wire Story &rarr;</a>
-                    <button onclick="handleSaveBookmark(${lead.id})" class="btn btn-secondary btn-sm flex items-center gap-1">
+                <h2 class="story-row-title" style="font-size: clamp(24px, 3vw, 38px);">
+                  <a href="article.html?id=${leadId}">${sanitize(lead.title)}</a>
+                </h2>
+                <p class="story-row-summary">${sanitize(lead.summary || '')}</p>
+                <div class="story-row-foot">
+                  <span class="card-source-link">${leadSource}</span>
+                  <div class="story-row-actions">
+                    <button onclick="handleSaveBookmark(${leadId})" class="btn btn-ghost btn-sm" title="Bookmark">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-                      Bookmark
                     </button>
+                    <a href="article.html?id=${leadId}" class="btn btn-ghost btn-sm">Read &rarr;</a>
                   </div>
                 </div>
               </div>
-            </div>
+              <a href="article.html?id=${leadId}" class="story-row-thumb" tabindex="-1" aria-hidden="true">
+                <img src="${leadImg}" alt="${sanitize(lead.title)}" onerror="this.onerror=null;this.src=getCategoryDefaultImage('world')" />
+              </a>
+            </article>
           `;
 
           // Render remaining trending ranked list
           const rest = stories.slice(1);
           grid.innerHTML = rest.map((art, idx) => {
             const cardHtml = renderNewsCard(art);
-            // Prepend rank badge
             return cardHtml.replace(
-              '<div class="card-img-wrapper">',
-              `<div class="card-img-wrapper"><div style="position:absolute;top:10px;right:10px;z-index:2;background:rgba(8,11,18,0.85);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:6px;padding:2px 8px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:var(--accent);">#${idx + 2}</div>`
+              '<div class="story-row-kicker">',
+              `<div class="story-row-kicker"><span>#${idx + 2}</span><span class="dot">/</span>`
             );
           }).join('');
 

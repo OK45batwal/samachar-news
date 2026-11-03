@@ -13,7 +13,7 @@
     gtag('config', 'G-JG6GCFNGLF');
   </script>
   <title>Samachar — Truth-First News Intelligence & Fact Checking</title>
-  <meta name="description" content="Real-time news intelligence feed with live truth scorecards and multi-source fact verification." />
+  <meta name="description" content="Wire reporting grouped by story, with sources, claims and status shown as recorded." />
   <meta name="theme-color" content="#08090C" />
   <meta name="google-site-verification" content="y1yKC726BkRyIqH8XwTVOD4KXPL0Yxa5A4QhDcxMl4k" />
   <meta name="google-site-verification" content="google37ad5f54b5d08314" />
@@ -28,6 +28,7 @@
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
+  <link rel="stylesheet" href="/assets/css/paper.css?v=13.0" />
 </head>
 <body>
 
@@ -39,7 +40,7 @@
         <span>·</span>
         <span class="text-accent flex items-center gap-1.5 font-semibold">
           <span class="radar-sweep-icon"></span>
-          MEKA 3.5 Truth Defense Active
+          Wire feeds updating continuously
         </span>
         <span>·</span>
         <span class="flex items-center gap-1 text-secondary text-xs">
@@ -61,13 +62,10 @@
   <div class="ticker-bar">
     <div class="ticker-label">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      VERIFIED NEWS
+      LATEST WIRE
     </div>
     <div class="ticker-track" id="tickerTrack">
-      <div class="ticker-item"><span>🟢 98% VERIFIED:</span> <a href="latest.html">WHO Reports 78% Drop in Global Malaria Mortality Following Vaccine Rollout</a></div>
-      <div class="ticker-item"><span>🟢 96% VERIFIED:</span> <a href="latest.html">Global Semiconductor Alliance Ratifies 1.4nm Photonic Chip Architecture</a></div>
-      <div class="ticker-item"><span>🟢 99% VERIFIED:</span> <a href="latest.html">James Webb Telescope Confirms Atmospheric Water Vapor on Habitable-Zone Exoplanet</a></div>
-      <div class="ticker-item"><span>🟢 97% VERIFIED:</span> <a href="latest.html">Central Banks Transition Project Nexus Instant Settlement to Multilateral Production</a></div>
+      <div class="ticker-item"><span>Connecting to wire feeds…</span></div>
     </div>
   </div>
 
@@ -95,7 +93,7 @@
       <div class="header-search-bar" id="headerSearchBarContainer">
         <div class="search-box-inner">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="search-box-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search verified news, facts, topics..." autocomplete="off" />
+          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search news, facts, topics..." autocomplete="off" />
           <button type="button" id="headerSearchClearBtn" class="search-box-clear" style="display:none;" title="Clear">✕</button>
           <kbd class="search-box-kbd hide-mobile">⌘K</kbd>
         </div>
@@ -162,7 +160,7 @@
       <div class="flex items-center gap-2">
         <button type="button" id="verifiedOnlyToggleBtn" class="toggle-filter-btn" title="Filter verified articles">
           <span class="toggle-switch-indicator"></span>
-          <span>🟢 Verified Only (85%+)</span>
+          <span>Verified only (85%+)</span>
         </button>
       </div>
     </div>
@@ -184,13 +182,8 @@
             <span class="logo-tag">TRUTH FIRST</span>
           </a>
           <p class="text-xs text-muted" style="max-width:320px;line-height:1.7;">
-            Next-generation real-time news intelligence platform. Triangulating breaking dispatches across 25+ accredited global wire bureaus with automated claim verification and truth indexing.
+            Samachar groups reporting from named wire services so the same story can be read across sources — with the original link on every page.
           </p>
-          <div class="flex items-center gap-2 text-xs text-muted mt-3">
-            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">🟢 LIVE 24x7 INGESTION</span>
-            <span>·</span>
-            <span>Obsidian Truth Engine 2.0</span>
-          </div>
         </div>
         <div>
           <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">News Desks</h4>
@@ -275,7 +268,7 @@
     async function loadNews() {
       updateCategoryUI();
       const grid = document.getElementById('newsGrid');
-      grid.innerHTML = Array(6).fill('<div class="skeleton card" style="height:320px"></div>').join('');
+      grid.innerHTML = Array(6).fill('<div class="skeleton" style="height:120px"></div>').join('');
 
       try {
         const res = await getArticles({
@@ -288,13 +281,16 @@
           // Dynamically populate Breaking Fact Ticker with the latest live wire headlines
           const tickerTrack = document.getElementById('tickerTrack');
           if (tickerTrack) {
-            tickerTrack.innerHTML = res.articles.slice(0, 6).map(a => `
+            tickerTrack.innerHTML = res.articles.slice(0, 6).map(a => {
+              const b = getTruthBadge(a);
+              return `
               <div class="ticker-item">
-                <span class="badge badge-verified" style="font-size:10px;padding:2px 6px;">🟢 ${Number(a.credibility_score) || 95}% VERIFIED</span>
+                <span class="badge ${b.badgeClass}">${b.badgeLabel}</span>
                 <a href="article.html?id=${Number(a.id) || 0}">${sanitize(a.title)}</a>
                 <span class="text-xs text-muted font-mono" style="margin-left:4px;">· ${timeAgo(a.published_at)}</span>
               </div>
-            `).join('');
+            `;
+            }).join('');
           }
 
           if (!currentCategory) {
@@ -344,48 +340,52 @@
         ? `<a href="${side2SourceUrl}" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;" title="Original Wire Report: ${side2Source}">${side2Source} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`
         : `<span>${side2Source}</span>`;
 
-      heroMain.classList.add('card-3d');
+      const mainBadge = getTruthBadge(main);
+      const side1Badge = getTruthBadge(side1);
+      const side2Badge = getTruthBadge(side2);
+
+      heroMain.classList.remove('card-3d');
       heroMain.innerHTML = `
         <div class="card-img-wrapper" style="height:380px">
           <img src="${mainImg}" class="bento-main-img" alt="${sanitize(main.title)}" onerror="this.onerror=null;this.src=getCategoryDefaultImage('world')" />
-          <div class="layer-z-20" style="position:absolute;top:16px;left:16px;z-index:6;display:flex;gap:6px;align-items:center;">
-            <span class="badge badge-verified">🟢 ${Number(main.credibility_score) || 96}% VERIFIED SPOTLIGHT</span>
-            <span class="badge badge-verified pulse-ring-container" style="padding:2px 8px;font-size:9.5px;gap:5px;"><span class="radar-sweep-icon" style="width:10px;height:10px;"></span>LIVE</span>
-          </div>
         </div>
-        <div class="bento-main-content layer-z-10">
-          <div class="flex items-center justify-between text-xs text-muted mb-2">
-            <span class="text-accent font-semibold">${sanitize(main.category?.name || 'Top Story')} · ${timeAgo(main.published_at)}</span>
-            ${mainSourceLink}
+        <div class="bento-main-content">
+          <div class="story-row-kicker">
+            <span class="badge ${mainBadge.badgeClass}">${mainBadge.badgeLabel}</span>
+            <span class="dot">/</span>
+            <span>${sanitize(main.category?.name || 'Top Story')}</span>
+            <span class="dot">/</span>
+            <span>${timeAgo(main.published_at)}</span>
           </div>
           <h2 class="heading-lg my-2"><a href="article.html?id=${Number(main.id) || 0}">${sanitize(main.title)}</a></h2>
           <p class="text-sm text-secondary line-clamp-2">${sanitize(main.summary || '')}</p>
+          <div class="story-row-foot" style="margin-top:14px;">${mainSourceLink}</div>
         </div>
       `;
 
       heroSide.innerHTML = `
-        <div class="bento-side-card card-3d">
-          <div class="layer-z-10">
-            <div class="layer-z-20 mb-2">
-              <span class="badge badge-verified">🟢 ${Number(side1.credibility_score) || 94}% VERIFIED</span>
-            </div>
-            <h3 class="heading-sm mb-1"><a href="article.html?id=${Number(side1.id) || 0}">${sanitize(side1.title)}</a></h3>
-            <p class="text-xs text-secondary line-clamp-2">${sanitize(side1.summary || '')}</p>
+        <div class="bento-side-card">
+          <div class="story-row-kicker">
+            <span class="badge ${side1Badge.badgeClass}">${side1Badge.badgeLabel}</span>
+            <span class="dot">/</span>
+            <span>${sanitize(side1.category?.name || 'Top Story')}</span>
           </div>
-          <div class="flex items-center justify-between text-xs text-muted mt-3 layer-z-10">
+          <h3 class="heading-sm mb-1"><a href="article.html?id=${Number(side1.id) || 0}">${sanitize(side1.title)}</a></h3>
+          <p class="text-xs text-secondary line-clamp-2">${sanitize(side1.summary || '')}</p>
+          <div class="flex items-center justify-between text-xs text-muted mt-3">
             ${side1SourceLink}
             <span>${timeAgo(side1.published_at)}</span>
           </div>
         </div>
-        <div class="bento-side-card card-3d">
-          <div class="layer-z-10">
-            <div class="layer-z-20 mb-2">
-              <span class="badge badge-corroborated">🔵 ${Number(side2.credibility_score) || 88}% CORROBORATED</span>
-            </div>
-            <h3 class="heading-sm mb-1"><a href="article.html?id=${Number(side2.id) || 0}">${sanitize(side2.title)}</a></h3>
-            <p class="text-xs text-secondary line-clamp-2">${sanitize(side2.summary || '')}</p>
+        <div class="bento-side-card">
+          <div class="story-row-kicker">
+            <span class="badge ${side2Badge.badgeClass}">${side2Badge.badgeLabel}</span>
+            <span class="dot">/</span>
+            <span>${sanitize(side2.category?.name || 'Top Story')}</span>
           </div>
-          <div class="flex items-center justify-between text-xs text-muted mt-3 layer-z-10">
+          <h3 class="heading-sm mb-1"><a href="article.html?id=${Number(side2.id) || 0}">${sanitize(side2.title)}</a></h3>
+          <p class="text-xs text-secondary line-clamp-2">${sanitize(side2.summary || '')}</p>
+          <div class="flex items-center justify-between text-xs text-muted mt-3">
             ${side2SourceLink}
             <span>${timeAgo(side2.published_at)}</span>
           </div>

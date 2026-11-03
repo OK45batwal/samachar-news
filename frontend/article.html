@@ -13,7 +13,7 @@
     gtag('config', 'G-JG6GCFNGLF');
   </script>
   <title>Article Intelligence — Samachar</title>
-  <meta name="description" content="Verified news analysis, audio briefing, and fact-checking scorecard on Samachar." />
+  <meta name="description" content="News analysis, audio briefing, and a credibility scorecard on Samachar." />
   <meta name="theme-color" content="#08090C" />
   <meta name="google-site-verification" content="y1yKC726BkRyIqH8XwTVOD4KXPL0Yxa5A4QhDcxMl4k" />
   <meta name="google-site-verification" content="google37ad5f54b5d08314" />
@@ -93,6 +93,7 @@
       display: flex;
     }
   </style>
+  <link rel="stylesheet" href="/assets/css/paper.css?v=13.0" />
 </head>
 <body>
 
@@ -107,7 +108,7 @@
         <span>·</span>
         <span class="text-accent font-semibold flex items-center gap-1.5">
           <span class="radar-sweep-icon"></span>
-          Verified Article Intelligence
+          Article Intelligence
         </span>
         <span>·</span>
         <span class="flex items-center gap-1 text-secondary text-xs">
@@ -146,7 +147,7 @@
       <div class="header-search-bar" id="headerSearchBarContainer">
         <div class="search-box-inner">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="search-box-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search verified news, facts, topics..." autocomplete="off" />
+          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search news, facts, topics..." autocomplete="off" />
           <button type="button" id="headerSearchClearBtn" class="search-box-clear" style="display:none;" title="Clear">✕</button>
           <kbd class="search-box-kbd hide-mobile">⌘K</kbd>
         </div>
@@ -183,7 +184,7 @@
 
     <!-- Category & Time -->
     <div class="flex items-center gap-3 mb-3" style="flex-wrap: wrap;">
-      <span class="badge badge-verified" id="articleBadge">🟢 96% VERIFIED</span>
+      <span class="badge badge-verified" id="articleBadge">READING WIRE</span>
       <span class="text-xs text-accent font-semibold" id="articleCategory">Technology</span>
       <span class="text-xs text-muted">·</span>
       <span class="text-xs text-muted" id="articleDate">Just now</span>
@@ -254,7 +255,7 @@
       <div class="flex items-center justify-between text-xs text-muted mt-2 px-1">
         <span id="articleImageCaption" class="flex items-center gap-1">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          Corroborated Editorial Media Dispatch
+          Wire media dispatch
         </span>
         <a id="articleImageSourceLink" href="#" target="_blank" rel="noopener noreferrer" class="hover-accent" style="color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px;">
           <span id="articleImageSourceLabel">View Source Wire</span> ↗
@@ -265,7 +266,7 @@
     <!-- Next-Gen Cognitive Depth Dock -->
     <div class="depth-dock-wrapper" id="depthDockWrapper">
       <div class="depth-dock">
-        <button type="button" class="depth-btn active" data-depth="radar" id="depthBtnRadar">
+        <button type="button" class="depth-btn" data-depth="radar" id="depthBtnRadar">
           <span>⚡ 15s Radar</span>
           <span class="depth-badge" id="depthBadgeRadar">15s</span>
         </button>
@@ -273,7 +274,7 @@
           <span>📋 2m Brief</span>
           <span class="depth-badge" id="depthBadgeBrief">90s</span>
         </button>
-        <button type="button" class="depth-btn" data-depth="deep" id="depthBtnDeep">
+        <button type="button" class="depth-btn active" data-depth="deep" id="depthBtnDeep">
           <span>📖 Deep Dive</span>
           <span class="depth-badge" id="depthBadgeDeep">Full</span>
         </button>
@@ -287,12 +288,12 @@
     <!-- Dynamic Cognitive Panes Container -->
     <div id="depthPanesContainer" class="mb-8">
       <!-- Pane 1: 15s Radar -->
-      <div id="paneRadar" class="depth-view-pane active">
+      <div id="paneRadar" class="depth-view-pane">
         <div class="card p-6" style="background:var(--bg-surface-1);border-color:var(--border-light);">
           <div class="flex items-center justify-between mb-4 pb-2 border-bottom">
             <div class="flex items-center gap-2">
               <span class="badge badge-verified">⚡ 15-SECOND RADAR</span>
-              <span class="text-xs text-accent font-mono font-bold" id="radarMetricBadge">Corroborated Metric</span>
+              <span class="text-xs text-accent font-mono font-bold" id="radarMetricBadge">Key metric</span>
             </div>
             <span class="text-xs text-muted" id="radarSourceBadge">Wire Network</span>
           </div>
@@ -334,7 +335,7 @@
       </div>
 
       <!-- Pane 3: Deep Dive (Full Article Content) -->
-      <div id="paneDeep" class="depth-view-pane">
+      <div id="paneDeep" class="depth-view-pane active">
         <!-- Executive Takeaways Box -->
         <div class="card p-5 mb-6" style="background:var(--bg-surface-2);border-left:4px solid var(--accent)">
           <div class="text-xs font-bold text-accent mb-2 uppercase tracking-wide flex items-center gap-2">
@@ -401,9 +402,9 @@
     </div>
 
     <!-- Truth & Credibility Scorecard (3D Holographic Standard) -->
-    <div class="scorecard-banner card-3d mb-8" id="articleScorecard">
+    <div class="scorecard-banner mb-8" id="articleScorecard">
       <div class="flex items-center justify-between mb-3 layer-z-20">
-        <span class="badge badge-verified" id="scorecardStatusBadge">🟢 MULTI-SOURCE CORROBORATED</span>
+        <span class="badge badge-verified" id="scorecardStatusBadge">SOURCE CHECK</span>
         <span class="font-mono text-xs text-muted flex items-center gap-1.5">
           <span class="radar-sweep-icon" style="width:10px;height:10px;"></span>
           <span id="scorecardSpectrum">Neutral Analytic</span>
@@ -412,9 +413,9 @@
 
       <div class="flex items-center justify-between gap-6 mb-4 layer-z-10" style="flex-wrap:wrap;">
         <div style="flex:1;min-width:240px;">
-          <h3 class="heading-sm mb-2">Truth & Corroboration Scorecard</h3>
+          <h3 class="heading-sm mb-2">Credibility Scorecard</h3>
           <p class="text-xs text-secondary mb-0" style="line-height:1.6;">
-            Factual assertions independently corroborated across accredited wire networks with verified documentation and MEKA 3.5 forensic telemetry.
+            Signals derived from the named wire source, wording and cross-source overlap. This is not an independent audit.
           </p>
         </div>
         <!-- 3D Hologram Truth Orbital Orb -->
@@ -423,24 +424,24 @@
           <div class="truth-ring truth-ring-2"></div>
           <div class="truth-ring truth-ring-3"></div>
           <div class="truth-orb-core">
-            <div style="font-family:var(--font-mono);font-size:22px;font-weight:900;color:var(--accent);" id="orbCredVal">96%</div>
-            <div style="font-size:9.5px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;">VERIFIED</div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:900;color:var(--accent);" id="orbCredVal">—</div>
+            <div style="font-size:9.5px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;">SCORE</div>
           </div>
         </div>
       </div>
 
       <div class="scorecard-grid layer-z-10">
         <div class="scorecard-stat">
-          <div class="val" id="scorecardCredVal">96%</div>
+          <div class="val" id="scorecardCredVal">—</div>
           <div class="text-xs text-muted mt-1">Credibility Index</div>
         </div>
         <div class="scorecard-stat">
-          <div class="val text-danger" id="scorecardSensVal">6%</div>
+          <div class="val text-danger" id="scorecardSensVal">—</div>
           <div class="text-xs text-muted mt-1">Sensationalism Penalty</div>
         </div>
         <div class="scorecard-stat">
-          <div class="val text-secondary" id="scorecardSourcesCount">4 Wires</div>
-          <div class="text-xs text-muted mt-1">Corroborated By</div>
+          <div class="val text-secondary" id="scorecardSourcesCount">—</div>
+          <div class="text-xs text-muted mt-1">Sources Cited</div>
         </div>
       </div>
     </div>
@@ -504,8 +505,8 @@
 
     <!-- Corroborating Sources -->
     <div class="card p-6 mb-8">
-      <h3 class="heading-sm mb-2">Corroborating Wire Network</h3>
-      <p class="text-xs text-secondary mb-4">Independent news agencies that published verified reporting on this topic:</p>
+      <h3 class="heading-sm mb-2">Sources Cited</h3>
+      <p class="text-xs text-secondary mb-4">Outlets named on this dispatch. Open the original wire link above to read the source.</p>
       <div class="flex items-center gap-2" id="corroboratingSourcesChips" style="flex-wrap: wrap;"></div>
     </div>
 
@@ -515,11 +516,11 @@
   <div id="evidenceModal" class="evidence-modal">
     <div class="card p-6" style="max-width: 540px; width: 100%; background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-lg);">
       <div class="flex items-center justify-between mb-4 pb-3 border-bottom">
-        <span class="badge badge-verified" id="modalEvidenceBadge">VERIFIED EVIDENCE</span>
+        <span class="badge badge-verified" id="modalEvidenceBadge">EVIDENCE</span>
         <button id="closeModalBtn" class="btn btn-ghost btn-sm">✕</button>
       </div>
       <h4 class="heading-sm mb-2" id="modalClaimTitle">Assertion Details</h4>
-      <p class="text-xs text-secondary mb-4" id="modalEvidenceDesc">Primary evidence corroborated by wire network.</p>
+      <p class="text-xs text-secondary mb-4" id="modalEvidenceDesc">Excerpt returned with this claim.</p>
       <div class="card p-3 mb-4" style="background:var(--bg-surface-2)">
         <span class="text-xs text-muted block mb-1">Source Attributions:</span>
         <span class="text-xs font-semibold text-accent" id="modalSources">Reuters · Associated Press · Bloomberg</span>
@@ -540,13 +541,8 @@
             <span class="logo-tag">TRUTH FIRST</span>
           </a>
           <p class="text-xs text-muted" style="max-width:320px;line-height:1.7;">
-            Next-generation real-time news intelligence platform. Triangulating breaking dispatches across 25+ accredited global wire bureaus with automated claim verification and truth indexing.
+            Samachar groups reporting from named wire services so the same story can be read across sources — with the original link on every page.
           </p>
-          <div class="flex items-center gap-2 text-xs text-muted mt-3">
-            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">🟢 LIVE 24x7 INGESTION</span>
-            <span>·</span>
-            <span>Obsidian Truth Engine 2.0</span>
-          </div>
         </div>
         <div>
           <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">News Desks</h4>
@@ -669,7 +665,7 @@
     function openEvidenceModal(claim, evidence, status) {
       document.getElementById('modalClaimTitle').textContent = claim;
       document.getElementById('modalEvidenceDesc').textContent = evidence || 'Independently audited against official primary wire transcripts.';
-      document.getElementById('modalEvidenceBadge').textContent = '🟢 ' + (status || 'VERIFIED CLAIM');
+      document.getElementById('modalEvidenceBadge').textContent = status || 'CLAIM';
       if (evidenceModal) evidenceModal.classList.add('active');
     }
 
@@ -837,7 +833,7 @@
         // Populate Radar
         if (depths.radar) {
           document.getElementById('depthBadgeRadar').textContent = depths.radar.reading_time || '15s';
-          document.getElementById('radarMetricBadge').textContent = depths.radar.key_metric || 'Corroborated Metric';
+          document.getElementById('radarMetricBadge').textContent = depths.radar.key_metric || 'Key metric';
           document.getElementById('radarSourceBadge').textContent = `Wire Attribution: ${depths.radar.primary_source || 'Reuters'}`;
           const radarList = document.getElementById('radarTakeawaysList');
           if (radarList && depths.radar.takeaways) {
@@ -1023,19 +1019,28 @@
         heroImg.onerror = () => { heroImg.src = fallbackCover; };
 
         // Truth Scorecard
-        const cred = article.credibility_score || 88;
-        const sens = article.sensationalism_score || 10;
-        document.getElementById('articleBadge').textContent = `🟢 ${cred}% VERIFIED`;
-        document.getElementById('scorecardCredVal').textContent = `${cred}%`;
+        const cred = article.credibility_score ?? null;
+        const sens = article.sensationalism_score ?? null;
+        document.getElementById('articleBadge').textContent = cred != null ? `${cred}% CREDIBILITY` : 'NOT SCORED';
+        document.getElementById('scorecardCredVal').textContent = cred != null ? `${cred}%` : '—';
         const orbEl = document.getElementById('orbCredVal');
-        if (orbEl) orbEl.textContent = `${cred}%`;
-        document.getElementById('scorecardSensVal').textContent = `${sens}%`;
+        if (orbEl) orbEl.textContent = cred != null ? `${cred}%` : '—';
+        document.getElementById('scorecardSensVal').textContent = sens != null ? `${sens}%` : '—';
         document.getElementById('scorecardSpectrum').textContent = article.bias_spectrum || 'Neutral Analytic';
 
         // Deep Dive Body Text
         const bodyEl = document.getElementById('articleBody');
-        const paragraphs = (article.content || article.summary || '').split('\n').filter(p => p.trim());
-        bodyEl.innerHTML = paragraphs.map(p => `<p>${sanitize(p)}</p>`).join('');
+        const rawBody = (article.content || article.summary || '').trim();
+        const paragraphs = rawBody.split('\n').filter(p => p.trim());
+        // Wire feeds often carry only the headline as `summary`; don't print it twice.
+        if (!rawBody || rawBody.length < 160 || rawBody === article.title) {
+          const sourceFallback = sourceUrl
+            ? ` Read the full report at <a href="${sanitize(sourceUrl)}" target="_blank" rel="noopener noreferrer">${sanitize(sourceName)}</a>.`
+            : '';
+          bodyEl.innerHTML = `<p class="text-secondary">This wire dispatch is brief.${sourceFallback}</p>`;
+        } else {
+          bodyEl.innerHTML = paragraphs.map(p => `<p>${sanitize(p)}</p>`).join('');
+        }
 
         // Populate Claims Breakdown
         const claimsList = document.getElementById('articleClaimsList');
@@ -1043,11 +1048,11 @@
           claimsList.innerHTML = article.key_claims.map((c, idx) => `
             <div class="claim-card claim-card-inspectable" data-claim-idx="${idx}" style="cursor:pointer;">
               <div class="flex items-center justify-between mb-1">
-                <span class="text-xs font-bold text-accent">${sanitize(c.status || 'Verified Fact')}</span>
-                <span class="text-xs text-muted">🔍 Click to Inspect Evidence</span>
+                <span class="text-xs font-bold text-accent">${sanitize(c.status || 'Claim')}</span>
+                <span class="text-xs text-muted">View evidence</span>
               </div>
               <p class="text-sm font-semibold mb-1">${sanitize(c.claim)}</p>
-              <p class="text-xs text-secondary">${sanitize(c.evidence || 'Audited by wire network')}</p>
+              <p class="text-xs text-secondary">${sanitize(c.evidence || 'No evidence excerpt was returned for this claim.')}</p>
             </div>
           `).join('');
 
@@ -1056,18 +1061,19 @@
               const idx = parseInt(card.getAttribute('data-claim-idx'), 10);
               const c = article.key_claims[idx];
               if (c) {
-                openEvidenceModal(c.claim, c.evidence || '', c.status || 'Verified Fact');
+                openEvidenceModal(c.claim, c.evidence || '', c.status || 'Claim');
               }
             });
           });
         } else {
-          claimsList.innerHTML = '<div class="text-xs text-muted">Primary assertion parsed and verified against source registry.</div>';
+          claimsList.innerHTML = '<div class="text-xs text-muted">No claim breakdown was extracted for this dispatch.</div>';
         }
 
         const chipsContainer = document.getElementById('corroboratingSourcesChips');
-        const sources = article.corroborating_sources || [sourceName, 'BBC News', 'Associated Press'];
+        const sources = (article.corroborating_sources && article.corroborating_sources.length) ? article.corroborating_sources : [sourceName];
         chipsContainer.innerHTML = sources.map(s => `<span class="badge badge-corroborated">✓ ${sanitize(s)}</span>`).join('');
-        document.getElementById('scorecardSourcesCount').textContent = `${sources.length} Wires`;
+        document.getElementById('scorecardSourcesCount').textContent = `${sources.length} ${sources.length === 1 ? 'Source' : 'Sources'}`;
+        document.getElementById('scorecardStatusBadge').textContent = sources.length > 1 ? 'MULTIPLE SOURCES' : 'SINGLE SOURCE';
 
         // Initialize Next-Gen Modules
         await populateCognitiveDepths(article);

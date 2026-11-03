@@ -13,7 +13,7 @@
     gtag('config', 'G-JG6GCFNGLF');
   </script>
   <title>Saved Bookmarks & Research Archive — Samachar</title>
-  <meta name="description" content="Your saved news articles, research archive, and verified reports." />
+  <meta name="description" content="Your saved news articles and reading list." />
   <meta name="theme-color" content="#08090C" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="stylesheet" href="/assets/css/variables.css?v=12.0" />
@@ -28,6 +28,7 @@
       window.location.replace('index.html');
     }
   </script>
+  <link rel="stylesheet" href="/assets/css/paper.css?v=13.0" />
 </head>
 <body>
 
@@ -73,7 +74,7 @@
       <div class="header-search-bar" id="headerSearchBarContainer">
         <div class="search-box-inner">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="search-box-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search verified news, facts, topics..." autocomplete="off" />
+          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search news, facts, topics..." autocomplete="off" />
           <button type="button" id="headerSearchClearBtn" class="search-box-clear" style="display:none;" title="Clear">✕</button>
           <kbd class="search-box-kbd hide-mobile">⌘K</kbd>
         </div>
@@ -112,9 +113,9 @@
     <div class="card p-6 mb-6" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-md);">
       <div class="flex items-center justify-between gap-4 mb-4" style="flex-wrap: wrap;">
         <div>
-          <span class="badge badge-verified mb-2">📌 ENCRYPTED ARCHIVE</span>
+          <span class="badge badge-verified mb-2">SAVED STORIES</span>
           <h1 class="heading-lg">Your Saved Bookmarks</h1>
-          <p class="text-xs text-secondary mt-1">Personal collection of verified articles, truth scorecards, and research evidence.</p>
+          <p class="text-xs text-secondary mt-1">Stories you saved, with their original sources and timestamps.</p>
         </div>
         <div class="flex items-center gap-3">
           <span class="badge badge-verified" id="bookmarkCountBadge" style="font-size:12px;padding:6px 12px;">Loading...</span>
@@ -157,13 +158,8 @@
             <span class="logo-tag">TRUTH FIRST</span>
           </a>
           <p class="text-xs text-muted" style="max-width:320px;line-height:1.7;">
-            Next-generation real-time news intelligence platform. Triangulating breaking dispatches across 25+ accredited global wire bureaus with automated claim verification and truth indexing.
+            Samachar groups reporting from named wire services so the same story can be read across sources — with the original link on every page.
           </p>
-          <div class="flex items-center gap-2 text-xs text-muted mt-3">
-            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">🟢 LIVE 24x7 INGESTION</span>
-            <span>·</span>
-            <span>Obsidian Truth Engine 2.0</span>
-          </div>
         </div>
         <div>
           <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">News Desks</h4>
@@ -236,51 +232,46 @@
           const safeSummary = sanitize(art.summary || '');
           const safeSource = sanitize(art.source?.name || 'Wire');
           const safeCat = sanitize(art.category?.name || 'Top News');
-          const credScore = art.credibility_score || 92;
+          const badge = getTruthBadge(art);
           const imgUrl = safeUrl(art.image_url) || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
 
           return `
-            <article class="card" id="bookmark-card-${b.id}" style="background:var(--bg-surface-1);border-color:var(--border-light);display:flex;flex-direction:column;justify-content:space-between;">
-              <div>
-                <div class="card-img-wrapper" style="position:relative;height:180px;overflow:hidden;border-radius:var(--radius-sm) var(--radius-sm) 0 0;">
-                  <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'" />
-                  <div style="position:absolute;top:10px;left:10px;">
-                    <span class="badge badge-verified">🟢 ${credScore}% VERIFIED</span>
+            <article class="story-row" id="bookmark-card-${b.id}">
+              <div class="story-row-main">
+                <div class="story-row-kicker">
+                  <span class="badge ${badge.badgeClass}">${badge.badgeLabel}</span>
+                  <span class="dot">/</span>
+                  <span>${safeCat}</span>
+                  <span class="dot">/</span>
+                  <span>${timeAgo(art.published_at)}</span>
+                </div>
+                <h3 class="story-row-title"><a href="article.html?id=${art.id}">${safeTitle}</a></h3>
+                <p class="story-row-summary">${safeSummary}</p>
+                <div class="story-row-foot">
+                  <span class="card-source-link">${safeSource}</span>
+                  <div class="story-row-actions">
+                    <button onclick="removeBookmarkItem(${b.id})" class="btn btn-ghost btn-sm" title="Remove bookmark" aria-label="Remove bookmark">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    </button>
+                    <a href="article.html?id=${art.id}" class="btn btn-ghost btn-sm">Read &rarr;</a>
                   </div>
                 </div>
-                <div class="p-5">
-                  <div class="flex items-center justify-between text-xs text-muted mb-2">
-                    <span class="font-bold text-accent">${safeCat}</span>
-                    <span>${timeAgo(art.published_at)}</span>
-                  </div>
-                  <h3 class="heading-sm mb-2 line-clamp-2">
-                    <a href="article.html?id=${art.id}" style="color:var(--text-primary);text-decoration:none;">${safeTitle}</a>
-                  </h3>
-                  <p class="text-xs text-secondary line-clamp-3" style="line-height:1.6;">${safeSummary}</p>
-                </div>
               </div>
-              <div class="p-4 border-top flex items-center justify-between" style="background:var(--bg-surface-2);">
-                <span class="text-xs text-muted font-medium">${safeSource}</span>
-                <div class="flex items-center gap-2">
-                  <button onclick="removeBookmarkItem(${b.id})" class="btn btn-ghost btn-sm text-danger" title="Remove Bookmark">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                  </button>
-                  <a href="article.html?id=${art.id}" class="btn btn-primary btn-sm">Read &rarr;</a>
-                </div>
-              </div>
+              <a href="article.html?id=${art.id}" class="story-row-thumb" tabindex="-1" aria-hidden="true">
+                <img src="${imgUrl}" alt="${safeTitle}" loading="lazy" onerror="this.onerror=null;this.src=getCategoryDefaultImage('world')" />
+              </a>
             </article>
           `;
         }).join('');
       } else {
         listEl.innerHTML = `
           <div class="card p-12 text-center w-full" style="grid-column: 1 / -1; background: var(--bg-surface-1); border-color: var(--border-light);">
-            <div style="font-size: 36px; margin-bottom: 12px;">📌</div>
             <h2 class="heading-md mb-2">No Saved Bookmarks Found</h2>
             <p class="text-xs text-secondary mb-6" style="max-width: 420px; margin-left: auto; margin-right: auto;">
               No saved articles match your current search or category filter.
             </p>
             <a href="home.html" class="btn btn-primary btn-sm">
-              Explore Live News Portal &rarr;
+              Explore the feed &rarr;
             </a>
           </div>
         `;

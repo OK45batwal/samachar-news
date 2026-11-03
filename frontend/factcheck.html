@@ -38,6 +38,7 @@
     const savedTheme = localStorage.getItem('samachar_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
+  <link rel="stylesheet" href="/assets/css/paper.css?v=13.0" />
 </head>
 <body>
 
@@ -84,7 +85,7 @@
       <div class="header-search-bar" id="headerSearchBarContainer">
         <div class="search-box-inner">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="search-box-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search verified news, facts, topics..." autocomplete="off" />
+          <input type="text" id="headerSearchInput" class="header-search-input" placeholder="Search news, facts, topics..." autocomplete="off" />
           <button type="button" id="headerSearchClearBtn" class="search-box-clear" style="display:none;" title="Clear">✕</button>
           <kbd class="search-box-kbd hide-mobile">⌘K</kbd>
         </div>
@@ -120,10 +121,10 @@
   <main class="container py-8" style="max-width: 880px; margin: 24px auto 64px;">
     
     <div class="text-center mb-8">
-      <span class="badge badge-verified mb-2" style="font-size:12px;padding:6px 14px">⚡ SAMACHAR TRUTH ENGINE 2.0</span>
-      <h1 class="heading-xl mb-2">Claim Verification Workbench</h1>
+      <span class="badge badge-verified mb-2" style="font-size:12px;padding:6px 14px">CLAIM CHECK</span>
+      <h1 class="heading-xl mb-2">Check a claim</h1>
       <p class="text-secondary text-sm" style="max-width: 600px; margin: 0 auto; line-height: 1.7;">
-        Enter any viral news headline, quantitative statement, or quote to evaluate credibility, detect sensationalist clickbait, and view cross-source evidence.
+        Paste a statement to see what the record supports — and where the sources disagree.
       </p>
     </div>
 
@@ -143,7 +144,7 @@
           </div>
           <button type="submit" id="verifySubmitBtn" class="btn btn-primary">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Verify Claim Now &rarr;
+            Check claim &rarr;
           </button>
         </div>
       </form>
@@ -193,7 +194,7 @@
 
     <!-- Recent Queries -->
     <div>
-      <h3 class="heading-sm mb-4">Recent Verified Statements</h3>
+      <h3 class="heading-sm mb-4">Recent checks</h3>
       <div id="recentFactChecksList" class="flex flex-col gap-3">
         <!-- Injected dynamically -->
       </div>
@@ -211,13 +212,8 @@
             <span class="logo-tag">TRUTH FIRST</span>
           </a>
           <p class="text-xs text-muted" style="max-width:320px;line-height:1.7;">
-            Next-generation real-time news intelligence platform. Triangulating breaking dispatches across 25+ accredited global wire bureaus with automated claim verification and truth indexing.
+            Samachar groups reporting from named wire services so the same story can be read across sources — with the original link on every page.
           </p>
-          <div class="flex items-center gap-2 text-xs text-muted mt-3">
-            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">🟢 LIVE 24x7 INGESTION</span>
-            <span>·</span>
-            <span>Obsidian Truth Engine 2.0</span>
-          </div>
         </div>
         <div>
           <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">News Desks</h4>
@@ -320,7 +316,7 @@
         showToast(`Verification failed: ${err.message}`, 'error');
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Verify Claim Now →';
+        btn.textContent = 'Check claim →';
       }
     }
 

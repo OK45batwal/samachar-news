@@ -1,4 +1,5 @@
 import asyncio
+import html
 import logging
 import re
 import random
@@ -75,6 +76,7 @@ def _clean_html(html_text: str) -> str:
     if not html_text:
         return ""
     clean = re.sub(r'<[^>]+>', ' ', html_text)
+    clean = html.unescape(clean)
     clean = re.sub(r'\s+', ' ', clean).strip()
     return clean
 
