@@ -76,7 +76,7 @@
           <a href="index.html" class="text-xs text-secondary hover:text-primary flex items-center gap-1 font-semibold">
             &larr; Back to Home
           </a>
-          <button id="authThemeToggle" class="btn btn-icon btn-ghost" title="Toggle Theme">
+          <button id="authThemeToggle" class="btn btn-icon btn-ghost" title="Toggle theme" aria-label="Toggle color theme" aria-pressed="false">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           </button>
         </div>
@@ -84,28 +84,31 @@
         <div class="card p-8" style="background: var(--bg-surface-1); border-color: var(--border-light); box-shadow: var(--shadow-lg);">
           
           <div class="text-center mb-6">
-            <span class="badge badge-verified mb-2">SECURE SIGN IN</span>
-            <h1 class="heading-lg mb-1">Welcome Back</h1>
-            <p class="text-xs text-secondary">Sign in to access your customized news dashboard</p>
+            <span class="badge badge-verified mb-2" id="authBadge">SECURE SIGN IN</span>
+            <h1 class="heading-lg mb-1" id="authTitle">Welcome Back</h1>
+            <p class="text-xs text-secondary" id="authSubtitle">Sign in to access your customized news dashboard</p>
           </div>
+
+          <div id="loginAlert" class="form-alert" role="alert" aria-live="polite" hidden></div>
 
           <form id="loginForm">
             <div class="form-group mb-4">
-              <label class="form-label">Email Address</label>
-              <input type="email" id="emailInput" class="input" placeholder="name@domain.com" required autocomplete="email" />
+              <label class="form-label" for="emailInput">Email Address</label>
+              <input type="email" id="emailInput" class="input" placeholder="name@domain.com" required autocomplete="username" autocapitalize="none" spellcheck="false" />
             </div>
 
             <div class="form-group mb-4">
               <div class="flex items-center justify-between mb-1">
-                <label class="form-label" style="margin-bottom:0">Password</label>
-                <button type="button" onclick="showToast('Password reset link sent to your registered email.', 'info')" class="text-xs text-accent hover:underline" style="background:none;border:none;cursor:pointer;padding:0">Forgot?</button>
+                <label class="form-label" for="passwordInput" style="margin-bottom:0">Password</label>
+                <button type="button" id="forgotBtn" class="text-xs text-accent hover:underline" style="background:none;border:none;cursor:pointer;padding:0">Forgot?</button>
               </div>
               <div style="position: relative;">
                 <input type="password" id="passwordInput" class="input" placeholder="••••••••" required autocomplete="current-password" />
-                <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show Password">
+                <button type="button" id="togglePasswordBtn" class="btn btn-ghost btn-sm" style="position: absolute; right: 4px; top: 4px; padding: 4px 8px;" title="Show password" aria-label="Show password" aria-pressed="false">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 </button>
               </div>
+              <span id="capsHint" class="caps-hint" hidden>Caps Lock is on.</span>
             </div>
 
             <div class="flex items-center justify-between mb-4 text-xs text-secondary">
@@ -120,6 +123,29 @@
               Sign In to Feed &rarr;
             </button>
           </form>
+
+          <form id="resetForm" hidden>
+            <p class="text-xs text-secondary mb-4" style="line-height: 1.6;">
+              Choose a new password for your account. Reset links expire one hour after they are sent.
+            </p>
+            <div class="form-group mb-4">
+              <label class="form-label" for="newPasswordInput">New password</label>
+              <input type="password" id="newPasswordInput" class="input" placeholder="At least 6 characters" minlength="6" required autocomplete="new-password" />
+            </div>
+            <div class="form-group mb-4">
+              <label class="form-label" for="confirmPasswordInput">Confirm new password</label>
+              <input type="password" id="confirmPasswordInput" class="input" placeholder="Repeat new password" minlength="6" required autocomplete="new-password" />
+            </div>
+            <button type="submit" id="resetSubmitBtn" class="btn btn-primary w-full mb-4" style="padding: 12px; font-weight: 600;">
+              Save new password
+            </button>
+            <button type="button" id="cancelResetBtn" class="btn btn-ghost w-full mb-4" style="padding: 10px;">Back to sign in</button>
+          </form>
+
+          <p id="serviceStatus" class="auth-service-status" aria-live="polite" hidden>
+            <span id="serviceStatusText"></span>
+            <button type="button" id="retryServiceBtn" class="auth-service-retry">Retry</button>
+          </p>
 
           <div class="text-center text-xs text-secondary pt-4 border-top mt-4">
             Don't have an account? <a href="register.html" class="text-accent font-semibold hover:underline">Create free account &rarr;</a>
@@ -166,10 +192,12 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Auto-redirect if already authenticated
-      if (localStorage.getItem('samachar_token') && localStorage.getItem('samachar_user')) {
-        const rawRedirect = new URLSearchParams(window.location.search).get('redirect');
-        window.location.href = getSafeRedirectUrl(rawRedirect);
+      const params = new URLSearchParams(window.location.search);
+      const resetToken = params.get('reset_token');
+
+      // Auto-redirect if already authenticated (never interrupt a password reset).
+      if (!resetToken && localStorage.getItem('samachar_token') && localStorage.getItem('samachar_user')) {
+        window.location.href = getSafeRedirectUrl(params.get('redirect'));
         return;
       }
 
@@ -179,6 +207,7 @@
         const current = document.documentElement.getAttribute('data-theme') || 'dark';
         const next = current === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
+        themeBtn.setAttribute('aria-pressed', String(next === 'light'));
         localStorage.setItem('samachar_theme', next);
       });
 
@@ -186,49 +215,132 @@
       const pwdInput = document.getElementById('passwordInput');
       const toggleBtn = document.getElementById('togglePasswordBtn');
       toggleBtn?.addEventListener('click', () => {
-        pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
+        const show = pwdInput.type === 'password';
+        pwdInput.type = show ? 'text' : 'password';
+        toggleBtn.setAttribute('aria-pressed', String(show));
+        toggleBtn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+      });
+
+      // Caps Lock hint
+      const capsHint = document.getElementById('capsHint');
+      pwdInput?.addEventListener('keyup', (e) => {
+        if (typeof e.getModifierState === 'function') {
+          capsHint.hidden = !e.getModifierState('CapsLock');
+        }
+      });
+
+      const alertBox = document.getElementById('loginAlert');
+      const emailInput = document.getElementById('emailInput');
+      const loginForm = document.getElementById('loginForm');
+      const resetForm = document.getElementById('resetForm');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function setAlert(message, kind = 'error') {
+        alertBox.textContent = message;
+        alertBox.dataset.kind = kind;
+        alertBox.hidden = !message;
+      }
+      function clearAlert() { setAlert('', 'info'); }
+
+      function getApiBase() {
+        if (window.SAMACHAR_API_URL) return window.SAMACHAR_API_URL;
+        const stored = localStorage.getItem('samachar_api_url');
+        if (stored) return stored;
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        return isLocal ? 'http://localhost:8000' : '';
+      }
+
+      async function fetchWithTimeout(url, options = {}, ms = 8000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), ms);
+        try {
+          return await fetch(url, { ...options, signal: controller.signal });
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+
+      async function readError(res) {
+        const data = await res.json().catch(() => null);
+        const detail = data && data.detail;
+        if (typeof detail === 'string') return detail;
+        if (Array.isArray(detail) && detail[0] && detail[0].msg) return detail[0].msg;
+        return null;
+      }
+
+      function failureMessage(res, detail) {
+        if (res.status === 404 || res.status === 405) {
+          return 'This deployment has no sign-in service connected, so your credentials cannot be checked. Your email and password are not the problem.';
+        }
+        if (res.status === 429) return 'Too many attempts. Wait a minute, then try again.';
+        if (res.status >= 500) return 'The sign-in service hit an error. Try again in a moment.';
+        return detail || 'Sign-in failed. Please try again.';
+      }
+
+      const serviceStatus = document.getElementById('serviceStatus');
+      const serviceStatusText = document.getElementById('serviceStatusText');
+
+      async function checkService() {
+        serviceStatus.hidden = false;
+        serviceStatusText.textContent = 'Checking sign-in service…';
+        try {
+          const res = await fetchWithTimeout(`${getApiBase()}/api/health`, { headers: { Accept: 'application/json' } }, 4000);
+          const isJson = (res.headers.get('content-type') || '').includes('application/json');
+          if (res.ok && isJson) {
+            serviceStatus.hidden = true;
+            return true;
+          }
+        } catch (_) {}
+        serviceStatusText.textContent = 'Sign-in service is unavailable. ';
+        setAlert('Sign-in is unavailable on this deployment. Your password is not the issue, but no account can be verified until an authentication service is connected.', 'warning');
+        return false;
+      }
+
+      document.getElementById('retryServiceBtn')?.addEventListener('click', async () => {
+        const online = await checkService();
+        if (online) {
+          clearAlert();
+          showToast('Sign-in service is reachable.', 'success');
+        }
       });
 
       // Direct Sign In Form
-      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = document.getElementById('emailInput').value.trim().toLowerCase();
-        const password = document.getElementById('passwordInput').value;
+        const email = emailInput.value.trim().toLowerCase();
+        const password = pwdInput.value;
         const rememberMe = document.getElementById('rememberMeCheckbox').checked;
         const btn = document.getElementById('submitBtn');
 
         if (!email || !password) {
-          showToast('Please enter both email and password.', 'error');
+          setAlert('Enter both your email and password.', 'error');
           return;
         }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-          showToast('Please enter a valid email address.', 'error');
+          setAlert('That email address does not look complete.', 'error');
+          emailInput.focus();
           return;
         }
 
+        clearAlert();
         btn.disabled = true;
         btn.textContent = 'Authenticating Session...';
 
         try {
-          const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-          const apiBase = window.SAMACHAR_API_URL || localStorage.getItem('samachar_api_url') || (isLocal ? 'http://localhost:8000' : '');
-          const res = await fetch(`${apiBase}/api/auth/login`, {
+          const res = await fetchWithTimeout(`${getApiBase()}/api/auth/login`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
             body: JSON.stringify({ email, password }),
           });
           const data = await res.json().catch(() => ({}));
 
           if (!res.ok) {
-            showToast(data.detail || 'Invalid email or password.', 'error');
-            btn.disabled = false;
-            btn.textContent = 'Sign In to Feed →';
+            setAlert(failureMessage(res, data.detail), res.status === 404 || res.status >= 500 ? 'warning' : 'error');
             return;
           }
           if (!data.access_token || !data.user) {
-            throw new Error('Authentication service returned an invalid response.');
+            setAlert('The sign-in service returned an unreadable response. Nothing was saved.', 'warning');
+            return;
           }
 
           localStorage.setItem('samachar_token', data.access_token);
@@ -239,26 +351,126 @@
             localStorage.removeItem('samachar_remember_email');
           }
 
-          showToast('Welcome back! Entering truth dashboard...', 'success');
-          
-          const rawRedirect = new URLSearchParams(window.location.search).get('redirect');
-          const redirectUrl = getSafeRedirectUrl(rawRedirect);
+          showToast('Welcome back! Entering the newsroom...', 'success');
           setTimeout(() => {
-            window.location.href = redirectUrl;
+            window.location.href = getSafeRedirectUrl(params.get('redirect'));
           }, 350);
-
         } catch (err) {
-          showToast(err.message || 'Login error. Please try again.', 'error');
+          const timedOut = err && err.name === 'AbortError';
+          setAlert(timedOut
+            ? 'The sign-in service took too long to answer. Check your connection and try again.'
+            : 'Could not reach the sign-in service. Check your connection, then try again.', 'warning');
+        } finally {
           btn.disabled = false;
           btn.textContent = 'Sign In to Feed →';
         }
       });
 
+      // Password reset request
+      document.getElementById('forgotBtn')?.addEventListener('click', async () => {
+        const email = emailInput.value.trim().toLowerCase();
+        if (!emailRegex.test(email)) {
+          setAlert('Enter your account email first, then choose Forgot.', 'error');
+          emailInput.focus();
+          return;
+        }
+        clearAlert();
+        const forgotBtn = document.getElementById('forgotBtn');
+        forgotBtn.disabled = true;
+        forgotBtn.textContent = 'Sending…';
+        try {
+          const res = await fetchWithTimeout(`${getApiBase()}/api/auth/forgot-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ email }),
+          });
+          if (!res.ok) {
+            setAlert(failureMessage(res, await readError(res)), res.status === 404 ? 'warning' : 'error');
+            return;
+          }
+          setAlert(`If an account exists for ${email}, a reset link is on its way. Check the spam folder too.`, 'success');
+        } catch (_) {
+          setAlert('Could not reach the sign-in service. Check your connection, then try again.', 'warning');
+        } finally {
+          forgotBtn.disabled = false;
+          forgotBtn.textContent = 'Forgot?';
+        }
+      });
+
+      // Reset link: show the new-password form instead of the sign-in form.
+      if (resetToken) {
+        loginForm.hidden = true;
+        resetForm.hidden = false;
+        document.getElementById('authBadge').textContent = 'PASSWORD RESET';
+        document.getElementById('authTitle').textContent = 'Choose a new password';
+        document.getElementById('authSubtitle').textContent = 'This link is valid for one hour.';
+        // Keep the token out of the address bar and Referer header.
+        history.replaceState({}, '', window.location.pathname);
+      }
+
+      document.getElementById('cancelResetBtn')?.addEventListener('click', () => {
+        resetForm.hidden = true;
+        loginForm.hidden = false;
+        document.getElementById('authBadge').textContent = 'SECURE SIGN IN';
+        document.getElementById('authTitle').textContent = 'Welcome Back';
+        document.getElementById('authSubtitle').textContent = 'Sign in to access your customized news dashboard';
+        clearAlert();
+      });
+
+      resetForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const newPassword = document.getElementById('newPasswordInput').value;
+        const confirmPassword = document.getElementById('confirmPasswordInput').value;
+        const btn = document.getElementById('resetSubmitBtn');
+
+        if (newPassword.length < 6) {
+          setAlert('Use at least 6 characters.', 'error');
+          return;
+        }
+        if (newPassword !== confirmPassword) {
+          setAlert('The two passwords do not match.', 'error');
+          return;
+        }
+        if (!resetToken) {
+          setAlert('This reset link is missing its token. Request a new link.', 'error');
+          return;
+        }
+
+        clearAlert();
+        btn.disabled = true;
+        btn.textContent = 'Saving…';
+        try {
+          const res = await fetchWithTimeout(`${getApiBase()}/api/auth/reset-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ token: resetToken, new_password: newPassword }),
+          });
+          if (!res.ok) {
+            setAlert(failureMessage(res, await readError(res)), 'error');
+            return;
+          }
+          resetForm.hidden = true;
+          loginForm.hidden = false;
+          document.getElementById('authBadge').textContent = 'SECURE SIGN IN';
+          document.getElementById('authTitle').textContent = 'Password updated';
+          document.getElementById('authSubtitle').textContent = 'Sign in with your new password.';
+          showToast('Password updated. Sign in with the new password.', 'success');
+        } catch (_) {
+          setAlert('Could not reach the sign-in service. Check your connection, then try again.', 'warning');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Save new password';
+        }
+      });
+
       // Autofill remembered email if available
       const remembered = localStorage.getItem('samachar_remember_email');
-      if (remembered) {
-        document.getElementById('emailInput').value = remembered;
+      if (remembered && !resetToken) {
+        emailInput.value = remembered;
       }
+
+      // Report the real service state instead of blaming the password.
+      checkService();
     });
   </script>
 </body>
