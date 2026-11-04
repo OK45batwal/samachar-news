@@ -129,6 +129,12 @@
   <!-- Main Container -->
   <main class="container py-8">
 
+    <!-- Front Page dateline -->
+    <div class="front-page-bar" id="frontPageBar">
+      <span class="front-page-label">Front Page</span>
+      <span class="front-page-date" id="frontPageDate"></span>
+    </div>
+
     <!-- Truth Radar Bento Hero Spotlight (Shown on Top Stories) -->
     <section class="bento-hero" id="bentoHero">
       <div class="bento-main" id="heroMain">
@@ -245,6 +251,7 @@
       const bento = document.getElementById('bentoHero');
       const banner = document.getElementById('categoryHeaderBanner');
       const feedTitle = document.getElementById('feedSectionTitle');
+      const frontPageBar = document.getElementById('frontPageBar');
       const meta = CHANNEL_METADATA[currentCategory];
 
       document.querySelectorAll('#mainChannelBar .category-link').forEach(b => {
@@ -253,6 +260,7 @@
 
       if (currentCategory && meta) {
         bento.style.display = 'none';
+        if (frontPageBar) frontPageBar.style.display = 'none';
         banner.style.display = 'block';
         document.getElementById('channelTitle').textContent = meta.title;
         document.getElementById('channelDesc').textContent = meta.desc;
@@ -260,6 +268,7 @@
         feedTitle.textContent = meta.title;
       } else {
         bento.style.display = 'grid';
+        if (frontPageBar) frontPageBar.style.display = 'flex';
         banner.style.display = 'none';
         feedTitle.textContent = 'Breaking Wire Coverage';
       }
@@ -402,6 +411,13 @@
 
       const urlParams = new URLSearchParams(window.location.search);
       currentCategory = urlParams.get('cat') || '';
+
+      const fpDate = document.getElementById('frontPageDate');
+      if (fpDate) {
+        fpDate.textContent = new Date().toLocaleDateString('en-US', {
+          weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+        });
+      }
       
       loadNews();
 

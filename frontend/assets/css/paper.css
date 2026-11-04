@@ -650,6 +650,52 @@ a { color: inherit; }
 .live-preview-grid .card { padding: 20px 0; }
 .live-preview-grid .card-img-wrapper { display: none; }
 .pillar-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+
+/* ---------- Landing / front page split ---------- */
+.landing-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+}
+.newsroom-index { border-top: var(--rule); }
+.newsroom-index a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: var(--rule);
+  text-decoration: none;
+}
+.newsroom-index strong {
+  font-family: var(--font-editorial);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+.newsroom-index span { font-size: 12px; color: var(--text-muted); text-align: right; }
+.newsroom-index a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+#how, #claim { scroll-margin-top: 96px; }
+
+.front-page-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 0 0;
+}
+.front-page-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.front-page-date { font-family: var(--font-editorial); font-size: 13px; color: var(--text-muted); }
+
+/* Landing header keeps a single primary action. */
+.page-landing #headerAuth .btn-primary { display: none; }
 .landing-cta {
   background: var(--bg-base) !important;
   border-top: var(--rule);
@@ -714,6 +760,7 @@ a { color: inherit; }
   .bento-hero { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .bento-main { min-width: 0; }
   .bento-main-img { height: 300px; }
+  .landing-split { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .bento-side-card:first-child { border-top: var(--rule); padding-top: 18px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
@@ -731,6 +778,9 @@ a { color: inherit; }
   .mobile-nav-item { font-size: 9px; }
   .footer-grid h4 { font-size: 10px; }
   .footer-links { font-size: 13px; }
+  .front-page-date { font-size: 12px; }
+  .newsroom-index a { flex-direction: column; gap: 2px; }
+  .newsroom-index span { text-align: left; }
   .pillar-grid { grid-template-columns: 1fr; gap: 0; }
   .header-main { height: 58px; gap: 16px; }
   /* Bottom nav already exposes Profile/Sign In on phones. */
