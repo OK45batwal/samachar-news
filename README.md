@@ -252,6 +252,15 @@ npm test
 npx firebase-tools deploy --only hosting
 ```
 
+The API runs separately on Railway (`backend/Dockerfile`, SQLite on the `/data` volume):
+
+```bash
+railway up
+railway domain
+```
+
+Production points at it through `frontend/assets/js/env.js`. The service needs `SECRET_KEY`, `DATABASE_URL`, `CORS_ORIGINS`, `ADMIN_EMAIL` and `ADMIN_PASSWORD` set in Railway. Password-reset emails additionally require the `SMTP_*` variables; without them the API only logs the message.
+
 ---
 
 ## 📜 License
