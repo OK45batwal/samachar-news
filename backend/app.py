@@ -89,6 +89,11 @@ async def security_headers_middleware(request: Request, call_next):
         "connect-src 'self' ws: wss: https:; "
         "frame-ancestors 'none';"
     )
+    if request.method == "GET" and response.status_code == 200:
+        if request.url.path.startswith("/api/news"):
+            response.headers["Cache-Control"] = "public, max-age=60, stale-while-revalidate=120"
+        elif request.url.path == "/api/stats":
+            response.headers["Cache-Control"] = "public, max-age=300"
     if request.url.scheme == "https" or request.headers.get("x-forwarded-proto") == "https":
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response

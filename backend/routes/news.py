@@ -157,7 +157,7 @@ async def get_platform_stats(db: AsyncSession = Depends(get_db)):
     src_count = (await db.execute(select(func.count(Source.id)))).scalar() or 0
     distinct_countries = (await db.execute(select(func.count(func.distinct(Source.country))))).scalar() or 1
     avg_cred = (await db.execute(select(func.avg(Article.credibility_score)))).scalar()
-    credibility_avg = round(float(avg_cred), 1) if avg_cred is not None else 92.0
+    credibility_avg = round(float(avg_cred), 1) if avg_cred is not None else None
 
     return {
         "total_articles": art_count,
@@ -229,7 +229,7 @@ async def get_article_depth(id: int, db: AsyncSession = Depends(get_db)):
         key_claims=article.key_claims or [],
         category=article.category.name if article.category else None,
         source=article.source.name if article.source else None,
-        credibility_score=article.credibility_score or 88,
+        credibility_score=article.credibility_score,
     )
     _INTELLIGENCE_CACHE[cache_key] = (now, depths)
     return depths
@@ -256,8 +256,8 @@ async def ask_article(id: int, payload: ArticleAskRequest, db: AsyncSession = De
         "key_claims": article.key_claims or [],
         "category_name": article.category.name if article.category else "General",
         "source_name": article.source.name if article.source else "Wire Bureau",
-        "credibility_score": article.credibility_score or 88,
-        "sensationalism_score": article.sensationalism_score or 12,
+        "credibility_score": article.credibility_score,
+        "sensationalism_score": article.sensationalism_score,
         "bias_spectrum": article.bias_spectrum or "Neutral Analytic",
     }
 
@@ -297,7 +297,7 @@ async def get_perspectives(id: int, db: AsyncSession = Depends(get_db)):
         "key_claims": article.key_claims or [],
         "category_name": article.category.name if article.category else "General",
         "source_name": article.source.name if article.source else "Wire Bureau",
-        "credibility_score": article.credibility_score or 88,
+        "credibility_score": article.credibility_score,
         "corroborating_sources": article.corroborating_sources or [],
     }
 
