@@ -38,11 +38,12 @@ async function request(endpoint, options = {}) {
   const hasCustomApi = Boolean(window.SAMACHAR_API_URL || localStorage.getItem('samachar_api_url'));
   const allowNetworkFallback = isLocalDev || hasCustomApi;
   const fallbackUrl = customApiBase ? `${customApiBase}${endpoint}` : endpoint;
+  const resolvedUrl = customApiBase ? `${customApiBase}${endpoint}` : primaryUrl;
 
   // Auth Endpoints Fallback Handling
   if (endpoint === '/api/auth/login' && options.method === 'POST') {
     try {
-      const res = await fetch(primaryUrl, { ...options, headers });
+      const res = await fetch(resolvedUrl, { ...options, headers });
       if (res.ok) return await res.json();
     } catch (_) {}
 
@@ -79,7 +80,7 @@ async function request(endpoint, options = {}) {
 
   if (endpoint === '/api/auth/register' && options.method === 'POST') {
     try {
-      const res = await fetch(primaryUrl, { ...options, headers });
+      const res = await fetch(resolvedUrl, { ...options, headers });
       if (res.ok) return await res.json();
     } catch (_) {}
 
@@ -184,7 +185,7 @@ async function request(endpoint, options = {}) {
 
   // General API Request
   try {
-    const res = await fetch(primaryUrl, { ...options, headers });
+    const res = await fetch(resolvedUrl, { ...options, headers });
     if (res.ok) return await res.json();
     if (isLocalDev) {
       const fallbackRes = await fetch(fallbackUrl, { ...options, headers });
@@ -278,7 +279,8 @@ async function request(endpoint, options = {}) {
 // News Endpoints
 async function getArticles(params = {}) {
   const isLocalDev = window.location.port === '5173' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  if (isLocalDev) {
+  const apiBase = window.SAMACHAR_API_URL || localStorage.getItem('samachar_api_url') || (isLocalDev ? 'http://localhost:8000' : '');
+  if (apiBase) {
     try {
       const query = new URLSearchParams();
       if (params.category) query.set('category', params.category);
@@ -287,7 +289,7 @@ async function getArticles(params = {}) {
       if (params.sort) query.set('sort', params.sort);
       if (params.page) query.set('page', params.page);
       if (params.limit) query.set('limit', params.limit);
-      const res = await fetch(`http://localhost:8000/api/news/?${query.toString()}`, { signal: AbortSignal.timeout(1000) });
+      const res = await fetch(`${apiBase}/api/news/?${query.toString()}`, { signal: AbortSignal.timeout(isLocalDev ? 1500 : 8000) });
       if (res.ok) return await res.json();
     } catch (_) {}
   }
@@ -399,13 +401,14 @@ async function getStats() {
 // Interactive Fact-Checking Tool Endpoints
 async function verifyClaim(queryText, queryType = 'claim') {
   const isLocalDev = window.location.port === '5173' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  if (isLocalDev) {
+  const apiBase = window.SAMACHAR_API_URL || localStorage.getItem('samachar_api_url') || (isLocalDev ? 'http://localhost:8000' : '');
+  if (apiBase) {
     try {
-      const res = await fetch('http://localhost:8000/api/fact-check/verify', {
+      const res = await fetch(`${apiBase}/api/fact-check/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: queryText, query_type: queryType }),
-        signal: AbortSignal.timeout(1200)
+        signal: AbortSignal.timeout(isLocalDev ? 1200 : 8000)
       });
       if (res.ok) return await res.json();
     } catch (_) {}
@@ -696,10 +699,11 @@ function isAuthenticated() {
 function initNewsWebSocket(onMessageCallback) {
   const isLocalDev = window.location.port === '5173' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   let wsUrl;
+  const apiBase = window.SAMACHAR_API_URL || localStorage.getItem('samachar_api_url') || (isLocalDev ? 'http://localhost:8000' : '');
   if (window.SAMACHAR_WS_URL) {
     wsUrl = window.SAMACHAR_WS_URL;
-  } else if (isLocalDev) {
-    wsUrl = 'ws://localhost:8000/api/ws';
+  } else if (apiBase) {
+    wsUrl = apiBase.replace(/^http/, 'ws') + '/api/ws';
   } else {
     const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     wsUrl = `${wsProtocol}//${window.location.host}/api/ws`;
