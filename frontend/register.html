@@ -170,7 +170,7 @@
 
             <!-- Email Dispatched Notification Card -->
             <div style="background: rgba(0, 245, 155, 0.08); border: 1.5px solid var(--accent-border); border-radius: 14px; padding: 18px; margin-bottom: 20px; text-align: center;">
-              <div style="font-size: 36px; margin-bottom: 8px;">📬</div>
+              
               <div class="text-sm text-primary font-bold mb-1">6-Digit Code Dispatched!</div>
               <div class="text-xs text-secondary" id="registerOtpTargetText" style="line-height: 1.6;">
                 We sent a 6-digit confirmation code to your email. Please check your inbox and spam folder.
@@ -296,7 +296,7 @@
           });
           if (resp.ok) {
             sentViaBackend = true;
-            console.log('✅ Backend OTP service successfully dispatched code to inbox');
+            console.log('Backend OTP service successfully dispatched code to inbox');
           }
         } catch (_) {}
       }
@@ -325,14 +325,14 @@
               time: new Date().toLocaleTimeString()
             };
             await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-            console.log('✅ EmailJS fallback OTP successfully dispatched');
+            console.log('EmailJS fallback OTP successfully dispatched');
           } catch (err) {
             console.error('EmailJS delivery error:', err);
           }
         }
       }
 
-      showToast(`📬 6-Digit OTP dispatched to ${email}. Please check your inbox!`, 'success');
+      showToast(`6-Digit OTP dispatched to ${email}. Please check your inbox!`, 'success');
     }
 
     async function handleResendOtp() {
@@ -554,7 +554,7 @@
           localStorage.setItem('samachar_remember_email', email);
           sessionStorage.removeItem('samachar_auth_otp_' + email);
 
-          showToast('🎉 OTP verified! Welcome to Samachar Truth Platform.', 'success');
+          showToast('OTP verified! Welcome to Samachar Truth Platform.', 'success');
           
           const rawRedirect = new URLSearchParams(window.location.search).get('redirect');
           const redirectUrl = getSafeRedirectUrl(rawRedirect);

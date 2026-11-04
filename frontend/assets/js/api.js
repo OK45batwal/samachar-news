@@ -246,14 +246,14 @@ async function request(endpoint, options = {}) {
   }
   if (endpoint.startsWith('/api/news/categories')) {
     return [
-      { id: 1, name: "World", slug: "world", icon: "🌍" },
-      { id: 2, name: "Technology", slug: "technology", icon: "⚡" },
-      { id: 3, name: "India", slug: "india", icon: "🇮🇳" },
-      { id: 4, name: "Business", slug: "business", icon: "📈" },
-      { id: 5, name: "Science", slug: "science", icon: "🔬" },
-      { id: 6, name: "Health", slug: "health", icon: "🩺" },
-      { id: 7, name: "Sports", slug: "sports", icon: "🏆" },
-      { id: 8, name: "Entertainment", slug: "entertainment", icon: "🎬" }
+      { id: 1, name: "World", slug: "world" },
+      { id: 2, name: "Technology", slug: "technology" },
+      { id: 3, name: "India", slug: "india" },
+      { id: 4, name: "Business", slug: "business" },
+      { id: 5, name: "Science", slug: "science" },
+      { id: 6, name: "Health", slug: "health" },
+      { id: 7, name: "Sports", slug: "sports" },
+      { id: 8, name: "Entertainment", slug: "entertainment" }
     ];
   }
   if (endpoint.startsWith('/api/news/sources')) {
@@ -446,19 +446,19 @@ async function verifyClaim(queryText, queryType = 'claim') {
   const hasNamedSource = namedSourcePattern.test(lower) || /\bWHO\b/.test(queryText);
   const hasQuantitative = /\b(?:\d+(?:\.\d+)?%|\$\d+(?:\.\d+)?|\d+\s*(?:million|billion|trillion|percent|crore|lakh))/i.test(lower);
 
-  let verdict = "🔴 Unverified — Insufficient Evidence";
+  let verdict = "Unverified — Insufficient Evidence";
   let credibility = Math.min(45, Math.max(10, 45 - Math.floor(sensScore / 3)));
   let analysis = "No named, verifiable source or retrievable evidence was provided. This tool performs lexical screening only; treat the claim as unverified.";
   let sources = [];
 
   if (disinfoMatches.length > 0) {
-    verdict = "🔴 False Claim / Pseudoscience Alert";
+    verdict = "False Claim / Pseudoscience Alert";
     credibility = Math.max(8, 25 - disinfoMatches.length * 10);
     sensScore = Math.max(80, sensScore);
-    analysis = "⚠️ High Disinformation Alert: This statement matches known medical disinformation, financial scam, or conspiratorial propaganda patterns that lack institutional or peer-reviewed evidence.";
+    analysis = "High Disinformation Alert: This statement matches known medical disinformation, financial scam, or conspiratorial propaganda patterns that lack institutional or peer-reviewed evidence.";
     sources = ["Heuristic disinformation pattern match"];
   } else if (sensScore >= 65) {
-    verdict = "🔴 High Sensationalism / Unverified";
+    verdict = "High Sensationalism / Unverified";
     credibility = Math.max(20, 100 - sensScore);
     analysis = "This claim exhibits sensationalized phrasing, emotive hyperbole, or clickbait rhetoric lacking accredited primary source attribution.";
   } else if (hasNamedSource) {
@@ -866,7 +866,7 @@ async function askArticleQuestion(articleId, question, selectedContext = null, f
       `• **Actionable Advice:** Keep an eye on official follow-up announcements over the next 30 to 60 days.`;
     evidenceTag = "Personalized Impact Assessment";
   } else if (qLower.includes('eli5') || qLower.includes('simple') || qLower.includes('analogy') || qLower.includes('plain english')) {
-    answer = `💡 **In Plain English:** A significant event has taken place that redefines how institutions or technology operates.\n\n` +
+    answer = `**In Plain English:** A significant event has taken place that redefines how institutions or technology operates.\n\n` +
       `**Analogy:** Think of upgrading from an old flashlight to a stadium floodlight—suddenly details that were completely hidden are crystal clear to everyone in the arena.`;
     evidenceTag = "ELI5 Layman Synthesis";
   } else if (qLower.includes('evidence') || qLower.includes('source') || qLower.includes('proof') || qLower.includes('quote')) {

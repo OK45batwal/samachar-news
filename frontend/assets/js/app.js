@@ -262,7 +262,7 @@ async function handleSaveBookmark(articleId, btnEl) {
       throw new Error('Bookmark service unavailable.');
     }
     await createBookmark(articleId);
-    showToast('📌 Article saved to your research bookmarks!', 'success');
+    showToast('Article saved to your research bookmarks!', 'success');
   } catch (err) {
     showToast(err.message || 'Could not save bookmark.', 'error');
   }
@@ -289,13 +289,13 @@ function showLiveStoriesPill(count, onRefreshCallback) {
     _liveStoryPillEl.className = 'live-stories-pill';
     _liveStoryPillEl.innerHTML = `
       <span class="live-pulse-dot"></span>
-      <span id="livePillText">⚡ 1 new verified story available</span>
+      <span id="livePillText">1 new verified story available</span>
       <span class="live-pill-action">Show Updates ↑</span>
     `;
     document.body.appendChild(_liveStoryPillEl);
   }
 
-  const label = count > 1 ? `⚡ ${count} new verified stories available` : `⚡ 1 new breaking story available`;
+  const label = count > 1 ? `${count} new verified stories available` : `1 new breaking story available`;
   const textEl = _liveStoryPillEl.querySelector('#livePillText');
   if (textEl) textEl.textContent = label;
 

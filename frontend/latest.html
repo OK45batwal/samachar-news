@@ -41,7 +41,7 @@
         <span class="text-accent font-semibold">Feed: <strong id="channelHeadingTag">All Categories</strong></span>
       </div>
       <div class="flex items-center gap-4">
-        <a href="factcheck.html" class="text-accent font-semibold flex items-center gap-1">⚡ Claim Verifier</a>
+        <a href="factcheck.html" class="text-accent font-semibold flex items-center gap-1">Claim Verifier</a>
         <a href="trending.html" class="text-secondary">Trending Stories</a>
       </div>
     </div>
@@ -99,7 +99,7 @@
         <a href="latest.html?cat=health" class="category-link" data-cat="health" data-slug="health">Health</a>
         <a href="latest.html?cat=sports" class="category-link" data-cat="sports" data-slug="sports">Sports</a>
         <a href="latest.html?cat=entertainment" class="category-link" data-cat="entertainment" data-slug="entertainment">Entertainment</a>
-        <a href="factcheck.html" class="category-link text-accent font-semibold" style="margin-left:auto;">⚡ Fact Check Workbench</a>
+        <a href="factcheck.html" class="category-link text-accent font-semibold" style="margin-left:auto;">Fact Check Workbench</a>
       </div>
     </nav>
   </header>
@@ -201,14 +201,14 @@
     let searchQuery = '';
 
     const CHANNEL_METADATA = {
-      'world': { title: 'World Geopolitics & International Affairs', desc: 'Diplomatic developments, global treaties, and international intelligence verified by Reuters & AP.', badge: '🌍 WORLD CHANNEL' },
-      'technology': { title: 'Technology & AI Frontier', desc: 'Breakthroughs in photonic semiconductors, transformer architectures, and computing infrastructure.', badge: '⚡ TECH & AI' },
-      'india': { title: 'India & Regional Policy', desc: 'National governance, renewable energy missions, and macroeconomic policy across India.', badge: '🇮🇳 INDIA CHANNEL' },
-      'business': { title: 'Business, Markets & Economy', desc: 'Central bank actions, multilateral cross-border settlements, and corporate finance audits.', badge: '📈 BUSINESS & MARKETS' },
-      'science': { title: 'Science, Space & Physics', desc: 'Peer-reviewed astronomical detections, quantum systems, and Nature publications.', badge: '🔬 SCIENCE & SPACE' },
-      'health': { title: 'Health, Medicine & Public Wellness', desc: 'Global epidemiological surveillances, vaccine rollouts, and clinical research data.', badge: '🩺 HEALTH & MEDICINE' },
-      'sports': { title: 'Global Athletics & Sports', desc: 'International championships, cricket fixtures, and athletics scorecards.', badge: '🏆 SPORTS' },
-      'entertainment': { title: 'Entertainment & Cultural Arts', desc: 'Archival film preservation, digital media, and cultural arts.', badge: '🎬 ENTERTAINMENT' }
+      'world': { title: 'World Geopolitics & International Affairs', desc: 'Diplomatic developments, global treaties, and international intelligence verified by Reuters & AP.', badge: 'WORLD CHANNEL' },
+      'technology': { title: 'Technology & AI Frontier', desc: 'Breakthroughs in photonic semiconductors, transformer architectures, and computing infrastructure.', badge: 'TECH & AI' },
+      'india': { title: 'India & Regional Policy', desc: 'National governance, renewable energy missions, and macroeconomic policy across India.', badge: 'INDIA CHANNEL' },
+      'business': { title: 'Business, Markets & Economy', desc: 'Central bank actions, multilateral cross-border settlements, and corporate finance audits.', badge: 'BUSINESS & MARKETS' },
+      'science': { title: 'Science, Space & Physics', desc: 'Peer-reviewed astronomical detections, quantum systems, and Nature publications.', badge: 'SCIENCE & SPACE' },
+      'health': { title: 'Health, Medicine & Public Wellness', desc: 'Global epidemiological surveillances, vaccine rollouts, and clinical research data.', badge: 'HEALTH & MEDICINE' },
+      'sports': { title: 'Global Athletics & Sports', desc: 'International championships, cricket fixtures, and athletics scorecards.', badge: 'SPORTS' },
+      'entertainment': { title: 'Entertainment & Cultural Arts', desc: 'Archival film preservation, digital media, and cultural arts.', badge: 'ENTERTAINMENT' }
     };
 
     function updateChannelHeader() {
@@ -277,7 +277,7 @@
           if (!append) {
             grid.innerHTML = `
               <div class="card p-8 text-center w-full" style="grid-column: 1 / -1; max-width: 480px; margin: 32px auto; background: var(--bg-surface-1);">
-                <div style="font-size: 36px; margin-bottom: 12px;">🔍</div>
+                <div style="font-size: 36px; margin-bottom: 12px;"></div>
                 <h3 class="heading-sm mb-2">No Matching Stories Found</h3>
                 <p class="text-xs text-secondary mb-4">We couldn't find any verified reports matching "${sanitize(searchQuery || '')}".</p>
                 <a href="latest.html" class="btn btn-secondary btn-sm" style="display:inline-flex;margin: 0 auto;text-decoration:none;">View All Stories</a>

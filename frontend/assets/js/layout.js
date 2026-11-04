@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div id="globalSearchResults" style="display:none;max-height:360px;overflow-y:auto;border-top:1px solid var(--border);"></div>
         
         <div id="searchDefaultTrending" style="padding:18px 20px;">
-          <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">🔥 Popular Trending Topics:</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">Popular Trending Topics:</div>
           <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;">
             <a href="latest.html?q=AI" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:var(--bg-surface-2);border:1px solid var(--border);color:var(--accent);font-size:12px;font-weight:600;text-decoration:none;">#ArtificialIntelligence</a>
             <a href="latest.html?q=technology" class="search-tag-pill" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;background:var(--bg-surface-2);border:1px solid var(--border);color:var(--accent);font-size:12px;font-weight:600;text-decoration:none;">#Technology</a>
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="search-dropdown-info">
                 <div class="search-dropdown-title">${sanitize(a.title)}</div>
                 <div class="search-dropdown-meta">
-                  <span style="color:var(--accent);font-weight:700;">🟢 ${a.credibility_score || 95}% Verified</span>
+                  <span style="color:var(--accent);font-weight:700;">${a.credibility_score ? a.credibility_score + '% Verified' : 'Unrated'}</span>
                   <span>·</span>
                   <span>${sanitize(a.source?.name || a.source_name || 'Wire')}</span>
                 </div>
@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div style="flex:1;min-width:0;">
                   <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize(art.title)}</div>
                   <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:8px;">
-                    <span style="color:var(--accent);font-weight:600;">🟢 ${art.credibility_score || 95}% Verified</span>
+                    <span style="color:var(--accent);font-weight:600;">${art.credibility_score ? art.credibility_score + '% Verified' : 'Unrated'}</span>
                     <span>·</span>
                     <span>${sanitize(art.source_name || art.source?.name || 'Wire')}</span>
                   </div>
@@ -437,23 +437,18 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;padding:0 4px;">Main Feeds</div>
         <div class="flex flex-col gap-1 mb-4" id="sidebarLinks">
           <a href="home.html" class="sidebar-nav-item ${(curPage === 'home.html' && !curCat) ? 'active' : ''}">
-            <span>🏠</span>
             <span>Top Stories</span>
           </a>
           <a href="latest.html" class="sidebar-nav-item ${(curPage === 'latest.html' && !curCat) ? 'active' : ''}">
-            <span>⚡</span>
             <span>All News & Wire Feed</span>
           </a>
           <a href="factcheck.html" class="sidebar-nav-item ${curPage === 'factcheck.html' ? 'active' : ''}">
-            <span>🛡️</span>
             <span>Fact Check Workbench</span>
           </a>
           <a href="trending.html" class="sidebar-nav-item ${curPage === 'trending.html' ? 'active' : ''}">
-            <span>🔥</span>
             <span>Trending Wire Stories</span>
           </a>
           <a href="bookmarks.html" class="sidebar-nav-item ${curPage === 'bookmarks.html' ? 'active' : ''}">
-            <span>📌</span>
             <span>Saved Bookmarks</span>
           </a>
         </div>
@@ -461,35 +456,27 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;padding:0 4px;">News Desks & Channels</div>
         <div class="flex flex-col gap-1 mb-4">
           <a href="latest.html?cat=world" class="sidebar-nav-item ${curCat === 'world' ? 'active' : ''}">
-            <span>🌍</span>
             <span>World Affairs</span>
           </a>
           <a href="latest.html?cat=technology" class="sidebar-nav-item ${curCat === 'technology' ? 'active' : ''}">
-            <span>⚡</span>
             <span>Tech & AI</span>
           </a>
           <a href="latest.html?cat=india" class="sidebar-nav-item ${curCat === 'india' ? 'active' : ''}">
-            <span>🇮🇳</span>
             <span>India & Regional</span>
           </a>
           <a href="latest.html?cat=business" class="sidebar-nav-item ${curCat === 'business' ? 'active' : ''}">
-            <span>📈</span>
             <span>Markets & Economy</span>
           </a>
           <a href="latest.html?cat=science" class="sidebar-nav-item ${curCat === 'science' ? 'active' : ''}">
-            <span>🔬</span>
             <span>Science & Space</span>
           </a>
           <a href="latest.html?cat=health" class="sidebar-nav-item ${curCat === 'health' ? 'active' : ''}">
-            <span>🩺</span>
             <span>Health & Medicine</span>
           </a>
           <a href="latest.html?cat=sports" class="sidebar-nav-item ${curCat === 'sports' ? 'active' : ''}">
-            <span>🏆</span>
             <span>Sports</span>
           </a>
           <a href="latest.html?cat=entertainment" class="sidebar-nav-item ${curCat === 'entertainment' ? 'active' : ''}">
-            <span>🎬</span>
             <span>Entertainment</span>
           </a>
         </div>

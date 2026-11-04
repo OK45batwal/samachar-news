@@ -397,6 +397,7 @@ a { color: inherit; }
   border-radius: 0;
   overflow: visible;
   display: block;
+  min-width: 0;
 }
 .bento-main:hover { transform: none; box-shadow: none; border-color: transparent; }
 .bento-main .card-img-wrapper { margin-bottom: 18px; }
@@ -710,7 +711,8 @@ a { color: inherit; }
 /* ---------- Responsive ---------- */
 
 @media (max-width: 980px) {
-  .bento-hero { grid-template-columns: 1fr; gap: 32px; }
+  .bento-hero { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .bento-main { min-width: 0; }
   .bento-main-img { height: 300px; }
   .bento-side-card:first-child { border-top: var(--rule); padding-top: 18px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -718,6 +720,17 @@ a { color: inherit; }
 
 @media (max-width: 768px) {
   .container { padding-left: 20px; padding-right: 20px; }
+  /* Comfortable touch targets on phones. */
+  .btn { min-height: 40px; }
+  .btn-icon { min-width: 40px; min-height: 40px; padding: 0; }
+  .category-link { min-height: 40px; padding: 8px 0; }
+  .story-row-actions a, .story-row-actions button { min-width: 36px; min-height: 36px; }
+  .depth-btn, .toggle-filter-btn { min-height: 40px; }
+  .article-action-buttons { flex-wrap: wrap; overflow-x: visible; }
+  .badge, .story-row-kicker { font-size: 10px; }
+  .mobile-nav-item { font-size: 9px; }
+  .footer-grid h4 { font-size: 10px; }
+  .footer-links { font-size: 13px; }
   .pillar-grid { grid-template-columns: 1fr; gap: 0; }
   .header-main { height: 58px; gap: 16px; }
   .header-search-bar { display: none; }

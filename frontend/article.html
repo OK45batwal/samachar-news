@@ -112,13 +112,13 @@
         </span>
         <span>·</span>
         <span class="flex items-center gap-1 text-secondary text-xs">
-          <span>⚡ Next Wire Ingestion:</span>
+          <span>Next Wire Ingestion:</span>
           <strong id="liveSyncCountdown" class="text-accent font-mono live-sync-countdown">24:18</strong>
         </span>
       </div>
       <div class="flex items-center gap-4">
         <a href="home.html" class="text-secondary hover:text-accent font-semibold">&larr; Back to News Portal</a>
-        <a href="factcheck.html" class="text-secondary hover:text-accent">⚡ Claim Workbench</a>
+        <a href="factcheck.html" class="text-secondary hover:text-accent">Claim Workbench</a>
       </div>
     </div>
   </div>
@@ -174,7 +174,7 @@
         <a href="latest.html?cat=health" class="category-link" data-cat="health">Health</a>
         <a href="latest.html?cat=sports" class="category-link" data-cat="sports">Sports</a>
         <a href="latest.html?cat=entertainment" class="category-link" data-cat="entertainment">Entertainment</a>
-        <a href="factcheck.html" class="category-link text-accent font-semibold" style="margin-left:auto;">⚡ Fact Check Workbench</a>
+        <a href="factcheck.html" class="category-link text-accent font-semibold" style="margin-left:auto;">Fact Check Workbench</a>
       </div>
     </nav>
   </header>
@@ -247,7 +247,7 @@
       <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;">
         <img id="articleImage" src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80" alt="News Cover Photo" class="article-hero-img" style="margin-bottom:0;" />
         <div style="position:absolute;bottom:12px;left:12px;background:rgba(0,0,0,0.65);backdrop-filter:blur(8px);padding:4px 10px;border-radius:var(--radius-sm);color:#fff;font-size:11px;display:flex;align-items:center;gap:6px;">
-          <span>📷 Cover Photograph</span>
+          <span>Cover Photograph</span>
           <span>·</span>
           <span id="articleCoverCredit" style="font-weight:600">Editorial Wire Archive</span>
         </div>
@@ -267,19 +267,19 @@
     <div class="depth-dock-wrapper" id="depthDockWrapper">
       <div class="depth-dock">
         <button type="button" class="depth-btn" data-depth="radar" id="depthBtnRadar">
-          <span>⚡ 15s Radar</span>
+          <span>15s Radar</span>
           <span class="depth-badge" id="depthBadgeRadar">15s</span>
         </button>
         <button type="button" class="depth-btn" data-depth="brief" id="depthBtnBrief">
-          <span>📋 2m Brief</span>
+          <span>2m Brief</span>
           <span class="depth-badge" id="depthBadgeBrief">90s</span>
         </button>
         <button type="button" class="depth-btn active" data-depth="deep" id="depthBtnDeep">
-          <span>📖 Deep Dive</span>
+          <span>Deep Dive</span>
           <span class="depth-badge" id="depthBadgeDeep">Full</span>
         </button>
         <button type="button" class="depth-btn" data-depth="eli5" id="depthBtnEli5">
-          <span>💡 ELI5</span>
+          <span>ELI5</span>
           <span class="depth-badge">Analogy</span>
         </button>
       </div>
@@ -292,7 +292,7 @@
         <div class="card p-6" style="background:var(--bg-surface-1);border-color:var(--border-light);">
           <div class="flex items-center justify-between mb-4 pb-2 border-bottom">
             <div class="flex items-center gap-2">
-              <span class="badge badge-verified">⚡ 15-SECOND RADAR</span>
+              <span class="badge badge-verified">15-SECOND RADAR</span>
               <span class="text-xs text-accent font-mono font-bold" id="radarMetricBadge">Key metric</span>
             </div>
             <span class="text-xs text-muted" id="radarSourceBadge">Wire Network</span>
@@ -306,7 +306,7 @@
       <div id="paneBrief" class="depth-view-pane">
         <div class="card p-6" style="background:var(--bg-surface-1);border-color:var(--border-light);">
           <div class="flex items-center justify-between mb-4 pb-2 border-bottom">
-            <span class="badge badge-verified">📋 EXECUTIVE BRIEFING</span>
+            <span class="badge badge-verified">EXECUTIVE BRIEFING</span>
             <span class="text-xs text-muted font-mono">Reading Time: ~90s</span>
           </div>
           
@@ -319,11 +319,11 @@
           <h4 class="text-xs font-bold text-accent uppercase tracking-wider mb-2">Stakeholder Matrix</h4>
           <div class="brief-stakeholder-grid">
             <div class="brief-gain-box">
-              <div class="text-xs font-bold text-success mb-1">🟢 WHO BENEFITS / GAINS</div>
+              <div class="text-xs font-bold text-success mb-1">WHO BENEFITS / GAINS</div>
               <p class="text-xs text-secondary mb-0" id="briefBeneficiaries" style="line-height:1.5;"></p>
             </div>
             <div class="brief-loss-box">
-              <div class="text-xs font-bold text-danger mb-1">🔴 WHO IS CHALLENGED / LOSES</div>
+              <div class="text-xs font-bold text-danger mb-1">WHO IS CHALLENGED / LOSES</div>
               <p class="text-xs text-secondary mb-0" id="briefDisadvantaged" style="line-height:1.5;"></p>
             </div>
           </div>
@@ -339,7 +339,7 @@
         <!-- Executive Takeaways Box -->
         <div class="card p-5 mb-6" style="background:var(--bg-surface-2);border-left:4px solid var(--accent)">
           <div class="text-xs font-bold text-accent mb-2 uppercase tracking-wide flex items-center gap-2">
-            <span>⚡ EXECUTIVE INTELLIGENCE SUMMARY</span>
+            <span>EXECUTIVE INTELLIGENCE SUMMARY</span>
           </div>
           <p class="text-sm text-secondary" id="articleSummaryText" style="line-height:1.75"></p>
         </div>
@@ -352,10 +352,10 @@
       <!-- Pane 4: ELI5 (Explain Like I'm 5) -->
       <div id="paneEli5" class="depth-view-pane">
         <div class="card p-6" style="background:var(--bg-surface-1);border-color:var(--border-light);">
-          <div class="badge badge-verified mb-3">💡 EXPLAIN LIKE I'M 5</div>
+          <div class="badge badge-verified mb-3">EXPLAIN LIKE I'M 5</div>
           <div class="eli5-analogy-box">
             <div class="flex items-center gap-2 text-xs font-bold text-warning uppercase mb-2">
-              <span>🎯 Everyday Analogy</span>
+              <span>Everyday Analogy</span>
             </div>
             <p class="text-sm text-primary mb-3" id="eli5AnalogyText" style="line-height:1.75;font-weight:500;"></p>
             <div class="text-xs text-secondary"><strong>The Core Concept:</strong> <span id="eli5BigIdeaText"></span></div>
@@ -376,7 +376,7 @@
     <div class="card p-6 mb-8" style="background: var(--bg-surface-2); border-left: 4px solid var(--accent); border-color: var(--border-light);">
       <div class="flex items-center justify-between mb-3" style="flex-wrap:wrap;gap:8px;">
         <div class="flex items-center gap-2">
-          <span class="badge badge-verified" style="font-size:10px;">🎯 PERSONAL IMPACT SIMULATOR</span>
+          <span class="badge badge-verified" style="font-size:10px;">PERSONAL IMPACT SIMULATOR</span>
           <span class="text-xs text-muted">What does this story mean for YOU?</span>
         </div>
         <span class="font-mono text-xs text-accent font-bold" id="impactRelevanceScore">92% Relevance</span>
@@ -461,7 +461,7 @@
       <div class="perspective-card-grid" id="prismPerspectiveCards"></div>
       <div class="omission-radar-alert" id="prismOmissionAlert">
         <div class="flex items-center gap-2 text-xs font-bold text-warning uppercase mb-1">
-          <span>⚠️ OMISSION RADAR</span>
+          <span>OMISSION RADAR</span>
         </div>
         <p class="text-xs text-secondary mb-0" id="prismOmissionText">
           Primary wires prioritize speed and economic figures. Secondary and regional outlets provide depth on civic impact.
@@ -594,7 +594,7 @@
     <div class="copilot-header">
       <div>
         <div class="flex items-center gap-2">
-          <span class="badge badge-verified" style="font-size:10px;padding:2px 8px;">⚡ SAMACHAR COPILOT</span>
+          <span class="badge badge-verified" style="font-size:10px;padding:2px 8px;">SAMACHAR COPILOT</span>
           <span class="text-xs text-muted font-mono">Socratic Ground Truth</span>
         </div>
         <h4 class="heading-sm mt-1" style="font-size:15px;margin-bottom:0;">Ask the Article</h4>
@@ -604,17 +604,17 @@
 
     <div class="copilot-messages" id="copilotMessages">
       <div class="copilot-msg-ai">
-        👋 <strong>Hello! I am your Socratic News Copilot.</strong><br/>
+        <strong>Hello! I am your Socratic News Copilot.</strong><br/>
         I have indexed this verified dispatch. Highlight any sentence or tap an inquiry chip below to test counter-arguments, assess personal impact, or inspect verified citations.
       </div>
     </div>
 
     <!-- Suggested Quick Chips -->
     <div class="copilot-pill-suggestions" id="copilotPillSuggestions">
-      <button type="button" class="copilot-prompt-chip" data-q="What are the strongest counter-arguments to this?">⚡ Counter-Arguments</button>
-      <button type="button" class="copilot-prompt-chip" data-q="How does this impact my personal wallet and everyday life?">💼 Impact on My Life</button>
-      <button type="button" class="copilot-prompt-chip" data-q="Explain this in simple terms like I am 5">💡 Explain Like I'm 5</button>
-      <button type="button" class="copilot-prompt-chip" data-q="Show me primary source quotes and verified evidence">🔍 Source Evidence</button>
+      <button type="button" class="copilot-prompt-chip" data-q="What are the strongest counter-arguments to this?">Counter-Arguments</button>
+      <button type="button" class="copilot-prompt-chip" data-q="How does this impact my personal wallet and everyday life?">Impact on My Life</button>
+      <button type="button" class="copilot-prompt-chip" data-q="Explain this in simple terms like I am 5">Explain Like I'm 5</button>
+      <button type="button" class="copilot-prompt-chip" data-q="Show me primary source quotes and verified evidence">Source Evidence</button>
     </div>
 
     <!-- Input Bar -->
@@ -753,7 +753,7 @@
       // Add AI loading indicator
       const aiBubble = document.createElement('div');
       aiBubble.className = 'copilot-msg-ai';
-      aiBubble.innerHTML = '<span class="text-muted">⚡ Analyzing verified ground truth...</span>';
+      aiBubble.innerHTML = '<span class="text-muted">Analyzing verified ground truth...</span>';
       copilotMessages.appendChild(aiBubble);
       copilotMessages.scrollTop = copilotMessages.scrollHeight;
 
@@ -761,11 +761,11 @@
         const res = await askArticleQuestion(currentArticleData.id, questionText, selectedContext, currentArticleData);
         aiBubble.innerHTML = `
           <div class="flex items-center gap-2 mb-2 pb-1 border-bottom">
-            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">🟢 ${sanitize(res.evidence_tag || 'Ground Truth')}</span>
-            <span class="text-xs text-muted font-mono">${res.confidence_score || 88}% Confidence</span>
+            <span class="badge badge-verified" style="font-size:9.5px;padding:2px 6px;">${sanitize(res.evidence_tag || 'Ground Truth')}</span>
+            <span class="text-xs text-muted font-mono">${res.confidence_score ? res.confidence_score + '% Confidence' : 'Confidence unavailable'}</span>
           </div>
           <div style="white-space:pre-line;">${sanitize(res.answer)}</div>
-          ${res.highlighted_claim ? `<div class="mt-2 pt-2 border-top text-xs text-secondary font-italic">📌 Citation: «${sanitize(res.highlighted_claim)}»</div>` : ''}
+          ${res.highlighted_claim ? `<div class="mt-2 pt-2 border-top text-xs text-secondary font-italic">Citation: «${sanitize(res.highlighted_claim)}»</div>` : ''}
         `;
       } catch (e) {
         aiBubble.innerHTML = `<span class="text-danger">Failed to process question: ${sanitize(e.message)}</span>`;

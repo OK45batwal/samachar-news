@@ -239,7 +239,7 @@
             localStorage.removeItem('samachar_remember_email');
           }
 
-          showToast('✅ Welcome back! Entering truth dashboard...', 'success');
+          showToast('Welcome back! Entering truth dashboard...', 'success');
           
           const rawRedirect = new URLSearchParams(window.location.search).get('redirect');
           const redirectUrl = getSafeRedirectUrl(rawRedirect);

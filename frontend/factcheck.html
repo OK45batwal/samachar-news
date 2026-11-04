@@ -112,7 +112,7 @@
         <a href="latest.html?cat=health" class="category-link" data-cat="health">Health</a>
         <a href="latest.html?cat=sports" class="category-link" data-cat="sports">Sports</a>
         <a href="latest.html?cat=entertainment" class="category-link" data-cat="entertainment">Entertainment</a>
-        <a href="factcheck.html" class="category-link text-accent font-semibold" style="margin-left:auto;">⚡ Fact Check Workbench</a>
+        <a href="factcheck.html" class="category-link text-accent font-semibold" style="margin-left:auto;">Fact Check Workbench</a>
       </div>
     </nav>
   </header>
@@ -285,13 +285,13 @@
         const badge = document.getElementById('resultVerdictBadge');
         if (res.credibility_score >= 80) {
           badge.className = 'badge badge-verified';
-          badge.textContent = '🟢 ' + res.verdict;
+          badge.textContent = '' + res.verdict;
         } else if (res.credibility_score >= 60) {
           badge.className = 'badge badge-corroborated';
-          badge.textContent = '🔵 ' + res.verdict;
+          badge.textContent = res.verdict;
         } else {
           badge.className = 'badge badge-disputed';
-          badge.textContent = '🔴 ' + res.verdict;
+          badge.textContent = '' + res.verdict;
         }
 
         const claimsEl = document.getElementById('claimsBreakdownContainer');

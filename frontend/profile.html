@@ -167,7 +167,7 @@
 
       <div class="flex items-center justify-between pt-4 border-top" style="flex-wrap: wrap; gap: 12px;">
         <span class="text-xs text-muted">Preferences are synchronized with your active session</span>
-        <button type="button" class="btn btn-primary" onclick="if(typeof showToast==='function')showToast('✅ Preferences saved successfully!', 'success')">
+        <button type="button" class="btn btn-primary" onclick="if(typeof showToast==='function')showToast('Preferences saved successfully!', 'success')">
           Save Preferences
         </button>
       </div>
@@ -178,7 +178,7 @@
       <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 16px;">
         <div>
           <div class="flex items-center gap-2 mb-1">
-            <span class="badge" style="background: rgba(255, 77, 77, 0.15); color: #FF4D4D; border: 1px solid rgba(255, 77, 77, 0.35); font-size: 11px;">⚠️ DANGER ZONE</span>
+            <span class="badge" style="background: rgba(255, 77, 77, 0.15); color: #FF4D4D; border: 1px solid rgba(255, 77, 77, 0.35); font-size: 11px;">DANGER ZONE</span>
           </div>
           <h2 class="heading-sm text-primary mb-1" style="font-size: 16px;">Delete Account & Data</h2>
           <p class="text-xs text-secondary" style="max-width: 520px; line-height: 1.6;">
@@ -278,7 +278,7 @@
       }
 
       if (typeof showToast === 'function') {
-        showToast('👋 Your account has been permanently deleted.', 'info');
+        showToast('Your account has been permanently deleted.', 'info');
       }
 
       setTimeout(() => {
