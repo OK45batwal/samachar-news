@@ -733,6 +733,8 @@ a { color: inherit; }
   .footer-links { font-size: 13px; }
   .pillar-grid { grid-template-columns: 1fr; gap: 0; }
   .header-main { height: 58px; gap: 16px; }
+  /* Bottom nav already exposes Profile/Sign In on phones. */
+  #headerAuth { display: none; }
   .header-search-bar { display: none; }
   .category-nav-inner { gap: 18px; padding: 0 20px; }
   .category-link { font-size: 10px; padding: 10px 0; }
