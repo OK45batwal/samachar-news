@@ -30,27 +30,6 @@ jobs:
         run: |
           python -m scripts.cron_ingest
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install NPM Packages & Build
-        run: |
-          npm ci || npm install
-          npm run build
-
-      - name: Deploy Live Updates to Firebase Hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: |
-          if [ -n "$FIREBASE_TOKEN" ]; then
-            npx --yes firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN" --project samachar-news-2026 || echo "⚠️ Firebase deploy warning"
-          else
-            echo "ℹ️ No FIREBASE_TOKEN secret configured; skipping direct hosting deploy step."
-          fi
-
       - name: Commit & Push Updated Dataset & Sitemap
         run: |
           git config --global user.name "Samachar News Bot"
